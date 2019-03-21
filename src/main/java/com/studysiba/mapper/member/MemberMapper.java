@@ -41,9 +41,15 @@ public interface MemberMapper {
     void renewAuthenticationCode(MemberVO memberVO);
 
     /*
-     *  회원 상태 변경 및 코드갱신
+     *  회원 정보 인증 상태
      *  @Param MemberVO
      *  @Return int
      */
-    int changeStatus(MemberVO memberVO);
+    int informationCheckStatus(MemberVO memberVO);
+
+    /*
+     *  회원 활성화 및 코드갱신
+     *  @Param MemberVO
+     */
+    void changeStatus(MemberVO memberVO);
 }

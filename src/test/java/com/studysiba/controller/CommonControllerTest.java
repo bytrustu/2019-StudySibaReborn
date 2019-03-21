@@ -47,12 +47,20 @@ public class CommonControllerTest {
     }
 
     // 초대장 전송 테스트
-    @Test
+    //@Test
     public void sendEmailTest() throws  Exception {
         mockMvc.perform(get("/member/mail/invite/test1"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().string("true"));
+    }
+
+    // 초대장 인증 테스트
+    @Test
+    public void activateAuthentication() throws Exception {
+        mockMvc.perform(get("/member/mail/invite/test1/dbafe1e6-cf08-4752-a3e2-791fbb770ef2"))
+                .andDo(print())
+                .andExpect(status().isOk());
     }
 
 

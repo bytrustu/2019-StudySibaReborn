@@ -7,9 +7,9 @@ import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import javax.mail.MessagingException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
@@ -24,16 +24,19 @@ public class MemberServiceImpl implements MemberService{
     private JavaMailSender javaMailSender;
 
     /*
-     *  회원초대장 메일발송
+     *  회원초대장전송
+     *  @Param 아이디
+     *  @Return 초대장발송여부
      */
+    @Transactional
     @Override
-    public boolean inviteUser(String user) throws Exception {
+    public boolean inviteUser(String mbrId) throws Exception {
 
         // 초대 여부 반환값
         boolean inviteState = false;
 
         MemberVO memberVO = new MemberVO();
-        memberVO.setMbrId(user);
+        memberVO.setMbrId(mbrId);
 
         int registrationStatus = memberMapper.registrationStatus(memberVO);
         log.info("가입상태확인 : " + registrationStatus);
@@ -59,7 +62,7 @@ public class MemberServiceImpl implements MemberService{
 
                 // 초대장 보내질 양식
                 StringBuffer htmlStr = new StringBuffer();
-                htmlStr.append("<a href='http://www.studysiba.com/member/mail/check");
+                htmlStr.append("<a href='http://www.studysiba.com/member/mail/invite");
                 htmlStr.append("/"+memberVO.getMbrId());
                 htmlStr.append("/"+memberVO.getMbrCode());
                 htmlStr.append("'>");
@@ -78,6 +81,29 @@ public class MemberServiceImpl implements MemberService{
             }
         }
         return inviteState;
+    }
+
+    /*
+     *  회원인증확인
+     *  @Param 아이디, 코드
+     *  @Return 인증확인여부
+     */
+    @Transactional
+    @Override
+    public boolean emailAuthentication(String mbrId, String mbrCode) {
+        MemberVO memberVO = new MemberVO();
+        memberVO.setMbrId(mbrId);
+        memberVO.setMbrCode(mbrCode);
+        // 회원인증확인
+        int informationCheckStatus = memberMapper.informationCheckStatus(memberVO);
+
+        if ( informationCheckStatus == 1 ) {
+            // 회원 활성화 및 코드갱신
+            memberVO.setMbrCode(DataConversion.returnUUID());
+            memberMapper.changeStatus(memberVO);
+        }
+        log.info("회원인증확인 : " + informationCheckStatus);
+        return informationCheckStatus == 1 ? true : false;
     }
 
 }
