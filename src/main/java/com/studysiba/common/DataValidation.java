@@ -1,7 +1,5 @@
 package com.studysiba.common;
 
-import org.springframework.web.multipart.MultipartFile;
-
 import java.util.regex.Pattern;
 
 public class DataValidation {
