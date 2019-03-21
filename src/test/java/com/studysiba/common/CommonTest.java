@@ -2,15 +2,23 @@ package com.studysiba.common;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.multipart.MultipartFile;
+
+import javax.annotation.Resource;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class CommonTest {
 
-    @Test
+
+    @Autowired
+    BCryptPasswordEncoder passwordEncoder;
+
+    //@Test
     public void dataValidationTest() {
         System.out.println("이름숫자체크1 : " + DataValidation.checkEngAndNum("bytrustu1202"));
         System.out.println("이름숫자체크2 : " + DataValidation.checkEngAndNum("bytrustu하1202"));
@@ -32,5 +40,26 @@ public class CommonTest {
         System.out.println("이미지파일체크2 : " + DataValidation.checkImageFile("haha.GIF"));
         System.out.println("이미지파일체크3 : " + DataValidation.checkImageFile("haha.jsp"));
     }
+
+    @Test
+    public void dataEncrypt() {
+
+        String encode1 = passwordEncoder.encode("안녕하세요");
+        String encode2 = passwordEncoder.encode("안녕히가세요");
+
+        System.out.println("인코딩 데이터1 : " + encode1);
+        System.out.println("인코딩 데이터2 : " + encode2);
+
+        System.out.println("데이터 매칭1-1 : "  + passwordEncoder.matches("안녕하세요",encode1));
+        System.out.println("데이터 매칭1-2 : "  + passwordEncoder.matches("안녕히가세요",encode1));
+        System.out.println("데이터 매칭1-3 : "  + passwordEncoder.matches("어서오세요",encode1));
+
+        System.out.println("데이터 매칭2-1 : "  + passwordEncoder.matches("안녕하세요",encode2));
+        System.out.println("데이터 매칭2-2 : "  + passwordEncoder.matches("안녕히가세요",encode2));
+        System.out.println("데이터 매칭2-3 : "  + passwordEncoder.matches("어서오세요",encode2));
+
+    }
+
+
 
 }
