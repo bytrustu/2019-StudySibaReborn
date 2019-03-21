@@ -1,5 +1,6 @@
 package com.studysiba.controller;
 
+import com.studysiba.common.DataValidation;
 import com.studysiba.service.common.CommonService;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ public class CommonController {
         log.info("move main");
         int test = commonService.getTest();
         log.info(test);
+
         return "common/main";
     }
 

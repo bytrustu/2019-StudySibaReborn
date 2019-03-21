@@ -28,7 +28,7 @@ public class CommonControllerTest {
     MockMvc mockMvc;
 
     // MySQL 연동 테스트
-    @Test
+    //@Test
     public void testConnection(){
         try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/studysiba","bytrustu","dydwns89") ) {
             log.info("mysql 연결 : " + conn);
@@ -38,7 +38,7 @@ public class CommonControllerTest {
     }
 
     // 기본 경로 테스트
-    @Test
+    //@Test
     public void getTest() throws Exception {
         mockMvc.perform(get("/"))
                 .andDo(print())
