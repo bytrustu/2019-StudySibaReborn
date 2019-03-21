@@ -45,5 +45,12 @@ public class CommonControllerTest {
                 .andExpect(status().isOk());
     }
 
+    @Test
+    public void sendEmailTest() throws  Exception {
+        mockMvc.perform(get("/member/mail/invite/test1"))
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
+
 
 }

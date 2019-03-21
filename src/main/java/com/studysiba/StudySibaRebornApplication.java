@@ -11,6 +11,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+
 import javax.sql.DataSource;
 
 @EnableAspectJAutoProxy
@@ -19,6 +20,9 @@ import javax.sql.DataSource;
 public class StudySibaRebornApplication {
 
     public static void main(String[] args) {
+
+        //try (ConfigurableApplicationContext ctx = SpringApplication.run(StudySibaRebornApplication.class, args)) { ctx.getBean(StudySibaRebornApplication.class).sendMail(); }
+
         SpringApplication.run(StudySibaRebornApplication.class, args);
     }
 

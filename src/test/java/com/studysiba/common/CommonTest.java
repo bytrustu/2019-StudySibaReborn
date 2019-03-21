@@ -6,9 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.web.multipart.MultipartFile;
 
-import javax.annotation.Resource;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -43,7 +41,7 @@ public class CommonTest {
 
     //@Test
     public void dataEncrypt() {
-        String encode1 = passwordEncoder.encode("안녕하세요");
+        String encode1 = passwordEncoder.encode("test");
         String encode2 = passwordEncoder.encode("안녕히가세요");
 
         System.out.println("인코딩 데이터1 : " + encode1);
@@ -58,7 +56,7 @@ public class CommonTest {
         System.out.println("데이터 매칭2-3 : "  + passwordEncoder.matches("어서오세요",encode2));
     }
 
-    @Test
+    //@Test
     public void DataConvensionTest(){
         System.out.println("UUID 생성1 : " + DataConversion.returnUUID());
         System.out.println("UUID 생성2 : " + DataConversion.returnUUID());
@@ -68,7 +66,6 @@ public class CommonTest {
         System.out.println("랜덤번호 생성2 : " + DataConversion.returnRanNum(5));
         System.out.println("랜덥번호 생성3 : " + DataConversion.returnRanNum(10));
     }
-
 
 
 }

@@ -7,9 +7,6 @@ import java.util.UUID;
 
 public class DataConversion {
 
-    @Autowired
-    BCryptPasswordEncoder passwordEncoder;
-
     // UUID 생성
     public static String returnUUID(){
         return UUID.randomUUID().toString();

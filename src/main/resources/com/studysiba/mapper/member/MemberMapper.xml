@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.studysiba.mapper.member.MemberMapper">
+
+
+    <!-- 회원가입여부확인 -->
+    <select id="registrationStatus" parameterType="MemberVO" resultType="int">
+        SELECT COUNT(*) FROM MEMBER
+        WHERE MBR_ID = #{mbrId}
+    </select>
+
+    <!-- 회원타입값조회 -->
+    <select id="getType" parameterType="MemberVO" resultType="String">
+        SELECT MBR_TYPE FROM MEMBER
+        WHERE MBR_ID = #{mbrId}
+    </select>
+
+    <select id="getEmail" parameterType="MemberVO" resultType="String">
+        SELECT MBR_EMAIL FROM MEMBER
+        WHERE MBR_ID = #{mbrId}
+    </select>
+
+    <select id="getCode" parameterType="MemberVO" resultType="String">
+        SELECT MBR_CODE FROM MEMBER
+        WHERE MBR_ID = #{mbrId}
+    </select>
+
+
+</mapper>
