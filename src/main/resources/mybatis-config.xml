@@ -7,8 +7,8 @@
         <setting name="mapUnderscoreToCamelCase" value="true"/>
     </settings>
 
-    <typeAliases>
+    <!--<typeAliases>
         <typeAlias alias="MemberVO" type="com.studysiba.domain.member.MemberVO"/>
-    </typeAliases>
+    </typeAliases>-->
 
 </configuration>
