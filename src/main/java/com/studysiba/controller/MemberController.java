@@ -17,7 +17,7 @@ public class MemberController {
     @Autowired
     MemberService memberService;
 
-    @GetMapping("/mail/invite/{user}")
+    @GetMapping(value="/mail/invite/{user}", produces = "application/json; charset=utf8")
     @ResponseBody
     public boolean emailAuthentication(@PathVariable("user") String user) {
         boolean inviteState = false;

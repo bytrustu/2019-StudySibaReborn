@@ -27,5 +27,10 @@
         WHERE MBR_ID = #{mbrId}
     </select>
 
+    <select id="renewAuthenticationCode" parameterType="MemberVO">
+        UPDATE MEMBER SET MBR_CODE = #{mbrCode}
+        WHERE MBR_ID = #{mbrId}
+    </select>
+
 
 </mapper>

@@ -8,6 +8,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
 import java.sql.Connection;
@@ -45,11 +46,13 @@ public class CommonControllerTest {
                 .andExpect(status().isOk());
     }
 
+    // 초대장 전송 테스트
     @Test
     public void sendEmailTest() throws  Exception {
         mockMvc.perform(get("/member/mail/invite/test1"))
                 .andDo(print())
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(content().string("true"));
     }
 
 
