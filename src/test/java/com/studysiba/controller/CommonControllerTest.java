@@ -57,14 +57,14 @@ public class CommonControllerTest {
     // 초대장 전송 테스트
     //@Test
     public void sendEmailTest() throws Exception {
-        mockMvc.perform(get("/member/mail/invite/bytrustu"))
+        mockMvc.perform(get("/member/mail/invite/test1"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().string("INVITE_STATE_SUCCESS"));
     }
 
     // 초대장 인증 테스트
-    @Test
+    //@Test
     public void activateAuthentication() throws Exception {
         mockMvc.perform(get("/member/mail/invite/bytrustu/7cbcd0b2-c0be-4f47-8c2c-b87e6582dd38"))
                 .andDo(print())
@@ -76,10 +76,10 @@ public class CommonControllerTest {
     //@Test
     public void registerTest1() throws Exception {
         MemberVO memberVO = new MemberVO();
-        memberVO.setMbrId("bytrustu");
-        memberVO.setMbrPass("test1234");
+        memberVO.setMbrId("test1");
+        memberVO.setMbrPass("test1");
         memberVO.setMbrNick("닉네임1");
-        memberVO.setMbrEmail("tiamo198712@naver.com");
+        memberVO.setMbrEmail("tiamo198712@gmail.com");
         memberVO.setMbrProfile("kakao-1.png");
         String memberJson = objectMapper.writeValueAsString(memberVO);
         mockMvc.perform(post("/member/register").contentType(MediaType.APPLICATION_JSON_UTF8)
@@ -95,25 +95,19 @@ public class CommonControllerTest {
 //                .param("mbrProfile", "kakao-1.png"))
 //                .andExpect(status().isOk())
 //                .andExpect(content().string("EMAIL_STATE_EMPTY"));
-//
-//        mockMvc.perform(post("/member/register")
-//                .param("mbrId", "bytrustu")
-//                .param("mbrPass", "1234")
-//                .param("mbrNick", "닉네임1")
-//                .param("mbrEmail", "asd@gmail.com")
-//                .param("mbrProfile", "kakao-1.png"))
-//                .andExpect(status().isOk())
-//                .andExpect(content().string("PASS_STATE_ERROR"));
-//
-//        mockMvc.perform(post("/member/register")
-//                .param("mbrId", "bytrustu")
-//                .param("mbrPass", "test1234")
-//                .param("mbrNick", "닉네임1")
-//                .param("mbrEmail", "asd@gmail.com")
-//                .param("mbrProfile", "kakao-1.png"))
-//                .andExpect(status().isOk())
-//                .andExpect(content().string("MEMBER_STATS_SUCCESS"));
     }
 
+    // 회원로그인 테스트
+    @Test
+    public void loginTest() throws Exception {
+        MemberVO memberVO1 = new MemberVO();
+        memberVO1.setMbrId("test1");
+        memberVO1.setMbrPass("test1");
+        String memberJson1 = objectMapper.writeValueAsString(memberVO1);
+        mockMvc.perform(post("/member/login").contentType(MediaType.APPLICATION_JSON_UTF8)
+                .content(memberJson1))
+                .andExpect(status().isOk())
+                .andExpect(content().string("LOGIN_STATE_SUCCESS"));
+    }
 
 }

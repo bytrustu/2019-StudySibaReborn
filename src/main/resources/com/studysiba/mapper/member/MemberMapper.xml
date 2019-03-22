@@ -75,5 +75,23 @@
         WHERE MBR_EMAIL = #{mbrEmail}
     </select>
 
+    <select id ="nickReduplicationCheck" parameterType="MemberVO" resultType="int">
+        SELECT COUNT(*) FROM MEMBER
+        WHERE MBR_NICK = #{mbrNick}
+    </select>
+
+    <!-- 회원방문자수조회 -->
+    <select id="totalVisitCountCheck" parameterType="MemberVO" resultType="int">
+        SELECT COALESCE(COUNT(*),0) AS COUNT FROM VISIT
+        WHERE VIS_ID = #{mbrId}
+    </select>
+
+    <!-- 회원정보조회 -->
+    <select id="viewMemberInformation" parameterType="MemberVO" resultType="MemberVO">
+        SELECT
+        MBR_NO, MBR_TYPE, MBR_AUTH, MBR_CODE, MBR_ID, MBR_PASS, MBR_NICK,MBR_EMAIL, MBR_PROFILE, MBR_CONNECT, MBR_JOIN
+        FROM MEMBER
+        WHERE MBR_ID = #{mbrId}
+    </select>
 
 </mapper>

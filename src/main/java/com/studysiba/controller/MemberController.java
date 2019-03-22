@@ -68,8 +68,17 @@ public class MemberController {
     @PostMapping( value="/register", consumes = "application/json", produces = {MediaType.TEXT_PLAIN_VALUE})
     public ResponseEntity<String> register(@RequestBody MemberVO memberVO) throws Exception {
         String stateCode = memberService.register(memberVO);
-        log.info(stateCode);
+        log.info("회원가입상태메세지 : " + stateCode);
         return new ResponseEntity<>(stateCode, HttpStatus.OK);
+    }
+
+    @ResponseBody
+    @PostMapping( value="/login", consumes = "application/json", produces = {MediaType.TEXT_PLAIN_VALUE})
+    public ResponseEntity<String> normalLoginAuthentication(@RequestBody MemberVO memberVO) throws Exception {
+        String stateCode = memberService.normalLoginAuthentication(memberVO);
+        log.info("회원로그인상태메세지 : " + stateCode);
+        if ( stateCode.toUpperCase().equals("ID_STATE_WAITAPPROVAL") ) return new ResponseEntity<>(stateCode, HttpStatus.OK);
+        return stateCode.equals("LOGIN_STATE_SUCCESS") ? new ResponseEntity<>(stateCode, HttpStatus.OK) : new ResponseEntity<>(stateCode, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 }

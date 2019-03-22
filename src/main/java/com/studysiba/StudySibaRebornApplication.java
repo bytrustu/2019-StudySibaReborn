@@ -20,7 +20,6 @@ import javax.sql.DataSource;
 public class StudySibaRebornApplication {
 
     public static void main(String[] args) {
-
         SpringApplication.run(StudySibaRebornApplication.class, args);
     }
 

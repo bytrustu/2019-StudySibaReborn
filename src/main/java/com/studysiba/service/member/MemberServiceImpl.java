@@ -14,10 +14,11 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import javax.servlet.http.HttpSession;
 
 @Service
 @Log4j
-public class MemberServiceImpl implements MemberService{
+public class MemberServiceImpl implements MemberService {
 
     @Resource
     MemberMapper memberMapper;
@@ -27,6 +28,9 @@ public class MemberServiceImpl implements MemberService{
 
     @Autowired
     BCryptPasswordEncoder passwordEncoder;
+
+    @Autowired
+    HttpSession httpSession;
 
     /*
      *  회원초대장전송
@@ -47,12 +51,12 @@ public class MemberServiceImpl implements MemberService{
         log.info("가입상태확인 : " + registrationStatus);
 
         // 회원등록되어있을경우 ( 0:ERROR , 1:진행 )
-        if ( registrationStatus == 1 ) {
+        if (registrationStatus == 1) {
             String checkStatus = memberMapper.getType(memberVO);
             log.info("회원타입확인 : " + checkStatus);
 
             // 회원가입 대기상태일경우 ( NONE )
-            if ( checkStatus.toUpperCase().equals("NONE") ) {
+            if (checkStatus.toUpperCase().equals("NONE")) {
 
                 // 인증코드 갱신
                 memberVO.setMbrCode(DataConversion.returnUUID());
@@ -68,16 +72,16 @@ public class MemberServiceImpl implements MemberService{
                 // 초대장 보내질 양식
                 StringBuffer htmlStr = new StringBuffer();
                 String siteUrl = "localhost:8282";
-                htmlStr.append("<a href='http://"+ siteUrl +"/member/mail/invite");
-                htmlStr.append("/"+memberVO.getMbrId());
-                htmlStr.append("/"+memberVO.getMbrCode());
+                htmlStr.append("<a href='http://" + siteUrl + "/member/mail/invite");
+                htmlStr.append("/" + memberVO.getMbrId());
+                htmlStr.append("/" + memberVO.getMbrCode());
                 htmlStr.append("'>");
                 htmlStr.append("<img src='https://i.imgur.com/yr5w0qi.jpg' style='width:100%'></a><br/>");
                 htmlStr.append("상단 초대장 클릭하시면 인증이 됩니다. 감사합니다^^");
                 log.info("초대장 양식 : " + htmlStr.toString());
 
                 // 초대장 제목
-                mail.setSubject("[ 초대장발급 - " +  memberVO.getMbrId()+"님 ] 스터디시바");
+                mail.setSubject("[ 초대장발급 - " + memberVO.getMbrId() + "님 ] 스터디시바");
                 // 초대장 내용 타입
                 mail.setText(htmlStr.toString(), "utf-8", "html");
                 // 초대장 보내어질 이메일 주소
@@ -103,7 +107,7 @@ public class MemberServiceImpl implements MemberService{
         // 회원인증확인
         int informationCheckStatus = memberMapper.informationCheckStatus(memberVO);
 
-        if ( informationCheckStatus == 1 ) {
+        if (informationCheckStatus == 1) {
             // 회원 활성화 및 코드갱신
             memberVO.setMbrCode(DataConversion.returnUUID());
             memberMapper.changeStatus(memberVO);
@@ -120,53 +124,87 @@ public class MemberServiceImpl implements MemberService{
     @Override
     public String register(MemberVO memberVO) throws Exception {
         String stateCode = "";
-        String[] variableNames = {"mbrId","mbrPass","mbrNick","mbrEmail","mbrProfile"};
+        String[] variableNames = {"mbrId", "mbrPass", "mbrNick", "mbrEmail", "mbrProfile"};
 
         // 입력 된 데이터 NULL 및 공백확인 [ 모든 데이터가 있을경우 VALUES_STATE_GOOD ]
-        stateCode = DataValidation.findEmptyValue(memberVO,variableNames);
-        if ( stateCode.equals("VALUES_STATE_GOOD") ) {
+        stateCode = DataValidation.findEmptyValue(memberVO, variableNames);
+        if (stateCode.equals("VALUES_STATE_GOOD")) {
             // 아이디 검증 [ 영어 또는 숫자 포함 / 문자 길이 12까지 ]
-            if ( !DataValidation.checkEngAndNum(memberVO.getMbrId()) || !DataValidation.textLengthComparison(12,memberVO.getMbrId()) ) {
+            if (!DataValidation.checkEngAndNum(memberVO.getMbrId()) || !DataValidation.textLengthComparison(12, memberVO.getMbrId())) {
                 stateCode = "ID_STATE_ERROR";
                 // 비밀번호 검증 [ 영어, 숫자 포함 / 문자 길이 5-16까지 ]
-            } else if ( !DataValidation.checkPassword(memberVO.getMbrPass()) ) {
+            } else if (!DataValidation.checkPassword(memberVO.getMbrPass())) {
                 stateCode = "PASS_STATE_ERROR";
                 // 닉네임 검증 [ 한글 또는 영어 또는 숫자 포함 / 문자크기 10까지 ]
-            } else if ( !DataValidation.checkOnlyCharacters(memberVO.getMbrNick()) || !DataValidation.textLengthComparison(10,memberVO.getMbrNick()) ) {
+            } else if (!DataValidation.checkOnlyCharacters(memberVO.getMbrNick()) || !DataValidation.textLengthComparison(10, memberVO.getMbrNick())) {
                 stateCode = "NICK_STATE_ERROR";
                 // 이메일 검증
-            } else if ( !DataValidation.checkEmail(memberVO.getMbrEmail()) ) {
+            } else if (!DataValidation.checkEmail(memberVO.getMbrEmail())) {
                 stateCode = "EMAIL_STATE_ERROR";
                 // 프로필사진 확장자 검증  [ JPG, JPEG, PNG, GIF, BMP ]
-            } else if ( !DataValidation.checkImageFile(memberVO.getMbrProfile()) ) {
+            } else if (!DataValidation.checkImageFile(memberVO.getMbrProfile())) {
                 stateCode = "PROFILE_STATE_ERROR";
 
-            // 회원가입 진행
+                // 회원가입 진행
             } else {
                 // 아이디가 이미 등록되어져 있는 경우
-                if ( memberMapper.idReduplicationCheck(memberVO) == 1 ) {
+                if (memberMapper.idReduplicationCheck(memberVO) == 1) {
                     stateCode = "ID_STATE_USED";
                     // 아이디가 이메일 승인 대기중인 경우
-                    if ( stateCode.equals("ID_STATE_USED") ) {
+                    if (stateCode.equals("ID_STATE_USED")) {
                         stateCode = memberMapper.emailApprovalStatus(memberVO).toUpperCase().equals("NONE") ? "ID_STATE_WAITAPPROVAL" : "ID_STATE_USED";
                     }
                 } else {
                     // 아이디 중복 이 없을경우 이메일 중복 확인
-                    if ( memberMapper.emailReduplicationCheck(memberVO) == 1 ) {
+                    if (memberMapper.emailReduplicationCheck(memberVO) == 1) {
                         stateCode = "EMAIL_STATE_USED";
                     } else {
-                        // 회원정보가 등록이 된 경우 => 패스워드 암호화 및 인증코드 발급
-                        memberVO.setMbrPass( passwordEncoder.encode(memberVO.getMbrPass()) );
-                        memberVO.setMbrCode( DataConversion.returnUUID() );
-                        stateCode = memberMapper.memberRegistration(memberVO) == 1 ? "MEMBER_STATE_SUCCESS" : "SYSTEM_STATE_ERROR";
+                        if (memberMapper.nickReduplicationCheck(memberVO) == 1) {
+                            stateCode = "NICK_STATE_USED";
+                        } else {
+                            // 회원정보가 등록이 된 경우 => 패스워드 암호화 및 인증코드 발급
+                            memberVO.setMbrPass(passwordEncoder.encode(memberVO.getMbrPass()));
+                            memberVO.setMbrCode(DataConversion.returnUUID());
+                            stateCode = memberMapper.memberRegistration(memberVO) == 1 ? "MEMBER_STATE_SUCCESS" : "SYSTEM_STATE_ERROR";
+                        }
                     }
                 }
             }
         } else {
             // 데이터가 NULL 및 공백이 있을경우 상태코드로 변환
-            stateCode = stateCode.toUpperCase().replace("MBR","").concat("_STATE_EMPTY");
+            stateCode = stateCode.toUpperCase().replace("MBR", "").concat("_STATE_EMPTY");
         }
-        log.info(stateCode);
+        return stateCode;
+    }
+
+    /*
+     *  회원로그인
+     *  @Param MemberVO
+     *  @Return 회원로그인 따른 상태메세지
+     */
+    @Override
+    public String normalLoginAuthentication(MemberVO memberVO) {
+        String stateCode = "LOGIN_STATE_ERROR";
+        // 회원정보데이터 조회
+        MemberVO memberData = memberMapper.viewMemberInformation(memberVO);
+        if (memberData != null) {
+            // 입력된 비밀번호와 회원정보데이터와 매칭
+            if (passwordEncoder.matches(memberVO.getMbrPass(), memberData.getMbrPass())) {
+                // 회원상태정보가 승인검토중일경우 ID_STATE_WAITAPPROVAL 반환
+                if (memberData.getMbrType().toUpperCase().equals("NONE")) return "ID_STATE_WAITAPPROVAL";
+                stateCode = "LOGIN_STATE_SUCCESS";
+                // 방문 조회수
+                int visitCount = memberMapper.totalVisitCountCheck(memberVO);
+                // 세션등록
+                httpSession.setAttribute("auth", memberData.getMbrAuth());
+                httpSession.setAttribute("id", memberData.getMbrId());
+                httpSession.setAttribute("nick", memberData.getMbrNick());
+                httpSession.setAttribute("email", memberData.getMbrEmail());
+                httpSession.setAttribute("profile", memberData.getMbrProfile());
+                httpSession.setAttribute("connect", memberData.getMbrCode());
+                httpSession.setAttribute("visit", visitCount);
+            }
+        }
         return stateCode;
     }
 

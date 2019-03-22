@@ -24,4 +24,11 @@ public interface MemberService {
      *  @Return 절차에따른상태코드반환
      */
     String register(MemberVO memberVO) throws Exception;
+
+    /*
+     *  일반회원로그인
+     *  @Param MemberVO
+     *  @Return 절차에따른상태코드반환
+     */
+    String normalLoginAuthentication(MemberVO memberVO);
 }

@@ -80,4 +80,27 @@ public interface MemberMapper {
      *  @Return int
      */
     int emailReduplicationCheck(MemberVO memberVO);
+
+    /*
+     *  회원 닉네임 중복 확인
+     *  @Param MemberVO
+     *  @Return int
+     */
+    int nickReduplicationCheck(MemberVO memberVO);
+
+    /*
+     *  회원 방문수 조회
+     *  @Param MemberVO
+     *  @Return int
+     */
+    int totalVisitCountCheck(MemberVO memberVO);
+
+    /*
+     *  회원 정보 조회
+     *  @Param MemberVO
+     *  @Return MemberVO
+     */
+    MemberVO viewMemberInformation(MemberVO memberVO);
+
+
 }
