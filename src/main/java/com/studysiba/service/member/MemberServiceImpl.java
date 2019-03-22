@@ -10,7 +10,6 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.mail.internet.InternetAddress;
@@ -138,7 +137,7 @@ public class MemberServiceImpl implements MemberService{
                 // 이메일 검증
             } else if ( !DataValidation.checkEmail(memberVO.getMbrEmail()) ) {
                 stateCode = "EMAIL_STATE_ERROR";
-                // 프로필사진 검증  [ JPG, JPEG, PNG, GIF, BMP ]
+                // 프로필사진 확장자 검증  [ JPG, JPEG, PNG, GIF, BMP ]
             } else if ( !DataValidation.checkImageFile(memberVO.getMbrProfile()) ) {
                 stateCode = "PROFILE_STATE_ERROR";
 

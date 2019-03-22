@@ -1,5 +1,6 @@
 package com.studysiba.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.studysiba.domain.member.MemberVO;
 import lombok.extern.log4j.Log4j;
 import org.junit.Test;
@@ -7,6 +8,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -31,12 +33,15 @@ public class CommonControllerTest {
     @Autowired
     MockMvc mockMvc;
 
+    @Autowired
+    ObjectMapper objectMapper;
+
     // MySQL 연동 테스트
     //@Test
-    public void testConnection(){
-        try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/studysiba","bytrustu","dydwns89") ) {
+    public void testConnection() {
+        try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/studysiba", "bytrustu", "dydwns89")) {
             log.info("mysql 연결 : " + conn);
-        } catch ( Exception e ) {
+        } catch (Exception e) {
             log.info(e.getMessage());
         }
     }
@@ -50,34 +55,37 @@ public class CommonControllerTest {
     }
 
     // 초대장 전송 테스트
-    @Test
-    public void sendEmailTest() throws  Exception {
+    //@Test
+    public void sendEmailTest() throws Exception {
         mockMvc.perform(get("/member/mail/invite/bytrustu"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().string("true"));
+                .andExpect(content().string("INVITE_STATE_SUCCESS"));
     }
 
     // 초대장 인증 테스트
-    //@Test
+    @Test
     public void activateAuthentication() throws Exception {
-        mockMvc.perform(get("/member/mail/invite/test1/dbafe1e6-cf08-4752-a3e2-791fbb770ef2"))
+        mockMvc.perform(get("/member/mail/invite/bytrustu/7cbcd0b2-c0be-4f47-8c2c-b87e6582dd38"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().string("true"));
+                .andExpect(content().string("AUTH_STATE_SUCCESS"));
     }
 
     // 회원가입 테스트
     //@Test
     public void registerTest1() throws Exception {
-//        mockMvc.perform(post("/member/register")
-//                .param("mbrId", "bytrustu")
-//                .param("mbrPass", "abcd1234")
-//                .param("mbrNick", "닉네임1")
-//                .param("mbrEmail", "bytrustu@gmail.com")
-//                .param("mbrProfile", "kakao-1.png"))
-//                .andExpect(status().isOk())
-//                .andExpect(content().string("ID_STATE_WAITAPPROVAL"));
+        MemberVO memberVO = new MemberVO();
+        memberVO.setMbrId("bytrustu");
+        memberVO.setMbrPass("test1234");
+        memberVO.setMbrNick("닉네임1");
+        memberVO.setMbrEmail("tiamo198712@naver.com");
+        memberVO.setMbrProfile("kakao-1.png");
+        String memberJson = objectMapper.writeValueAsString(memberVO);
+        mockMvc.perform(post("/member/register").contentType(MediaType.APPLICATION_JSON_UTF8)
+                .content(memberJson))
+                .andExpect(status().isOk())
+                .andExpect(content().string("MEMBER_STATE_SUCCESS"));
 
 //        mockMvc.perform(post("/member/register")
 //                .param("mbrId", "bytrustu")
@@ -106,8 +114,6 @@ public class CommonControllerTest {
 //                .andExpect(status().isOk())
 //                .andExpect(content().string("MEMBER_STATS_SUCCESS"));
     }
-
-
 
 
 }

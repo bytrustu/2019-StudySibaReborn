@@ -21,8 +21,6 @@ public class StudySibaRebornApplication {
 
     public static void main(String[] args) {
 
-        //try (ConfigurableApplicationContext ctx = SpringApplication.run(StudySibaRebornApplication.class, args)) { ctx.getBean(StudySibaRebornApplication.class).sendMail(); }
-
         SpringApplication.run(StudySibaRebornApplication.class, args);
     }
 
