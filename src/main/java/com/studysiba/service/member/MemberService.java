@@ -1,5 +1,7 @@
 package com.studysiba.service.member;
 
+import com.studysiba.domain.member.MemberVO;
+
 public interface MemberService {
 
     /*
@@ -15,4 +17,11 @@ public interface MemberService {
      *  @Return 인증확인여부
      */
     boolean emailAuthentication(String mbrId, String mbrCode);
+
+    /*
+     *  회원가입
+     *  @Param MemberVO
+     *  @Return 절차에따른상태코드반환
+     */
+    String register(MemberVO memberVO) throws Exception;
 }

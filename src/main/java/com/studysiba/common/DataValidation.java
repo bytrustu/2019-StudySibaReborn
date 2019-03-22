@@ -13,11 +13,11 @@ public class DataValidation {
      */
     public static String findEmptyValue(Object obj, String[] valueNames) throws Exception {
         String stateCode = "VALUES_STATE_GOOD";
-        for (Field field : obj.getClass().getDeclaredFields() ) {
+        for (Field field : obj.getClass().getDeclaredFields()) {
             field.setAccessible(true);
-            for( String str : valueNames ) {
-                if ( field.getName().equals(str) ) {
-                    if ( field.get(obj) == null || field.get(obj).toString().trim().equals("")) {
+            for (String str : valueNames) {
+                if (field.getName().equals(str)) {
+                    if (field.get(obj) == null || field.get(obj).toString().trim().equals("")) {
                         stateCode = str;
                         break;
                     }
@@ -34,7 +34,7 @@ public class DataValidation {
      *  @Return 문자열 검증
      */
     public static boolean checkEngAndNum(String text) {
-        String regExp = "^[a-z0-9]*$";
+        String regExp = "^[a-z|0-9]*$";
         return Pattern.matches(regExp, text);
     }
 
@@ -60,6 +60,16 @@ public class DataValidation {
         return Pattern.matches(regExp, email);
     }
 
+    /*
+     *  영어 숫자  포함 5-16 길이 체크
+     *  @Param 문자열길이
+     *  @Return 비밀번호 검증
+     */
+    public static boolean checkPassword(String password) {
+        String regExp = "^(?=.*[a-zA-Z]+)(?=.*[!@#$%^*+=-]|.*[0-9]+).{5,16}$";
+        return Pattern.matches(regExp, password);
+    }
+
 
     /*
      *  그림파일 확장자 확인 [ JPG, JPEG, PNG, GIF, BMP ]
@@ -69,10 +79,10 @@ public class DataValidation {
     public static boolean checkImageFile(String fileName) {
         boolean result = false;
         int post = fileName.lastIndexOf(".");
-        String ext = fileName.substring( post + 1 ).toLowerCase();
-        String[] images = {"jpg", "jpeg","png","gif","bmp"};
-        for ( String str : images ) {
-            if ( str.equals(ext) ) {
+        String ext = fileName.substring(post + 1).toLowerCase();
+        String[] images = {"jpg", "jpeg", "png", "gif", "bmp"};
+        for (String str : images) {
+            if (str.equals(ext)) {
                 result = true;
                 break;
             }
@@ -91,11 +101,11 @@ public class DataValidation {
         StringBuffer sb = new StringBuffer();
         int size = 0;
         boolean result = true;
-        for ( char c : array ) {
-            size += ( c > 255 ) ? 2: 1;
+        for (char c : array) {
+            size += (c > 255) ? 2 : 1;
             sb.append(c);
         }
-        if ( size >= length ) result = false;
+        if (size > length) result = false;
         return result;
     }
 

@@ -48,5 +48,32 @@
         WHERE MBR_ID = #{mbrId}
     </select>
 
+    <!-- 회원아이디중복조회 -->
+    <select id="idReduplicationCheck" parameterType="MemberVO" resultType="int">
+        SELECT COUNT(*) FROM MEMBER
+        WHERE MBR_ID = #{mbrId}
+    </select>
+
+    <!-- 회원이메일인증상태조회 -->
+    <select id="emailApprovalStatus" parameterType="MemberVO" resultType="String">
+        SELECT MBR_TYPE FROM MEMBER
+        WHERE MBR_ID = #{mbrId}
+    </select>
+
+    <!-- 회원정보등록 -->
+    <insert id="memberRegistration" parameterType="MemberVO">
+        <selectKey keyProperty="mbrNo" order="BEFORE" resultType="int">
+            SELECT COALESCE(MAX(MBR_NO+1),1) AS MBR_NO FROM MEMBER
+        </selectKey>
+            INSERT INTO MEMBER(MBR_NO, MBR_TYPE, MBR_AUTH, MBR_CODE, MBR_ID, MBR_PASS, MBR_NICK,MBR_EMAIL, MBR_PROFILE, MBR_CONNECT, MBR_JOIN)
+            VALUES(#{mbrNo}, 'NONE', 'NONE', #{mbrCode}, #{mbrId}, #{mbrPass}, #{mbrNick}, #{mbrEmail}, #{mbrProfile}, NOW(), NOW())
+    </insert>
+
+    <!-- 회원이메일중복조회 -->
+    <select id="emailReduplicationCheck" parameterType="MemberVO" resultType="int">
+        SELECT COUNT(*) FROM MEMBER
+        WHERE MBR_EMAIL = #{mbrEmail}
+    </select>
+
 
 </mapper>

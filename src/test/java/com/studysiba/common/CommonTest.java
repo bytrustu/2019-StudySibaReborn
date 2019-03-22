@@ -16,11 +16,12 @@ public class CommonTest {
     @Autowired
     BCryptPasswordEncoder passwordEncoder;
 
-    //@Test
+    @Test
     public void dataValidationTest() {
-        System.out.println("이름숫자체크1 : " + DataValidation.checkEngAndNum("bytrustu1202"));
+        System.out.println("이름숫자체크1 : " + DataValidation.checkEngAndNum("bytrustu"));
         System.out.println("이름숫자체크2 : " + DataValidation.checkEngAndNum("bytrustu하1202"));
         System.out.println("이름숫자체크3 : " + DataValidation.checkEngAndNum("bytrustu★1202"));
+        System.out.println("이름숫자체크4 : " + DataValidation.checkEngAndNum("bytrustu12"));
 
         System.out.println("문자체크1 : " + DataValidation.checkOnlyCharacters("안녕123"));
         System.out.println("문자체크2 : " + DataValidation.checkOnlyCharacters("안녕★123"));
@@ -31,12 +32,17 @@ public class CommonTest {
         System.out.println("이메일체크3 : " + DataValidation.checkEmail("bytrustu@gmailcom") );
 
         System.out.println("문자크기체크1 : " + DataValidation.textLengthComparison(5,"abcd"));
-        System.out.println("문자크기체크2 : " + DataValidation.textLengthComparison(5,"abcde"));
-        System.out.println("문자크기체크3 : " + DataValidation.textLengthComparison(5,"하하하"));
+        System.out.println("문자크기체크2 : " + DataValidation.textLengthComparison(10,"가나다라마바"));
+        System.out.println("문자크기체크3 : " + DataValidation.textLengthComparison(10,"bytrustu12"));
 
         System.out.println("이미지파일체크1 : " + DataValidation.checkImageFile("haha.jpg"));
         System.out.println("이미지파일체크2 : " + DataValidation.checkImageFile("haha.GIF"));
         System.out.println("이미지파일체크3 : " + DataValidation.checkImageFile("haha.jsp"));
+
+        System.out.println("패스워드체크1 : " + DataValidation.checkPassword("bytrustu123!@#"));
+        System.out.println("패스워드체크2 : " + DataValidation.checkPassword("bytrustu"));
+        System.out.println("패스워드체크3 : " + DataValidation.checkPassword("bytrustu!@#"));
+        System.out.println("패스워드체크4 : " + DataValidation.checkPassword("st1!"));
     }
 
     //@Test

@@ -52,4 +52,32 @@ public interface MemberMapper {
      *  @Param MemberVO
      */
     void changeStatus(MemberVO memberVO);
+
+    /*
+     *  회원 아이디 중복 확인
+     *  @Param MemberVO
+     *  @Return int
+     */
+    int idReduplicationCheck(MemberVO memberVO);
+
+    /*
+     *  회원 상태코드 조회
+     *  @Param MemberVO
+     *  @Return int
+     */
+    String emailApprovalStatus(MemberVO memberVO);
+
+    /*
+     *  회원 정보 등록
+     *  @Param MemberVO
+     *  @Return int
+     */
+    int memberRegistration(MemberVO memberVO);
+
+    /*
+     *  회원 이메일 중복 확인
+     *  @Param MemberVO
+     *  @Return int
+     */
+    int emailReduplicationCheck(MemberVO memberVO);
 }
