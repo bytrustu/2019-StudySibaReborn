@@ -1,0 +1,987 @@
+body {
+    overflow-x: hidden;
+    font-family: 'Nanum Gothic', sans-serif;
+    background-color: #f4f5f7;
+}
+
+.container-fluid {
+    padding: 0;
+    margin: 0;
+}
+
+.container-fluid {
+    background-color: #f4f5f7;
+}
+
+/*
+        상단 메뉴바
+*/
+.navbar {
+    z-index: 9999;
+    background-color: white;
+}
+
+.navbar > .navbar-brand {
+    color: black;
+}
+
+.navbar > .navbar-brand > img {
+    width: 60%;
+}
+
+@media(min-width : 586px) {
+    .navbar > .navbar-brand > img {
+        width: 100%;
+    }
+}
+
+.navbar > .navbar-nav {
+    right: 4%;
+    display: none;
+}
+
+@media(min-width : 992px) {
+    .navbar > .navbar-nav {
+        display: inline-flex;
+    }
+
+}
+
+
+.navbar > .navbar-nav > .nav-item > .nav-link {
+    color: #ffce58;
+    font-weight: bold;
+}
+
+.navbar > .navbar-nav > .login-btn {
+    border: 1px solid #ffce58;
+    border-radius: 14px;
+    margin-left: 10px;
+}
+
+.navbar > .navbar-nav > .login-btn:hover {
+    background-color: #ffce58;
+}
+
+.navbar > .navbar-nav > .login-btn:hover > a {
+    color: white;
+}
+
+.navbar > .navbar-toggle * {
+    font-size: 32px;
+    color: #ffce58;
+}
+
+.navbar > .navbar-toggle {
+    font-size: 32px;
+    float: right;
+    height: 70px;
+    line-height: 70px;
+    cursor: pointer;
+    position: absolute;
+    right: 4%;
+}
+
+@media(min-width : 992px) {
+    .navbar > .navbar-toggle {
+        display: none;
+    }
+}
+
+
+.container-fluid > .col-12 {
+    padding: 0;
+}
+
+
+.login-button {
+    width: 100px;
+    height: 40px;
+    border: 2px solid #ffce58;
+    float: left;
+    text-align: center;
+    cursor: pointer;
+    position: relative;
+    box-sizing: border-box;
+    overflow: hidden;
+    margin-left: 20px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+
+}
+
+.login-button a {
+    font-family: arial;
+    font-size: 16px;
+    color: #ffce58;
+    text-decoration: none;
+    line-height: 50px;
+    transition: all .5s ease;
+    z-index: 2;
+    position: relative;
+    margin-bottom: -4px;
+    font-weight: bold;
+    padding-left: 5px;
+}
+
+.login-eff {
+    width: 140px;
+    height: 50px;
+    top: -50px;
+    background: #ffce58;
+    position: absolute;
+    transition: all .5s ease;
+    z-index: 1;
+}
+
+.login-button:hover .login-eff {
+    top: 0;
+}
+
+.login-button:hover a {
+    color: #fff;
+}
+
+
+
+
+/*
+        하단 메세지 버튼
+
+*/
+.messenger-btn {
+    width: 70px;
+    height: 70px;
+    padding: 0;
+    background-color: rgb(244, 67, 54);
+    border-radius: 100%;
+    position: fixed !important;
+    bottom: 20px !important;
+    display: block !important;
+    overflow: initial !important;
+    z-index: 10000000 !important;
+    right: 20px !important;
+    cursor: pointer;
+    animation: animate2 3s linear infinite;
+}
+
+.messenger-btn > i {
+    color: white;
+    font-size: 30px;
+    padding: 20px;
+}
+
+@media(min-width : 586px) {
+    .messenger-btn {
+        width: 70px;
+        height: 70px;
+        padding: 0;
+        background-color: rgb(244, 67, 54);
+        border-radius: 100%;
+        position: fixed !important;
+        bottom: 30px !important;
+        display: block !important;
+        overflow: initial !important;
+        z-index: 10000000 !important;
+        right: 30px !important;
+        cursor: pointer;
+    }
+
+    .messenger-btn > i {
+        color: white;
+        font-size: 30px;
+        padding: 20px;
+    }
+}
+
+
+.headline {
+    height: auto;
+    width: 100%;
+}
+
+.headline > img {
+    width: 100%;
+}
+
+@media(min-width : 992px) {
+    .headline {
+        height: auto;
+        background-color: #ffce58;
+        text-align: center;
+    }
+
+    .headline > img {
+        width: 50%;
+    }
+}
+
+
+
+
+
+
+
+
+/*
+        메인  정보뷰
+*/
+
+.main-content > div {
+    height: auto;
+}
+
+.main-content > div > .info-leftbox,
+.main-content > div > .info-centerbox,
+.main-content > div > .info-rightbox {
+    border-radius: 30px;
+}
+
+.main-content > div > div > .info-header {
+    height: 25%;
+    background-color: #ffce58;
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
+    text-align: center;
+}
+
+.info-header > img,
+.info-header > p {
+    display: inline-block;
+}
+
+.info-header > img {
+    width: 35px;
+    height: 35px;
+    vertical-align: -10px;
+    margin-right: 3px;
+}
+
+.info-header > p {
+    padding: 25px 0 0 0;
+    color: white;
+    font-weight: bold;
+    font-size: 25px;
+}
+
+.main-content > div > div > .info-body {
+    border: 1px solid #ffce58;
+    height: 75%;
+    background-color: white;
+    border-bottom-left-radius: 30px;
+    border-bottom-right-radius: 30px;
+}
+
+.main-content > div > div > .login-header {
+    height: 55%;
+    background-color: #ffce58;
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
+}
+
+.main-content > div > div > .login-footer {
+    border-top: 1px solid #ffce58;
+    height: 45%;
+    border-bottom-left-radius: 30px;
+    border-bottom-right-radius: 30px;
+    border: 1px solid #ffce58;
+}
+
+
+.main-content > div > div > .login-header > .header-text {
+    height: 50%;
+    text-align: left;
+}
+
+.main-content > div > div > .login-header > .header-text > p {
+    display: block;
+    padding-left: 10%;
+    padding-top: 50px;
+    font-weight: bold;
+    color: white;
+}
+
+.main-content > div > div > .login-header > .header-button {
+    height: 50%;
+    text-align: center;
+}
+
+.header-loginbutton,
+.header-loginbutton::after {
+    -webkit-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    -o-transition: all 0.3s;
+    transition: all 0.3s;
+}
+
+.header-loginbutton {
+    background: none;
+    border: 3px solid #fff;
+    border-radius: 5px;
+    color: #fff;
+    display: block;
+    font-size: 1.0em;
+    font-weight: bold;
+    margin: 1em auto;
+    padding: 0.6em 3em;
+    position: relative;
+    text-transform: uppercase;
+    z-index: 999;
+}
+
+.header-loginbutton::before,
+.header-loginbutton::after {
+    background: #fff;
+    content: '';
+    position: absolute;
+    z-index: -1;
+}
+
+.header-loginbutton:hover {
+    color: #ffce58;
+}
+
+.header-loginbutton::after {
+    height: 0;
+    left: 0;
+    top: 0;
+    width: 100%;
+}
+
+.header-loginbutton:hover:after {
+    height: 100%;
+}
+
+
+.main-content > div > div > .login-footer > .footer-text {
+    height: 50%;
+}
+
+.main-content > div > div > .login-footer > .footer-text > p {
+    padding: 23px 10px 0 10px;
+    margin: 0;
+    font-weight: bold;
+    color: #ffce58;
+    cursor: pointer;
+    text-align: center;
+}
+
+
+.main-content > div > div > .login-footer > .footer-button {
+    height: 50%;
+    text-align: center;
+}
+
+.main-content > div > div > .login-footer > .footer-button > .social-login-icon {
+    width: 50px;
+    height: 50px;
+    margin: 0 5px;
+}
+
+.main-content > div > .info-leftbox {
+    width: 320px;
+    height: 320px;
+    float: right;
+}
+
+.main-content > div > .info-centerbox {
+    width: 320px;
+    height: 320px;
+    margin: auto;
+
+}
+
+.main-content > div > .info-rightbox {
+    width: 320px;
+    height: 320px;
+    margin: auto;
+    background-color: white;
+}
+
+.main-content > .info-box:nth-of-type(1),
+.main-content > .info-box:nth-of-type(2) {
+    display: none;
+}
+
+
+@media(min-width : 992px) {
+
+    .main-content > div > .info-rightbox {
+        float: left;
+    }
+
+    .main-content > .info-box:nth-of-type(1),
+    .main-content > .info-box:nth-of-type(2) {
+        display: block;
+    }
+
+}
+
+.login-button:hover .login-eff {
+    top: 0;
+}
+
+.login-button:hover a {
+    color: #fff;
+}
+
+
+/* 유저 랭크 */
+
+.member-rank {
+    height: 60px;
+    background-color: white;
+    ;
+    margin: 0 40px;
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+
+.member-rank > img:nth-of-type(1) {
+    height: 40px;
+    width: 40px;
+    position: absolute;
+
+}
+
+.member-rank > img:nth-of-type(2) {
+    height: 60px;
+    width: 60px;
+    border-radius: 10px;
+}
+
+.member-rank > p {
+    margin: 0;
+    padding: 0;
+    padding-top: 10px;
+    overflow: hidden;
+    padding-left: 20px;
+    height: 55px;
+    display: block;
+}
+
+.member-rank > p > span:nth-of-type(1) {
+    color: black;
+    font-weight: bold;
+    color: #da8c38;
+}
+
+.member-rank > p > span:nth-of-type(2) {
+    color: black;
+    font-weight: bold;
+    color: #d75a4a;
+    margin-left: 50px;
+}
+
+.member-rank > p > span:nth-of-type(3) {
+    font-weight: bold;
+    color: #ffce58;
+    margin-left: 3px;
+}
+
+
+/* 접속중 */
+
+.login-box {
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.member-loginstate {
+    height: 50px;
+    width: 100%;
+}
+
+.member-loginstate > .member-output {
+    height: 60px;
+    margin: 0 40px;
+    margin-top: 10px;
+}
+
+.member-loginstate > .member-output > img {
+    height: 60px;
+    width: 60px;
+    border-radius: 100%;
+    vertical-align: middle;
+}
+
+.member-loginstate > .member-output > img,
+.member-loginstate > .member-output > div {
+    display: inline-block;
+    padding: 0;
+    margin: 0;
+}
+
+.member-loginstate > .member-output > div {
+    margin-left: 30px;
+    vertical-align: middle;
+    font-size: 19px;
+    font-weight: bold;
+    color: #da8c38;
+}
+
+.member-loginstate > .member-output > div > div > i {
+    font-size: 17px;
+    margin-top: 2px;
+    font-weight: bold;
+    margin-right: 10px;
+    color: #d75a4a;
+    cursor: pointer;
+}
+
+
+
+/* 중간라인 메세지 */
+.middleline {
+    height: 160px;
+    background-color: #f4f5f7;
+    margin-top: 70px;
+    margin-bottom: 70px;
+}
+
+.middleline > .row {
+    height: 50%;
+    justify-content: center;
+}
+
+.middleline > .row:nth-of-type(1) {
+    background-color: #ffce58;
+}
+
+.middleline > .row:nth-of-type(2) {
+    background-color: #d98f34;
+}
+
+.middleline > .row > .middleline-logo {
+    height: 80px;
+    margin: auto 0;
+    width: 200px;
+}
+
+.middleline > .row > span {
+    display: inline-block;
+    color: white;
+    font-size: 10px;
+    line-height: 80px;
+}
+
+.middleline > .row > span:nth-of-type(2) {
+    font-size: 15px;
+    font-weight: bold;
+    margin: 0 13px;
+}
+
+@media(min-width : 380px) {
+    middleline > .row > .middleline-logo {
+        height: 80px;
+    }
+
+    .middleline > .row > span {
+        display: inline-block;
+        color: white;
+        font-size: 25px;
+        line-height: 80px;
+    }
+
+    .middleline > .row > span:nth-of-type(2) {
+        font-size: 35px;
+        font-weight: bold;
+        margin: 0 13px;
+    }
+}
+
+
+
+/* 스터디카드 */
+
+.slide-buttonbox {
+    text-align: center;
+}
+
+.button-slide,
+.button-flag {
+    cursor: pointer;
+    width: 60px;
+    height: 60px;
+    font-size: 15px;
+    border-radius: 60px;
+    line-height: 60px;
+    font-weight: bold;
+    text-align: center;
+    -webkit-transition-property: background;
+    -webkit-transition-duration: 1s;
+    -webkit-transition-timing-function: ease-in;
+    margin: 0 auto;
+    display: inline-block;
+    margin: auto 10px;
+}
+
+.button-lt1,
+.button-gt1 {
+    color: #3b579d;
+    animation: animate1 2s linear infinite;
+}
+
+.button-lt1:hover,
+.button-gt1:hover {
+    color: #fff;
+    background: #ffce58;
+}
+
+.button-lt2,
+.button-gt2 {
+    color: #3b579d;
+    animation: animate2 2s linear infinite;
+}
+
+.button-lt2:hover,
+.button-gt2:hover {
+    color: #fff;
+    background: #f44336;
+}
+
+.button-stop {
+    color: #fff;
+    background: #ffce58;
+}
+
+.button-stop:hover {
+    background: #f44336;
+}
+
+
+
+.button-start {
+    color: #fff;
+    background: #f44336;
+    animation: animate2 3s linear infinite;
+}
+
+.button-start:hover {
+    background: #ffce58;
+}
+
+@keyframes animate1 {
+    0% {
+        box-shadow: 0 0 0 0 rgba(255, 206, 88, 0.7), 0 0 0 0 rgba(255, 206, 88, .7);
+    }
+
+    40% {
+        box-shadow: 0 0 50px 0 rgba(255, 206, 88, 0), 0 0 0 0 rgba(255, 206, 88, .7);
+    }
+
+    80% {
+        box-shadow: 0 0 50px 0 rgba(255, 206, 88, 0), 0 0 0 30px rgba(255, 206, 88, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(255, 206, 88, 0), 0 0 0 30px rgba(255, 206, 88, 0);
+    }
+}
+
+@keyframes animate2 {
+    0% {
+        box-shadow: 0 0 0 0 rgba(255, 109, 74, 0.7), 0 0 0 0 rgba(255, 109, 74, .7);
+    }
+
+    40% {
+        box-shadow: 0 0 50px 0 rgba(255, 109, 74, 0), 0 0 0 0 rgba(255, 109, 74, .7);
+    }
+
+    80% {
+        box-shadow: 0 0 50px 0 rgba(255, 109, 74, 0), 0 0 0 30px rgba(255, 109, 74, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(255, 109, 74, 0), 0 0 0 30px rgba(255, 109, 74, 0);
+    }
+}
+
+
+
+.slider-box {
+    position: relative;
+    height: 450px;
+    margin-top: 30px;
+    margin-bottom: 150px;
+    overflow: hidden;
+}
+
+.study-slider {
+    width: 100%;
+    height: 100%;
+    left: 50%;
+    top: 50%;
+    position: relative;
+    transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    overflow: hidden;
+}
+
+.study-box {
+    transition: left 1s cubic-bezier(0.25, 0.45, 0.45, 0.95) 0s;
+    left: -300px;
+    position: absolute;
+}
+
+.study-item {
+    width: 100%;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 200px;
+    position: inline-block;
+    top: 50%;
+    left: 50%;
+    transform: translate(50%, -50%);
+    width: 300px;
+    height: 400px;
+    background: #ffce58;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px #ffce58;
+    overflow: hidden;
+
+}
+
+.study-item:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(0deg,
+        #ffce58 0%,
+        #ffce58 25%,
+        transparent 25%,
+        transparent 50%,
+        #ffce58 50%,
+        #ffce58 75%,
+        transparent 75%,
+        transparent 100%);
+    transition: 0.5s;
+    z-index: 2;
+}
+
+.study-item:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(0deg,
+        transparent 0%,
+        transparent 25%,
+        #ffce58 25%,
+        #ffce58 50%,
+        transparent 50%,
+        transparent 75%,
+        #ffce58 75%,
+        #ffce58 100%);
+    transition: 0.5s;
+    z-index: 2;
+}
+
+.study-item:hover:before {
+    left: -100%;
+}
+
+.study-item:hover:after {
+    left: 100%;
+}
+
+
+.study-item .content {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    right: 5px;
+    bottom: 5px;
+    background: #fff;
+    z-index: 1;
+    padding: 10px;
+    text-align: center;
+    border-radius: 6px;
+}
+
+.study-item .content p {
+    font-size: 18px;
+}
+
+.study-item .details {
+    position: absolute;
+    z-index: 3;
+    top: 20%;
+    transform: rotateY(-50%);
+    width: 100%;
+    z-index: 3;
+    text-align: center;
+    transition: 0.5s;
+    transition-delay: 0.5s;
+}
+
+.study-item > .details > .image {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 4px solid #fff;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.5);
+    margin: 0 auto;
+}
+
+.study-item .details .image img {
+    width: 100%;
+}
+
+.study-item .details h3 {
+    margin: 20px 0 0;
+    padding: 0;
+    color: #fff;
+    font-size: 24px;
+}
+
+.study-item .details h3 span {
+    font-size: 16px;
+
+}
+
+.study-item:hover .details {
+    opacity: 0;
+    transition-delay: 0s;
+}
+
+
+
+
+
+/* 하단 코멘트 */
+
+.comment-box {
+    margin-top: 100px;
+    margin-bottom: 400px;
+    height: 300px;
+}
+
+.comment-box > .comment-left {
+    height: 100%;
+    background-color: #ffce58;
+}
+
+.comment-box > .comment-right {
+    height: 100%;
+    background-color: #d98f34;
+}
+
+.comment-infobox {
+    background: #fff;
+    height: 350px;
+    border-radius: 20px;
+    margin: -150px auto 0;
+    width: 800px;
+    z-index: 3;
+}
+
+
+
+
+/*
+        모달 
+*/
+
+#modalLRForm .active {
+    color: #ffce58;
+}
+
+#modalLRForm {
+    margin-top: 70px;
+}
+
+#modalLRForm > .modal-dialog > .modal-content > .modal-c-tabs > .nav {
+    background-color: white;
+}
+
+#modalLRForm > .modal-dialog > .modal-content > .modal-c-tabs > .nav > .nav-item > a {
+    color: #ffce58;
+    font-weight: bold;
+}
+
+#modalLRForm > .modal-dialog > .modal-content > .modal-c-tabs > .nav > .nav-item > .active {
+    color: white;
+    background-color: #ffce58;
+}
+
+.modal-loginbtn {
+    width: 100%;
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.social-login-icon {
+    width: 35px;
+    height: 35px;
+    margin: 0 5px;
+}
+
+.modal-footer-login {
+    justify-content: center;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+
+@media(min-width : 380px) {
+    #modalLRForm {
+        margin-top: 100px;
+    }
+
+    .social-login-icon {
+        width: 50px;
+        height: 50px;
+        margin: 0 5px;
+    }
+}
+
+@media(min-width : 586px) {
+
+    #modalLRForm {
+        margin-top: 50px;
+    }
+
+    .social-login-icon {
+        width: 60px;
+        height: 60px;
+        margin: 0 10px;
+    }
+}
+
+
+
+
+#modalLRForm > .modal-dialog > .modal-content {
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+.footer-copyright{
+    background-color: #d98f34 !important;
+}
+
+
+
+
+
+
+
+/*
+        푸터
+*/
+
+
+.page-footer {
+    background: #ffce58;
+}
