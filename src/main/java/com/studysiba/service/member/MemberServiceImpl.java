@@ -57,36 +57,7 @@ public class MemberServiceImpl implements MemberService {
 
             // 회원가입 대기상태일경우 ( NONE )
             if (checkStatus.toUpperCase().equals("NONE")) {
-
-                // 인증코드 갱신
-                memberVO.setMbrCode(DataConversion.returnUUID());
-                memberMapper.renewAuthenticationCode(memberVO);
-                MimeMessage mail = javaMailSender.createMimeMessage();
-
-                // 이메일 & 코드 조회
-                memberVO.setMbrEmail(memberMapper.getEmail(memberVO));
-                memberVO.setMbrCode(memberMapper.getCode(memberVO));
-                log.info("회원이메일확인 : " + memberVO.getMbrEmail());
-                log.info("회원코드확인 : " + memberVO.getMbrCode());
-
-                // 초대장 보내질 양식
-                StringBuffer htmlStr = new StringBuffer();
-                String siteUrl = "localhost:8282";
-                htmlStr.append("<a href='http://" + siteUrl + "/member/mail/invite");
-                htmlStr.append("/" + memberVO.getMbrId());
-                htmlStr.append("/" + memberVO.getMbrCode());
-                htmlStr.append("'>");
-                htmlStr.append("<img src='https://i.imgur.com/yr5w0qi.jpg' style='width:100%'></a><br/>");
-                htmlStr.append("상단 초대장 클릭하시면 인증이 됩니다. 감사합니다^^");
-                log.info("초대장 양식 : " + htmlStr.toString());
-
-                // 초대장 제목
-                mail.setSubject("[ 초대장발급 - " + memberVO.getMbrId() + "님 ] 스터디시바");
-                // 초대장 내용 타입
-                mail.setText(htmlStr.toString(), "utf-8", "html");
-                // 초대장 보내어질 이메일 주소
-                mail.addRecipient(MimeMessage.RecipientType.TO, new InternetAddress(memberVO.getMbrEmail()));
-                javaMailSender.send(mail);
+                sendEmail(memberVO, "invite");
                 inviteState = true;
             }
         }
@@ -94,11 +65,83 @@ public class MemberServiceImpl implements MemberService {
     }
 
     /*
+     *  회원비밀번호변경메일발송
+     *  @Param 이메일
+     *  @Return 메일발송여부
+     */
+    @Override
+    public boolean sendMailPasswordChanger(String mbrEmail) throws Exception {
+        boolean sendState = false;
+        MemberVO memberVO = new MemberVO();
+        memberVO.setMbrEmail(mbrEmail);
+        String checkMailById = memberMapper.checkMailState(memberVO);
+        if (checkMailById  != null) {
+            sendState = true;
+            memberVO.setMbrId(checkMailById);
+            sendEmail(memberVO, "password");
+        }
+        return sendState;
+    }
+
+
+    /*
+     *  메일전송
+     *  @Param MemberVO
+     */
+    public void sendEmail(MemberVO memberVO, String type) throws Exception {
+        // 인증코드 갱신
+
+        MimeMessage mail = javaMailSender.createMimeMessage();
+
+        // 이메일 & 코드 조회 memberVO.setMbrCode(DataConversion.returnUUID());
+        //        memberMapper.renewAuthenticationCode(memberVO);
+        memberVO.setMbrEmail(memberMapper.getEmail(memberVO));
+        memberVO.setMbrCode(memberMapper.getCode(memberVO));
+        log.info("회원이메일확인 : " + memberVO.getMbrEmail());
+        log.info("회원코드확인 : " + memberVO.getMbrCode());
+
+        StringBuffer htmlStr = new StringBuffer();
+        String siteUrl = "localhost:8282";
+
+        // 초대장 보내질 양식
+        switch (type) {
+            case "invite":
+                htmlStr.append("<a href='http://" + siteUrl + "/member/mail/invite");
+                htmlStr.append("/" + memberVO.getMbrId());
+                htmlStr.append("/" + memberVO.getMbrCode());
+                htmlStr.append("'>");
+                htmlStr.append("<img src='https://i.imgur.com/yr5w0qi.jpg' style='width:100%'></a><br/>");
+                htmlStr.append("상단 초대장 클릭하시면 인증이 됩니다. 감사합니다^^");
+                log.info("초대장 양식 : " + htmlStr.toString());
+                // 초대장 제목
+                mail.setSubject("[ 초대장발급 - " + memberVO.getMbrId() + "님 ] 스터디시바");
+                break;
+
+            case "password":
+                htmlStr.append("<a href='http://" + siteUrl + "/member/mail/changepass");
+                htmlStr.append("/" + memberVO.getMbrId());
+                htmlStr.append("/" + memberVO.getMbrCode());
+                htmlStr.append("'>");
+                htmlStr.append("<img src='https://i.imgur.com/yr5w0qi.jpg' style='width:100%'></a><br/>");
+                htmlStr.append("상단 이미지를 클릭하시면 이동 됩니다. 감사합니다^^");
+                log.info("초대장 양식 : " + htmlStr.toString());
+                // 초대장 제목
+                mail.setSubject("[ 비밀번호변경 - " + memberVO.getMbrId() + "님 ] 스터디시바");
+                break;
+        }
+
+        // 초대장 내용 타입
+        mail.setText(htmlStr.toString(), "utf-8", "html");
+        // 초대장 보내어질 이메일 주소
+        mail.addRecipient(MimeMessage.RecipientType.TO, new InternetAddress(memberVO.getMbrEmail()));
+        javaMailSender.send(mail);
+    }
+
+    /*
      *  회원인증확인
      *  @Param 아이디, 코드
      *  @Return 인증확인여부
      */
-    @Transactional
     @Override
     public String emailAuthentication(String mbrId, String mbrCode) {
         MemberVO memberVO = new MemberVO();
@@ -111,8 +154,34 @@ public class MemberServiceImpl implements MemberService {
             memberVO.setMbrCode(DataConversion.returnUUID());
             memberMapper.changeStatus(memberVO);
             httpSession.setAttribute("stateCode", "AUTH_STATE_SUCCESS");
-        } else { httpSession.setAttribute("stateCode", "AUTH_STATE_ERROR"); }
+        } else {
+            httpSession.setAttribute("stateCode", "AUTH_STATE_ERROR");
+        }
         return informationCheckStatus == 1 ? "AUTH_STATE_SUCCESS" : "AUTH_STATE_ERROR";
+    }
+
+    /*
+     *  패스워드변경메일인증확인
+     *  @Param 아이디, 코드
+     *  @Return 인증확인여부
+     */
+    @Override
+    public String recoveryPassword(String mbrId, String mbrCode) {
+        MemberVO memberVO = new MemberVO();
+        memberVO.setMbrId(mbrId);
+        memberVO.setMbrCode(mbrCode);
+        // 회원인증확인
+        int passwordMailState = memberMapper.informationCheckStatus(memberVO);
+        if (passwordMailState == 1) {
+            // 코드갱신
+            memberVO.setMbrCode(DataConversion.returnUUID());
+            memberMapper.renewAuthenticationCode(memberVO);
+            httpSession.setAttribute("stateCode", "PASSAUTH_STATE_SUCCESS");
+            httpSession.setAttribute("authId", memberVO.getMbrId());
+        } else {
+            httpSession.setAttribute("stateCode", "PASSAUTH_STATE_ERROR");
+        }
+        return passwordMailState == 1 ? "PASSAUTH_STATE_SUCCESS" : "PASSAUTH_STATE_ERROR";
     }
 
     /*
@@ -120,6 +189,7 @@ public class MemberServiceImpl implements MemberService {
      *  @Param MemberVO
      *  @Return 회원가입절차에 따른 상태메세지
      */
+    @Transactional
     @Override
     public String register(MemberVO memberVO) throws Exception {
         String stateCode = "";
@@ -202,9 +272,48 @@ public class MemberServiceImpl implements MemberService {
                 httpSession.setAttribute("profile", memberData.getMbrProfile());
                 httpSession.setAttribute("connect", memberData.getMbrCode());
                 httpSession.setAttribute("visit", visitCount);
+                httpSession.setAttribute("stateCode", stateCode);
             }
         }
         return stateCode;
     }
+
+    /*
+     *  미승인회원정보삭제
+     *  @Param MemberVO
+     *  @Return 회원로그인 따른 상태메세지
+     */
+    @Override
+    public String deleteInformation(MemberVO memberVO) {
+        int deleteState = memberMapper.deleteInformation(memberVO);
+        return deleteState == 1 ? "INFODEL_STATE_SUCCESS" : "INFODEL_STATE_ERROR";
+    }
+
+    /*
+     *  이메일인증을통한비밀번호변경
+     *  @Param MemberVO
+     *  @Return 비밀번호변경여부에 따른 상태메세지
+     */
+    @Transactional
+    @Override
+    public String changePasswordEmailAuth(MemberVO memberVO) {
+        String changePasswordState = "PASS_CHANGE_ERROR";
+        // 비밀번호 유효성 검사 실패시
+        if ( !DataValidation.checkPassword(memberVO.getMbrPass()) ) return changePasswordState;
+        String encodePassword = passwordEncoder.encode(memberVO.getMbrPass());
+        memberVO.setMbrPass(encodePassword);
+        int changeState = memberMapper.changePasswordEmailAuth(memberVO);
+        if ( changeState == 1 ) {
+            changePasswordState = "PASS_CHANGE_SUCCESS";
+            httpSession.removeAttribute("authId");
+            // 인증코드 갱신
+            memberVO.setMbrCode(DataConversion.returnUUID());
+            memberMapper.renewAuthenticationCode(memberVO);
+        }
+        return changePasswordState;
+    }
+
+
+
 
 }

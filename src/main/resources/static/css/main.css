@@ -925,7 +925,7 @@ body {
     }
 }
 
-.modal-loginbtn, .modal-joinbtn {
+.modal-loginbtn, .modal-joinbtn, .modal-resendbtn {
     width: 100%;
     font-weight: bold;
     font-size: 15px;
@@ -970,9 +970,6 @@ body {
     }
 }
 
-
-
-
 #modalLRForm > .modal-dialog > .modal-content {
     padding-left: 40px;
     padding-right: 40px;
@@ -984,6 +981,30 @@ body {
         padding-right: 70px;
     }
 }
+
+.modal-avatar {
+    top: 80px !important;
+}
+
+.modal-resendtext {
+    font-weight: bold;
+}
+
+.modal-resendpoint {
+    color: #d75a4a;
+}
+
+.modal-input {
+    letter-spacing: 2px;
+}
+
+
+
+
+
+
+
+
 
 .footer-copyright{
     background-color: #d98f34 !important;
@@ -1001,11 +1022,38 @@ body {
     z-index: 9999;
 }
 
+.swal2-styled.swal2-confirm {
+    background-color: #ffce58 !important;
+}
+.swal2-icon.swal2-success .swal2-success-ring{
+    border: .25em solid rgba(255, 206, 88, 1) !important;
+}
+
+.swal2-input {
+    letter-spacing: 3px !important;
+    padding-left: 25px !important;
+}
+
+.swal2-popup.swal2-toast .swal2-success{
+    border-color: rgba(255, 206, 88, 1) !important;
+}
+
+.swal2-icon.swal2-success {
+    border-color: rgba(255, 206, 88, 1) !important;
+}
+
+.swal2-icon.swal2-success [class^=swal2-success-line] {
+    background-color: rgba(255, 206, 88, 1) !important;
+}
+
+.swal2-popup .swal2-styled.swal2-cancel {
+    background-color: #e4b67c !important;
+}
 
 
-/*
-        푸터
-*/
+    /*
+            푸터
+    */
 
 
 .page-footer {

@@ -102,5 +102,31 @@ public interface MemberMapper {
      */
     MemberVO viewMemberInformation(MemberVO memberVO);
 
+    /*
+     *  이메일 업데이트
+     *  @Param MemberVO
+     *  @Return int
+     */
+    int updateEmail(MemberVO memberVO);
 
+    /*
+     *  미승인 회원 정보 삭제
+     *  @Param MemberVO
+     *  @Return int
+     */
+    int deleteInformation(MemberVO memberVO);
+
+    /*
+     *   회원 이메일 정보 확인
+     *  @Param MemberVO
+     *  @Return String
+     */
+    String checkMailState(MemberVO memberVO);
+
+    /*
+     *   이메일 인증을 통한 패스워드 변경
+     *  @Param MemberVO
+     *  @Return int
+     */
+    int changePasswordEmailAuth(MemberVO memberVO);
 }

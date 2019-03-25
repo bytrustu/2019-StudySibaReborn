@@ -27,22 +27,6 @@
 
 </head>
 
-<c:if test="${sessionScope.stateCode ne null}">
-    <script type="text/javascript">
-        $(document).ready(function(){
-            let stateComment = '${sessionScope.stateCode}';
-            let stateFlag = stateComment.includes('SUCCESS');
-            stateComment = stateCode.get(stateComment);
-            liar(res => {
-                setTimeout(() => { timerAlert('초대장 확인','초대장 정보를 인증중 입니다.',2000); res.next(); }, 300);
-            }).next(res => {
-                    setTimeout(() => { stateFlag ? successAlert(stateComment) : errorAlert(stateComment); res.next(); }, 2300);
-            });
-        });
-        <c:remove var="stateCode" scope="session"/>
-    </script>
-</c:if>
-
 
 <body>
 
@@ -57,7 +41,7 @@
     <a class="navbar-toggle" id="toggleBtn"><i class="fa fa-bars"></i></a>
     <ul class="navbar-nav position-absolute">
         <li class="nav-item text-right">
-            <a class="nav-link" href="#">홈</a>
+            <a class="nav-link" href="/">홈</a>
         </li>
         <li class="nav-item text-right">
             <a class="nav-link" href="#">공지사항</a>
@@ -77,7 +61,6 @@
         </li>
     </ul>
 </nav>
-
 
 
 <div class="container-fluid">
@@ -100,7 +83,7 @@
                         <img src="/static/image/main/rank1.png">
                         <img src="/static/image/main/1.jpg">
                         <p>
-                            <span>1위 !!! 하하호호하하</span><br />
+                            <span>1위 !!! 하하호호하하</span><br/>
                             <span class="point" id="point1" data-accept="false">5000</span><span>점</span>
                         </p>
                     </div>
@@ -108,7 +91,7 @@
                         <img src="/static/image/main/rank2.png">
                         <img src="/static/image/main/1.jpg">
                         <p>
-                            <span>2위 !!! 쟁</span><br />
+                            <span>2위 !!! 쟁</span><br/>
                             <span class="point" data-accept="false">3000</span><span>점</span>
                         </p>
                     </div>
@@ -116,7 +99,7 @@
                         <img src="/static/image/main/rank3.png">
                         <img src="/static/image/main/1.jpg">
                         <p>
-                            <span>3위 !!! 슺득</span><br />
+                            <span>3위 !!! 슺득</span><br/>
                             <span class="point" data-accept="false">1000</span><span>점</span>
                         </p>
                     </div>
@@ -226,13 +209,17 @@
                 </div>
                 <div class="login-footer">
                     <div class="footer-text">
-                        <p>비밀번호 재설정</p>
+                        <p id="recovery-password">비밀번호 재설정</p>
                     </div>
                     <div class="footer-button">
-                        <img src="/static/image/main/google.png" class="social-login-icon waves-effect" data-type="google">
-                        <img src="/static/image/main/facebook.png" class="social-login-icon waves-effect" data-type="facebook">
-                        <img src="/static/image/main/naver.png" class="social-login-icon waves-effect" data-type="naver">
-                        <img src="/static/image/main/kakao.png" class="social-login-icon waves-effect" data-type="kakao">
+                        <img src="/static/image/main/google.png" class="social-login-icon waves-effect"
+                             data-type="google">
+                        <img src="/static/image/main/facebook.png" class="social-login-icon waves-effect"
+                             data-type="facebook">
+                        <img src="/static/image/main/naver.png" class="social-login-icon waves-effect"
+                             data-type="naver">
+                        <img src="/static/image/main/kakao.png" class="social-login-icon waves-effect"
+                             data-type="kakao">
                     </div>
                 </div>
             </div>
@@ -245,7 +232,8 @@
             <span>는 </span> <span class="middle-text">333</span> <span>명의 회원분들이</span>
         </div>
         <div class="row">
-            <span>총</span> <span class="middle-text">2019</span> <span>회 방문하셨습니다. <i class="fas fa-grin-tears"></i></span>
+            <span>총</span> <span class="middle-text">2019</span> <span>회 방문하셨습니다. <i
+                class="fas fa-grin-tears"></i></span>
         </div>
     </div>
 </div>
@@ -555,20 +543,9 @@
             <!-- -->
 
 
-
-
-
         </div>
     </div>
 </div>
-
-
-
-
-
-
-
-
 
 
 <footer class="page-footer font-small pt-4">
@@ -583,13 +560,6 @@
 </footer>
 
 
-
-
-
-
-
-
-
 <!--Modal: Login / Register Form-->
 <div class="modal fade" id="modalLRForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog cascading-modal" role="document">
@@ -599,12 +569,14 @@
 
                 <ul class="nav nav-tabs md-tabs tabs-2" role="tablist">
                     <li class="nav-item waves-effect">
-                        <a class="nav-link active" data-toggle="tab" href="#panel7" role="tab"><i class="fas fa-user mr-1"></i>
+                        <a class="nav-link active" data-toggle="tab" href="#panel7" role="tab"><i
+                                class="fas fa-user mr-1"></i>
                             로그인
                         </a>
                     </li>
                     <li class="nav-item waves-effect">
-                        <a class="nav-link" data-toggle="tab" href="#panel8" role="tab"><i class="fas fa-user-plus mr-1"></i>
+                        <a class="nav-link" data-toggle="tab" href="#panel8" role="tab"><i
+                                class="fas fa-user-plus mr-1"></i>
                             가입
                         </a>
                     </li>
@@ -622,7 +594,8 @@
 
                             <div class="md-form form-sm mb-4">
                                 <i class="fas fa-lock prefix"></i>
-                                <input type="password" id="input-loginpass" class="form-control form-control-sm modal-input">
+                                <input type="password" id="input-loginpass"
+                                       class="form-control form-control-sm modal-input">
                                 <label for="input-loginpass">비밀번호</label>
                             </div>
                             <div class="text-center mt-2">
@@ -631,10 +604,14 @@
                         </div>
                         <div class="modal-footer modal-footer-login">
                             <div class="options text-center text- mt-3 modal-social">
-                                <img src="/static/image/main/google.png" class="social-login-icon waves-effect" data-type="google">
-                                <img src="/static/image/main/facebook.png" class="social-login-icon waves-effect" data-type="facebook">
-                                <img src="/static/image/main/naver.png" class="social-login-icon waves-effect" data-type="naver">
-                                <img src="/static/image/main/kakao.png" class="social-login-icon waves-effect" data-type="kakao">
+                                <img src="/static/image/main/google.png" class="social-login-icon waves-effect"
+                                     data-type="google">
+                                <img src="/static/image/main/facebook.png" class="social-login-icon waves-effect"
+                                     data-type="facebook">
+                                <img src="/static/image/main/naver.png" class="social-login-icon waves-effect"
+                                     data-type="naver">
+                                <img src="/static/image/main/kakao.png" class="social-login-icon waves-effect"
+                                     data-type="kakao">
                             </div>
                         </div>
 
@@ -651,7 +628,8 @@
 
                             <div class="md-form form-sm mb-1">
                                 <i class="fas fa-lock prefix"></i>
-                                <input type="password" id="input-joinpass" class="form-control form-control-sm modal-input">
+                                <input type="password" id="input-joinpass"
+                                       class="form-control form-control-sm modal-input">
                                 <label data-error="wrong" data-success="right" for="input-joinpass">비밀번호</label>
                             </div>
 
@@ -663,7 +641,8 @@
 
                             <div class="md-form form-sm mb-1">
                                 <i class="far fa-envelope prefix"></i>
-                                <input type="email" id="input-joinemail" class="form-control form-control-sm modal-input">
+                                <input type="email" id="input-joinemail"
+                                       class="form-control form-control-sm modal-input">
                                 <label data-error="wrong" data-success="right" for="input-joinemail">이메일</label>
                             </div>
 
@@ -680,13 +659,102 @@
 </div>
 
 
+<div class="modal fade" id="modalSendMail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog cascading-modal modal-avatar modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <img src="/static/image/main/siba-default.png" alt="avatar"
+                     class="rounded-circle img-responsive">
+            </div>
+            <div class="modal-body text-center mb-1">
+                <h6 class="mt-1 mb-2 modal-resendtext"><span class='modal-resendpoint'>인증</span>이 필요한 아이디 입니다.</h6>
+                <h6 class="mt-1 mb-2 modal-resendtext">필요한 사항의 버튼을 눌러주세요.</h6>
+                <h6 class="mt-1 mb-2 modal-resendtext">정보삭제시 <span class='modal-resendpoint'>재가입</span> 가능합니다.</h6>
+                <h5 class=""></h5>
+                <div class="md-form ml-0 mr-0">
+                    <input type="hidden" id="sendmailid">
+                </div>
+                <div class="text-center mt-4 modal-sendbox">
+                    <button class="btn btn-warning mt-1 modal-resendbtn" id="modal-deleteinfo">정보삭제</button>
+                    <button class="btn btn-warning mt-1 modal-resendbtn" id="modal-resendmail">초대장재전송</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalChangePassword" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog cascading-modal modal-avatar modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <img src="/static/image/main/siba-default.png" alt="avatar"
+                     class="rounded-circle img-responsive">
+            </div>
+            <div class="modal-body text-center mb-1">
+                <h6 class="mt-1 mb-2 modal-resendtext"><span class='modal-resendpoint'>비밀번호</span>를 입력해주세요.</h6>
+                <h6 class="mt-1 mb-2 modal-resendtext"><span class='modal-resendpoint'>영어숫자</span>포함 5~16자 설정!</h6>
+                <h5 class=""></h5>
+                <div class="md-form ml-0 mr-0">
+                    <input type="hidden" id="authId" value="${sessionScope.authId}">
+                    <input type="password" class="form-control form-control-sm modal-input" id="changePass">
+                </div>
+                <div class="text-center mt-4 modal-sendbox">
+                    <button class="btn btn-warning mt-1 modal-resendbtn" id="modal-changepass">비밀번호변경</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 
+<c:if test="${sessionScope.stateCode ne null}">
+    <script type="text/javascript">
+        $(document).ready(function () {
+            let stateComment = '${sessionScope.stateCode}';
+            let stateFlag = stateComment.includes('SUCCESS');
+            // 로그인인증
+            if (stateComment == 'LOGIN_STATE_SUCCESS') {
+                successAlert(stateCode.get(stateComment));
+                return false;
 
-
-
-
+                // 패스워드이메일인증
+            } else if (stateComment.includes('PASSAUTH')) {
+                liar(res => {
+                    setTimeout(() => {
+                        timerAlert('비밀번호변경 인증', '이메일 정보를 인증중 입니다.', 2000);
+                        res.next();
+                    }, 300);
+                }).next(res => {
+                    setTimeout(() => {
+                        if (stateFlag) {
+                            $('#modalChangePassword').modal('show');
+                        } else {
+                            errorAlert(stateCode.get(stateComment));
+                        }
+                        res.next();
+                    }, 2300);
+                });
+                // 초대장메일인증
+            } else if (stateComment.includes('INVITE')) {
+                liar(res => {
+                    setTimeout(() => {
+                        timerAlert('초대장 확인', '초대장 정보를 인증중 입니다.', 2000);
+                        res.next();
+                    }, 300);
+                }).next(res => {
+                    setTimeout(() => {
+                        stateFlag ? successAlert(stateCode.get(stateComment)) : errorAlert(stateCode.get(stateComment));
+                        res.next();
+                    }, 2300);
+                });
+            }
+        });
+        <c:remove var="stateCode" scope="session"/>
+    </script>
+</c:if>
 
 
 <script type="text/javascript" src="/static/js/popper.min.js"></script>

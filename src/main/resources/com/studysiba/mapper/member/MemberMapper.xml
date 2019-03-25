@@ -94,4 +94,34 @@
         WHERE MBR_ID = #{mbrId}
     </select>
 
+    <!-- 승인나지 않은 이메일로 아이디 조회 -->
+    <select id="viewIdByEmail" parameterType="MemberVO" resultType="String">
+        SELECT MBR_ID FROM MEMBER WHERE MBR_EMAIL = #{mbr_Email} AND MBR_TYPE = 'NONE';
+    </select>
+
+    <!-- 승인나지 않은 이메일 변경 -->
+    <update id="updateEmail" parameterType="MemberVO">
+        UPDATE MEMBER
+        SET MBR_EMAIL = #{MBR_}
+        WHERE MBR_EMAIL = 'BYTRUSTU@GMAIL.COM' AND MBR_TYPE = 'NONE';
+    </update>
+
+    <update id="deleteInformation" parameterType="MemberVO">
+        DELETE FROM MEMBER
+        WHERE MBR_ID = #{mbrId} AND MBR_TYPE = 'NONE'
+    </update>
+
+    <!-- 회원 이메일 정보 확인 -->
+    <select id="checkMailState" parameterType="MemberVO" resultType="String">
+        SELECT MBR_ID FROM MEMBER
+        WHERE MBR_EMAIL = #{mbrEmail} AND ( MBR_AUTH = 'NORMAL' OR MBR_AUTH = 'ADMIN' )
+    </select>
+
+    <!-- 회원 이메일 인증을 통한 비밀번호 변경 -->
+    <update id="changePasswordEmailAuth" parameterType="MemberVO" >
+        UPDATE MEMBER SET MBR_PASS = #{mbrPass}
+        WHERE MBR_ID = #{mbrId}
+    </update>
+
+
 </mapper>

@@ -39,6 +39,7 @@ $(document).ready(function () {
         }
     });
 
+    // 슬라이드 < > 버튼
     $('.button-flag').on('click', function () {
         $('.button-slide').removeClass('button-start').addClass('button-stop').html('정지');
         slideFlag = $(this).data('flag').match('lt') ? false : true;
@@ -54,12 +55,42 @@ $(document).ready(function () {
 
     // 모달 로그인 버튼
     $('.modal-loginbtn').on('click', function () {
-        console.log(stateCode.get("NICK_STATE_ERROR"));
+        let memberInfo = new Map();
+        memberInfo.set('mbrId', $('#input-loginid').val());
+        memberInfo.set('mbrPass', $('#input-loginpass').val());
+        let memberJson = mapToJson(memberInfo);
+        for (let item of memberInfo) {
+            if (item[1] === '') {
+                errorAlert('정보를 모두 입력해주세요');
+                return false;
+            }
+        }
+        $('#modalLRForm').modal('hide');
+        setTimeout(() => {
+            timerAlert('로그인', '회원정보를 확인중입니다.', 1000);
+        }, 200);
+
+        memberNormalLogin(memberJson)
+            .then((data) => {
+                setTimeout(() => {
+                    if (data === 'LOGIN_STATE_SUCCESS') {
+                        location.href = '/';
+                    } else if (data === 'ID_STATE_WAITAPPROVAL') {
+                        $('#sendmailid').val($('#input-loginid').val());
+                        $('#modalSendMail').modal('show');
+                    }
+                }, 1400);
+            }).catch((error) => {
+            error = error.responseText;
+            setTimeout(() => {
+                errorAlert(stateCode.get(error));
+            }, 1400);
+        });
     });
 
 
+    // 회원가입
     $('.modal-joinbtn').on('click', function () {
-        initElement('modal-input');
         const memberInfo = new Map();
         memberInfo.set('mbrId', $('#input-joinid').val());
         memberInfo.set('mbrPass', $('#input-joinpass').val());
@@ -69,18 +100,17 @@ $(document).ready(function () {
 
         for (let item of memberInfo) {
             if (item[1] === '') {
-                errorAlert('정보를 모두 입력해주세요')
+                errorAlert('정보를 모두 입력해주세요');
                 return false;
             }
         }
-
         let memberJson = mapToJson(memberInfo);
         memberJoin(memberJson)
             .then((data) => {
                 if (data == 'MEMBER_STATE_SUCCESS') {
                     $('#modalLRForm').modal('hide');
                     setTimeout(() => {
-                        timerAlert('회원가입', '메일로 초대장을 전송중입니다!', 100000);
+                        timerAlert('초대장전송', '메일로 초대장을 전송중입니다!', 100000);
                     }, 700);
                     sendMail(memberInfo).then((data) => {
                         Swal.closeModal();
@@ -95,9 +125,91 @@ $(document).ready(function () {
             errorAlert(stateCode.get(error.responseText));
         });
     });
+
+    // 초대장 재발송
+    $('#modal-resendmail').on('click', () => {
+        $('#modalSendMail').modal('hide');
+        let memberInfo = new Map();
+        memberInfo.set('mbrId', $('#sendmailid').val());
+        setTimeout(() => {
+            timerAlert('초대장 재발송', '초대장을 전송중입니다!', 100000);
+        }, 300);
+        sendMail(memberInfo)
+            .then((data) => {
+                Swal.closeModal();
+                setTimeout(() => {
+                    successAlert(stateCode.get(data));
+                }, 500);
+            }).catch((error) => {
+            liar(res => {
+                setTimeout(() => {
+                    Swal.closeModal();
+                    res.next();
+                }, 500);
+            }).next(res => {
+                setTimeout(() => {
+                    errorAlert(stateCode.get(error.responseText));
+                    res.next();
+                }, 300);
+            });
+        });
+    });
+
+
+    // 미승인 회원정보 삭제
+    $('#modal-deleteinfo').on('click', () => {
+        $('#modalSendMail').modal('hide');
+        let memberJson = {
+            'mbrId': $('#sendmailid').val()
+        }
+        memberJson = JSON.stringify(memberJson);
+        setTimeout(() => {
+            timerAlert('정보삭제', '회원님의 정보를 삭제중입니다.', 1500);
+        }, 200);
+        deleteInfomation(memberJson)
+            .then((data) => {
+                setTimeout(() => {
+                    successAlert(stateCode.get(data));
+                }, 1900);
+            }).catch((error) => {
+            setTimeout(() => {
+                errorAlert(stateCode.get(error.responseText));
+            }, 1900);
+        });
+    })
+
+    // 비밀번호변경 모달창 호출
+    $('#recovery-password').on('click', () => {
+        ajaxAlert('가입하신 이메일을 입력하세요.', '/member/mail/changepass/', '이메일이 전송되었습니다.', '이메일이 올바르지 않습니다.');
+    });
+
+    // 이메일인증을통한비밀번호변경버튼
+    $('#modal-changepass').on('click', () => {
+        let memberInfo = new Map();
+        memberInfo.set('mbrId', $('#authId').val());
+        memberInfo.set('mbrPass', $('#changePass').val());
+        let memberJson = mapToJson(memberInfo);
+        changePassword(memberJson)
+            .then((data) => {
+                $('#modalChangePassword').modal('hide');
+                setTimeout(() => {
+                    successAlert(stateCode.get(data));
+                },300);
+            }).catch((error) => {
+            errorAlert(stateCode.get(error.responseText));
+        }).finally( () => {
+            initElement('modal-input');
+        });
+    });
+
+
+
+    // Close Ready
 });
 
 
+
+// 공통상태코드
 const stateCode = new Map();
 stateCode.set('MEMBER_STATE_SUCCESS', '회원정보가 등록되었습니다.');
 stateCode.set('ID_STATE_EMPTY', '아이디를 입력해주세요..');
@@ -116,7 +228,7 @@ stateCode.set('NICK_STATE_ERROR', '부적절한 닉네임 입니다.');
 stateCode.set('EMAIL_STATE_ERROR', '부적절한 이메일 입니다.');
 stateCode.set('PROFILE_STATE_ERROR', '부적절한 프로필사진 입니다.');
 
-stateCode.set('INVITE_STATE_SUCCESS', '메일로 초대장이 발송되었습니다.');
+stateCode.set('INVITE_STATE_SUCCESS', '초대장이 발송되었습니다.');
 stateCode.set('INVITE_STATE_ERROR', '초대장 발송을 실패했습니다.');
 stateCode.set('AUTH_STATE_SUCCESS', '초대장 인증에 성공했습니다.');
 stateCode.set('AUTH_STATE_ERROR', '초대장 인증에 실패했습니다.');
@@ -124,6 +236,53 @@ stateCode.set('ID_STATE_WAITAPPROVAL', '이메일 승인대기 아이디 입니�
 
 stateCode.set('LOGIN_STATE_SUCCESS', '로그인 되었습니다.');
 stateCode.set('LOGIN_STATE_ERROR', '아이디 혹은 패스워드가 다릅니다.');
+
+stateCode.set('INFODEL_STATE_SUCCESS', '회원님의 정보를 삭제 했습니다.');
+stateCode.set('INFODEL_STATE_ERROR', '회원님의 정보 삭제에 실패했습니다.');
+
+stateCode.set('PASSMAIL_STATE_SUCCESS', '메일을 발송 했습니다.');
+stateCode.set('PASSMAIL_STATE_ERROR', '이메일이 올바르지 않습니다.');
+stateCode.set('PASSAUTH_STATE_SUCCESS', '메일 인증에 성공 했습니다.');
+stateCode.set('PASSAUTH_STATE_ERROR', '메일 인증에 실패 했습니다.');
+
+stateCode.set('PASS_CHANGE_SUCCESS', '비밀번호가 변경되었습니다..');
+stateCode.set('PASS_CHANGE_ERROR', '비밀번호가 올바르지 않습니다.');
+
+
+
+// 초대장 전송
+let sendMail = (memberInfo) => {
+    return new Promise(function (resolve, reject) {
+        $.ajax({
+            type: 'GET',
+            url: `/member/mail/invite/${memberInfo.get('mbrId')}`,
+            contentType: 'application/json; charset=utf-8',
+            success: (data) => {
+                resolve(data);
+            },
+            error: (error) => {
+                reject(error);
+            }
+        });
+    });
+}
+
+
+// 초대장 재전송
+let reSendmail = (email) => {
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            type: 'GET',
+            url: `/member/mail/resend/${email}`,
+            contentType: 'application/json; charset=utf-8',
+            success: (data) => {
+                resolve(data);
+            }, error: (error) => {
+                reject(error);
+            }
+        });
+    });
+}
 
 
 // 회원가입 정보 입력
@@ -146,23 +305,64 @@ let memberJoin = (memberJson) => {
     });
 }
 
-let sendMail = (memberInfo) => {
-    return new Promise(function (resolve, reject) {
+
+// 회원로그인 정보 입력
+let memberNormalLogin = (memberJson) => {
+    return new Promise((resolve, reject) => {
         $.ajax({
-            type: 'GET',
-            url: `/member/mail/invite/${memberInfo.get('mbrId')}`,
+            type: 'POST',
+            url: '/member/login',
+            data: memberJson,
             contentType: 'application/json; charset=utf-8',
             success: (data) => {
-                console.log(data);
+                console.log(`success : ${data}`);
                 resolve(data);
-            },
-            error: (error) => {
-                console.log(error);
+            }, error: (error) => {
+                console.log(`success : ${error.responseText}`);
                 reject(error);
             }
         });
     });
 }
+
+
+// 미인증 회원정보 삭제
+let deleteInfomation = (memberJson) => {
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            type: 'POST',
+            url: '/member/deleteinfo',
+            data: memberJson,
+            contentType: 'application/json; charset=utf-8',
+            success: (data) => {
+                resolve(data);
+            },
+            error: (error) => {
+                reject(error);
+            }
+        });
+    });
+}
+
+
+// 회원인증 비밀번호 변경
+let changePassword = (memberJson) => {
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            type: 'PUT',
+            url: '/member/auth/mailpassword',
+            data: memberJson,
+            contentType: 'application/json; charset=utf-8',
+            success: (data) => {
+                resolve(data);
+            },
+            error: (error) => {
+                reject(error);
+            }
+        });
+    });
+}
+
 
 // 클래스 value 초기화
 let initElement = (className) => {
@@ -173,15 +373,16 @@ let initElement = (className) => {
 }
 
 
+// Map을 Json 으로 변환
+const mapToJson = (map) => {
+    return JSON.stringify(mapToObject(map));
+}
 const mapToObject = (map) => {
     let obj = Object.create(null);
     for (let [key, value] of map) {
         obj[key] = value;
     }
     return obj;
-}
-const mapToJson = (map) => {
-    return JSON.stringify(mapToObject(map));
 }
 
 
@@ -192,6 +393,7 @@ const errorAlert = (text) => {
         type: 'error',
         title: text,
         showConfirmButton: false,
+        allowOutsideClick: false,
         timer: 2500,
     });
 }
@@ -203,6 +405,7 @@ const successAlert = (text) => {
         type: 'success',
         title: text,
         showConfirmButton: false,
+        allowOutsideClick: false,
         timer: 2500
     });
 }
@@ -226,6 +429,49 @@ const timerAlert = (title, text, time) => {
     }).then((result) => {
         if (result.dismiss === Swal.DismissReason.timer) {
         }
+    })
+}
+
+// SweetAlert Ajax
+const ajaxAlert = (title, url, successText, errorText) => {
+    Swal.fire({
+        title: title,
+        input: 'text',
+        inputAttributes: {
+            autocapitalize: 'off'
+        },
+        showCancelButton: true,
+        cancelButtonText: '취소',
+        confirmButtonText: '발송',
+        showLoaderOnConfirm: true,
+        preConfirm: (data) => {
+            return fetch(`${url}${data}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json; charset=utf-8'
+                }
+            })
+                .then(response => {
+                    if (response.status == 500) {
+                        throw new Error(response.statusText);
+                    }
+                    return response;
+                })
+                .catch(error => {
+                    Swal.showValidationMessage(
+                        `오류 발생: ${errorText}.`
+                    )
+                })
+        },
+        allowOutsideClick: () => !Swal.isLoading()
+    }).then((data) => {
+        if (data.dismiss == 'cancel' || data.dismiss == 'backdrop') {
+            return false;
+        }
+        Swal.closeModal();
+        setTimeout(() => {
+            successAlert(successText);
+        }, 300);
     })
 }
 
