@@ -14,9 +14,9 @@ public interface MemberService {
     /*
      *  회원인증확인
      *  @Param 아이디, 코드
-     *  @Return 인증확인여부
+     *  @Return 인증상태코드
      */
-    boolean emailAuthentication(String mbrId, String mbrCode);
+    String emailAuthentication(String mbrId, String mbrCode);
 
     /*
      *  회원가입

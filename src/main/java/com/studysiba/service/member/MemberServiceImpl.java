@@ -100,20 +100,19 @@ public class MemberServiceImpl implements MemberService {
      */
     @Transactional
     @Override
-    public boolean emailAuthentication(String mbrId, String mbrCode) {
+    public String emailAuthentication(String mbrId, String mbrCode) {
         MemberVO memberVO = new MemberVO();
         memberVO.setMbrId(mbrId);
         memberVO.setMbrCode(mbrCode);
         // 회원인증확인
         int informationCheckStatus = memberMapper.informationCheckStatus(memberVO);
-
         if (informationCheckStatus == 1) {
             // 회원 활성화 및 코드갱신
             memberVO.setMbrCode(DataConversion.returnUUID());
             memberMapper.changeStatus(memberVO);
-        }
-        log.info("회원인증확인 : " + informationCheckStatus);
-        return informationCheckStatus == 1 ? true : false;
+            httpSession.setAttribute("stateCode", "AUTH_STATE_SUCCESS");
+        } else { httpSession.setAttribute("stateCode", "AUTH_STATE_ERROR"); }
+        return informationCheckStatus == 1 ? "AUTH_STATE_SUCCESS" : "AUTH_STATE_ERROR";
     }
 
     /*

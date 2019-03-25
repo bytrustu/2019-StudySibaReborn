@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="ko">
 
@@ -19,8 +20,28 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css">
     <link href="/static/css/bootstrap.min.css" rel="stylesheet">
     <link href="/static/css/mdb.min.css" rel="stylesheet">
+    <link href="/static/css/sweetalert2.min.css" rel="stylesheet">
     <link type="text/css" rel="stylesheet" href="/static/css/main.css">
+
+    <script type="text/javascript" src="/static/js/jquery-3.3.1.min.js"></script>
+
 </head>
+
+<c:if test="${sessionScope.stateCode ne null}">
+    <script type="text/javascript">
+        $(document).ready(function(){
+            let stateComment = '${sessionScope.stateCode}';
+            let stateFlag = stateComment.includes('SUCCESS');
+            stateComment = stateCode.get(stateComment);
+            liar(res => {
+                setTimeout(() => { timerAlert('초대장 확인','초대장 정보를 인증중 입니다.',2000); res.next(); }, 300);
+            }).next(res => {
+                    setTimeout(() => { stateFlag ? successAlert(stateComment) : errorAlert(stateComment); res.next(); }, 2300);
+            });
+        });
+        <c:remove var="stateCode" scope="session"/>
+    </script>
+</c:if>
 
 
 <body>
@@ -52,7 +73,7 @@
         </li>
         <li class="login-button nav-item text-right">
             <div class="login-eff"></div>
-            <a href="#" data-toggle="modal" data-target="#modalLRForm">로그인/가입</a>
+            <a href="#" class="modal-login">로그인/가입</a>
         </li>
     </ul>
 </nav>
@@ -197,7 +218,7 @@
                         <p>스터디에 참가하려면 ?</p>
                     </div>
                     <div class="header-button">
-                        <button class="header-loginbutton">
+                        <button class="header-loginbutton modal-login">
                             스터디시바 로그인
                         </button>
                     </div>
@@ -572,13 +593,10 @@
 <!--Modal: Login / Register Form-->
 <div class="modal fade" id="modalLRForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog cascading-modal" role="document">
-        <!--Content-->
         <div class="modal-content">
 
-            <!--Modal cascading tabs-->
             <div class="modal-c-tabs">
 
-                <!-- Nav tabs -->
                 <ul class="nav nav-tabs md-tabs tabs-2" role="tablist">
                     <li class="nav-item waves-effect">
                         <a class="nav-link active" data-toggle="tab" href="#panel7" role="tab"><i class="fas fa-user mr-1"></i>
@@ -592,31 +610,27 @@
                     </li>
                 </ul>
 
-                <!-- Tab panels -->
                 <div class="tab-content">
-                    <!--Panel 7-->
-                    <div class="tab-pane fade in show active" id="panel7" role="tabpanel">
+                    <div class="tab-pane fade in show active login-modal-bottom" id="panel7" role="tabpanel">
 
-                        <!--Body-->
                         <div class="modal-body mb-1 modal-body-login">
                             <div class="md-form form-sm mb-">
                                 <i class="far fa-laugh-wink prefix"></i>
-                                <input type="email" id="modalLRInput10" class="form-control form-control-sm validate">
-                                <label data-error="wrong" data-success="right" for="modalLRInput10">아이디</label>
+                                <input type="email" id="input-loginid" class="form-control form-control-sm modal-input">
+                                <label data-error="wrong" data-success="right" for="input-loginid">아이디</label>
                             </div>
 
                             <div class="md-form form-sm mb-4">
                                 <i class="fas fa-lock prefix"></i>
-                                <input type="password" id="modalLRInput11" class="form-control form-control-sm validate">
-                                <label data-error="wrong" data-success="right" for="modalLRInput11">비밀번호</label>
+                                <input type="password" id="input-loginpass" class="form-control form-control-sm modal-input">
+                                <label for="input-loginpass">비밀번호</label>
                             </div>
                             <div class="text-center mt-2">
                                 <button type="button" class="btn btn-warning modal-loginbtn">로그인</button>
                             </div>
                         </div>
-                        <!--Footer-->
                         <div class="modal-footer modal-footer-login">
-                            <div class="options text-center text- mt-1 modal-social">
+                            <div class="options text-center text- mt-3 modal-social">
                                 <img src="/static/image/main/google.png" class="social-login-icon waves-effect" data-type="google">
                                 <img src="/static/image/main/facebook.png" class="social-login-icon waves-effect" data-type="facebook">
                                 <img src="/static/image/main/naver.png" class="social-login-icon waves-effect" data-type="naver">
@@ -625,31 +639,38 @@
                         </div>
 
                     </div>
+
                     <div class="tab-pane fade" id="panel8" role="tabpanel">
+
                         <div class="modal-body modal-body-join">
                             <div class="md-form form-sm mb-1">
                                 <i class="far fa-laugh-wink prefix"></i>
-                                <input type="text" id="modalLRInput12" class="form-control form-control-sm " required>
-                                <label data-error="wrong" data-success="right" for="modalLRInput12">아이디</label>
+                                <input type="text" id="input-joinid" class="form-control form-control-sm modal-input">
+                                <label data-error="wrong" data-success="right" for="input-joinid">아이디</label>
                             </div>
+
                             <div class="md-form form-sm mb-1">
                                 <i class="fas fa-lock prefix"></i>
-                                <input type="password" id="modalLRInput13" class="form-control form-control-sm" required>
-                                <label data-error="wrong" data-success="right" for="modalLRInput13">비밀번호</label>
+                                <input type="password" id="input-joinpass" class="form-control form-control-sm modal-input">
+                                <label data-error="wrong" data-success="right" for="input-joinpass">비밀번호</label>
                             </div>
+
                             <div class="md-form form-sm mb-1">
                                 <i class="far fa-kiss-wink-heart prefix"></i>
-                                <input type="text" id="modalLRInput14" class="form-control form-control-sm required ">
-                                <label data-error="wrong" data-success="right" for="modalLRInput14">닉네임</label>
+                                <input type="text" id="input-joinnick" class="form-control form-control-sm modal-input">
+                                <label data-error="wrong" data-success="right" for="input-joinnick">닉네임</label>
                             </div>
+
                             <div class="md-form form-sm mb-1">
                                 <i class="far fa-envelope prefix"></i>
-                                <input type="email" id="modalLRInput14" class="form-control form-control-sm" required>
-                                <label data-error="wrong" data-success="right" for="modalLRInput14">이메일</label>
+                                <input type="email" id="input-joinemail" class="form-control form-control-sm modal-input">
+                                <label data-error="wrong" data-success="right" for="input-joinemail">이메일</label>
                             </div>
+
                             <div class="text-center mt-4 mb-2">
-                                <button type="button" class="btn btn-warning modal-loginbtn">회원가입</button>
+                                <button type="button" class="btn btn-warning modal-joinbtn">회원가입</button>
                             </div>
+
                         </div>
                     </div>
                 </div>
@@ -667,10 +688,12 @@
 
 
 
-<script type="text/javascript" src="/static/js/jquery-3.3.1.min.js"></script>
+
 <script type="text/javascript" src="/static/js/popper.min.js"></script>
 <script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="/static/js/mdb.js"></script>
+<script type="text/javascript" src="/static/js/sweetalert2.all.min.js"></script>
+<script type="text/javascript" src="/static/js/Liar.js"></script>
 
 <script type="text/javascript" src="/static/js/main.js"></script>
 

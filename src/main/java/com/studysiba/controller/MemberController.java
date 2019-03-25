@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import javax.xml.ws.Response;
 import java.lang.reflect.Member;
 
@@ -26,7 +27,7 @@ public class MemberController {
      *  @Param 아이디
      *  @Return 초대장발송여부
      */
-    @GetMapping(value="/mail/invite/{mbrId}", produces = "application/json; charset=utf8")
+    @GetMapping(value="/mail/invite/{mbrId}", produces = {MediaType.TEXT_PLAIN_VALUE})
     @ResponseBody
     public ResponseEntity<String> inviteUser(@PathVariable("mbrId") String mbrId) {
         boolean inviteState = false;
@@ -34,10 +35,10 @@ public class MemberController {
             inviteState = memberService.inviteUser(mbrId);
         } catch ( Exception e ) {
             log.error(e);
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("INVITE_STATE_ERROR",HttpStatus.INTERNAL_SERVER_ERROR);
         }
         log.info("초대장발송여부 : " + inviteState);
-        return inviteState ? new ResponseEntity<>("INVITE_STATE_SUCCESS", HttpStatus.OK) : new ResponseEntity<>("INVITE_STATE_ERROR",HttpStatus.INTERNAL_SERVER_ERROR);
+        return inviteState == true ? new ResponseEntity<>("INVITE_STATE_SUCCESS", HttpStatus.OK) : new ResponseEntity<>("INVITE_STATE_ERROR",HttpStatus.OK);
     }
 
     /*
@@ -45,18 +46,17 @@ public class MemberController {
      *  @Param 아이디
      *  @Return 초대장인증여부
      */
-    @GetMapping(value="/mail/invite/{mbrId}/{mbrCode}", produces = "application/json; charset=utf8")
-    @ResponseBody
-    public ResponseEntity<String> emailAuthentication(@PathVariable("mbrId") String mbrId, @PathVariable("mbrCode") String mbrCode ) {
-        boolean authState = false;
+    @GetMapping(value="/mail/invite/{mbrId}/{mbrCode}")
+    public String emailAuthentication(@PathVariable("mbrId") String mbrId, @PathVariable("mbrCode") String mbrCode) {
+        String authState = "";
         try {
             authState = memberService.emailAuthentication(mbrId, mbrCode);
         } catch ( Exception e ) {
             log.error(e);
-            return new ResponseEntity<>("AUTH_STATE_ERROR",HttpStatus.INTERNAL_SERVER_ERROR);
+        } finally {
+            log.info("인증여부 : " + authState);
+            return "redirect:/";
         }
-        log.info("인증여부 : " + authState);
-        return authState ? new ResponseEntity<>("AUTH_STATE_SUCCESS", HttpStatus.OK) : new ResponseEntity<>("AUTH_STATE_ERROR",HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     /*
@@ -67,9 +67,10 @@ public class MemberController {
     @ResponseBody
     @PostMapping( value="/register", consumes = "application/json", produces = {MediaType.TEXT_PLAIN_VALUE})
     public ResponseEntity<String> register(@RequestBody MemberVO memberVO) throws Exception {
+        log.info(memberVO);
         String stateCode = memberService.register(memberVO);
         log.info("회원가입상태메세지 : " + stateCode);
-        return new ResponseEntity<>(stateCode, HttpStatus.OK);
+        return stateCode.equals("MEMBER_STATE_SUCCESS") ? new ResponseEntity<>(stateCode, HttpStatus.OK) : new ResponseEntity<>(stateCode, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ResponseBody

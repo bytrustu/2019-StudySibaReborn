@@ -1,10 +1,9 @@
 'use strict';
 
-
 $(document).ready(function () {
-
     // 회원로그인/가입 모달
-    $('.header-loginbutton').on('click', () => {
+    $('.modal-login').on('click', () => {
+        initElement('modal-input');
         $('#modalLRForm').modal('show');
     });
 
@@ -53,7 +52,183 @@ $(document).ready(function () {
     });
 
 
+    // 모달 로그인 버튼
+    $('.modal-loginbtn').on('click', function () {
+        console.log(stateCode.get("NICK_STATE_ERROR"));
+    });
+
+
+    $('.modal-joinbtn').on('click', function () {
+        initElement('modal-input');
+        const memberInfo = new Map();
+        memberInfo.set('mbrId', $('#input-joinid').val());
+        memberInfo.set('mbrPass', $('#input-joinpass').val());
+        memberInfo.set('mbrNick', $('#input-joinnick').val());
+        memberInfo.set('mbrEmail', $('#input-joinemail').val());
+        memberInfo.set('mbrProfile', 'studysiba-default.png');
+
+        for (let item of memberInfo) {
+            if (item[1] === '') {
+                errorAlert('정보를 모두 입력해주세요')
+                return false;
+            }
+        }
+
+        let memberJson = mapToJson(memberInfo);
+        memberJoin(memberJson)
+            .then((data) => {
+                if (data == 'MEMBER_STATE_SUCCESS') {
+                    $('#modalLRForm').modal('hide');
+                    setTimeout(() => {
+                        timerAlert('회원가입', '메일로 초대장을 전송중입니다!', 100000);
+                    }, 700);
+                    sendMail(memberInfo).then((data) => {
+                        Swal.closeModal();
+                        setTimeout(() => {
+                            successAlert(stateCode.get(data));
+                        }, 700);
+                    }).catch((error) => {
+                        errorAlert(stateCode.get(error.responseText));
+                    });
+                }
+            }).catch((error) => {
+            errorAlert(stateCode.get(error.responseText));
+        });
+    });
 });
+
+
+const stateCode = new Map();
+stateCode.set('MEMBER_STATE_SUCCESS', '회원정보가 등록되었습니다.');
+stateCode.set('ID_STATE_EMPTY', '아이디를 입력해주세요..');
+stateCode.set('PASS_STATE_EMPTY', '비밀번호를 입력해주세요.');
+stateCode.set('NICK_STATE_EMPTY', '닉네임이 입력해주세요.');
+stateCode.set('EMAIL_STATE_EMPTY', '이메일을 입력해주세요.');
+stateCode.set('PROFILE_STATE_EMPTY', '프로필사진을 설정해주세요.');
+
+stateCode.set('ID_STATE_USED', '이미 사용중인 아이디 입니다.');
+stateCode.set('EMAIL_STATE_USED', '이미 사용중인 이메일 입니다.');
+stateCode.set('NICK_STATE_USED', '이미 사용중인 닉네임 입니다.');
+
+stateCode.set('ID_STATE_ERROR', '부적절한 아이디 입니다.');
+stateCode.set('PASS_STATE_ERROR', '부적절한 비밀번호 입니다.');
+stateCode.set('NICK_STATE_ERROR', '부적절한 닉네임 입니다.');
+stateCode.set('EMAIL_STATE_ERROR', '부적절한 이메일 입니다.');
+stateCode.set('PROFILE_STATE_ERROR', '부적절한 프로필사진 입니다.');
+
+stateCode.set('INVITE_STATE_SUCCESS', '메일로 초대장이 발송되었습니다.');
+stateCode.set('INVITE_STATE_ERROR', '초대장 발송을 실패했습니다.');
+stateCode.set('AUTH_STATE_SUCCESS', '초대장 인증에 성공했습니다.');
+stateCode.set('AUTH_STATE_ERROR', '초대장 인증에 실패했습니다.');
+stateCode.set('ID_STATE_WAITAPPROVAL', '이메일 승인대기 아이디 입니다.');
+
+stateCode.set('LOGIN_STATE_SUCCESS', '로그인 되었습니다.');
+stateCode.set('LOGIN_STATE_ERROR', '아이디 혹은 패스워드가 다릅니다.');
+
+
+// 회원가입 정보 입력
+let memberJoin = (memberJson) => {
+    return new Promise(function (resolve, reject) {
+        $.ajax({
+            type: 'POST',
+            url: '/member/register',
+            data: memberJson,
+            contentType: 'application/json; charset=utf-8',
+            success: (data) => {
+                console.log(data);
+                resolve(data);
+            },
+            error: (error) => {
+                console.log(error);
+                reject(error);
+            }
+        });
+    });
+}
+
+let sendMail = (memberInfo) => {
+    return new Promise(function (resolve, reject) {
+        $.ajax({
+            type: 'GET',
+            url: `/member/mail/invite/${memberInfo.get('mbrId')}`,
+            contentType: 'application/json; charset=utf-8',
+            success: (data) => {
+                console.log(data);
+                resolve(data);
+            },
+            error: (error) => {
+                console.log(error);
+                reject(error);
+            }
+        });
+    });
+}
+
+// 클래스 value 초기화
+let initElement = (className) => {
+    let elements = document.getElementsByClassName(className);
+    for (let element of elements) {
+        element.value = '';
+    }
+}
+
+
+const mapToObject = (map) => {
+    let obj = Object.create(null);
+    for (let [key, value] of map) {
+        obj[key] = value;
+    }
+    return obj;
+}
+const mapToJson = (map) => {
+    return JSON.stringify(mapToObject(map));
+}
+
+
+// SwertAlert Error
+const errorAlert = (text) => {
+    Swal.fire({
+        position: 'top-end',
+        type: 'error',
+        title: text,
+        showConfirmButton: false,
+        timer: 2500,
+    });
+}
+
+// SweetAlert Success
+const successAlert = (text) => {
+    Swal.fire({
+        position: 'top-end',
+        type: 'success',
+        title: text,
+        showConfirmButton: false,
+        timer: 2500
+    });
+}
+
+// SweetAlert Timer
+const timerAlert = (title, text, time) => {
+    let timerInterval
+    Swal.fire({
+        title: title,
+        html: text,
+        timer: time,
+        allowOutsideClick: false,
+        onBeforeOpen: () => {
+            Swal.showLoading()
+            timerInterval = setInterval(() => {
+            }, 100)
+        },
+        onClose: () => {
+            clearInterval(timerInterval)
+        }
+    }).then((result) => {
+        if (result.dismiss === Swal.DismissReason.timer) {
+        }
+    })
+}
+
 
 // 랜덤숫자 생성
 let rendomNumber = (n) => {
@@ -150,4 +325,4 @@ let rankPlay = (element, plus) => {
             clearInterval(play);
         }
     }, 10);
-};
+}
