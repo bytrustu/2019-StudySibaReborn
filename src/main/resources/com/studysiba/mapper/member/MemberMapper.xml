@@ -123,5 +123,72 @@
         WHERE MBR_ID = #{mbrId}
     </update>
 
+    <!-- 소셜로그인 등록된 유저인지 확인 -->
+    <select id="socialSignInState" parameterType="MemberVO" resultType="int">
+      SELECT COUNT(*) FROM MEMBER
+      WHERE MBR_ID = #{mbrId} AND MBR_TYPE = #{mbrType}
+    </select>
+
+    <!-- 소셜로그인 회원정보 조회 -->
+    <select id="memberSocialInformation" parameterType="MemberVO" resultType="MemberVO">
+      SELECT
+      MBR_TYPE, MBR_AUTH, MBR_ID, MBR_NICK, MBR_PROFILE, MBR_CONNECT, MBR_JOIN
+      FROM MEMBER
+      WHERE MBR_ID = #{mbrId} AND MBR_TYPE = #{mbrType}
+    </select>
+
+    <!-- 소셜 회원가입 -->
+    <insert id="socialSign" parameterType="MemberVO">
+        <selectKey keyProperty="mbrNo" order="BEFORE" resultType="int">
+            SELECT COALESCE(MAX(MBR_NO+1),1) AS MBR_NO FROM MEMBER
+        </selectKey>
+        INSERT INTO MEMBER(MBR_NO, MBR_TYPE, MBR_AUTH, MBR_CODE, MBR_ID, MBR_PASS, MBR_NICK,MBR_EMAIL, MBR_PROFILE, MBR_CONNECT, MBR_JOIN)
+        VALUES(#{mbrNo}, #{mbrType}, 'NORMAL', #{mbrCode}, #{mbrId}, #{mbrPass}, #{mbrNick}, #{mbrEmail}, #{mbrProfile}, NOW(), NOW())
+    </insert>
+
+    <!-- 포인트 등록 -->
+    <insert id="createPoint" parameterType="MemberVO">
+        <selectKey keyProperty="mbrNo" order="BEFORE" resultType="int">
+            SELECT COALESCE(MAX(PNT_NO+1),1) AS MBR_NO FROM POINT
+        </selectKey>
+        INSERT INTO POINT(PNT_NO, PNT_ID, PNT_SCORE)
+        VALUES(#{mbrNo}, #{mbrId}, 1000)
+    </insert>
+
+    <!-- 포인트 증가/감소 -->
+    <update id="updatePoint" parameterType="MemberVO">
+          UPDATE POINT SET PNT_SCORE = PNT_SCORE + #{mbrPoint}
+          WHERE PNT_ID = #{mbrId}
+    </update>
+
+    <!-- 포인트 수정 -->
+    <update id="setPoint" parameterType="MemberVO">
+          UPDATE POINT SET PNT_SCORE = #{mbrPoint}
+          WHERE PNT_ID = #{mbrId}
+    </update>
+
+    <!-- 오늘 접속기록이 있는지 확인 조회 -->
+    <select id="isLoggedToday" parameterType="MemberVO" resultType="int">
+          SELECT COUNT(*) FROM MEMBER
+          WHERE MBR_ID = #{mbrId} AND DATE_FORMAT(MBR_CONNECT, '%Y-%m-%d') = CURDATE()
+    </select>
+
+    <!-- 로그인시 접속기록 갱신 -->
+    <update id="updateAccessTime" parameterType="MemberVO">
+          UPDATE MEMBER SET MBR_CONNECT = NOW()
+          WHERE MBR_ID = #{mbrId}
+    </update>
+
+    <!-- 방문정보등록 -->
+    <insert id="visitRegistration" parameterType="MemberVO">
+        <selectKey keyProperty="mbrNo" order="BEFORE" resultType="int">
+            SELECT COALESCE(MAX(VIS_NO+1),1) AS MBR_NO FROM VISIT
+        </selectKey>
+        INSERT INTO VISIT(VIS_NO, VIS_ID, VIS_DATE)
+        VALUES(#{mbrNo}, #{mbrId}, NOW())
+    </insert>
+
+
+
 
 </mapper>

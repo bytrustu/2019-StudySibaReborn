@@ -129,4 +129,67 @@ public interface MemberMapper {
      *  @Return int
      */
     int changePasswordEmailAuth(MemberVO memberVO);
+
+    /*
+     *   소셜로그인 등록된 회원인지 상태확인
+     *  @Param MemberVO
+     *  @Return int
+     */
+    int socialSignInState(MemberVO memberVO);
+
+    /*
+     *   소셜로그인 회원정보 조회
+     *  @Param MemberVO
+     *  @Return MemberVO
+     */
+    MemberVO memberSocialInformation(MemberVO memberVO);
+
+    /*
+     *   소셜 회원가입
+     *  @Param MemberVO
+     *  @Return int
+     */
+    int socialSign(MemberVO memberVO);
+
+    /*
+     *  포인트 생성
+     *  @Param MemberVO
+     *  @Return int
+     */
+    int createPoint(MemberVO memberVO);
+
+    /*
+     *  포인트 증가/감소
+     *  @Param MemberVO
+     *  @Return int
+     */
+    int updatePoint(MemberVO memberVO);
+
+    /*
+     *  포인트 설정
+     *  @Param MemberVO
+     *  @Return int
+     */
+    int setPoint(MemberVO memberVO);
+
+    /*
+     *  오늘 접속기록이 있는지 확인조회
+     *  @Param MemberVO
+     *  @Return int
+     */
+    int isLoggedToday(MemberVO memberVO);
+
+    /*
+     *  접속기록갱신
+     *  @Param MemberVO
+     *  @Return int
+     */
+    int updateAccessTime(MemberVO memberVO);
+
+    /*
+     *  방문정보등록
+     *  @Param MemberVO
+     *  @Return int
+     */
+    int  visitRegistration(MemberVO memberVO);
 }

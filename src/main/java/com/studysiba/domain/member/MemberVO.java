@@ -28,4 +28,6 @@ public class MemberVO {
     private Timestamp mbrConnect;
     // 가입일자
     private Timestamp mbrJoin;
+    // 포인트
+    private int mbrPoint;
 }

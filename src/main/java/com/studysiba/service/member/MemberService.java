@@ -66,4 +66,11 @@ public interface MemberService {
      *  @Return 절차에따른상태코드반환
      */
     String changePasswordEmailAuth(MemberVO memberVO);
+
+    /*
+     *  구글소셜로그인연동
+     *  @Param  code
+     *  @Return 소셜로그인 상태코드반환
+     */
+    String googleSignInCallback(String code) throws Exception;
 }

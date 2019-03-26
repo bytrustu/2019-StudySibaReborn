@@ -37,4 +37,5 @@ public class StudySibaRebornApplication {
         return new BCryptPasswordEncoder();
     }
 
+
 }

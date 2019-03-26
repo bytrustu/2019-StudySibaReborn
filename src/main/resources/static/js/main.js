@@ -194,19 +194,22 @@ $(document).ready(function () {
                 $('#modalChangePassword').modal('hide');
                 setTimeout(() => {
                     successAlert(stateCode.get(data));
-                },300);
+                }, 300);
             }).catch((error) => {
             errorAlert(stateCode.get(error.responseText));
-        }).finally( () => {
+        }).finally(() => {
             initElement('modal-input');
         });
     });
 
 
+    $('.social-google').on('click', function () {
+        let url = $(this).attr('data-url');
+        location.href = url;
+    });
 
     // Close Ready
 });
-
 
 
 // 공통상태코드
@@ -248,6 +251,9 @@ stateCode.set('PASSAUTH_STATE_ERROR', '메일 인증에 실패 했습니다.');
 stateCode.set('PASS_CHANGE_SUCCESS', '비밀번호가 변경되었습니다..');
 stateCode.set('PASS_CHANGE_ERROR', '비밀번호가 올바르지 않습니다.');
 
+stateCode.set("SOCIAL_LOGIN_SUCCESS", "로그인 되었습니다.");
+stateCode.set("SOCIAL_JOIN_SUCCESS", "회원가입 되었습니다.");
+stateCode.set("SOCIAL_JOIN_ERROR", "회원가입 실패했습니다.");
 
 
 // 초대장 전송
@@ -572,3 +578,8 @@ let rankPlay = (element, plus) => {
         }
     }, 10);
 }
+
+
+
+
+

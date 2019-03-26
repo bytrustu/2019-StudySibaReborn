@@ -10,8 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.lang.reflect.Member;
-
 @Controller
 @RequestMapping("/member")
 @Log4j
@@ -135,5 +133,12 @@ public class MemberController {
         String stateCode = memberService.deleteInformation(memberVO);
         log.info("미승인회원정보삭제 : " + stateCode);
         return stateCode.equals("INFODEL_STATE_SUCCESS") ? new ResponseEntity<>(stateCode, HttpStatus.OK) : new ResponseEntity<>(stateCode, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @GetMapping(value="/social/google")
+    public String googleSignInCallback(@RequestParam("code") String code ) throws Exception {
+        String stateCode = memberService.googleSignInCallback(code);
+        log.info("소셜로그인상태코드 : " + stateCode );
+        return "redirect:/";
     }
 }

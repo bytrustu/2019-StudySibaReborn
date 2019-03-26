@@ -8,6 +8,15 @@ import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.social.connect.Connection;
+import org.springframework.social.google.api.Google;
+import org.springframework.social.google.api.impl.GoogleTemplate;
+import org.springframework.social.google.api.plus.Person;
+import org.springframework.social.google.api.plus.PlusOperations;
+import org.springframework.social.google.connect.GoogleConnectionFactory;
+import org.springframework.social.oauth2.AccessGrant;
+import org.springframework.social.oauth2.OAuth2Operations;
+import org.springframework.social.oauth2.OAuth2Parameters;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,6 +24,10 @@ import javax.annotation.Resource;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpSession;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 @Service
 @Log4j
@@ -31,6 +44,12 @@ public class MemberServiceImpl implements MemberService {
 
     @Autowired
     HttpSession httpSession;
+
+    @Autowired
+    GoogleConnectionFactory googleConnectionFactory;
+    @Autowired
+    OAuth2Parameters oAuth2Parameters;
+    OAuth2Operations oAuth2Operations;
 
     /*
      *  회원초대장전송
@@ -75,7 +94,7 @@ public class MemberServiceImpl implements MemberService {
         MemberVO memberVO = new MemberVO();
         memberVO.setMbrEmail(mbrEmail);
         String checkMailById = memberMapper.checkMailState(memberVO);
-        if (checkMailById  != null) {
+        if (checkMailById != null) {
             sendState = true;
             memberVO.setMbrId(checkMailById);
             sendEmail(memberVO, "password");
@@ -142,6 +161,7 @@ public class MemberServiceImpl implements MemberService {
      *  @Param 아이디, 코드
      *  @Return 인증확인여부
      */
+    @Transactional
     @Override
     public String emailAuthentication(String mbrId, String mbrCode) {
         MemberVO memberVO = new MemberVO();
@@ -152,8 +172,16 @@ public class MemberServiceImpl implements MemberService {
         if (informationCheckStatus == 1) {
             // 회원 활성화 및 코드갱신
             memberVO.setMbrCode(DataConversion.returnUUID());
-            memberMapper.changeStatus(memberVO);
-            httpSession.setAttribute("stateCode", "AUTH_STATE_SUCCESS");
+            try {
+                memberMapper.changeStatus(memberVO);
+                String createPoint = createPoint(memberVO);
+                if ( createPoint.equals("POINT_CREATE_ERROR") ) new Exception();
+                httpSession.setAttribute("stateCode", "AUTH_STATE_SUCCESS");
+            } catch ( Exception e ) {
+                e.printStackTrace();
+                httpSession.setAttribute("stateCode", "AUTH_STATE_ERROR");
+                return "AUTH_STATE_ERROR";
+            }
         } else {
             httpSession.setAttribute("stateCode", "AUTH_STATE_ERROR");
         }
@@ -262,8 +290,19 @@ public class MemberServiceImpl implements MemberService {
                 // 회원상태정보가 승인검토중일경우 ID_STATE_WAITAPPROVAL 반환
                 if (memberData.getMbrType().toUpperCase().equals("NONE")) return "ID_STATE_WAITAPPROVAL";
                 stateCode = "LOGIN_STATE_SUCCESS";
+                // 오늘접속하지 않은경우 포인트 +1000
+                int isLoggedToday = memberMapper.isLoggedToday(memberVO);
+                if ( isLoggedToday == 0 ) {
+                    memberVO.setMbrPoint(1000);
+                    memberMapper.updatePoint(memberVO);
+                }
+                // 접속시간갱신
+                memberMapper.updateAccessTime(memberVO);
+                // 방문정보등록
+                memberMapper.visitRegistration(memberVO);
                 // 방문 조회수
                 int visitCount = memberMapper.totalVisitCountCheck(memberVO);
+
                 // 세션등록
                 httpSession.setAttribute("auth", memberData.getMbrAuth());
                 httpSession.setAttribute("id", memberData.getMbrId());
@@ -299,11 +338,11 @@ public class MemberServiceImpl implements MemberService {
     public String changePasswordEmailAuth(MemberVO memberVO) {
         String changePasswordState = "PASS_CHANGE_ERROR";
         // 비밀번호 유효성 검사 실패시
-        if ( !DataValidation.checkPassword(memberVO.getMbrPass()) ) return changePasswordState;
+        if (!DataValidation.checkPassword(memberVO.getMbrPass())) return changePasswordState;
         String encodePassword = passwordEncoder.encode(memberVO.getMbrPass());
         memberVO.setMbrPass(encodePassword);
         int changeState = memberMapper.changePasswordEmailAuth(memberVO);
-        if ( changeState == 1 ) {
+        if (changeState == 1) {
             changePasswordState = "PASS_CHANGE_SUCCESS";
             httpSession.removeAttribute("authId");
             // 인증코드 갱신
@@ -311,6 +350,172 @@ public class MemberServiceImpl implements MemberService {
             memberMapper.renewAuthenticationCode(memberVO);
         }
         return changePasswordState;
+    }
+
+    /*
+     *  구글 소셜로그인
+     *  @Param code
+     *  @Return 소셜로그인로직처리에따른 상태매세지 반환
+     */
+    @Override
+    public String googleSignInCallback(String code) throws Exception {
+
+        oAuth2Operations = googleConnectionFactory.getOAuthOperations();
+        AccessGrant accessGrant = oAuth2Operations.exchangeForAccess(code, oAuth2Parameters.getRedirectUri(), null);
+
+        String accessToken = accessGrant.getAccessToken();
+        Long expireTime = accessGrant.getExpireTime();
+
+        if (expireTime != null && expireTime < System.currentTimeMillis()) {
+            accessToken = accessGrant.getRefreshToken();
+            log.info("토큰 만료. 새 토큰 발급 = " + accessToken);
+        }
+
+        // 소셜 회원정보 조회
+        Connection<Google> connection = googleConnectionFactory.createConnection(accessGrant);
+        Google google = connection == null ? new GoogleTemplate(accessToken) : connection.getApi();
+        PlusOperations plusOperations = google.plusOperations();
+        Person profile = plusOperations.getGoogleProfile();
+
+        // 소셜 로직 처리
+        MemberVO memberVO = new MemberVO();
+        memberVO.setMbrId( profile.getId() );
+        if (profile.getDisplayName() != null) {
+            memberVO.setMbrNick(profile.getDisplayName());
+        } else {
+            memberVO.setMbrNick("임시" + Integer.toString(DataConversion.returnRanNum(99999)));
+        }
+        memberVO.setMbrType("GOOGLE");
+        String stateCode = processingSocialLogic(memberVO);
+
+        // Access Token 취소
+        String revokeUrl = "https://accounts.google.com/o/oauth2/revoke?token=" + accessToken + "";
+        URL url = new URL(revokeUrl);
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setRequestMethod("GET");
+        conn.setDoOutput(true);
+
+        BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
+        String inputLine;
+        StringBuffer response = new StringBuffer();
+        while( (inputLine = in.readLine()) != null ) {
+            response.append(inputLine);
+        }
+        in.close();;
+        return stateCode;
+    }
+
+
+    /*
+     *  공통 소셜로그인 로그인/회원가입 처리 및 세션등록
+     *  @Param MemberVO
+     *  @Return 상태메세지 반환
+     */
+    @Transactional
+    public String processingSocialLogic(MemberVO memberVO) {
+        String stateCode = "";
+        int socialSignInState = memberMapper.socialSignInState(memberVO);
+        if ( socialSignInState == 0 ) {
+            try {
+                memberVO.setMbrAuth("NORMAL");
+                memberVO.setMbrPass(passwordEncoder.encode(memberVO.getMbrId()));
+                memberVO.setMbrProfile("siba-default.png");
+                memberVO.setMbrEmail(memberVO.getMbrId() + "@studysiba.com");
+                memberVO.setMbrCode(DataConversion.returnUUID());
+                // 소셜 회원가입
+                int socialSign = memberMapper.socialSign(memberVO);
+                String createPoint = createPoint(memberVO);
+                // 소셜 가입 실패시 에러코드 반환
+                if (socialSign == 0 || createPoint.equals("POINT_CREATE_ERROR") ) {
+                    new Exception();
+                }
+            } catch ( Exception e ) {
+                e.printStackTrace();
+                stateCode = "SOCIAL_JOIN_ERROR";
+                httpSession.setAttribute("stateCode", stateCode);
+                return stateCode;
+            }
+        }
+        // 소셜가입 , 소셜로그인 상태코드
+        stateCode = socialSignInState == 0 ? "SOCIAL_JOIN_SUCCESS" : "SOCIAL_LOGIN_SUCCESS";
+        int visitCount = memberMapper.totalVisitCountCheck(memberVO);
+        memberVO = memberMapper.memberSocialInformation(memberVO);
+
+        // 오늘접속하지 않은경우 포인트 +1000
+        int isLoggedToday = memberMapper.isLoggedToday(memberVO);
+        if ( isLoggedToday == 0 ) {
+            memberVO.setMbrPoint(1000);
+            memberMapper.updatePoint(memberVO);
+        }
+        // 접속시간갱신
+        memberMapper.updateAccessTime(memberVO);
+        // 방문정보등록
+        memberMapper.visitRegistration(memberVO);
+        httpSession.setAttribute("auth", memberVO.getMbrAuth());
+        httpSession.setAttribute("id", memberVO.getMbrId());
+        httpSession.setAttribute("nick", memberVO.getMbrNick());
+        httpSession.setAttribute("email", memberVO.getMbrEmail());
+        httpSession.setAttribute("profile", memberVO.getMbrProfile());
+        httpSession.setAttribute("connect", memberVO.getMbrCode());
+        httpSession.setAttribute("visit", visitCount);
+        httpSession.setAttribute("stateCode", stateCode);
+        return stateCode;
+    }
+
+
+    /*
+     *  포인트 생성
+     *  @Param MemberVO
+     *  @Return 포인트처리코드
+     */
+    public String createPoint(MemberVO memberVO)  {
+        String pointState = "POINT_CREATE_ERROR";
+        try {
+                if ( memberMapper.createPoint(memberVO) ==0 ) new Exception() ;
+                pointState = "POINT_CREATE_SUCCESS";
+        } catch ( Exception e ) {
+            e.printStackTrace();;
+        } finally {
+            return pointState;
+        }
+    }
+
+    /*
+     *  포인트 증가/감소
+     *  @Param MemberVO
+     *  @Return 포인트처리코드
+     */
+    public String updatePoint(MemberVO memberVO)  {
+        String pointState = "POINT_UPDATE_ERROR";
+        try {
+            if ( memberVO.getMbrId().equals((String)httpSession.getAttribute("id")) || httpSession.getAttribute("auth").toString().toUpperCase().equals("ADMIN") ) {
+                if ( memberMapper.updatePoint(memberVO) == 0 ) new Exception();
+                pointState = "POINT_UPDATE_SUCCESS";
+            }
+        } catch ( Exception e ) {
+            e.printStackTrace();
+        } finally {
+            return pointState;
+        }
+    }
+
+    /*
+     *  포인트 설정
+     *  @Param MemberVO
+     *  @Return 포인트처리코드
+     */
+    public String setPoint(MemberVO memberVO) {
+        String pointState = "POINT_UPDATE_ERROR";
+        try {
+            if ( httpSession.getAttribute("auth").toString().toUpperCase().equals("ADMIN") ) {
+                if ( memberMapper.setPoint(memberVO) == 0 ) new Exception();
+                pointState = "POINT_UPDATE_SUCCESS";
+            }
+        } catch ( Exception e ) {
+            e.printStackTrace();
+        } finally {
+            return pointState;
+        }
     }
 
 

@@ -1,19 +1,15 @@
 package com.studysiba.service.common;
 
-import com.studysiba.common.DataConversion;
-import com.studysiba.common.DataValidation;
-import com.studysiba.domain.member.MemberVO;
 import com.studysiba.mapper.common.CommonMapper;
-import com.studysiba.mapper.member.MemberMapper;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.social.google.connect.GoogleConnectionFactory;
+import org.springframework.social.oauth2.GrantType;
+import org.springframework.social.oauth2.OAuth2Operations;
+import org.springframework.social.oauth2.OAuth2Parameters;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import javax.mail.MessagingException;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
 
 @Service
 @Log4j
@@ -22,15 +18,20 @@ public class CommonServiceImpl implements CommonService {
     @Resource
     CommonMapper commonMapper;
 
-    @Resource
-    MemberMapper memberMapper;
+    @Autowired
+    GoogleConnectionFactory googleConnectionFactory;
+    @Autowired
+    OAuth2Parameters oAuth2Parameters;
+    private OAuth2Operations oAuth2Operations;
 
     /*
-     *  MyBatis 연동 TEST
+     *  구글 Social Login Url
      */
     @Override
-    public int getTest() {
-        return commonMapper.getTest();
+    public String getGoogleUrl() {
+        oAuth2Operations = googleConnectionFactory.getOAuthOperations();
+        String googleUrl = oAuth2Operations.buildAuthenticateUrl(GrantType.AUTHORIZATION_CODE, oAuth2Parameters);
+        return googleUrl;
     }
 
 

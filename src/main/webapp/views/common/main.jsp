@@ -16,19 +16,16 @@
     <link rel="icon" type="image/x-icon" href="/static/image/main/sibacon.ico">
 
     <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic" rel="stylesheet">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css">
     <link href="/static/css/bootstrap.min.css" rel="stylesheet">
     <link href="/static/css/mdb.min.css" rel="stylesheet">
     <link href="/static/css/sweetalert2.min.css" rel="stylesheet">
     <link type="text/css" rel="stylesheet" href="/static/css/main.css">
-
-    <script type="text/javascript" src="/static/js/jquery-3.3.1.min.js"></script>
-
 </head>
 
 
 <body>
+
 
 <!-- 하단 메세지 버튼 -->
 <div class="messenger-btn">
@@ -212,8 +209,8 @@
                         <p id="recovery-password">비밀번호 재설정</p>
                     </div>
                     <div class="footer-button">
-                        <img src="/static/image/main/google.png" class="social-login-icon waves-effect"
-                             data-type="google">
+                        <img src="/static/image/main/google.png" class="social-login-icon waves-effect social-google"
+                             data-url="${googleUrl}">
                         <img src="/static/image/main/facebook.png" class="social-login-icon waves-effect"
                              data-type="facebook">
                         <img src="/static/image/main/naver.png" class="social-login-icon waves-effect"
@@ -604,8 +601,9 @@
                         </div>
                         <div class="modal-footer modal-footer-login">
                             <div class="options text-center text- mt-3 modal-social">
-                                <img src="/static/image/main/google.png" class="social-login-icon waves-effect"
-                                     data-type="google">
+                                <div class="g-signin2" data-onsuccess="onSignIn"></div>
+                                <img src="/static/image/main/google.png" class="social-login-icon waves-effect social-google"
+                                     data-url="${googleUrl}">
                                 <img src="/static/image/main/facebook.png" class="social-login-icon waves-effect"
                                      data-type="facebook">
                                 <img src="/static/image/main/naver.png" class="social-login-icon waves-effect"
@@ -614,6 +612,7 @@
                                      data-type="kakao">
                             </div>
                         </div>
+
 
                     </div>
 
@@ -708,8 +707,6 @@
     </div>
 </div>
 
-
-
 <c:if test="${sessionScope.stateCode ne null}">
     <script type="text/javascript">
         $(document).ready(function () {
@@ -750,6 +747,9 @@
                         res.next();
                     }, 2300);
                 });
+                // 상태코드 공통 메세지
+            } else {
+                stateComment.includes('SUCCESS') ? successAlert(stateCode.get(stateComment)) : errorAlert(stateCode.get(stateComment));
             }
         });
         <c:remove var="stateCode" scope="session"/>
@@ -757,13 +757,15 @@
 </c:if>
 
 
-<script type="text/javascript" src="/static/js/popper.min.js"></script>
+
+<script type="text/javascript" src="/static/js/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="/static/js/popper.min.js" ></script>
 <script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="/static/js/mdb.js"></script>
 <script type="text/javascript" src="/static/js/sweetalert2.all.min.js"></script>
 <script type="text/javascript" src="/static/js/Liar.js"></script>
-
 <script type="text/javascript" src="/static/js/main.js"></script>
+
 
 </body>
 
