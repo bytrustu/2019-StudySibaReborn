@@ -75,6 +75,7 @@
         WHERE MBR_EMAIL = #{mbrEmail}
     </select>
 
+    <!-- 회원닉네임중복조회 -->
     <select id ="nickReduplicationCheck" parameterType="MemberVO" resultType="int">
         SELECT COUNT(*) FROM MEMBER
         WHERE MBR_NICK = #{mbrNick}

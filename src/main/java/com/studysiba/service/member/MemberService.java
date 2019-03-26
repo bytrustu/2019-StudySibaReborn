@@ -73,4 +73,11 @@ public interface MemberService {
      *  @Return 소셜로그인 상태코드반환
      */
     String googleSignInCallback(String code) throws Exception;
+
+    /*
+     *  카카오소셜로그인연동
+     *  @Param  MemberVO
+     *  @Return 소셜로그인 상태코드반환
+     */
+    String kakaoSignInCallback(MemberVO memberVO);
 }

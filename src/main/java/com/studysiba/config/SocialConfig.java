@@ -1,7 +1,9 @@
 package com.studysiba.config;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.social.google.connect.GoogleConnectionFactory;
 import org.springframework.social.oauth2.OAuth2Parameters;
 
@@ -15,6 +17,7 @@ public class SocialConfig {
     }
 
     @Bean
+    @Primary
     public OAuth2Parameters oAuth2Parameters(){
         OAuth2Parameters oAuth2Parameters = new OAuth2Parameters();
         oAuth2Parameters.setScope("https://www.googleapis.com/auth/plus.login");
@@ -22,5 +25,12 @@ public class SocialConfig {
         return oAuth2Parameters;
     }
 
+    @Bean
+    public OAuth2Parameters facebookOAuth2Parameters(){
+        OAuth2Parameters oAuth2Parameters = new OAuth2Parameters();
+        oAuth2Parameters.setScope("https://www.googleapis.com/auth/plus.login");
+        oAuth2Parameters.setRedirectUri("http://localhost:8282/member/social/facebook");
+        return oAuth2Parameters;
+    }
 
 }

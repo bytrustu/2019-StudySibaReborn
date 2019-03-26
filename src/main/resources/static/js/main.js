@@ -202,20 +202,82 @@ $(document).ready(function () {
         });
     });
 
+    // 구글 소셜로그인
+    $('.social-google').on('click', function() {
+        location.href=$(this).attr('data-url');
+    });
 
-    $('.social-google').on('click', function () {
-        let url = $(this).attr('data-url');
-        location.href = url;
+    // 카카오 소셜로그인
+    $('.social-kakao').on('click', () => {
+        $('.modal ').modal('hide');
+        kakaoRequest();
     });
 
     // Close Ready
 });
 
 
+let kakaoRequest = () => {
+    Kakao.Auth.login({
+        success: (authObj) => {
+            console.log('success');
+            Kakao.API.request({
+                url: '/v2/user/me',
+                success: (data) => {
+                    let memberInfo = new Map();
+                    memberInfo.set('mbrId', data.id);
+                    if (data.properties.nickname == null || data.properties.nickname == undefined || data.properties.nickname == '') {
+                        let studyNumber = rendomNumber(99999);
+                        memberInfo.set('mbrNick', `스터디${studyNumber}`);
+                    } else {
+                        memberInfo.set('mbrNick', data.properties.nickname);
+                    }
+                    let memberJson = mapToJson(memberInfo);
+                    kakaoSigin(memberJson)
+                        .then((data) => {
+                            timerAlert("로그인","회원정보를 확인중입니다.", 2000);
+                            setTimeout( () => {
+                                location.href = '/';
+                            },2200);
+                        }).catch((error) => {
+                        timerAlert("로그인","회원정보를 확인중입니다.", 2000);
+                        setTimeout( () => {
+                            location.href = '/';
+                        },2200);
+                    });
+                },
+                fail: (error) => {
+                    errorAlert("로그인 실패했습니다.");
+                }
+            });
+        },
+        fail: (error) => {
+            errorAlert("로그인 실패했습니다.");
+        }
+    });
+}
+
+let kakaoSigin = (memberJson) => {
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            type: 'POST',
+            url: 'member/social/kakao',
+            contentType: 'application/json; charset=utf-8',
+            data: memberJson,
+            success: (data) => {
+                resolve(data);
+            },
+            error: (error) => {
+                reject(error);
+            }
+        });
+    });
+}
+
 
 // 초대장 전송
 let sendMail = (memberInfo) => {
-    return new Promise(function (resolve, reject) {
+    return new Promise((resolve, reject) => {
         $.ajax({
             type: 'GET',
             url: `/member/mail/invite/${memberInfo.get('mbrId')}`,
@@ -537,11 +599,6 @@ let rankPlay = (element, plus) => {
 }
 
 
-
-
-
-
-
 // 공통상태코드
 const stateCode = new Map();
 stateCode.set('MEMBER_STATE_SUCCESS', '회원정보가 등록되었습니다.');
@@ -589,3 +646,7 @@ stateCode.set("POINT_CREATE_SUCCESS", "포인트가 생성되었습니다.");
 stateCode.set("POINT_CREATE_ERROR", "포인트 생성에 실패했습니다..");
 stateCode.set("POINT_UPDATE_SUCCESS", "포인트가 수정되었습니다.");
 stateCode.set("POINT_UPDATE_ERROR", "포인트 수정에 실패했습니다..");
+
+
+// KAKAO API
+Kakao.init('672b34ad5f77dd65240951209b6cbd32');

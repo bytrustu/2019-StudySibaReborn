@@ -1,10 +1,19 @@
 package com.studysiba.service.member;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.studysiba.common.DataConversion;
 import com.studysiba.common.DataValidation;
 import com.studysiba.domain.member.MemberVO;
 import com.studysiba.mapper.member.MemberMapper;
 import lombok.extern.log4j.Log4j;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.message.BasicNameValuePair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -25,9 +34,13 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpSession;
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @Log4j
@@ -49,6 +62,7 @@ public class MemberServiceImpl implements MemberService {
     GoogleConnectionFactory googleConnectionFactory;
     @Autowired
     OAuth2Parameters oAuth2Parameters;
+
     OAuth2Operations oAuth2Operations;
 
     /*
@@ -175,9 +189,9 @@ public class MemberServiceImpl implements MemberService {
             try {
                 memberMapper.changeStatus(memberVO);
                 String createPoint = createPoint(memberVO);
-                if ( createPoint.equals("POINT_CREATE_ERROR") ) new Exception();
+                if (createPoint.equals("POINT_CREATE_ERROR")) new Exception();
                 httpSession.setAttribute("stateCode", "AUTH_STATE_SUCCESS");
-            } catch ( Exception e ) {
+            } catch (Exception e) {
                 e.printStackTrace();
                 httpSession.setAttribute("stateCode", "AUTH_STATE_ERROR");
                 return "AUTH_STATE_ERROR";
@@ -292,7 +306,7 @@ public class MemberServiceImpl implements MemberService {
                 stateCode = "LOGIN_STATE_SUCCESS";
                 // 오늘접속하지 않은경우 포인트 +1000
                 int isLoggedToday = memberMapper.isLoggedToday(memberVO);
-                if ( isLoggedToday == 0 ) {
+                if (isLoggedToday == 0) {
                     memberVO.setMbrPoint(1000);
                     memberMapper.updatePoint(memberVO);
                 }
@@ -379,17 +393,8 @@ public class MemberServiceImpl implements MemberService {
 
         // 소셜 로직 처리
         MemberVO memberVO = new MemberVO();
-        memberVO.setMbrId( profile.getId() );
-
-        if (profile.getDisplayName() != null) {
-            String mbrNick = profile.getDisplayName();
-            // 소셜 회원닉네임 정보의 데이터크기가 클때 보정
-            if (DataValidation.textLengthComparison(12, mbrNick) == false) mbrNick = DataValidation.textLengthReturns(12, mbrNick);
-            memberVO.setMbrNick(mbrNick);
-        } else {
-            // 닉네임정보가 없을경우 임시 닉네임 적용
-            memberVO.setMbrNick("스터디" + Integer.toString(DataConversion.returnRanNum(999999)));
-        }
+        memberVO.setMbrId(profile.getId());
+        memberVO.setMbrNick(profile.getDisplayName());
         memberVO.setMbrType("GOOGLE");
         String stateCode = processingSocialLogic(memberVO);
 
@@ -403,13 +408,24 @@ public class MemberServiceImpl implements MemberService {
         BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
         String inputLine;
         StringBuffer response = new StringBuffer();
-        while( (inputLine = in.readLine()) != null ) {
+        while ((inputLine = in.readLine()) != null) {
             response.append(inputLine);
         }
-        in.close();;
+        in.close();
         return stateCode;
     }
 
+    /*
+     *  카카오 소셜로그인
+     *  @Param MemberVO
+     *  @Return 소셜로그인로직처리에따른 상태매세지 반환
+     */
+    @Override
+    public String kakaoSignInCallback(MemberVO memberVO) {
+        memberVO.setMbrType("KAKAO");
+        String stateCode = processingSocialLogic(memberVO);
+        return stateCode;
+    }
 
     /*
      *  공통 소셜로그인 로그인/회원가입 처리 및 세션등록
@@ -420,8 +436,19 @@ public class MemberServiceImpl implements MemberService {
     public String processingSocialLogic(MemberVO memberVO) {
         String stateCode = "";
         int socialSignInState = memberMapper.socialSignInState(memberVO);
-        if ( socialSignInState == 0 ) {
+        if (socialSignInState == 0) {
             try {
+                if ( DataValidation.findEmptyValue(memberVO, new String[]{"mbrNick"}).equals("VALUES_STATE_GOOD") ) {
+                    String mbrNick = memberVO.getMbrNick();
+                    // 소셜 회원닉네임이 이미 중복일경우 임시 닉네임적용
+                    if ( memberMapper.nickReduplicationCheck(memberVO) == 1 ) mbrNick = "스터디" + Integer.toString(DataConversion.returnRanNum(999999));
+                    // 소셜 회원닉네임 정보의 데이터크기가 클때 보정
+                    if (!DataValidation.textLengthComparison(12, mbrNick)) mbrNick = DataValidation.textLengthReturns(12, mbrNick);
+                    memberVO.setMbrNick(mbrNick);
+                } else {
+                    // 닉네임정보가 없을경우 임시 닉네임 적용
+                    memberVO.setMbrNick("스터디" + Integer.toString(DataConversion.returnRanNum(99999)));
+                }
                 memberVO.setMbrAuth("NORMAL");
                 memberVO.setMbrPass(passwordEncoder.encode(memberVO.getMbrId()));
                 memberVO.setMbrProfile("siba-default.png");
@@ -431,10 +458,10 @@ public class MemberServiceImpl implements MemberService {
                 int socialSign = memberMapper.socialSign(memberVO);
                 String createPoint = createPoint(memberVO);
                 // 소셜 가입 실패시 에러코드 반환
-                if (socialSign == 0 || createPoint.equals("POINT_CREATE_ERROR") ) {
+                if (socialSign == 0 || createPoint.equals("POINT_CREATE_ERROR")) {
                     new Exception();
                 }
-            } catch ( Exception e ) {
+            } catch (Exception e) {
                 e.printStackTrace();
                 stateCode = "SOCIAL_JOIN_ERROR";
                 httpSession.setAttribute("stateCode", stateCode);
@@ -448,7 +475,7 @@ public class MemberServiceImpl implements MemberService {
 
         // 오늘접속하지 않은경우 포인트 +1000
         int isLoggedToday = memberMapper.isLoggedToday(memberVO);
-        if ( isLoggedToday == 0 ) {
+        if (isLoggedToday == 0) {
             memberVO.setMbrPoint(1000);
             memberMapper.updatePoint(memberVO);
         }
@@ -473,13 +500,14 @@ public class MemberServiceImpl implements MemberService {
      *  @Param MemberVO
      *  @Return 포인트처리코드
      */
-    public String createPoint(MemberVO memberVO)  {
+    public String createPoint(MemberVO memberVO) {
         String pointState = "POINT_CREATE_ERROR";
         try {
-                if ( memberMapper.createPoint(memberVO) ==0 ) new Exception() ;
-                pointState = "POINT_CREATE_SUCCESS";
-        } catch ( Exception e ) {
-            e.printStackTrace();;
+            if (memberMapper.createPoint(memberVO) == 0) new Exception();
+            pointState = "POINT_CREATE_SUCCESS";
+        } catch (Exception e) {
+            e.printStackTrace();
+            ;
         } finally {
             return pointState;
         }
@@ -490,14 +518,14 @@ public class MemberServiceImpl implements MemberService {
      *  @Param MemberVO
      *  @Return 포인트처리코드
      */
-    public String updatePoint(MemberVO memberVO)  {
+    public String updatePoint(MemberVO memberVO) {
         String pointState = "POINT_UPDATE_ERROR";
         try {
-            if ( memberVO.getMbrId().equals((String)httpSession.getAttribute("id")) || httpSession.getAttribute("auth").toString().toUpperCase().equals("ADMIN") ) {
-                if ( memberMapper.updatePoint(memberVO) == 0 ) new Exception();
+            if (memberVO.getMbrId().equals((String) httpSession.getAttribute("id")) || httpSession.getAttribute("auth").toString().toUpperCase().equals("ADMIN")) {
+                if (memberMapper.updatePoint(memberVO) == 0) new Exception();
                 pointState = "POINT_UPDATE_SUCCESS";
             }
-        } catch ( Exception e ) {
+        } catch (Exception e) {
             e.printStackTrace();
         } finally {
             return pointState;
@@ -512,18 +540,16 @@ public class MemberServiceImpl implements MemberService {
     public String setPoint(MemberVO memberVO) {
         String pointState = "POINT_UPDATE_ERROR";
         try {
-            if ( httpSession.getAttribute("auth").toString().toUpperCase().equals("ADMIN") ) {
-                if ( memberMapper.setPoint(memberVO) == 0 ) new Exception();
+            if (httpSession.getAttribute("auth").toString().toUpperCase().equals("ADMIN")) {
+                if (memberMapper.setPoint(memberVO) == 0) new Exception();
                 pointState = "POINT_UPDATE_SUCCESS";
             }
-        } catch ( Exception e ) {
+        } catch (Exception e) {
             e.printStackTrace();
         } finally {
             return pointState;
         }
     }
-
-
 
 
 }

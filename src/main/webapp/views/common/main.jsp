@@ -210,14 +210,10 @@
                         <p id="recovery-password">비밀번호 재설정</p>
                     </div>
                     <div class="footer-button">
-                        <img src="/static/image/main/google.png" class="social-login-icon waves-effect social-google"
-                             data-url="${googleUrl}">
-                        <img src="/static/image/main/facebook.png" class="social-login-icon waves-effect"
-                             data-type="facebook">
-                        <img src="/static/image/main/naver.png" class="social-login-icon waves-effect"
-                             data-type="naver">
-                        <img src="/static/image/main/kakao.png" class="social-login-icon waves-effect"
-                             data-type="kakao">
+                        <img src="/static/image/main/google.png" class="social-login-icon waves-effect social-google" data-name="social-google" data-url="${googleUrl}">
+                        <img src="/static/image/main/facebook.png" class="social-login-icon waves-effect" data-type="facebook">
+                        <img src="/static/image/main/naver.png" class="social-login-icon waves-effect" data-type="naver">
+                        <img src="/static/image/main/kakao.png" class="social-login-icon waves-effect social-kakao" data-name="social-kakao" data-url="${kakaoUrl}">
                     </div>
                 </div>
             </div>
@@ -602,15 +598,10 @@
                         </div>
                         <div class="modal-footer modal-footer-login">
                             <div class="options text-center text- mt-3 modal-social">
-                                <div class="g-signin2" data-onsuccess="onSignIn"></div>
-                                <img src="/static/image/main/google.png" class="social-login-icon waves-effect social-google"
-                                     data-url="${googleUrl}">
-                                <img src="/static/image/main/facebook.png" class="social-login-icon waves-effect"
-                                     data-type="facebook">
-                                <img src="/static/image/main/naver.png" class="social-login-icon waves-effect"
-                                     data-type="naver">
-                                <img src="/static/image/main/kakao.png" class="social-login-icon waves-effect"
-                                     data-type="kakao">
+                                <img src="/static/image/main/google.png" class="social-login-icon waves-effect social-google" data-name="social-google" data-url="${googleUrl}">
+                                <img src="/static/image/main/facebook.png" class="social-login-icon waves-effect" data-type="facebook">
+                                <img src="/static/image/main/naver.png" class="social-login-icon waves-effect" data-type="naver">
+                                <img src="/static/image/main/kakao.png" class="social-login-icon waves-effect social-kakao" data-name="social-kakao" data-url="${kakaoUrl}">
                             </div>
                         </div>
 
@@ -758,12 +749,12 @@
 </c:if>
 
 
-
 <script type="text/javascript" src="/static/js/popper.min.js" ></script>
 <script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="/static/js/mdb.js"></script>
 <script type="text/javascript" src="/static/js/sweetalert2.all.min.js"></script>
 <script type="text/javascript" src="/static/js/Liar.js"></script>
+<script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
 <script type="text/javascript" src="/static/js/main.js"></script>
 
 

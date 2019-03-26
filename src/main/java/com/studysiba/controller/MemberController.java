@@ -23,18 +23,18 @@ public class MemberController {
      *  @Param 아이디
      *  @Return 초대장발송여부
      */
-    @GetMapping(value="/mail/invite/{mbrId}", produces = {MediaType.TEXT_PLAIN_VALUE})
+    @GetMapping(value = "/mail/invite/{mbrId}", produces = {MediaType.TEXT_PLAIN_VALUE})
     @ResponseBody
     public ResponseEntity<String> inviteUser(@PathVariable("mbrId") String mbrId) {
         boolean inviteState = false;
         try {
             inviteState = memberService.inviteUser(mbrId);
-        } catch ( Exception e ) {
+        } catch (Exception e) {
             log.error(e);
-            return new ResponseEntity<>("INVITE_STATE_ERROR",HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("INVITE_STATE_ERROR", HttpStatus.INTERNAL_SERVER_ERROR);
         }
         log.info("초대장발송여부 : " + inviteState);
-        return inviteState == true ? new ResponseEntity<>("INVITE_STATE_SUCCESS", HttpStatus.OK) : new ResponseEntity<>("INVITE_STATE_ERROR",HttpStatus.OK);
+        return inviteState == true ? new ResponseEntity<>("INVITE_STATE_SUCCESS", HttpStatus.OK) : new ResponseEntity<>("INVITE_STATE_ERROR", HttpStatus.OK);
     }
 
     /*
@@ -43,12 +43,12 @@ public class MemberController {
      *  @Return 메일발송여부
      */
     @ResponseBody
-    @GetMapping(value="/mail/changepass/{mbrEmail:.+}" ,  produces = {MediaType.TEXT_PLAIN_VALUE})
-    public ResponseEntity<String> sendMailPasswordChanger(@PathVariable("mbrEmail") String mbrEmail ) throws Exception {
+    @GetMapping(value = "/mail/changepass/{mbrEmail:.+}", produces = {MediaType.TEXT_PLAIN_VALUE})
+    public ResponseEntity<String> sendMailPasswordChanger(@PathVariable("mbrEmail") String mbrEmail) throws Exception {
         boolean sendState = false;
         sendState = memberService.sendMailPasswordChanger(mbrEmail);
-        log.info("패스워드메일발송여부 " + sendState ) ;
-        return sendState == true ? new ResponseEntity<>("PASSMAIL_STATE_SUCCESS", HttpStatus.OK) : new ResponseEntity<>("PASSMAIL_STATE_ERROR",HttpStatus.INTERNAL_SERVER_ERROR);
+        log.info("패스워드메일발송여부 " + sendState);
+        return sendState == true ? new ResponseEntity<>("PASSMAIL_STATE_SUCCESS", HttpStatus.OK) : new ResponseEntity<>("PASSMAIL_STATE_ERROR", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     /*
@@ -57,14 +57,13 @@ public class MemberController {
      *  @Return 비밀번호변경여부상태코드
      */
     @ResponseBody
-    @PutMapping(value="/auth/mailpassword", consumes = "application/json", produces = {MediaType.TEXT_PLAIN_VALUE})
+    @PutMapping(value = "/auth/mailpassword", consumes = "application/json", produces = {MediaType.TEXT_PLAIN_VALUE})
     public ResponseEntity<String> changePasswordEmailAuth(@RequestBody MemberVO memberVO) {
         String changePasswordState = memberService.changePasswordEmailAuth(memberVO);
         log.info("인증패스워드변경상태 : " + changePasswordState);
         return changePasswordState.equals("PASS_CHANGE_SUCCESS") ?
-                new ResponseEntity<>(changePasswordState, HttpStatus.OK) : new ResponseEntity<>(changePasswordState,HttpStatus.INTERNAL_SERVER_ERROR);
+                new ResponseEntity<>(changePasswordState, HttpStatus.OK) : new ResponseEntity<>(changePasswordState, HttpStatus.INTERNAL_SERVER_ERROR);
     }
-
 
 
     /*
@@ -72,12 +71,12 @@ public class MemberController {
      *  @Param 아이디
      *  @Return 초대장인증여부
      */
-    @GetMapping(value="/mail/invite/{mbrId}/{mbrCode}")
+    @GetMapping(value = "/mail/invite/{mbrId}/{mbrCode}")
     public String emailAuthentication(@PathVariable("mbrId") String mbrId, @PathVariable("mbrCode") String mbrCode) {
         String authState = "";
         try {
             authState = memberService.emailAuthentication(mbrId, mbrCode);
-        } catch ( Exception e ) {
+        } catch (Exception e) {
             log.error(e);
         } finally {
             log.info("인증여부 : " + authState);
@@ -90,8 +89,8 @@ public class MemberController {
      *  @Param 아이디, 인증코드
      *  @Return 비밀번호메일인증여부
      */
-    @GetMapping(value="/mail/changepass/{mbrId}/{mbrCode}")
-    public String recoveryPassword(@PathVariable("mbrId") String mbrId, @PathVariable("mbrCode") String mbrCode ) {
+    @GetMapping(value = "/mail/changepass/{mbrId}/{mbrCode}")
+    public String recoveryPassword(@PathVariable("mbrId") String mbrId, @PathVariable("mbrCode") String mbrCode) {
         String authState = "";
         authState = memberService.recoveryPassword(mbrId, mbrCode);
         log.info("패스워드변경여부 : " + authState);
@@ -105,7 +104,7 @@ public class MemberController {
      *  @Return 회원가입절차에따른상태메세지
      */
     @ResponseBody
-    @PostMapping( value="/register", consumes = "application/json", produces = {MediaType.TEXT_PLAIN_VALUE})
+    @PostMapping(value = "/register", consumes = "application/json", produces = {MediaType.TEXT_PLAIN_VALUE})
     public ResponseEntity<String> register(@RequestBody MemberVO memberVO) throws Exception {
         log.info(memberVO);
         String stateCode = memberService.register(memberVO);
@@ -119,26 +118,50 @@ public class MemberController {
      *  @Return 회원가입절차에따른상태메세지
      */
     @ResponseBody
-    @PostMapping( value="/login", consumes = "application/json", produces = {MediaType.TEXT_PLAIN_VALUE})
+    @PostMapping(value = "/login", consumes = "application/json", produces = {MediaType.TEXT_PLAIN_VALUE})
     public ResponseEntity<String> normalLoginAuthentication(@RequestBody MemberVO memberVO) throws Exception {
         String stateCode = memberService.normalLoginAuthentication(memberVO);
         log.info("회원로그인상태메세지 : " + stateCode);
-        if ( stateCode.toUpperCase().equals("ID_STATE_WAITAPPROVAL") ) return new ResponseEntity<>(stateCode, HttpStatus.OK);
+        if (stateCode.toUpperCase().equals("ID_STATE_WAITAPPROVAL"))
+            return new ResponseEntity<>(stateCode, HttpStatus.OK);
         return stateCode.equals("LOGIN_STATE_SUCCESS") ? new ResponseEntity<>(stateCode, HttpStatus.OK) : new ResponseEntity<>(stateCode, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    /*
+     *  미승인 회원정보삭제
+     *  @Param MemberVO
+     *  @Return 회원삭제절차에따른상태메세지
+     */
     @ResponseBody
-    @PostMapping( value="deleteinfo", consumes = "application/json", produces = {MediaType.TEXT_PLAIN_VALUE})
+    @PostMapping(value = "/deleteinfo", consumes = "application/json", produces = {MediaType.TEXT_PLAIN_VALUE})
     public ResponseEntity<String> deleteInformation(@RequestBody MemberVO memberVO) throws Exception {
         String stateCode = memberService.deleteInformation(memberVO);
         log.info("미승인회원정보삭제 : " + stateCode);
         return stateCode.equals("INFODEL_STATE_SUCCESS") ? new ResponseEntity<>(stateCode, HttpStatus.OK) : new ResponseEntity<>(stateCode, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @GetMapping(value="/social/google")
-    public String googleSignInCallback(@RequestParam("code") String code ) throws Exception {
+    /*
+     *  구글 소셜로그인 인증
+     *  @Param code
+     */
+    @GetMapping(value = "/social/google")
+    public String googleSignInCallback(@RequestParam("code") String code) throws Exception {
         String stateCode = memberService.googleSignInCallback(code);
-        log.info("소셜로그인상태코드 : " + stateCode );
+        log.info("구글소셜로그인상태코드 : " + stateCode);
         return "redirect:/";
     }
+
+    /*
+     *  카카오 소셜로그인 인증
+     *  @Param MemberVO
+     *  @Return 소셜로그인절차에따른상태메세지
+     */
+    @ResponseBody
+    @PostMapping(value = "/social/kakao")
+    public ResponseEntity<String> kakaoSignInCallback(@RequestBody MemberVO memberVO) throws Exception {
+        String stateCode = memberService.kakaoSignInCallback(memberVO);
+        log.info("카카오소셜로그인상태코드 : " + stateCode);
+        return !stateCode.equals("SOCIAL_JOIN_ERROR") ? new ResponseEntity<>(stateCode,HttpStatus.OK) : new ResponseEntity<>(stateCode,HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
 }
