@@ -1,5 +1,6 @@
 package com.studysiba;
 
+import com.studysiba.common.SessionListener;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.annotation.MapperScan;
@@ -12,6 +13,7 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 
+import javax.servlet.http.HttpSessionListener;
 import javax.sql.DataSource;
 
 @EnableAspectJAutoProxy
@@ -35,6 +37,11 @@ public class StudySibaRebornApplication {
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public HttpSessionListener httpSessionListener() {
+        return new SessionListener();
     }
 
 
