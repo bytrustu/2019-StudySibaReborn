@@ -16,7 +16,7 @@ public class CommonTest {
     @Autowired
     BCryptPasswordEncoder passwordEncoder;
 
-    @Test
+    //@Test
     public void dataValidationTest() {
         System.out.println("이름숫자체크1 : " + DataValidation.checkEngAndNum("bytrustu"));
         System.out.println("이름숫자체크2 : " + DataValidation.checkEngAndNum("bytrustu하1202"));
@@ -71,6 +71,14 @@ public class CommonTest {
         System.out.println("랜덤번호 생성1 : " + DataConversion.returnRanNum(50));
         System.out.println("랜덤번호 생성2 : " + DataConversion.returnRanNum(5));
         System.out.println("랜덥번호 생성3 : " + DataConversion.returnRanNum(10));
+    }
+
+    @Test
+    public void DataTextLengthReturnTest(){
+        System.out.println("데이터 크기만큼 반환 : " + DataValidation.textLengthReturns(12,"가나다라마바사아자차카"));
+        System.out.println("데이터 크기만큼 반환 : " + DataValidation.textLengthReturns(12,"1234567890abcdefghijklmn"));
+        System.out.println("데이터 크기만큼 반환 : " + DataValidation.textLengthReturns(12,"aaa"));
+
     }
 
 

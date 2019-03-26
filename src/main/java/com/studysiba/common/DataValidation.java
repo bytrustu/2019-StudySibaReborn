@@ -109,5 +109,23 @@ public class DataValidation {
         return result;
     }
 
+    /*
+     *  문자열 크기만큼 반환
+     *  @Param 크기, 텍스트
+     *  @Return 크기와 텍스트의 크기만큼 잘라서 반환
+     */
+    public static String textLengthReturns(int length, String str) {
+        char[] array = str.toCharArray();
+        StringBuffer sb = new StringBuffer();
+        int size = 0;
+        boolean result = true;
+        for (char c : array) {
+            if (size >= length) break;
+            size += (c > 255) ? 2 : 1;
+            sb.append(c);
+        }
+        return sb.toString();
+    }
+
 
 }

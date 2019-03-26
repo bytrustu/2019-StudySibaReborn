@@ -380,10 +380,15 @@ public class MemberServiceImpl implements MemberService {
         // 소셜 로직 처리
         MemberVO memberVO = new MemberVO();
         memberVO.setMbrId( profile.getId() );
+
         if (profile.getDisplayName() != null) {
-            memberVO.setMbrNick(profile.getDisplayName());
+            String mbrNick = profile.getDisplayName();
+            // 소셜 회원닉네임 정보의 데이터크기가 클때 보정
+            if (DataValidation.textLengthComparison(12, mbrNick) == false) mbrNick = DataValidation.textLengthReturns(12, mbrNick);
+            memberVO.setMbrNick(mbrNick);
         } else {
-            memberVO.setMbrNick("임시" + Integer.toString(DataConversion.returnRanNum(99999)));
+            // 닉네임정보가 없을경우 임시 닉네임 적용
+            memberVO.setMbrNick("스터디" + Integer.toString(DataConversion.returnRanNum(999999)));
         }
         memberVO.setMbrType("GOOGLE");
         String stateCode = processingSocialLogic(memberVO);

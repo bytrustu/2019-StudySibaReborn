@@ -212,49 +212,6 @@ $(document).ready(function () {
 });
 
 
-// 공통상태코드
-const stateCode = new Map();
-stateCode.set('MEMBER_STATE_SUCCESS', '회원정보가 등록되었습니다.');
-stateCode.set('ID_STATE_EMPTY', '아이디를 입력해주세요..');
-stateCode.set('PASS_STATE_EMPTY', '비밀번호를 입력해주세요.');
-stateCode.set('NICK_STATE_EMPTY', '닉네임이 입력해주세요.');
-stateCode.set('EMAIL_STATE_EMPTY', '이메일을 입력해주세요.');
-stateCode.set('PROFILE_STATE_EMPTY', '프로필사진을 설정해주세요.');
-
-stateCode.set('ID_STATE_USED', '이미 사용중인 아이디 입니다.');
-stateCode.set('EMAIL_STATE_USED', '이미 사용중인 이메일 입니다.');
-stateCode.set('NICK_STATE_USED', '이미 사용중인 닉네임 입니다.');
-
-stateCode.set('ID_STATE_ERROR', '부적절한 아이디 입니다.');
-stateCode.set('PASS_STATE_ERROR', '부적절한 비밀번호 입니다.');
-stateCode.set('NICK_STATE_ERROR', '부적절한 닉네임 입니다.');
-stateCode.set('EMAIL_STATE_ERROR', '부적절한 이메일 입니다.');
-stateCode.set('PROFILE_STATE_ERROR', '부적절한 프로필사진 입니다.');
-
-stateCode.set('INVITE_STATE_SUCCESS', '초대장이 발송되었습니다.');
-stateCode.set('INVITE_STATE_ERROR', '초대장 발송을 실패했습니다.');
-stateCode.set('AUTH_STATE_SUCCESS', '초대장 인증에 성공했습니다.');
-stateCode.set('AUTH_STATE_ERROR', '초대장 인증에 실패했습니다.');
-stateCode.set('ID_STATE_WAITAPPROVAL', '이메일 승인대기 아이디 입니다.');
-
-stateCode.set('LOGIN_STATE_SUCCESS', '로그인 되었습니다.');
-stateCode.set('LOGIN_STATE_ERROR', '아이디 혹은 패스워드가 다릅니다.');
-
-stateCode.set('INFODEL_STATE_SUCCESS', '회원님의 정보를 삭제 했습니다.');
-stateCode.set('INFODEL_STATE_ERROR', '회원님의 정보 삭제에 실패했습니다.');
-
-stateCode.set('PASSMAIL_STATE_SUCCESS', '메일을 발송 했습니다.');
-stateCode.set('PASSMAIL_STATE_ERROR', '이메일이 올바르지 않습니다.');
-stateCode.set('PASSAUTH_STATE_SUCCESS', '메일 인증에 성공 했습니다.');
-stateCode.set('PASSAUTH_STATE_ERROR', '메일 인증에 실패 했습니다.');
-
-stateCode.set('PASS_CHANGE_SUCCESS', '비밀번호가 변경되었습니다..');
-stateCode.set('PASS_CHANGE_ERROR', '비밀번호가 올바르지 않습니다.');
-
-stateCode.set("SOCIAL_LOGIN_SUCCESS", "로그인 되었습니다.");
-stateCode.set("SOCIAL_JOIN_SUCCESS", "회원가입 되었습니다.");
-stateCode.set("SOCIAL_JOIN_ERROR", "회원가입 실패했습니다.");
-
 
 // 초대장 전송
 let sendMail = (memberInfo) => {
@@ -583,3 +540,52 @@ let rankPlay = (element, plus) => {
 
 
 
+
+
+// 공통상태코드
+const stateCode = new Map();
+stateCode.set('MEMBER_STATE_SUCCESS', '회원정보가 등록되었습니다.');
+stateCode.set('ID_STATE_EMPTY', '아이디를 입력해주세요..');
+stateCode.set('PASS_STATE_EMPTY', '비밀번호를 입력해주세요.');
+stateCode.set('NICK_STATE_EMPTY', '닉네임이 입력해주세요.');
+stateCode.set('EMAIL_STATE_EMPTY', '이메일을 입력해주세요.');
+stateCode.set('PROFILE_STATE_EMPTY', '프로필사진을 설정해주세요.');
+
+stateCode.set('ID_STATE_USED', '이미 사용중인 아이디 입니다.');
+stateCode.set('EMAIL_STATE_USED', '이미 사용중인 이메일 입니다.');
+stateCode.set('NICK_STATE_USED', '이미 사용중인 닉네임 입니다.');
+
+stateCode.set('ID_STATE_ERROR', '부적절한 아이디 입니다.');
+stateCode.set('PASS_STATE_ERROR', '부적절한 비밀번호 입니다.');
+stateCode.set('NICK_STATE_ERROR', '부적절한 닉네임 입니다.');
+stateCode.set('EMAIL_STATE_ERROR', '부적절한 이메일 입니다.');
+stateCode.set('PROFILE_STATE_ERROR', '부적절한 프로필사진 입니다.');
+
+stateCode.set('INVITE_STATE_SUCCESS', '초대장이 발송되었습니다.');
+stateCode.set('INVITE_STATE_ERROR', '초대장 발송을 실패했습니다.');
+stateCode.set('AUTH_STATE_SUCCESS', '초대장 인증에 성공했습니다.');
+stateCode.set('AUTH_STATE_ERROR', '초대장 인증에 실패했습니다.');
+stateCode.set('ID_STATE_WAITAPPROVAL', '이메일 승인대기 아이디 입니다.');
+
+stateCode.set('LOGIN_STATE_SUCCESS', '로그인 되었습니다.');
+stateCode.set('LOGIN_STATE_ERROR', '아이디 혹은 패스워드가 다릅니다.');
+
+stateCode.set('INFODEL_STATE_SUCCESS', '회원님의 정보를 삭제 했습니다.');
+stateCode.set('INFODEL_STATE_ERROR', '회원님의 정보 삭제에 실패했습니다.');
+
+stateCode.set('PASSMAIL_STATE_SUCCESS', '메일을 발송 했습니다.');
+stateCode.set('PASSMAIL_STATE_ERROR', '이메일이 올바르지 않습니다.');
+stateCode.set('PASSAUTH_STATE_SUCCESS', '메일 인증에 성공 했습니다.');
+stateCode.set('PASSAUTH_STATE_ERROR', '메일 인증에 실패 했습니다.');
+
+stateCode.set('PASS_CHANGE_SUCCESS', '비밀번호가 변경되었습니다..');
+stateCode.set('PASS_CHANGE_ERROR', '비밀번호가 올바르지 않습니다.');
+
+stateCode.set("SOCIAL_LOGIN_SUCCESS", "로그인 되었습니다.");
+stateCode.set("SOCIAL_JOIN_SUCCESS", "회원가입 되었습니다.");
+stateCode.set("SOCIAL_JOIN_ERROR", "회원가입 실패했습니다.");
+
+stateCode.set("POINT_CREATE_SUCCESS", "포인트가 생성되었습니다.");
+stateCode.set("POINT_CREATE_ERROR", "포인트 생성에 실패했습니다..");
+stateCode.set("POINT_UPDATE_SUCCESS", "포인트가 수정되었습니다.");
+stateCode.set("POINT_UPDATE_ERROR", "포인트 수정에 실패했습니다..");
