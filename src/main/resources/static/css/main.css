@@ -379,6 +379,117 @@ body {
     margin: 0 5px;
 }
 
+.main-content > div > div > .user-header{
+    height: 30%;
+    padding-top: 17px;
+    padding-left: 20px;
+}
+
+.main-content > div > div > .user-header > .user-image{
+    height: 60px;
+    width: 60px;
+    border-radius: 100%;
+    vertical-align: bottom;
+    display: inline-block;
+}
+
+.main-content > div > div > .user-header > .user-connect{
+    vertical-align: middle;
+    display: inline-block;
+    font-weight: bold;
+    color: #d75a4a;
+    font-size: 15px;
+    margin-left: 10px;
+}
+
+.main-content > div > div > .user-body{
+    background-color: #ffce58;
+    height: 50%;
+}
+
+.main-content > div > div > .user-body> div:nth-of-type(1) {
+    height: 70%;
+    text-align: center;
+    margin: auto;
+    padding-top: 30px;
+}
+
+.main-content > div > div > .user-body> div:nth-of-type(1) > p {
+    font-weight: bold;
+}
+
+.main-content > div > div > .user-body> div:nth-of-type(1) > p:nth-last-of-type(2) {
+    font-size: 19px;
+    margin-bottom: 4px;
+    color: white;
+}
+
+.main-content > div > div > .user-body> div:nth-of-type(1) > p:nth-last-of-type(1) {
+    font-size: 13px;
+    color: white;
+}
+
+.main-content > div > div > .user-body> div:nth-of-type(1) > p:nth-last-of-type(1) > span {
+    margin: auto 3px;
+    font-weight: normal;
+}
+
+.main-content > div > div > .user-body> div:nth-of-type(1) > p:nth-last-of-type(1) > .point {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+
+.main-content > div > div > .user-body> div:nth-of-type(2) {
+    height: 30%;
+    background-color: #d98f34;
+    padding: 0 60px;
+}
+
+.main-content > div > div > .user-body> div:nth-of-type(2) > .row:nth-of-type(1) {
+    font-size: 13px;
+    padding-top: 4px;
+    color: white;
+    text-align: center;
+}
+
+.main-content > div > div > .user-body> div:nth-of-type(2) > .row:nth-of-type(2) {
+    font-size: 13px;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+}
+
+
+
+
+.main-content > div > div > .user-footer{
+    height: 20%;
+    text-align: center;
+    padding-top: 18px;
+}
+
+.user-boxline {
+    border: 1px solid #ffce58;
+}
+
+.main-content > div > div > .user-footer > span {
+    color: #d98f34;
+    font-weight: bold;
+}
+
+.user-changeinfo {
+    font-weight: bold;
+    display: inline-block;
+    text-decoration: none;
+    margin: auto 7px;
+    color: #d98f34 !important;
+}
+
+
+
+
+
 .main-content > div > .info-leftbox {
     width: 320px;
     height: 320px;
@@ -995,13 +1106,10 @@ body {
 }
 
 .modal-input {
-    letter-spacing: 2px;
+    letter-spacing: 2px !important;
+    padding-left: 18px !important;
+    font-weight: bold !important;
 }
-
-
-
-
-
 
 
 
@@ -1009,7 +1117,6 @@ body {
 .footer-copyright{
     background-color: #d98f34 !important;
 }
-
 
 
 

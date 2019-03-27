@@ -1,14 +1,24 @@
 package com.studysiba.controller;
 
+import com.studysiba.config.SocialKeys;
 import com.studysiba.domain.member.MemberVO;
 import com.studysiba.service.member.MemberService;
 import lombok.extern.log4j.Log4j;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import javax.xml.ws.Response;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
 
 @Controller
 @RequestMapping("/member")
@@ -144,24 +154,55 @@ public class MemberController {
      *  구글 소셜로그인 인증
      *  @Param code
      */
-    @GetMapping(value = "/social/google")
-    public String googleSignInCallback(@RequestParam("code") String code) throws Exception {
-        String stateCode = memberService.googleSignInCallback(code);
-        log.info("구글소셜로그인상태코드 : " + stateCode);
+//    @GetMapping(value = "/social/google")
+//    public String googleSignInCallback(@RequestParam("code") String code) throws Exception {
+//        String stateCode = memberService.googleSignInCallback(code);
+//        log.info("구글소셜로그인상태코드 : " + stateCode);
+//        return "redirect:/";
+//    }
+//
+//    @GetMapping(value = "/social/naver")
+//    public String naverSignInCallback(@RequestParam String code, @RequestParam String state) throws Exception {
+//        String accessToken = memberService.getNaverAccessToken(code,state);
+//        String stateCode = memberService.naverSignInCallback(accessToken);
+//        log.info("네이버소셜로그인상태코드 : " + stateCode);
+//        return "redirect:/";
+//    }
+
+    /*
+     *  카카오, 네이버 소셜로그인 인증
+     *  @Param mbrType, code, state
+     *  @Return 소셜로그인절차에따른상태메세지
+     */
+    @GetMapping(value = "/social/{mbrType}")
+    public String socialGetCallback(@PathVariable("mbrType") String mbrType, @RequestParam String code, @RequestParam(value="state", required=false) String state) throws Exception {
+        String stateCode = "";
+        mbrType = mbrType.toUpperCase();
+        if ( mbrType.equals("GOOGLE") ) {
+            stateCode = memberService.googleSignInCallback(code, mbrType);
+        } else if ( mbrType.equals("NAVER") ) {
+            String accessToken = memberService.getNaverAccessToken(code,state);
+            stateCode = memberService.naverSignInCallback(accessToken, mbrType);
+        }
+        log.info(mbrType + "소셜로그인상태코드 : " + stateCode);
         return "redirect:/";
     }
 
     /*
-     *  카카오 소셜로그인 인증
-     *  @Param MemberVO
+     *  카카오, 페이스북 소셜로그인 인증
+     *  @Param mbrType, MemberVO
      *  @Return 소셜로그인절차에따른상태메세지
      */
     @ResponseBody
-    @PostMapping(value = "/social/kakao")
-    public ResponseEntity<String> kakaoSignInCallback(@RequestBody MemberVO memberVO) throws Exception {
-        String stateCode = memberService.kakaoSignInCallback(memberVO);
-        log.info("카카오소셜로그인상태코드 : " + stateCode);
-        return !stateCode.equals("SOCIAL_JOIN_ERROR") ? new ResponseEntity<>(stateCode,HttpStatus.OK) : new ResponseEntity<>(stateCode,HttpStatus.INTERNAL_SERVER_ERROR);
+    @PostMapping(value = "/social/{mbrType}")
+    public ResponseEntity<String> socialPostCallback(@PathVariable("mbrType") String mbrType, @RequestBody MemberVO memberVO) throws Exception {
+        memberVO.setMbrType(mbrType.toUpperCase());
+        String stateCode = memberService.postSocialSignInCallback(memberVO);
+        log.info(memberVO.getMbrType()+"소셜로그인상태코드 : " + stateCode);
+        return !stateCode.equals("SOCIAL_JOIN_ERROR") ? new ResponseEntity<>(stateCode, HttpStatus.OK) : new ResponseEntity<>(stateCode, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+
+
 
 }

@@ -191,34 +191,90 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-4 info-box">
-            <div class="info-rightbox">
 
-                <div class="login-header">
-                    <div class="header-text">
-                        <p>스터디에 참가하려면 ?</p>
-                    </div>
-                    <div class="header-button">
-                        <button class="header-loginbutton modal-login">
-                            스터디시바 로그인
-                        </button>
-                    </div>
+        <c:choose>
+            <c:when test="${sessionScope.id eq null}">
+                <div class="col-lg-4 info-box">
+                    <div class="info-rightbox">
 
-                </div>
-                <div class="login-footer">
-                    <div class="footer-text">
-                        <p id="recovery-password">비밀번호 재설정</p>
+                        <div class="login-header">
+                            <div class="header-text">
+                                <p>스터디에 참가하려면 ?</p>
+                            </div>
+                            <div class="header-button">
+                                <button class="header-loginbutton modal-login">
+                                    스터디시바 로그인
+                                </button>
+                            </div>
+                        </div>
+                        <div class="login-footer">
+                            <div class="footer-text">
+                                <p id="recovery-password">비밀번호 재설정</p>
+                            </div>
+                            <div class="footer-button">
+                                <img src="/static/image/main/google.png"
+                                     class="social-login-icon waves-effect social-google" data-name="social-google"
+                                     data-url="${googleUrl}">
+                                <img src="/static/image/main/naver.png"
+                                     class="social-login-icon waves-effect social-naver" data-name="social-naver"
+                                     data-url="${naverUrl}">
+                                <img src="/static/image/main/facebook.png"
+                                     class="social-login-icon waves-effect social-facebook" data-name="social-facebook">
+                                <img src="/static/image/main/kakao.png"
+                                     class="social-login-icon waves-effect social-kakao" data-name="social-kakao">
+                            </div>
+                        </div>
                     </div>
-                    <div class="footer-button">
-                        <img src="/static/image/main/google.png" class="social-login-icon waves-effect social-google" data-name="social-google" data-url="${googleUrl}">
-                        <img src="/static/image/main/facebook.png" class="social-login-icon waves-effect" data-type="facebook">
-                        <img src="/static/image/main/naver.png" class="social-login-icon waves-effect" data-type="naver">
-                        <img src="/static/image/main/kakao.png" class="social-login-icon waves-effect social-kakao" data-name="social-kakao" data-url="${kakaoUrl}">
+                </div>
+            </c:when>
+            <c:otherwise>
+                <div class="col-lg-4 info-box">
+                    <div class="info-rightbox user-boxline">
+                        <div class="user-header">
+                            <img class="user-image" src="/static/image/main/1.jpg">
+                            <p class="user-connect">접속시간 : 2018.04.29. 23:01</p>
+                        </div>
+                        <div class="user-body">
+                            <div>
+                                <p>침착해내자신</p>
+                                <p><span>1등</span><span class="point">11111</span><span>점</span></p>
+                            </div>
+                            <div>
+                                <div class="row">
+                                    <div class="col-4">
+                                        방문수
+                                    </div>
+                                    <div class="col-4">
+                                        게시글
+                                    </div>
+                                    <div class="col-4">
+                                        댓글
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-4 point">
+                                        <span class="point">1111</span>
+                                    </div>
+                                    <div class="col-4 point">
+                                        <span class="point">2222</span>
+                                    </div>
+                                    <div class="col-4 point">
+                                        <span class="point">3333</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="user-footer">
+                            <a class="user-changeinfo">닉네임</a><span>｜</span> <a
+                                class="user-changeinfo">프로필</a><span>｜</span><a class="user-changeinfo">비밀번호</a>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
+            </c:otherwise>
+        </c:choose>
+
     </div>
+
 
     <div class="middleline">
         <div class="row middle-box">
@@ -549,7 +605,7 @@
     </div>
 
     <div class="footer-copyright text-center py-3">© 2019 Copyright:
-        <a href="https://mdbootstrap.com/education/bootstrap/"> studysiba.com</a>
+        <a href="https://www.studysiba.com"> studysiba.com</a>
     </div>
 </footer>
 
@@ -598,10 +654,16 @@
                         </div>
                         <div class="modal-footer modal-footer-login">
                             <div class="options text-center text- mt-3 modal-social">
-                                <img src="/static/image/main/google.png" class="social-login-icon waves-effect social-google" data-name="social-google" data-url="${googleUrl}">
-                                <img src="/static/image/main/facebook.png" class="social-login-icon waves-effect" data-type="facebook">
-                                <img src="/static/image/main/naver.png" class="social-login-icon waves-effect" data-type="naver">
-                                <img src="/static/image/main/kakao.png" class="social-login-icon waves-effect social-kakao" data-name="social-kakao" data-url="${kakaoUrl}">
+                                <img src="/static/image/main/google.png"
+                                     class="social-login-icon waves-effect social-google" data-name="social-google"
+                                     data-url="${googleUrl}">
+                                <img src="/static/image/main/naver.png"
+                                     class="social-login-icon waves-effect social-naver" data-name="social-naver"
+                                     data-url="${naverUrl}">
+                                <img src="/static/image/main/facebook.png"
+                                     class="social-login-icon waves-effect social-facebook" data-name="social-facebook">
+                                <img src="/static/image/main/kakao.png"
+                                     class="social-login-icon waves-effect social-kakao" data-name="social-kakao">
                             </div>
                         </div>
 
@@ -704,44 +766,15 @@
         $(document).ready(function () {
             let stateComment = '${sessionScope.stateCode}';
             let stateFlag = stateComment.includes('SUCCESS');
-            // 로그인인증
-            if (stateComment == 'LOGIN_STATE_SUCCESS') {
-                successAlert(stateCode.get(stateComment));
-                return false;
-
-                // 패스워드이메일인증
-            } else if (stateComment.includes('PASSAUTH')) {
-                liar(res => {
-                    setTimeout(() => {
-                        timerAlert('비밀번호변경 인증', '이메일 정보를 인증중 입니다.', 2000);
-                        res.next();
-                    }, 300);
-                }).next(res => {
-                    setTimeout(() => {
-                        if (stateFlag) {
-                            $('#modalChangePassword').modal('show');
-                        } else {
-                            errorAlert(stateCode.get(stateComment));
-                        }
-                        res.next();
-                    }, 2300);
-                });
+            // 패스워드이메일인증
+            if (stateComment.includes('PASSAUTH')) {
+                timerAlert('비밀번호변경 인증', '이메일 정보를 인증중 입니다.', 2000);
+                setTimeout(() => {
+                    stateFlag ? $('#modalChangePassword').modal('show') : errorAlert(stateCode.get(stateComment));
+                }, 2300);
                 // 초대장메일인증
-            } else if (stateComment.includes('INVITE')) {
-                liar(res => {
-                    setTimeout(() => {
-                        timerAlert('초대장 확인', '초대장 정보를 인증중 입니다.', 2000);
-                        res.next();
-                    }, 300);
-                }).next(res => {
-                    setTimeout(() => {
-                        stateFlag ? successAlert(stateCode.get(stateComment)) : errorAlert(stateCode.get(stateComment));
-                        res.next();
-                    }, 2300);
-                });
-                // 상태코드 공통 메세지
             } else {
-                stateComment.includes('SUCCESS') ? successAlert(stateCode.get(stateComment)) : errorAlert(stateCode.get(stateComment));
+                    stateComment.includes('SUCCESS') ? successAlert(stateCode.get(stateComment)) : errorAlert(stateCode.get(stateComment));
             }
         });
         <c:remove var="stateCode" scope="session"/>
@@ -749,7 +782,28 @@
 </c:if>
 
 
-<script type="text/javascript" src="/static/js/popper.min.js" ></script>
+<script>
+    (function (d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s);
+        js.id = id;
+        js.src = "https://connect.facebook.net/en_US/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+
+    fbAsyncInit = () => {
+        FB.init({
+            appId: '260762411499713',
+            xfbml: true,
+            version: 'v3.2'
+        });
+        FB.AppEvents.logPageView();
+    };
+</script>
+
+
+<script type="text/javascript" src="/static/js/popper.min.js"></script>
 <script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="/static/js/mdb.js"></script>
 <script type="text/javascript" src="/static/js/sweetalert2.all.min.js"></script>

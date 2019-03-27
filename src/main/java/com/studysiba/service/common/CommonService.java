@@ -7,4 +7,8 @@ public interface CommonService {
      */
     String getGoogleUrl();
 
+    /*
+            네이버 Social Login Url 반환
+     */
+    String getNaverUrl();
 }

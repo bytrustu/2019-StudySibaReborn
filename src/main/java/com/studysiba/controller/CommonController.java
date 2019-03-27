@@ -21,6 +21,10 @@ public class CommonController {
         // 구글 소셜로그인 URL
         String googleUrl = commonService.getGoogleUrl();
         model.addAttribute("googleUrl", googleUrl);
+
+        // 네이버 소셜로그인 URL
+        String naverUrl = commonService.getNaverUrl();
+        model.addAttribute("naverUrl", naverUrl);
         return "common/main";
     }
 

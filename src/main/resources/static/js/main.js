@@ -66,20 +66,17 @@ $(document).ready(function () {
             }
         }
         $('#modalLRForm').modal('hide');
-        setTimeout(() => {
-            timerAlert('로그인', '회원정보를 확인중입니다.', 1000);
-        }, 200);
-
         memberNormalLogin(memberJson)
             .then((data) => {
-                setTimeout(() => {
-                    if (data === 'LOGIN_STATE_SUCCESS') {
-                        location.href = '/';
-                    } else if (data === 'ID_STATE_WAITAPPROVAL') {
+                if (data === 'LOGIN_STATE_SUCCESS') {
+                    location.href = '/';
+                } else if (data === 'ID_STATE_WAITAPPROVAL') {
+                    timerAlert('로그인', '회원정보를 확인중입니다.', 2000);
+                    setTimeout(() => {
                         $('#sendmailid').val($('#input-loginid').val());
                         $('#modalSendMail').modal('show');
-                    }
-                }, 1400);
+                    }, 2300)
+                }
             }).catch((error) => {
             error = error.responseText;
             setTimeout(() => {
@@ -202,77 +199,27 @@ $(document).ready(function () {
         });
     });
 
-    // 구글 소셜로그인
-    $('.social-google').on('click', function() {
-        location.href=$(this).attr('data-url');
-    });
 
-    // 카카오 소셜로그인
-    $('.social-kakao').on('click', () => {
-        $('.modal ').modal('hide');
-        kakaoRequest();
+    // 소셜로그인
+    $('.social-login-icon').on('click', function () {
+        let socialName = $(this).attr('data-name');
+        switch (socialName) {
+            case 'social-kakao' :
+                $('.modal ').modal('hide');
+                kakaoRequest();
+                break;
+            case 'social-facebook' :
+                FB.login(function (response) {
+                    checkFacebookLoginStatus(response);
+                });
+                break;
+            default :
+                location.href = $(this).attr('data-url');
+        }
     });
 
     // Close Ready
 });
-
-
-let kakaoRequest = () => {
-    Kakao.Auth.login({
-        success: (authObj) => {
-            console.log('success');
-            Kakao.API.request({
-                url: '/v2/user/me',
-                success: (data) => {
-                    let memberInfo = new Map();
-                    memberInfo.set('mbrId', data.id);
-                    if (data.properties.nickname == null || data.properties.nickname == undefined || data.properties.nickname == '') {
-                        let studyNumber = rendomNumber(99999);
-                        memberInfo.set('mbrNick', `스터디${studyNumber}`);
-                    } else {
-                        memberInfo.set('mbrNick', data.properties.nickname);
-                    }
-                    let memberJson = mapToJson(memberInfo);
-                    kakaoSigin(memberJson)
-                        .then((data) => {
-                            timerAlert("로그인","회원정보를 확인중입니다.", 2000);
-                            setTimeout( () => {
-                                location.href = '/';
-                            },2200);
-                        }).catch((error) => {
-                        timerAlert("로그인","회원정보를 확인중입니다.", 2000);
-                        setTimeout( () => {
-                            location.href = '/';
-                        },2200);
-                    });
-                },
-                fail: (error) => {
-                    errorAlert("로그인 실패했습니다.");
-                }
-            });
-        },
-        fail: (error) => {
-            errorAlert("로그인 실패했습니다.");
-        }
-    });
-}
-
-let kakaoSigin = (memberJson) => {
-    return new Promise((resolve, reject) => {
-        $.ajax({
-            type: 'POST',
-            url: 'member/social/kakao',
-            contentType: 'application/json; charset=utf-8',
-            data: memberJson,
-            success: (data) => {
-                resolve(data);
-            },
-            error: (error) => {
-                reject(error);
-            }
-        });
-    });
-}
 
 
 // 초대장 전송
@@ -319,11 +266,9 @@ let memberJoin = (memberJson) => {
             data: memberJson,
             contentType: 'application/json; charset=utf-8',
             success: (data) => {
-                console.log(data);
                 resolve(data);
             },
             error: (error) => {
-                console.log(error);
                 reject(error);
             }
         });
@@ -340,10 +285,8 @@ let memberNormalLogin = (memberJson) => {
             data: memberJson,
             contentType: 'application/json; charset=utf-8',
             success: (data) => {
-                console.log(`success : ${data}`);
                 resolve(data);
             }, error: (error) => {
-                console.log(`success : ${error.responseText}`);
                 reject(error);
             }
         });
@@ -382,6 +325,96 @@ let changePassword = (memberJson) => {
                 resolve(data);
             },
             error: (error) => {
+                reject(error);
+            }
+        });
+    });
+}
+
+
+// 카카오 연동
+let kakaoRequest = () => {
+    Kakao.Auth.login({
+        success: (authObj) => {
+            timerAlert("정보확인", "정보를 확인중입니다.", 2000);
+            setTimeout(() => {
+                Kakao.API.request({
+                    url: '/v2/user/me',
+                    success: (data) => {
+                        let memberInfo = new Map();
+                        memberInfo.set('mbrId', data.id);
+                        memberInfo.set('mbrNick', data.properties.nickname);
+                        let memberJson = mapToJson(memberInfo);
+                        kakaoSigin(memberJson)
+                            .finally(() => {
+                                location.href = '/';
+                            });
+                    },
+                    fail: (error) => {
+                        errorAlert("로그인 실패했습니다.");
+                    }
+                });
+            }, 2300);
+        },
+        fail: (error) => {
+            errorAlert("로그인 실패했습니다.");
+        }
+    });
+}
+
+// 카카오 소셜 로그인
+let kakaoSigin = (memberJson) => {
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            type: 'POST',
+            url: 'member/social/kakao',
+            contentType: 'application/json; charset=utf-8',
+            data: memberJson,
+            success: (data) => {
+                resolve(data);
+            },
+            error: (error) => {
+                reject(error);
+            }
+        });
+    });
+}
+
+// 페이스북 연동
+var checkFacebookLoginStatus = (response) => {
+    if (response.status === 'connected') {
+        timerAlert("정보확인", "정보를 확인중입니다.", 2000);
+        setTimeout(() => {
+            FB.api('/me', {
+                fields: 'name,email'
+            }, function (response) {
+                let memberInfo = new Map();
+                memberInfo.set('mbrId', response.id);
+                memberInfo.set('mbrNick', response.name);
+                let memberJson = mapToJson(memberInfo);
+                facebookSignIn(memberJson)
+                    .finally(() => {
+                        location.href = '/';
+                    })
+            });
+        });
+    } else {
+        errorAlert("로그인 실패 했습니다.")
+    }
+}
+
+
+// 페이스북 소셜로그인
+let facebookSignIn = (memberJson) => {
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            type: 'POST',
+            url: '/member/social/facebook',
+            contentType: 'application/json; charset=utf-8',
+            data: memberJson,
+            success: (data) => {
+                resolve(data);
+            }, error: (error) => {
                 reject(error);
             }
         });

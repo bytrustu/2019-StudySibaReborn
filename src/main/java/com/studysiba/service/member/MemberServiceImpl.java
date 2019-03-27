@@ -1,19 +1,13 @@
 package com.studysiba.service.member;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.studysiba.common.DataConversion;
 import com.studysiba.common.DataValidation;
+import com.studysiba.config.SocialKeys;
 import com.studysiba.domain.member.MemberVO;
 import com.studysiba.mapper.member.MemberMapper;
 import lombok.extern.log4j.Log4j;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.message.BasicNameValuePair;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -34,13 +28,10 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpSession;
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
+import java.net.URLEncoder;
 
 @Service
 @Log4j
@@ -139,7 +130,7 @@ public class MemberServiceImpl implements MemberService {
         // 초대장 보내질 양식
         switch (type) {
             case "invite":
-                htmlStr.append("<a href='http://" + siteUrl + "/member/mail/invite");
+                htmlStr.append("<a href='https://" + siteUrl + "/member/mail/invite");
                 htmlStr.append("/" + memberVO.getMbrId());
                 htmlStr.append("/" + memberVO.getMbrCode());
                 htmlStr.append("'>");
@@ -151,7 +142,7 @@ public class MemberServiceImpl implements MemberService {
                 break;
 
             case "password":
-                htmlStr.append("<a href='http://" + siteUrl + "/member/mail/changepass");
+                htmlStr.append("<a href='https://" + siteUrl + "/member/mail/changepass");
                 htmlStr.append("/" + memberVO.getMbrId());
                 htmlStr.append("/" + memberVO.getMbrCode());
                 htmlStr.append("'>");
@@ -372,7 +363,7 @@ public class MemberServiceImpl implements MemberService {
      *  @Return 소셜로그인로직처리에따른 상태매세지 반환
      */
     @Override
-    public String googleSignInCallback(String code) throws Exception {
+    public String googleSignInCallback(String code, String mbrType) throws Exception {
 
         oAuth2Operations = googleConnectionFactory.getOAuthOperations();
         AccessGrant accessGrant = oAuth2Operations.exchangeForAccess(code, oAuth2Parameters.getRedirectUri(), null);
@@ -395,7 +386,7 @@ public class MemberServiceImpl implements MemberService {
         MemberVO memberVO = new MemberVO();
         memberVO.setMbrId(profile.getId());
         memberVO.setMbrNick(profile.getDisplayName());
-        memberVO.setMbrType("GOOGLE");
+        memberVO.setMbrType(mbrType);
         String stateCode = processingSocialLogic(memberVO);
 
         // Access Token 취소
@@ -416,16 +407,96 @@ public class MemberServiceImpl implements MemberService {
     }
 
     /*
-     *  카카오 소셜로그인
+     *  카카오, 페이스북 소셜로그인
      *  @Param MemberVO
      *  @Return 소셜로그인로직처리에따른 상태매세지 반환
      */
     @Override
-    public String kakaoSignInCallback(MemberVO memberVO) {
-        memberVO.setMbrType("KAKAO");
+    public String postSocialSignInCallback(MemberVO memberVO) {
         String stateCode = processingSocialLogic(memberVO);
         return stateCode;
     }
+
+
+    /*
+     *  네이버 소셜로그인 토큰
+     *  @Param code, state
+     *  @Return 토큰반환
+     */
+    @Override
+    public String getNaverAccessToken(String code, String state) throws Exception {
+        String redirectURI = URLEncoder.encode(SocialKeys.getNaverRedirect(), "UTF-8");
+        String accessToken = "";
+        String tokenUrl;
+        tokenUrl = "https://nid.naver.com/oauth2.0/token?grant_type=authorization_code&";
+        tokenUrl += "client_id=" + SocialKeys.getNaverClientId() + "&client_secret=" + SocialKeys.getNaverClientSecret();
+        tokenUrl += "&redirect_uri=" + redirectURI + "&code=" + code + "&state=" + state;
+        URL url = new URL(tokenUrl);
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setRequestMethod("GET");
+        int responseCode = con.getResponseCode();
+        BufferedReader br;
+        System.out.print("responseCode=" + responseCode);
+        if (responseCode == 200) {
+            br = new BufferedReader(new InputStreamReader(con.getInputStream()));
+        } else {
+            br = new BufferedReader(new InputStreamReader(con.getErrorStream()));
+        }
+        String inputLine;
+        StringBuffer res = new StringBuffer();
+        while ((inputLine = br.readLine()) != null) {
+            res.append(inputLine);
+        }
+        br.close();
+        if (responseCode == 200) {
+            JSONParser parser = new JSONParser();
+            JSONObject obj = (JSONObject) parser.parse(res.toString());
+            accessToken = obj.get("access_token").toString();
+        }
+        return accessToken;
+    }
+
+    /*
+     *  네이버 소셜로그인
+     *  @Param accessToken
+     *  @Return 소셜로그인로직처리에따른 상태매세지 반환
+     */
+    @Override
+    public String naverSignInCallback(String accessToken, String mbrType) throws Exception {
+        String header = "Bearer " + accessToken;
+        String apiURL = "https://openapi.naver.com/v1/nid/me";
+        URL url = new URL(apiURL);
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setRequestMethod("GET");
+        con.setRequestProperty("Authorization", header);
+        int responseCode = con.getResponseCode();
+        BufferedReader br;
+        if (responseCode == 200) {
+            br = new BufferedReader(new InputStreamReader(con.getInputStream()));
+        } else {
+            br = new BufferedReader(new InputStreamReader(con.getErrorStream()));
+        }
+        String inputLine;
+        StringBuffer response = new StringBuffer();
+        while ((inputLine = br.readLine()) != null) {
+            response.append(inputLine);
+        }
+        br.close();
+        System.out.println(response.toString());
+        JSONParser parser = new JSONParser();
+        JSONObject obj = (JSONObject) parser.parse(response.toString());
+        obj = (JSONObject) parser.parse(obj.get("response").toString());
+        MemberVO memberVO = new MemberVO();
+
+        memberVO.setMbrId(obj.get("id").toString());
+        memberVO.setMbrNick(obj.get("nickname").toString());
+        memberVO.setMbrType(mbrType);
+        String stateCode = processingSocialLogic(memberVO);
+        return stateCode;
+    }
+
+
+
 
     /*
      *  공통 소셜로그인 로그인/회원가입 처리 및 세션등록
@@ -438,12 +509,14 @@ public class MemberServiceImpl implements MemberService {
         int socialSignInState = memberMapper.socialSignInState(memberVO);
         if (socialSignInState == 0) {
             try {
-                if ( DataValidation.findEmptyValue(memberVO, new String[]{"mbrNick"}).equals("VALUES_STATE_GOOD") ) {
-                    String mbrNick = memberVO.getMbrNick();
+                if (DataValidation.findEmptyValue(memberVO, new String[]{"mbrNick"}).equals("VALUES_STATE_GOOD")) {
+                    String mbrNick = memberVO.getMbrNick().replace(" ","");
                     // 소셜 회원닉네임이 이미 중복일경우 임시 닉네임적용
-                    if ( memberMapper.nickReduplicationCheck(memberVO) == 1 ) mbrNick = "스터디" + Integer.toString(DataConversion.returnRanNum(999999));
+                    if (memberMapper.nickReduplicationCheck(memberVO) == 1)
+                        mbrNick = "스터디" + Integer.toString(DataConversion.returnRanNum(999999));
                     // 소셜 회원닉네임 정보의 데이터크기가 클때 보정
-                    if (!DataValidation.textLengthComparison(12, mbrNick)) mbrNick = DataValidation.textLengthReturns(12, mbrNick);
+                    if (!DataValidation.textLengthComparison(12, mbrNick))
+                        mbrNick = DataValidation.textLengthReturns(12, mbrNick);
                     memberVO.setMbrNick(mbrNick);
                 } else {
                     // 닉네임정보가 없을경우 임시 닉네임 적용

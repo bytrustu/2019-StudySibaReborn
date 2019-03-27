@@ -72,12 +72,27 @@ public interface MemberService {
      *  @Param  code
      *  @Return 소셜로그인 상태코드반환
      */
-    String googleSignInCallback(String code) throws Exception;
+    String googleSignInCallback(String code, String mbrType) throws Exception;
 
     /*
-     *  카카오소셜로그인연동
+     *  카카오,페이스북 소셜로그인연동
      *  @Param  MemberVO
      *  @Return 소셜로그인 상태코드반환
      */
-    String kakaoSignInCallback(MemberVO memberVO);
+    String postSocialSignInCallback(MemberVO memberVO);
+
+    /*
+     *  네이버소셜로그인토큰
+     *  @Param  code, state
+     *  @Return 토큰반환
+     */
+    String getNaverAccessToken(String code, String state) throws Exception;
+
+    /*
+     *  네이버소셜로그인연동
+     *  @Param  accessToken
+     *  @Return 소셜로그인 상태코드반환
+     */
+    String naverSignInCallback(String accessToken, String mbrType) throws Exception;
+
 }
