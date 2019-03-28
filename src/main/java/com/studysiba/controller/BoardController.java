@@ -22,4 +22,11 @@ public class BoardController {
 
         return "/board/list";
     }
+
+    @GetMapping("/notice")
+    public String moveBoardNotice(){
+        log.info("move community");
+
+        return "/board/list";
+    }
 }

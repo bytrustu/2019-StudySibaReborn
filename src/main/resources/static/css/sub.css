@@ -1,0 +1,26 @@
+.sub-page {
+    background-color: white !important;
+}
+
+.sub-subject{
+    padding-top: 50px;
+    padding-bottom: 30px;
+    margin: 0 auto 20px auto;
+    text-align: center;
+}
+
+.sub-subject > span {
+    display: block;
+}
+
+.sub-subject > .sub-topcomment {
+    font-size: 45px;
+    font-weight: 900;
+    padding-bottom: 20px;
+    font-family: Roboto;
+}
+
+.sub-subject > .sub-bottomcomment {
+    font-size: 16px;
+    font-weight: 600;
+}
