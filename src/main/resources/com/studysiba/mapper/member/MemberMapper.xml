@@ -225,6 +225,11 @@
         UPDATE MEMBER SET MBR_NICK = #{mbrNick} WHERE MBR_ID = #{mbrId}
     </update>
 
+    <!-- 유저 프로필사진 변경 -->
+    <update id="updateProfile" parameterType="MemberVO">
+        UPDATE MEMBER SET MBR_PROFILE = #{mbrProfile} WHERE MBR_ID = #{mbrId}
+    </update>
+
 
 
 

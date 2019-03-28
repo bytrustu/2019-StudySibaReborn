@@ -89,7 +89,7 @@
                     <c:forEach var="rank" items="${rank}" varStatus="status">
                         <div class="row mt-3 member-rank">
                             <img src="/static/image/main/rank${rank.PNT_RANK}.png">
-                            <img src="/static/image/common/${rank.MBR_PROFILE}">
+                            <img src="/static/image/profile/${rank.MBR_PROFILE}">
                             <p>
                                 <span>${rank.PNT_RANK}위 !!! ${rank.MBR_NICK}</span><br/>
                                 <span class="point" id="point${rank.PNT_RANK}"
@@ -230,7 +230,7 @@
                 <div class="col-lg-4 info-box">
                     <div class="info-rightbox user-boxline">
                         <div class="user-header">
-                            <img class="user-image" src="/static/image/common/${sessionScope.profile}">
+                            <img class="user-image" src="/static/image/profile/${sessionScope.profile}">
                             <p class="user-connect">접속시간 : 2018.04.29. 23:01</p>
                         </div>
                         <div class="user-body">
@@ -816,18 +816,15 @@
     <div class="modal-dialog cascading-modal modal-avatar modal-sm" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <img src="/static/image/common/${profile}" alt="avatar"
-                     class="rounded-circle img-responsive">
+                <img src="/static/image/common/rotate.png" class="image-target">
+                <img src="/static/image/profile/${profile}" alt="프로필사진"
+                     class="rounded-circle img-responsive logined-profile">
             </div>
             <div class="modal-body text-center mb-1">
-                <h6 class="mt-1 mb-2 modal-resendtext"><span class='modal-resendpoint'>비밀번호</span>를 입력해주세요.</h6>
-                <h6 class="mt-1 mb-2 modal-resendtext"><span class='modal-resendpoint'>영어숫자</span>포함 5~16자 설정!</h6>
-                <h5 class=""></h5>
-                <div class="md-form ml-0 mr-0">
-                    <input type="text" class="form-control form-control-sm modal-input">
-                </div>
+                <h6 class="mt-1 mb-2 modal-resendtext">원하는 <span class='modal-resendpoint'>프로필</span>을 설정하세요</h6>
+                <h6 class="mt-1 mb-2 modal-resendtext">상단 <span class='modal-resendpoint'>버튼</span>으로 원하는이미지 변경!</h6>
                 <div class="text-center mt-4 modal-sendbox">
-
+                    <input type="text" class="form-control form-control-sm modal-input modal-inputprofile" value="${sessionScope.profile}">
                     <button class="btn btn-warning mt-1 modal-resendbtn change-btn" data-change="profile">프로필변경</button>
                 </div>
             </div>

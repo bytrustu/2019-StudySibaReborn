@@ -3,15 +3,8 @@
 $(document).ready(function () {
 
 
-    $('#file').on('change', function(e) {
-        let files = $(this)[0].files;
-        if ( files.length >- 2 ) {
-            $('#label_span').text('준비완료');
-        } else {
-            let filename = e.target.value.split('\\').pop();
-            $('#label_span').text(filename);
-        }
-    })
+
+
 
     // 992px 이상일 경우 시바랭킹 카운팅
     if (window.innerWidth >= 992) {
@@ -99,7 +92,7 @@ $(document).ready(function () {
         memberInfo.set('mbrPass', $('#input-joinpass').val());
         memberInfo.set('mbrNick', $('#input-joinnick').val());
         memberInfo.set('mbrEmail', $('#input-joinemail').val());
-        memberInfo.set('mbrProfile', 'studysiba-default.png');
+        memberInfo.set('mbrProfile', 'profile-51.png');
 
         for (let item of memberInfo) {
             if (item[1] === '') {
@@ -242,29 +235,35 @@ $(document).ready(function () {
                 break;
             case 'profile' :
                 $('#modalChangeProfile').modal('show');
+                swing();
                 break;
         }
     });
+
+    // 프로필 사진 변경
+    $('.image-target').on('click', () => {
+        let changeProfile = `profile-${rendomNumber(61)}.png`;
+        $('.logined-profile').attr('src',`/static/image/profile/${changeProfile}`);
+        $('.modal-inputprofile').val(changeProfile);
+    });
+
 
     $('.change-btn').on('click', function(){
         let changeType = $(this).attr('data-change');
         let logginedId = $('#loggined-id').html();
         let dataValue = $(this).parents('.modal-body').find('.modal-input').val().trim();
-        if ( dataValue === '' ) { errorAlert("입력값을 확인해주세요."); return false; };
+        if ( dataValue === '' ) { errorAlert("입력사항을 확인해주세요."); return false; };
         let url = `/member/${logginedId}/${changeType}/${dataValue}`;
-        if ( changeType === 'profile' ) {
-            console.log(`profile 변경`);
-        } else {
             changeUserInformation(url)
                 .then( (data) => {
+                    if ( changeType === 'nick' ) $('#loggined-nick').html(dataValue);
+                    if ( changeType === 'profile' ) $('.user-image').attr('src', `/static/image/profile/${dataValue}`);
                     $('.modal').modal('hide');
-                    $('#loggined-nick').html(dataValue);
                     successAlert(stateCode.get(data));
                 }).catch( (error) => {
                     console.log(error);
                     errorAlert(stateCode.get(error.responseText));
             });
-        }
         initElement('modal-input');
     });
 
@@ -272,6 +271,19 @@ $(document).ready(function () {
 
     // Close Ready
 });
+
+
+
+function swing(){
+    let imageTarget = $('.image-target');
+    imageTarget.animate({
+        top: '-70px',
+        left: '194px'
+    }, 1000).animate({
+        top: '-60px',
+        left: '174px'
+    }, 1000, swing);
+}
 
 
 

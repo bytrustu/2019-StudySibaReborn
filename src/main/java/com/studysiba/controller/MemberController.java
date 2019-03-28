@@ -1,24 +1,14 @@
 package com.studysiba.controller;
 
-import com.studysiba.config.SocialKeys;
 import com.studysiba.domain.member.MemberVO;
 import com.studysiba.service.member.MemberService;
 import lombok.extern.log4j.Log4j;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
-import javax.xml.ws.Response;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLEncoder;
 
 @Controller
 @RequestMapping("/member")
@@ -184,6 +174,11 @@ public class MemberController {
         return !stateCode.equals("SOCIAL_JOIN_ERROR") ? new ResponseEntity<>(stateCode, HttpStatus.OK) : new ResponseEntity<>(stateCode, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    /*
+     *  회원정보수정 [ 비밀번호, 닉네임, 프로필사진, 권한 ]
+     *  @Param mbrId, changeType, changeValue
+     *  @Return 회원정보수정에따른상태메세지
+     */
     @ResponseBody
     @PutMapping(value = "/{mbrId}/{changeType}/{changeValue}", consumes = "application/json", produces = {MediaType.TEXT_PLAIN_VALUE})
     public ResponseEntity<String> changeUserInformation(@PathVariable("mbrId") String mbrId, @PathVariable("changeType") String changeType, @PathVariable("changeValue") String changeValue) {

@@ -223,4 +223,11 @@ public interface MemberMapper {
      *  @Return 닉네임변경결과값
      */
     int updateNickname(MemberVO memberVO);
+
+    /*
+     *  유저 프로필사진 변경
+     *  @Param MemberVO
+     *  @Return 프로필사진변경결과값
+     */
+    int updateProfile(MemberVO memberVO);
 }

@@ -522,7 +522,7 @@ public class MemberServiceImpl implements MemberService {
                 }
                 memberVO.setMbrAuth("NORMAL");
                 memberVO.setMbrPass(passwordEncoder.encode(memberVO.getMbrId()));
-                memberVO.setMbrProfile("character-" + DataConversion.returnRanNum(5) + ".png");
+                memberVO.setMbrProfile("profile-51.png");
                 memberVO.setMbrEmail(memberVO.getMbrId() + "@studysiba.com");
                 memberVO.setMbrCode(DataConversion.returnUUID());
                 // 소셜 회원가입
@@ -639,7 +639,6 @@ public class MemberServiceImpl implements MemberService {
                 || httpSession.getAttribute("auth").toString().toUpperCase().equals("ADMIN") ) return stateCode;
         MemberVO memberVO = new MemberVO();
         memberVO.setMbrId(mbrId);
-
         switch (changeType) {
             case "password" :
                 memberVO.setMbrPass(changeValue);
@@ -668,6 +667,15 @@ public class MemberServiceImpl implements MemberService {
                 resultState = memberMapper.updateNickname(memberVO);
                 // 닉네임 변경시 세션 재등록
                 if ( resultState == 1 ) httpSession.setAttribute("nick", memberVO.getMbrNick());
+                break;
+            case "profile":
+                memberVO.setMbrProfile(changeValue);
+                // 아이디 프로필사진 공백 및 NULL 체크
+                if ( !DataValidation.findEmptyValue(memberVO, new String[]{"mbrId","mbrProfile"}).equals("VALUES_STATE_GOOD") ) break;
+                // 프로필사진 변경
+                resultState = memberMapper.updateProfile(memberVO);
+                // 프로필사진 변경시 세션 재등록
+                if ( resultState == 1 ) httpSession.setAttribute("profile", memberVO.getMbrProfile());
                 break;
             case "auth":
                 break;
