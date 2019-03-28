@@ -200,9 +200,9 @@ public interface MemberMapper {
     /*
      *  유저랭킹조회
      *  @Param MemberVO
-     *  @Return int
+     *  @Return PointVO
      */
-    int viewUserRanking(MemberVO memberVO);
+    PointVO viewUserRanking(MemberVO memberVO);
 
     /*
      *  유저랭킹 1~3위 조회

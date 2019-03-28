@@ -101,4 +101,11 @@ public interface MemberService {
      *  @Return 변경여부에 따른 상태코드반환
      */
     String changeUserInformation(String changeType, String mbrId, String changeValue) throws Exception;
+
+    /*
+     *  회원로그아웃
+     *  @Param  MemberVO
+     *  @Return 로그아웃여부에 따른 상태코드반환
+     */
+    String userLogout(MemberVO memberVO);
 }

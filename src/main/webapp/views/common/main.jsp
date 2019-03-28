@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -21,12 +21,9 @@
     <link href="/static/css/mdb.min.css" rel="stylesheet">
     <link href="/static/css/sweetalert2.min.css" rel="stylesheet">
     <link type="text/css" rel="stylesheet" href="/static/css/main.css">
-    <script type="text/javascript" src="/static/js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="/static/js/lib/jquery-3.3.1.min.js"></script>
 </head>
-
-
 <body>
-
 
 <!-- 하단 메세지 버튼 -->
 <div class="messenger-btn">
@@ -42,16 +39,16 @@
             <a class="nav-link" href="/">홈</a>
         </li>
         <li class="nav-item text-right">
-            <a class="nav-link" href="#">공지사항</a>
+            <a class="nav-link" href="/board/notice">공지사항</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="#">커뮤니티</a>
+            <a class="nav-link" href="/board/community">커뮤니티</a>
         </li>
         <li class="nav-item text-right">
-            <a class="nav-link" href="#">스터디참여</a>
+            <a class="nav-link" href="/study/list">스터디참여</a>
         </li>
         <li class="nav-item text-right">
-            <a class="nav-link" href="#">스터디그룹</a>
+            <a class="nav-link" href="/group/list">스터디그룹</a>
         </li>
         <li class="login-button nav-item text-right">
             <div class="login-eff"></div>
@@ -60,7 +57,7 @@
                     <a href="#" class="modal-login modal-user" data-user="login">로그인/가입</a>
                 </c:when>
                 <c:otherwise>
-                    <a href="#" class="modal-login modal-user" data-user="login">로그아웃</a>
+                    <a href="#" class="modal-login modal-user" data-user="logout" data-id="${sessionScope.id}">로그아웃</a>
                 </c:otherwise>
             </c:choose>
 
@@ -213,10 +210,10 @@
                             <div class="footer-button">
                                 <img src="/static/image/main/google.png"
                                      class="social-login-icon waves-effect social-google" data-name="social-google"
-                                     data-url="${googleUrl}">
+                                     data-url="${sessionScope.googleUrl}">
                                 <img src="/static/image/main/naver.png"
                                      class="social-login-icon waves-effect social-naver" data-name="social-naver"
-                                     data-url="${naverUrl}">
+                                     data-url="${sessionScope.naverUrl}">
                                 <img src="/static/image/main/facebook.png"
                                      class="social-login-icon waves-effect social-facebook" data-name="social-facebook">
                                 <img src="/static/image/main/kakao.png"
@@ -236,7 +233,7 @@
                         <div class="user-body">
                             <div>
                                 <p id="loggined-nick">${sessionScope.nick}</p>
-                                <p><span>${sessionScope.rank}위</span><span class="point">11111</span><span>점</span></p>
+                                <p><span>${sessionScope.rank}위</span><span class="point">${sessionScope.score}</span><span>점</span></p>
                                 <div id="loggined-id">${sessionScope.id}</div>
                             </div>
                             <div>
@@ -821,8 +818,8 @@
                      class="rounded-circle img-responsive logined-profile">
             </div>
             <div class="modal-body text-center mb-1">
-                <h6 class="mt-1 mb-2 modal-resendtext">원하는 <span class='modal-resendpoint'>프로필</span>을 설정하세요</h6>
-                <h6 class="mt-1 mb-2 modal-resendtext">상단 <span class='modal-resendpoint'>버튼</span>으로 원하는이미지 변경!</h6>
+                <h6 class="mt-1 mb-2 modal-resendtext">원하는 <span class='modal-resendpoint'>프로필</span>을 설정 해보세요</h6>
+                <h6 class="mt-1 mb-2 modal-resendtext">상단 <span class='modal-resendpoint'>버튼</span>으로 바꿀수 있어요!</h6>
                 <div class="text-center mt-4 modal-sendbox">
                     <input type="text" class="form-control form-control-sm modal-input modal-inputprofile" value="${sessionScope.profile}">
                     <button class="btn btn-warning mt-1 modal-resendbtn change-btn" data-change="profile">프로필변경</button>
@@ -833,6 +830,17 @@
 </div>
 
 
+<!-- 다른 페이지에서 로그인/회원가입 버튼을 눌렀을 경우 -->
+<c:if test="${requireLogin eq true }">
+    <script type="text/javascript">
+        setTimeout( () => {
+            $('#modalLRForm').modal('show');
+        }, 300);
+    </script>
+</c:if>
+
+
+<!-- 상태코드 메세지에 따른 결과 처리 -->
 <c:if test="${sessionScope.stateCode ne null}">
     <script type="text/javascript">
         $(document).ready(function () {
@@ -875,12 +883,13 @@
 </script>
 
 
-<script type="text/javascript" src="/static/js/popper.min.js"></script>
-<script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="/static/js/mdb.js"></script>
-<script type="text/javascript" src="/static/js/sweetalert2.all.min.js"></script>
-<script type="text/javascript" src="/static/js/Liar.js"></script>
+<script type="text/javascript" src="/static/js/lib/popper.min.js"></script>
+<script type="text/javascript" src="/static/js/lib/bootstrap.min.js"></script>
+<script type="text/javascript" src="/static/js/lib/mdb.js"></script>
+<script type="text/javascript" src="/static/js/lib/sweetalert2.all.min.js"></script>
+<script type="text/javascript" src="/static/js/lib/Liar.js"></script>
 <script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
+<script type="text/javascript" src="/static/js/common.js"></script>
 <script type="text/javascript" src="/static/js/main.js"></script>
 
 

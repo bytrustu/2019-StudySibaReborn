@@ -1,0 +1,33 @@
+<!DOCTYPE tiles-definitions PUBLIC
+        "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
+        "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+
+<tiles-definitions>
+
+    <definition name="common" template="/views/layout/empty.jsp">
+        <put-attribute name="title" value=""/>
+        <put-attribute name="header" value=""/>
+        <put-attribute name="menu" value=""/>
+        <put-attribute name="footer" value=""/>
+    </definition>
+
+    <definition name="common/*" extends="common">
+        <put-attribute name="body" value="/views/common/{1}.jsp"></put-attribute>
+    </definition>
+
+
+    <definition name="base" template="/views/layout/template.jsp">
+        <put-attribute name="header" value="/views/layout/header.jsp"/>
+        <put-attribute name="footer" value="/views/layout/footer.jsp"/>
+    </definition>
+
+    <definition name="*" extends="base">
+        <put-attribute name="body" value="/views/{1}.jsp"></put-attribute>
+    </definition>
+
+    <definition name="/*/*" extends="base">
+        <put-attribute name="body" value="/views/{1}/{2}.jsp"></put-attribute>
+    </definition>
+
+
+</tiles-definitions>

@@ -4,6 +4,7 @@ import com.studysiba.common.DataConversion;
 import com.studysiba.common.DataValidation;
 import com.studysiba.config.SocialKeys;
 import com.studysiba.domain.member.MemberVO;
+import com.studysiba.domain.member.PointVO;
 import com.studysiba.mapper.member.MemberMapper;
 import lombok.extern.log4j.Log4j;
 import org.json.simple.JSONObject;
@@ -307,6 +308,9 @@ public class MemberServiceImpl implements MemberService {
                 memberMapper.visitRegistration(memberVO);
                 // 방문 조회수
                 int visitCount = memberMapper.totalVisitCountCheck(memberVO);
+                // 포인트 및 순위 조회
+                PointVO pointVO = memberMapper.viewUserRanking(memberVO);
+
 
                 // 세션등록
                 httpSession.setAttribute("auth", memberData.getMbrAuth());
@@ -318,6 +322,8 @@ public class MemberServiceImpl implements MemberService {
                 httpSession.setAttribute("connect", memberData.getMbrCode());
                 httpSession.setAttribute("visit", visitCount);
                 httpSession.setAttribute("stateCode", stateCode);
+                httpSession.setAttribute("score", pointVO.getPntScore());
+                httpSession.setAttribute("rank", pointVO.getPntRank());
             }
         }
         return stateCode;
@@ -522,7 +528,7 @@ public class MemberServiceImpl implements MemberService {
                 }
                 memberVO.setMbrAuth("NORMAL");
                 memberVO.setMbrPass(passwordEncoder.encode(memberVO.getMbrId()));
-                memberVO.setMbrProfile("profile-51.png");
+                memberVO.setMbrProfile("profile-1.png");
                 memberVO.setMbrEmail(memberVO.getMbrId() + "@studysiba.com");
                 memberVO.setMbrCode(DataConversion.returnUUID());
                 // 소셜 회원가입
@@ -543,6 +549,7 @@ public class MemberServiceImpl implements MemberService {
         stateCode = socialSignInState == 0 ? "SOCIAL_JOIN_SUCCESS" : "SOCIAL_LOGIN_SUCCESS";
         int visitCount = memberMapper.totalVisitCountCheck(memberVO);
         memberVO = memberMapper.memberSocialInformation(memberVO);
+        PointVO pointVO = memberMapper.viewUserRanking(memberVO);
 
         // 오늘접속하지 않은경우 포인트 +1000
         int isLoggedToday = memberMapper.isLoggedToday(memberVO);
@@ -564,7 +571,8 @@ public class MemberServiceImpl implements MemberService {
         httpSession.setAttribute("connect", memberVO.getMbrCode());
         httpSession.setAttribute("visit", visitCount);
         httpSession.setAttribute("stateCode", stateCode);
-        httpSession.setAttribute("rank", memberMapper.viewUserRanking(memberVO));
+        httpSession.setAttribute("score", pointVO.getPntScore());
+        httpSession.setAttribute("rank", pointVO.getPntRank());
         return stateCode;
     }
 
@@ -682,6 +690,14 @@ public class MemberServiceImpl implements MemberService {
         }
         stateCode = resultState == 1 ? "INFORMATION_CHANGE_SUCCESS" :  "INFORMATION_CHANGE_ERROR";
         return stateCode;
+    }
+
+    @Override
+    public String userLogout(MemberVO memberVO) {
+        if ( !httpSession.getAttribute("id").equals(memberVO.getMbrId()) ) return "LOGOUT_STATE_ERROR";
+        httpSession.invalidate();
+        httpSession.setAttribute("stateCode", "LOGOUT_STATE_SUCCESS");
+        return "LOGOUT_STATE_SUCCESS";
     }
 
 

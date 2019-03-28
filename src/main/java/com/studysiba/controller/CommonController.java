@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.HashMap;
 import java.util.List;
@@ -21,20 +22,11 @@ public class CommonController {
     CommonService commonService;
 
     @GetMapping("/")
-    public String moveMain(Model model) throws Exception {
-
-        // 구글 소셜로그인 URL
-        String googleUrl = commonService.getGoogleUrl();
-        model.addAttribute("googleUrl", googleUrl);
-
-        // 네이버 소셜로그인 URL
-        String naverUrl = commonService.getNaverUrl();
-        model.addAttribute("naverUrl", naverUrl);
-
+    public String moveMain(Model model, @RequestParam(value="requireLogin", required = false, defaultValue = "false") boolean requireLogin) throws Exception {
         List<HashMap<String, Object>> userRankingList = commonService.viewUserTotalRanking();
         model.addAttribute("rank", userRankingList);
         log.info(userRankingList);
-
+        model.addAttribute("requireLogin", requireLogin);
         return "common/main";
     }
 

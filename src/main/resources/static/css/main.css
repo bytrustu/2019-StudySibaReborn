@@ -1119,8 +1119,10 @@ body {
     display: none;
 }
 
-
-
+.logined-profile{
+    width: 130px;
+    height: 130px;
+}
 
 .footer-copyright{
     background-color: #d98f34 !important;

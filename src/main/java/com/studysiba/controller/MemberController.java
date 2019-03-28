@@ -194,6 +194,16 @@ public class MemberController {
         }
     }
 
+    @GetMapping(value = "/logout/{mbrId}")
+    public String userLogout(@PathVariable("mbrId") String mbrId, @RequestParam(required = false) String currentUrl) {
+        log.info(currentUrl);
+        MemberVO memberVO = new MemberVO();
+        memberVO.setMbrId(mbrId);
+        String stateCode = memberService.userLogout(memberVO);
+        log.info("로그아웃상태 : " + stateCode);
+        return "redirect:"+currentUrl;
+    }
+
 
 
 
