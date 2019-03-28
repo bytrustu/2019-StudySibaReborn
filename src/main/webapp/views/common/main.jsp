@@ -55,7 +55,15 @@
         </li>
         <li class="login-button nav-item text-right">
             <div class="login-eff"></div>
-            <a href="#" class="modal-login">로그인/가입</a>
+            <c:choose>
+                <c:when test="${sessionScope.id eq null}">
+                    <a href="#" class="modal-login modal-user" data-user="login">로그인/가입</a>
+                </c:when>
+                <c:otherwise>
+                    <a href="#" class="modal-login modal-user" data-user="login">로그아웃</a>
+                </c:otherwise>
+            </c:choose>
+
         </li>
     </ul>
 </nav>
@@ -77,30 +85,20 @@
                     <p>시바랭킹</p>
                 </div>
                 <div class="info-body">
-                    <div class="row mt-3 member-rank">
-                        <img src="/static/image/main/rank1.png">
-                        <img src="/static/image/main/1.jpg">
-                        <p>
-                            <span>1위 !!! 하하호호하하</span><br/>
-                            <span class="point" id="point1" data-accept="false">5000</span><span>점</span>
-                        </p>
-                    </div>
-                    <div class="row mt-2 member-rank">
-                        <img src="/static/image/main/rank2.png">
-                        <img src="/static/image/main/1.jpg">
-                        <p>
-                            <span>2위 !!! 쟁</span><br/>
-                            <span class="point" data-accept="false">3000</span><span>점</span>
-                        </p>
-                    </div>
-                    <div class="row mt-2 member-rank">
-                        <img src="/static/image/main/rank3.png">
-                        <img src="/static/image/main/1.jpg">
-                        <p>
-                            <span>3위 !!! 슺득</span><br/>
-                            <span class="point" data-accept="false">1000</span><span>점</span>
-                        </p>
-                    </div>
+
+                    <c:forEach var="rank" items="${rank}" varStatus="status">
+                        <div class="row mt-3 member-rank">
+                            <img src="/static/image/main/rank${rank.PNT_RANK}.png">
+                            <img src="/static/image/common/${rank.MBR_PROFILE}">
+                            <p>
+                                <span>${rank.PNT_RANK}위 !!! ${rank.MBR_NICK}</span><br/>
+                                <span class="point" id="point${rank.PNT_RANK}"
+                                      data-accept="false">${rank.PNT_SCORE}</span><span>점</span>
+                            </p>
+                        </div>
+                    </c:forEach>
+
+
                 </div>
             </div>
         </div>
@@ -112,6 +110,7 @@
                 </div>
                 <div class="info-body login-box">
                     <div class="member-loginstate mt-3">
+
                         <!-- 유저 목록 시작 -->
                         <div class="member-output">
                             <img src="/static/image/main/1.jpg">
@@ -202,7 +201,7 @@
                                 <p>스터디에 참가하려면 ?</p>
                             </div>
                             <div class="header-button">
-                                <button class="header-loginbutton modal-login">
+                                <button class="header-loginbutton modal-login modal-user" data-user="login">
                                     스터디시바 로그인
                                 </button>
                             </div>
@@ -231,13 +230,14 @@
                 <div class="col-lg-4 info-box">
                     <div class="info-rightbox user-boxline">
                         <div class="user-header">
-                            <img class="user-image" src="/static/image/main/1.jpg">
+                            <img class="user-image" src="/static/image/common/${sessionScope.profile}">
                             <p class="user-connect">접속시간 : 2018.04.29. 23:01</p>
                         </div>
                         <div class="user-body">
                             <div>
-                                <p>침착해내자신</p>
-                                <p><span>1등</span><span class="point">11111</span><span>점</span></p>
+                                <p id="loggined-nick">${sessionScope.nick}</p>
+                                <p><span>${sessionScope.rank}위</span><span class="point">11111</span><span>점</span></p>
+                                <div id="loggined-id">${sessionScope.id}</div>
                             </div>
                             <div>
                                 <div class="row">
@@ -265,8 +265,11 @@
                             </div>
                         </div>
                         <div class="user-footer">
-                            <a class="user-changeinfo">닉네임</a><span>｜</span> <a
-                                class="user-changeinfo">프로필</a><span>｜</span><a class="user-changeinfo">비밀번호</a>
+                            <a class="user-changeinfo modal-user" data-user="nick">닉네임</a>
+                            <span>｜</span>
+                            <a class="user-changeinfo modal-user" data-user="password">비밀번호</a>
+                            <span>｜</span>
+                            <a class="user-changeinfo modal-user" data-user="profile">프로필</a>
                         </div>
                     </div>
                 </div>
@@ -742,7 +745,7 @@
     <div class="modal-dialog cascading-modal modal-avatar modal-sm" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <img src="/static/image/main/siba-default.png" alt="avatar"
+                <img src="/static/image/common/character-3.png" alt="avatar"
                      class="rounded-circle img-responsive">
             </div>
             <div class="modal-body text-center mb-1">
@@ -761,6 +764,78 @@
     </div>
 </div>
 
+<div class="modal fade" id="modalChangePass" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog cascading-modal modal-avatar modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <img src="/static/image/common/character-5.png" alt="avatar"
+                     class="rounded-circle img-responsive">
+            </div>
+            <div class="modal-body text-center mb-1">
+                <h6 class="mt-1 mb-2 modal-resendtext"><span class='modal-resendpoint'>비밀번호</span>를 입력해주세요.</h6>
+                <h6 class="mt-1 mb-2 modal-resendtext"><span class='modal-resendpoint'>영어숫자</span>포함 5~16자 설정!</h6>
+                <h5 class=""></h5>
+                <div class="md-form ml-0 mr-0">
+                    <input type="password" class="form-control form-control-sm modal-input">
+                </div>
+                <div class="text-center mt-4 modal-sendbox">
+                    <button class="btn btn-warning mt-1 modal-resendbtn change-btn" data-change="password">비밀번호변경
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalChangeNick" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog cascading-modal modal-avatar modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <img src="/static/image/common/character-4.png" alt="avatar"
+                     class="rounded-circle img-responsive">
+            </div>
+            <div class="modal-body text-center mb-1">
+                <h6 class="mt-1 mb-2 modal-resendtext">원하는<span class='modal-resendpoint'> 닉네임</span>를 입력해주세요.</h6>
+                <h6 class="mt-1 mb-2 modal-resendtext">한글6자,영문숫자12자 <span class='modal-resendpoint'>제한!</span></h6>
+                <h5 class=""></h5>
+                <div class="md-form ml-0 mr-0">
+                    <input type="text" class="form-control form-control-sm modal-input">
+                </div>
+                <div class="text-center mt-4 modal-sendbox">
+                    <button class="btn btn-warning mt-1 modal-resendbtn change-btn" data-change="nick">닉네임변경</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalChangeProfile" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog cascading-modal modal-avatar modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <img src="/static/image/common/${profile}" alt="avatar"
+                     class="rounded-circle img-responsive">
+            </div>
+            <div class="modal-body text-center mb-1">
+                <h6 class="mt-1 mb-2 modal-resendtext"><span class='modal-resendpoint'>비밀번호</span>를 입력해주세요.</h6>
+                <h6 class="mt-1 mb-2 modal-resendtext"><span class='modal-resendpoint'>영어숫자</span>포함 5~16자 설정!</h6>
+                <h5 class=""></h5>
+                <div class="md-form ml-0 mr-0">
+                    <input type="text" class="form-control form-control-sm modal-input">
+                </div>
+                <div class="text-center mt-4 modal-sendbox">
+
+                    <button class="btn btn-warning mt-1 modal-resendbtn change-btn" data-change="profile">프로필변경</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <c:if test="${sessionScope.stateCode ne null}">
     <script type="text/javascript">
         $(document).ready(function () {
@@ -774,7 +849,7 @@
                 }, 2300);
                 // 초대장메일인증
             } else {
-                    stateComment.includes('SUCCESS') ? successAlert(stateCode.get(stateComment)) : errorAlert(stateCode.get(stateComment));
+                stateComment.includes('SUCCESS') ? successAlert(stateCode.get(stateComment)) : errorAlert(stateCode.get(stateComment));
             }
         });
         <c:remove var="stateCode" scope="session"/>

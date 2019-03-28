@@ -4,6 +4,15 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.studysiba.mapper.member.MemberMapper">
 
+    <!--<resultMap id="userRanking" type="studysiba.domain.member.PointVO">-->
+        <!--<result property="mbrId" column="MBR_ID" />-->
+        <!--<result property="mbrNick" column="MBR_NICK" />-->
+        <!--<result property="mbrProfile" column="MBR_PROFILE" />-->
+        <!--<result property="pntId" column="PNT_ID" />-->
+        <!--<result property="pntScore" column="PNT_SCORE" />-->
+        <!--<result property="pntRank" column="PNT_RANK" />-->
+    <!--</resultMap>-->
+
 
     <!-- 회원가입여부확인 -->
     <select id="registrationStatus" parameterType="MemberVO" resultType="int">
@@ -188,6 +197,33 @@
         INSERT INTO VISIT(VIS_NO, VIS_ID, VIS_DATE)
         VALUES(#{mbrNo}, #{mbrId}, NOW())
     </insert>
+
+    <!-- 유저랭킹조회 -->
+    <select id="viewUserRanking" parameterType="MemberVO" resultType="int">
+        SELECT COUNT(*)+1 AS PNT_RANK FROM POINT
+        WHERE PNT_SCORE > ( SELECT PNT_SCORE FROM POINT WHERE PNT_ID=#{mbrId});
+    </select>
+
+    <!-- 1~3위 랭킹 유저조회 -->
+    <select id="viewUserTotalRanking" resultType="hashmap">
+        SELECT PNT_ID, PNT_SCORE,
+        ( SELECT COUNT(*)+1 FROM POINT WHERE PNT_SCORE > T.PNT_SCORE ) AS PNT_RANK,
+        MBR_ID, MBR_NICK, MBR_PROFILE
+        FROM POINT AS T
+        JOIN MEMBER
+        ON T.PNT_ID = MEMBER.MBR_ID
+        ORDER BY PNT_RANK LIMIT 0,3
+    </select>
+
+    <!-- 유저 비밀번호 변경 -->
+    <update id="updatePassword" parameterType="MemberVO">
+        UPDATE MEMBER SET MBR_PASS = #{mbrPass} WHERE MBR_ID = #{mbrId}
+    </update>
+
+    <!-- 유저 닉네임 변경 -->
+    <update id="updateNickname" parameterType="MemberVO">
+        UPDATE MEMBER SET MBR_NICK = #{mbrNick} WHERE MBR_ID = #{mbrId}
+    </update>
 
 
 

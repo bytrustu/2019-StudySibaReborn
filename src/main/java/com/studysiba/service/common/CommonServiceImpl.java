@@ -1,7 +1,10 @@
 package com.studysiba.service.common;
 
 import com.studysiba.config.SocialKeys;
+import com.studysiba.domain.member.MemberVO;
+import com.studysiba.domain.member.PointVO;
 import com.studysiba.mapper.common.CommonMapper;
+import com.studysiba.mapper.member.MemberMapper;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.social.google.connect.GoogleConnectionFactory;
@@ -16,6 +19,9 @@ import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.net.URLEncoder;
 import java.security.SecureRandom;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 @Service
 @Log4j
@@ -23,6 +29,9 @@ public class CommonServiceImpl implements CommonService {
 
     @Resource
     CommonMapper commonMapper;
+
+    @Resource
+    MemberMapper memberMapper;
 
     @Autowired
     HttpSession httpSession;
@@ -43,6 +52,9 @@ public class CommonServiceImpl implements CommonService {
         return googleUrl;
     }
 
+    /*
+     *  네이버 Social Login Url
+     */
     @Override
     public String getNaverUrl() {
         String clientId = SocialKeys.getNaverClientId();
@@ -59,6 +71,16 @@ public class CommonServiceImpl implements CommonService {
         apiURL += "&redirect_uri=" + redirectURI;
         apiURL += "&state=" + state;
         return apiURL;
+    }
+
+    /*
+     *  1~3위 유저 랭킹 정보 조회
+     */
+    @Override
+    public List<HashMap<String, Object>> viewUserTotalRanking() throws Exception {
+        List<HashMap<String, Object>> userRankingList = new ArrayList<>();
+        userRankingList = (List<HashMap<String, Object>>) memberMapper.viewUserTotalRanking();
+        return userRankingList;
     }
 
 

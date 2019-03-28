@@ -310,6 +310,7 @@ public class MemberServiceImpl implements MemberService {
 
                 // 세션등록
                 httpSession.setAttribute("auth", memberData.getMbrAuth());
+                httpSession.setAttribute("type", memberData.getMbrType());
                 httpSession.setAttribute("id", memberData.getMbrId());
                 httpSession.setAttribute("nick", memberData.getMbrNick());
                 httpSession.setAttribute("email", memberData.getMbrEmail());
@@ -495,9 +496,6 @@ public class MemberServiceImpl implements MemberService {
         return stateCode;
     }
 
-
-
-
     /*
      *  공통 소셜로그인 로그인/회원가입 처리 및 세션등록
      *  @Param MemberVO
@@ -510,7 +508,7 @@ public class MemberServiceImpl implements MemberService {
         if (socialSignInState == 0) {
             try {
                 if (DataValidation.findEmptyValue(memberVO, new String[]{"mbrNick"}).equals("VALUES_STATE_GOOD")) {
-                    String mbrNick = memberVO.getMbrNick().replace(" ","");
+                    String mbrNick = memberVO.getMbrNick().replace(" ", "");
                     // 소셜 회원닉네임이 이미 중복일경우 임시 닉네임적용
                     if (memberMapper.nickReduplicationCheck(memberVO) == 1)
                         mbrNick = "스터디" + Integer.toString(DataConversion.returnRanNum(999999));
@@ -524,7 +522,7 @@ public class MemberServiceImpl implements MemberService {
                 }
                 memberVO.setMbrAuth("NORMAL");
                 memberVO.setMbrPass(passwordEncoder.encode(memberVO.getMbrId()));
-                memberVO.setMbrProfile("siba-default.png");
+                memberVO.setMbrProfile("character-" + DataConversion.returnRanNum(5) + ".png");
                 memberVO.setMbrEmail(memberVO.getMbrId() + "@studysiba.com");
                 memberVO.setMbrCode(DataConversion.returnUUID());
                 // 소셜 회원가입
@@ -556,7 +554,9 @@ public class MemberServiceImpl implements MemberService {
         memberMapper.updateAccessTime(memberVO);
         // 방문정보등록
         memberMapper.visitRegistration(memberVO);
+
         httpSession.setAttribute("auth", memberVO.getMbrAuth());
+        httpSession.setAttribute("type", memberVO.getMbrType());
         httpSession.setAttribute("id", memberVO.getMbrId());
         httpSession.setAttribute("nick", memberVO.getMbrNick());
         httpSession.setAttribute("email", memberVO.getMbrEmail());
@@ -564,6 +564,7 @@ public class MemberServiceImpl implements MemberService {
         httpSession.setAttribute("connect", memberVO.getMbrCode());
         httpSession.setAttribute("visit", visitCount);
         httpSession.setAttribute("stateCode", stateCode);
+        httpSession.setAttribute("rank", memberMapper.viewUserRanking(memberVO));
         return stateCode;
     }
 
@@ -622,6 +623,57 @@ public class MemberServiceImpl implements MemberService {
         } finally {
             return pointState;
         }
+    }
+
+    /*
+     *  회원정보변경
+     *  @Param  변경타입, 아이디, 변경값
+     *  @Return 변경여부에 따른 상태코드반환
+     */
+    @Override
+    public String changeUserInformation(String changeType, String mbrId, String changeValue) throws Exception {
+        String stateCode = "INFORMATION_CHANGE_ERROR";
+        int resultState = 0;
+        // 동일한 아이디와 관리자만 변경 가능
+        if ( !httpSession.getAttribute("id").equals(mbrId)
+                || httpSession.getAttribute("auth").toString().toUpperCase().equals("ADMIN") ) return stateCode;
+        MemberVO memberVO = new MemberVO();
+        memberVO.setMbrId(mbrId);
+
+        switch (changeType) {
+            case "password" :
+                memberVO.setMbrPass(changeValue);
+                // 소셜회원 일경우 비밀번호 변경 불가능
+                if ( !( httpSession.getAttribute("type").equals("NORMAL") || httpSession.getAttribute("auth").equals("ADMIN") ) ) return "SOCIAL_PASSWORD_ERROR";
+                // 아이디 패스워드 공백 및 NULL 체크
+                if ( !DataValidation.findEmptyValue(memberVO, new String[]{"mbrId","mbrPass"}).equals("VALUES_STATE_GOOD") ) break;
+                // 패스워드 유효성 검사
+                if ( !DataValidation.checkPassword(memberVO.getMbrPass()) ) break;
+                // 패스워드 암호화
+                memberVO.setMbrPass(passwordEncoder.encode(memberVO.getMbrPass()));
+                // 패스워드 변경
+                resultState = memberMapper.updatePassword(memberVO);
+                break;
+            case "nick":
+                memberVO.setMbrNick(changeValue);
+                // 아이디 닉네임 공백 및 NULL 체크
+                if ( !DataValidation.findEmptyValue(memberVO, new String[]{"mbrId","mbrNick"}).equals("VALUES_STATE_GOOD") ) break;
+                // 닉네임 중복 확인
+                if ( memberMapper.nickReduplicationCheck(memberVO) == 1 ) return "NICK_STATE_USED";
+                // 닉네임 유효성 검사
+                if ( !DataValidation.checkOnlyCharacters(memberVO.getMbrNick()) ) break;
+                // 닉네임 크기 검사
+                if ( !DataValidation.textLengthComparison(12,memberVO.getMbrNick()) ) break;
+                // 닉네임 변경
+                resultState = memberMapper.updateNickname(memberVO);
+                // 닉네임 변경시 세션 재등록
+                if ( resultState == 1 ) httpSession.setAttribute("nick", memberVO.getMbrNick());
+                break;
+            case "auth":
+                break;
+        }
+        stateCode = resultState == 1 ? "INFORMATION_CHANGE_SUCCESS" :  "INFORMATION_CHANGE_ERROR";
+        return stateCode;
     }
 
 

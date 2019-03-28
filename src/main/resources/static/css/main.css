@@ -1,5 +1,5 @@
 body {
-    overflow-x: hidden;
+    overflow-x: hidden !important;
     font-family: 'Nanum Gothic', sans-serif;
     background-color: #f4f5f7;
 }
@@ -120,9 +120,9 @@ body {
     transition: all .5s ease;
     z-index: 2;
     position: relative;
-    margin-bottom: -4px;
     font-weight: bold;
     padding-left: 5px;
+    margin: 0px auto 0px;
 }
 
 .login-eff {
@@ -458,6 +458,10 @@ body {
     color: white;
     font-weight: bold;
     text-align: center;
+}
+
+#loggined-id{
+    display: none;
 }
 
 
@@ -1169,4 +1173,37 @@ body {
 
 .page-footer {
     background: #ffce58;
+}
+
+
+/*
+            공통
+ */
+
+.form-div {
+    margin-top: 10px;
+}
+
+.input-label {
+    background : #009688;
+    color: #fff;
+    padding: 30px;
+    -webkit-transition: 0.3s;
+    -moz-transition: 0.3s;
+    -ms-transition: 0.3s;
+    -o-transition: 0.3s;
+    transition: 0.3s;
+}
+
+.input-label:hover{
+    background: #26a69a;
+    cursor: pointer;
+}
+
+.fa {
+    margin-right: 10px;
+}
+
+#file {
+    display: none;
 }

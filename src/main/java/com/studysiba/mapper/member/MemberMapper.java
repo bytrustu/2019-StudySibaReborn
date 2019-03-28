@@ -1,7 +1,11 @@
 package com.studysiba.mapper.member;
 
 import com.studysiba.domain.member.MemberVO;
+import com.studysiba.domain.member.PointVO;
 import org.apache.ibatis.annotations.Mapper;
+
+import java.util.HashMap;
+import java.util.List;
 
 @Mapper
 public interface MemberMapper {
@@ -192,4 +196,31 @@ public interface MemberMapper {
      *  @Return int
      */
     int  visitRegistration(MemberVO memberVO);
+
+    /*
+     *  유저랭킹조회
+     *  @Param MemberVO
+     *  @Return int
+     */
+    int viewUserRanking(MemberVO memberVO);
+
+    /*
+     *  유저랭킹 1~3위 조회
+     *  @Return HashMap<String,Object>
+     */
+    List<HashMap<String, Object>> viewUserTotalRanking();
+
+    /*
+     *  유저 비밀번호 변경
+     *  @Param MemberVO
+     *  @Return 비밀번호변경결과값
+     */
+    int updatePassword(MemberVO memberVO);
+
+    /*
+     *  유저 닉네임 변경
+     *  @Param MemberVO
+     *  @Return 닉네임변경결과값
+     */
+    int updateNickname(MemberVO memberVO);
 }

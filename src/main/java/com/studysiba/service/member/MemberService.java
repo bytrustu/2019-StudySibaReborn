@@ -95,4 +95,10 @@ public interface MemberService {
      */
     String naverSignInCallback(String accessToken, String mbrType) throws Exception;
 
+    /*
+     *  회원정보변경
+     *  @Param  변경타입, 아이디, 변경값
+     *  @Return 변경여부에 따른 상태코드반환
+     */
+    String changeUserInformation(String changeType, String mbrId, String changeValue) throws Exception;
 }

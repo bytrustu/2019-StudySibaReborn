@@ -1,11 +1,17 @@
 'use strict';
 
 $(document).ready(function () {
-    // 회원로그인/가입 모달
-    $('.modal-login').on('click', () => {
-        initElement('modal-input');
-        $('#modalLRForm').modal('show');
-    });
+
+
+    $('#file').on('change', function(e) {
+        let files = $(this)[0].files;
+        if ( files.length >- 2 ) {
+            $('#label_span').text('준비완료');
+        } else {
+            let filename = e.target.value.split('\\').pop();
+            $('#label_span').text(filename);
+        }
+    })
 
     // 992px 이상일 경우 시바랭킹 카운팅
     if (window.innerWidth >= 992) {
@@ -218,8 +224,74 @@ $(document).ready(function () {
         }
     });
 
+
+
+    // 모달버튼열기 [ 로그인,회원가입 / 닉네임변경 / 패스워드변경 / 프로필변경 ]
+    $('.modal-user').on('click', function(){
+        initElement('modal-input');
+        let user = $(this).attr('data-user');
+        switch (user) {
+            case 'login' :
+                $('#modalLRForm').modal('show');
+                break;
+            case 'nick' :
+                $('#modalChangeNick').modal('show');
+                break;
+            case 'password' :
+                $('#modalChangePass').modal('show');
+                break;
+            case 'profile' :
+                $('#modalChangeProfile').modal('show');
+                break;
+        }
+    });
+
+    $('.change-btn').on('click', function(){
+        let changeType = $(this).attr('data-change');
+        let logginedId = $('#loggined-id').html();
+        let dataValue = $(this).parents('.modal-body').find('.modal-input').val().trim();
+        if ( dataValue === '' ) { errorAlert("입력값을 확인해주세요."); return false; };
+        let url = `/member/${logginedId}/${changeType}/${dataValue}`;
+        if ( changeType === 'profile' ) {
+            console.log(`profile 변경`);
+        } else {
+            changeUserInformation(url)
+                .then( (data) => {
+                    $('.modal').modal('hide');
+                    $('#loggined-nick').html(dataValue);
+                    successAlert(stateCode.get(data));
+                }).catch( (error) => {
+                    console.log(error);
+                    errorAlert(stateCode.get(error.responseText));
+            });
+        }
+        initElement('modal-input');
+    });
+
+
+
     // Close Ready
 });
+
+
+
+let changeUserInformation = (url) => {
+    return new Promise( (resolve,reject) => {
+        $.ajax({
+            type : 'PUT',
+            url : url,
+            contentType : 'application/json; charset=utf-8',
+            success : (data)  => {
+                resolve(data);
+            },
+            error : (error) => {
+                reject(error);
+            }
+        });
+    });
+}
+
+
 
 
 // 초대장 전송
@@ -318,7 +390,7 @@ let changePassword = (memberJson) => {
     return new Promise((resolve, reject) => {
         $.ajax({
             type: 'PUT',
-            url: '/member/auth/mailpassword',
+            url: '/mail/changepass/mailpassword',
             data: memberJson,
             contentType: 'application/json; charset=utf-8',
             success: (data) => {
@@ -679,6 +751,10 @@ stateCode.set("POINT_CREATE_SUCCESS", "포인트가 생성되었습니다.");
 stateCode.set("POINT_CREATE_ERROR", "포인트 생성에 실패했습니다..");
 stateCode.set("POINT_UPDATE_SUCCESS", "포인트가 수정되었습니다.");
 stateCode.set("POINT_UPDATE_ERROR", "포인트 수정에 실패했습니다..");
+
+stateCode.set("INFORMATION_CHANGE_SUCCESS", "회원정보를 변경 했습니다.");
+stateCode.set("INFORMATION_CHANGE_ERROR", "정보변경에 실패 했습니다.");
+stateCode.set("SOCIAL_PASSWORD_ERROR", "소셜회원은 변경 할수 없습니다.");
 
 
 // KAKAO API

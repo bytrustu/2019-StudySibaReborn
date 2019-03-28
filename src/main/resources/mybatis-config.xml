@@ -9,6 +9,7 @@
 
     <typeAliases>
         <typeAlias alias="MemberVO" type="com.studysiba.domain.member.MemberVO"/>
+        <typeAlias alias="PointVO" type="com.studysiba.domain.member.PointVO"/>
     </typeAliases>
 
 </configuration>

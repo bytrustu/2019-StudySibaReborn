@@ -67,7 +67,7 @@ public class MemberController {
      *  @Return 비밀번호변경여부상태코드
      */
     @ResponseBody
-    @PutMapping(value = "/auth/mailpassword", consumes = "application/json", produces = {MediaType.TEXT_PLAIN_VALUE})
+    @PutMapping(value = "/mail/changepass/mailpassword", consumes = "application/json", produces = {MediaType.TEXT_PLAIN_VALUE})
     public ResponseEntity<String> changePasswordEmailAuth(@RequestBody MemberVO memberVO) {
         String changePasswordState = memberService.changePasswordEmailAuth(memberVO);
         log.info("인증패스워드변경상태 : " + changePasswordState);
@@ -150,24 +150,6 @@ public class MemberController {
         return stateCode.equals("INFODEL_STATE_SUCCESS") ? new ResponseEntity<>(stateCode, HttpStatus.OK) : new ResponseEntity<>(stateCode, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    /*
-     *  구글 소셜로그인 인증
-     *  @Param code
-     */
-//    @GetMapping(value = "/social/google")
-//    public String googleSignInCallback(@RequestParam("code") String code) throws Exception {
-//        String stateCode = memberService.googleSignInCallback(code);
-//        log.info("구글소셜로그인상태코드 : " + stateCode);
-//        return "redirect:/";
-//    }
-//
-//    @GetMapping(value = "/social/naver")
-//    public String naverSignInCallback(@RequestParam String code, @RequestParam String state) throws Exception {
-//        String accessToken = memberService.getNaverAccessToken(code,state);
-//        String stateCode = memberService.naverSignInCallback(accessToken);
-//        log.info("네이버소셜로그인상태코드 : " + stateCode);
-//        return "redirect:/";
-//    }
 
     /*
      *  카카오, 네이버 소셜로그인 인증
@@ -201,6 +183,27 @@ public class MemberController {
         log.info(memberVO.getMbrType()+"소셜로그인상태코드 : " + stateCode);
         return !stateCode.equals("SOCIAL_JOIN_ERROR") ? new ResponseEntity<>(stateCode, HttpStatus.OK) : new ResponseEntity<>(stateCode, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    @ResponseBody
+    @PutMapping(value = "/{mbrId}/{changeType}/{changeValue}", consumes = "application/json", produces = {MediaType.TEXT_PLAIN_VALUE})
+    public ResponseEntity<String> changeUserInformation(@PathVariable("mbrId") String mbrId, @PathVariable("changeType") String changeType, @PathVariable("changeValue") String changeValue) {
+        String stateCode="";
+        try {
+            stateCode = memberService.changeUserInformation(changeType, mbrId, changeValue);
+            log.info("회원정보변경상태 : " + stateCode);
+        } catch ( Exception e ) {
+            e.printStackTrace();
+            stateCode = "INFORMATION_CHANGE_ERROR";
+        } finally {
+            return stateCode.equals("INFORMATION_CHANGE_SUCCESS") ? new ResponseEntity<>(stateCode,HttpStatus.OK) : new ResponseEntity<>(stateCode,HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
+
+
+
+
 
 
 
