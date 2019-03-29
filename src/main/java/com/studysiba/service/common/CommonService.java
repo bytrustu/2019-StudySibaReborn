@@ -5,6 +5,7 @@ import com.studysiba.domain.member.PointVO;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public interface CommonService {
 
@@ -22,4 +23,9 @@ public interface CommonService {
      *  유저 랭킹 1~3위 정보 조회
      */
     List<HashMap<String, Object>> viewUserTotalRanking() throws Exception;
+
+    /*
+     *  페이지 별 안내 게시글 반환
+     */
+    HashMap<String,String> getIntroduceComment(String path);
 }

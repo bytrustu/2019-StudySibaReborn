@@ -1,11 +1,12 @@
 .sub-page {
     background-color: white !important;
+    width: 100%;
+    margin: 0 auto 0 auto;
 }
 
 .sub-subject{
     padding-top: 50px;
-    padding-bottom: 30px;
-    margin: 0 auto 20px auto;
+    padding-bottom: 50px;
     text-align: center;
 }
 
@@ -23,4 +24,295 @@
 .sub-subject > .sub-bottomcomment {
     font-size: 16px;
     font-weight: 600;
+}
+
+.board-box {
+    max-width: 1280px;
+    height: auto;
+    margin: auto;
+    letter-spacing: 1px;
+}
+
+
+.board-box > div > .board-total {
+    float: left;
+    font-weight: bold;
+    font-size: 14px;
+    color: #8d8d8d;
+    margin-left: 20px;
+    padding: 38px 14px 14px 14px;
+}
+
+.board-box > div > .board-writebtn {
+    float: right;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.board-box > .board-top {
+    height: 50px;
+}
+
+.board-table {
+    table-layout: fixed;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    border-collapse: separate;
+    border-spacing: 0;
+    border: 0;
+    clear: both;
+    margin: 40px 0 0;
+    border-top: 2px solid #373f52;
+    border-bottom: 2px solid #eaeef0;
+}
+
+.board-table > .board-thead {
+}
+
+.board-table > .board-tbody > tr {
+    display: table-row;
+    vertical-align: inherit;
+    border-color: inherit;
+    margin-bottom: 10px;
+
+}
+
+
+.board-table > .board-tbody > tr > td {
+    margin: 0;
+    padding: 0;
+    vertical-align: inherit;
+    border-bottom: 1px solid #eaeaea;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    font-size: 12px;
+}
+
+.board-divide {
+    text-align: center;
+}
+
+.board-divide > span {
+    font-weight: bold;
+    color: #989898;
+}
+
+
+.board-table > .board-tbody > tr > td:nth-last-of-type(3) {
+    padding-left: 20px;
+}
+
+.board-subject {
+    line-height: 16px;
+    width: 60%;
+    padding: 0px 20px 0px 120px;
+}
+
+
+
+
+
+
+.board-thumb {
+    min-height: 51px;
+    padding: 0 5px 0 0;
+}
+
+.board-thumb > .board-imgbox {
+    display: none;
+    width: 55px;
+    height: 48px;
+}
+
+
+.board-imgbox > img {
+    width: 60px;
+    height: 60px;
+    margin: 8px;
+    vertical-align: middle;
+    border-radius: 10px;
+}
+
+
+.board-content {
+    position: relative;
+    margin:  0 0 0 0;
+    padding: 3px 0 0 0;
+    overflow: hidden;
+}
+
+
+.board-content > span {
+    margin-top: -20px;
+}
+
+.board-title {
+    line-height: 36px;
+    height: 50px;
+}
+
+
+.board-titletext {
+    font-weight: bold;
+}
+
+.board-titletext > a {
+    color: #444;
+    font-size: 13px;
+}
+
+.icon-new {
+    width: 15px;
+    height: 15px;
+}
+
+.board-writer {
+    display: inline-block;
+    vertical-align: middle;
+    color: #989898;
+    margin: 3px 0 0;
+}
+
+.board-writer > a {
+    color: #46909b !important;
+}
+
+.board-bar {
+    display: inline-block;
+    vertical-align: middle;
+    margin: 2px 2px 0 0;
+    color: #e3e3e3;
+    font-size: 11px;
+}
+
+.board-time {
+    display: inline-block;
+    vertical-align: middle;
+    font-size: 11px;
+    font-family: Roboto, sans-serif;
+    color: #989898;
+    margin: 2px 0 0 -1px;
+}
+
+.board-hit {
+    padding: 0 0 0 15px;
+    line-height: 16px;
+    color: #879cb4;
+    font-size: 11px;
+    font-family: Roboto, sans-serif;
+    text-align: center;
+}
+
+.board-hit > i, .board-like > i {
+    margin-right: 0;
+}
+
+.board-like {
+    padding: 0 0 0 15px;
+    line-height: 16px;
+    color: #879cb4;
+    font-size: 11px;
+    font-family: Roboto, sans-serif;
+    text-align: center;
+}
+
+
+.board-searchbox{
+    margin: 30px auto;
+    width: 100%;
+}
+
+.board-searchbox > select,  .board-search  {
+    height: 40px;
+    display: inline-block !important;
+}
+
+.custom-select {
+    width: 30%;
+}
+
+.board-search{
+    width: 65%;
+}
+
+
+.board-pagination{
+    margin: 20px auto 50px;
+    justify-content: center;
+    font-weight: bold;
+}
+
+
+
+
+@media(min-width : 586px) {
+
+    .board-table > .board-tbody > tr > td {
+        margin: 0;
+        padding: 0;
+        vertical-align: inherit;
+        border-bottom: 1px solid #eaeaea;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        font-size: 13px;
+    }
+
+    .board-box {
+        max-width: 1280px;
+        height: auto;
+        margin: auto;
+        letter-spacing: 2px;
+    }
+
+    .board-thumb > .board-imgbox {
+        display: block;
+        width: 55px;
+        height: 48px;
+    }
+
+    .board-content {
+        position: relative;
+        margin: -44px 0 0 95px;
+        padding: 3px 0 0 0;
+        overflow: hidden;
+    }
+
+    .board-titletext > a {
+        color: #444;
+        font-size: 17px;
+    }
+
+    .board-hit > i, .board-like > i {
+        margin-right: 10px;
+    }
+
+    .custom-select {
+        width: 15%;
+    }
+
+    .board-search{
+        width: 80%;
+        margin-left: 10px;
+    }
+}
+
+@media( min-width: 1024px ) {
+    .board-search{
+        width: 75%;
+        margin-left: 10px;
+    }
+}
+
+@media( min-width: 1200px ) {
+    .custom-select {
+        width: 17%;
+        margin-left: 20px;
+    }
+
+    .board-search{
+        width: 80%;
+        margin-left: 10px;
+    }
+
 }
