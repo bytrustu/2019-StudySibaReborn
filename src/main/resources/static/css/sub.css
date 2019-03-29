@@ -22,7 +22,7 @@
 }
 
 .sub-subject > .sub-bottomcomment {
-    font-size: 16px;
+    font-size: 13px;
     font-weight: 600;
 }
 
@@ -43,9 +43,11 @@
     padding: 38px 14px 14px 14px;
 }
 
-.board-box > div > .board-writebtn {
+.board-box > div > .content-writebtn {
     float: right;
     font-size: 14px;
+    height: 45px;
+    margin-right: 20px;
     font-weight: bold;
 }
 
@@ -243,7 +245,9 @@
     font-weight: bold;
 }
 
-
+.pagination.pg-amber .page-item.active .page-link, .pagination.pg-amber .page-item.active .page-link:hover{
+    background-color: #ffce58 !important;
+}
 
 
 @media(min-width : 586px) {
@@ -295,6 +299,11 @@
         width: 80%;
         margin-left: 10px;
     }
+
+    .sub-subject > .sub-bottomcomment {
+        font-size: 17px;
+        font-weight: 600;
+    }
 }
 
 @media( min-width: 1024px ) {
@@ -314,5 +323,116 @@
         width: 80%;
         margin-left: 10px;
     }
-
 }
+
+
+
+
+
+
+
+
+
+/* 베이직 모달 커스텀 */
+
+.basic-modal{
+    top: 60px;
+}
+
+.basic-modal-dialog{
+    height: 93.2%;
+    width: 100% !important;
+    max-width:  100% !important;
+    margin: 0 !important;
+}
+
+.basic-modal-content{
+    height: 100%;
+    padding: 20px;
+}
+
+.basic-modal-header{
+    height: 10%;
+    display : block;
+}
+
+.basic-modal-body{
+    height: 70%;
+}
+
+.basic-modal-footer{
+    justify-content: center;
+    border-top: 0;
+}
+
+.basic-modal-box{
+    margin: 0 auto 0 auto;
+    height: 1000px !important;
+    max-width: 1300px;
+    width: 100%;
+}
+
+.basic-modal-title {
+    display: inline-block;
+    margin-left: 0.5% !important;
+    width: 65%;
+}
+
+.basic-modal-select {
+    margin-left: 2%;
+    width: 30%;
+}
+
+@media(min-width: 586px ) {
+    .basic-modal-title {
+        display: inline-block;
+        margin-left: 0.5% !important;
+        width: 81%;
+    }
+
+    .basic-modal-select {
+        margin-left: 2%;
+        width: 15%;
+    }
+}
+
+@media(min-width: 992px ) {
+    .basic-modal-title {
+        display: inline-block;
+        margin-left: 0.5% !important;
+        width: 82%;
+    }
+
+    .basic-modal-select {
+        margin-left: 2%;
+        width: 15%;
+    }
+}
+
+.bold{
+    font-weight: bold;
+}
+
+.studysiba-button {
+    width: 110px;
+    font-weight: bold;
+}
+
+.studysiba-cancel{
+    background-color: #e4b67c !important;
+}
+
+
+@media(min-width : 586px) {
+    .basic-modal{
+        top: 81px;
+    }
+    .basic-modal-dialog{
+        height: 91.2%;
+        width: 100% !important;
+        max-width:  100% !important;
+        margin: 0 !important;
+    }
+}
+
+

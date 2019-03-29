@@ -1,7 +1,5 @@
 $(document).ready(function () {
 
-
-
     // 소셜로그인
     $('.social-login-icon').on('click', function () {
         let socialName = $(this).attr('data-name');
@@ -226,6 +224,10 @@ var checkFacebookLoginStatus = (response) => {
     } else {
         errorAlert("로그인 실패 했습니다.")
     }
+
+
+
+
 }
 
 
@@ -308,6 +310,48 @@ const mapToObject = (map) => {
         obj[key] = value;
     }
     return obj;
+}
+
+
+let trimTitleLength = (className, length) => {
+    let elements = document.getElementsByClassName(className);
+    for ( let element of elements ) {
+        if ( calByte.getByteLength(element.innerHTML) >= length ) {
+            element.innerHTML = calByte.cuteByteLength(element.innerHTML, length-2) + '...';
+        }
+    }
+}
+
+
+// 글자 byte 계산, 자르기
+let calByte = {
+    getByteLength : function(str) {
+        if ( str == null || str.length == 0 ) return 0;
+        let size = 0;
+        for ( let i = 0; i < str.length; i++ ) size += this.charByteSize(str.charAt(i));
+        return size;
+    },
+    cuteByteLength : function(str, length) {
+        if ( str == null || str.length == 0 ) return 0;
+        let size = 0;
+        let index = str.length;
+        for ( let i=0; i<str.length; i++ ) {
+            size += this.charByteSize(str.charAt(i));
+            if ( size == length ) {
+                index = i+1;
+                break;
+            } else if ( size > length ) {
+                index = i;
+                break;
+            }
+        }
+        return str.substring(0, index);
+    },
+    charByteSize : function(ch){
+        if ( ch == null || ch.length == 0 ) return 0;
+        let charCode = ch.charCodeAt(0);
+        return charCode > 128 ? 2 : 1;
+    }
 }
 
 

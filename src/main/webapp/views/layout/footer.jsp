@@ -235,6 +235,51 @@
         </c:if>
 
 
+
+    <!-- Modal -->
+    <div class="modal fade basic-modal" id="basicModal" tabindex="-1" role="dialog" aria-labelledby="basicModalLabel" aria-hidden="true">
+        <div class="modal-dialog basic-modal-dialog" role="document">
+            <div class="modal-content basic-modal-content">
+                <div class="basic-modal-box">
+                    <div class="modal-header basic-modal-header">
+
+                        <select class="browser-default custom-select basic-modal-select">
+
+                            <c:choose>
+                                <c:when test="${requestScope['javax.servlet.forward.servlet_path'] eq '/notice/list' }">
+                                    <option value="1" selected>공지</option>
+                                    <option value="2">이벤</option>
+                                </c:when>
+
+                                <c:when test="${requestScope['javax.servlet.forward.servlet_path'] eq '/community/list' }">
+                                    <option value="3" selected>잡담</option>
+                                    <option value="4">정보</option>
+                                    <option value="5">요청</option>
+                                </c:when>
+                            </c:choose>
+
+
+                        </select>
+
+                        <div class="md-form md-outline margin-init basic-modal-title">
+                            <input type="text" id="board-input-title" class="form-control">
+                            <label for="board-input-title">제목</label>
+                        </div>
+
+                    </div>
+                    <div class="modal-body basic-modal-body">
+                    ...
+                    </div>
+                    <div class="modal-footer basic-modal-footer">
+                        <button type="button" class="btn btn-yellow studysiba-button studysiba-button" >글쓰기</button>
+                        <button type="button" class="btn btn-yellow studysiba-button studysiba-cancel" data-dismiss="modal">취소</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
         <!-- / 경로가 아닌경우 로그인/회원가입 모달 클릭시 -->
         <c:if test="${requireLogin eq true }">
             <script type="text/javascript">
