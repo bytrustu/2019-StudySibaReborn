@@ -1,6 +1,9 @@
 package com.studysiba.service.common;
 
+import com.studysiba.common.DataConversion;
+import com.studysiba.common.DataValidation;
 import com.studysiba.config.SocialKeys;
+import com.studysiba.domain.common.UploadVO;
 import com.studysiba.domain.member.MemberVO;
 import com.studysiba.domain.member.PointVO;
 import com.studysiba.mapper.common.CommonMapper;
@@ -12,9 +15,14 @@ import org.springframework.social.oauth2.GrantType;
 import org.springframework.social.oauth2.OAuth2Operations;
 import org.springframework.social.oauth2.OAuth2Parameters;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.FileCopyUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.net.URLEncoder;
@@ -83,6 +91,11 @@ public class CommonServiceImpl implements CommonService {
         return userRankingList;
     }
 
+    /*
+     *  페이지 별 안내 게시글 반환
+     *  @Param 메뉴
+     *  @Return 안내글
+     */
     @Override
     public HashMap<String, String> getIntroduceComment(String path) {
         HashMap<String, String> introComment = new HashMap<>();
@@ -109,6 +122,33 @@ public class CommonServiceImpl implements CommonService {
                 break;
         }
         return introComment;
+    }
+
+
+    /*
+     *  공통 파일 업로드
+     *  @Param MultipartFile
+     *  @Return UploadVO
+     */
+    @Transactional
+    @Override
+    public String uploadFile(MultipartFile multipartFile) throws Exception {
+
+        if ( httpSession.getAttribute("id") == null ) return null;
+        String path = "C:\\upload\\studysiba";
+        File destdir = new File(path);
+        String fileName = null;
+        if ( !destdir.exists() ) destdir.mkdir();
+            //  JPG, JPEG, PNG, GIF, BMP 확장자 체크
+            if ( !DataValidation.checkImageFile(multipartFile.getOriginalFilename()) ) return null;
+            fileName = DataConversion.returnUUID()+"_"+multipartFile.getOriginalFilename();
+            File target = new File(path, fileName);
+            try {
+                FileCopyUtils.copy(multipartFile.getBytes(), target);
+            } catch ( IOException e ) {
+                e.printStackTrace();
+            }
+        return fileName;
     }
 
 

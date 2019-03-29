@@ -3,7 +3,16 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.studysiba.mapper.common.CommonMapper">
-    <select id="getTest" resultType="int">
-        SELECT 3
-    </select>
+
+    <insert id="uploadFile" parameterType="UploadVO">
+      <selectKey keyProperty="uldNo" order="BEFORE" resultType="int">
+          SELECT COALESCE(MAX(MBR_NO+1),1) AS MBR_NO FROM MEMBER
+      </selectKey>
+      INSERT INTO UPLOAD ( ULD_NO, ULD_FNO, ULD_ID, ULD_TYPE, ULD_TEXT, ULD_UUID, ULD_FILENAME, ULD_DATE )
+      VALUES (#{uldNo}, #{uldFno}, #{uldId}, #{uldType}, #{uldText}, #{uldUuid}, #{uldFilename}, NOW() )
+    </insert>
+
+
+
+
 </mapper>

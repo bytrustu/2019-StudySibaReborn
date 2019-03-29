@@ -316,7 +316,6 @@
 @media( min-width: 1200px ) {
     .custom-select {
         width: 17%;
-        margin-left: 20px;
     }
 
     .board-search{
@@ -349,20 +348,31 @@
 .basic-modal-content{
     height: 100%;
     padding: 20px;
+    overflow: hidden;
 }
 
 .basic-modal-header{
-    height: 10%;
-    display : block;
+    padding-bottom: 0;
+    height: 55px;
+    margin-bottom: 15px;
+    border-bottom: 0;
+    display: block !important;
 }
 
 .basic-modal-body{
-    height: 70%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-top: 0;
+    max-height: 75%;
+    height:62%;
 }
 
 .basic-modal-footer{
-    justify-content: center;
     border-top: 0;
+    position: absolute;
+    bottom: 5px;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 .basic-modal-box{
@@ -379,7 +389,6 @@
 }
 
 .basic-modal-select {
-    margin-left: 2%;
     width: 30%;
 }
 
@@ -391,7 +400,6 @@
     }
 
     .basic-modal-select {
-        margin-left: 2%;
         width: 15%;
     }
 }
@@ -400,11 +408,10 @@
     .basic-modal-title {
         display: inline-block;
         margin-left: 0.5% !important;
-        width: 82%;
+        width: 84%;
     }
 
     .basic-modal-select {
-        margin-left: 2%;
         width: 15%;
     }
 }
@@ -422,6 +429,16 @@
     background-color: #e4b67c !important;
 }
 
+@media(min-width : 430px ) {
+    .basic-modal-body {
+        overflow-y: auto;
+        overflow-x: hidden;
+        padding-top: 0;
+        max-height: 75%;
+        height: 75%;
+    }
+}
+
 
 @media(min-width : 586px) {
     .basic-modal{
@@ -436,3 +453,24 @@
 }
 
 
+
+
+/* ckeditor */
+
+.ck.ck-editor {
+    max-height: 400px;
+    height: 576px !important;
+}
+
+
+.document-editor {
+    max-height: 576px;
+    height: 576px !important;
+    display: flex;
+    flex-flow: column nowrap;
+}
+
+.ck.ck-editor__main>.ck-editor__editable {
+    max-height: 576px;
+    height: 576px !important;
+}

@@ -11,6 +11,7 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 
 import javax.servlet.http.HttpSessionListener;
@@ -29,7 +30,7 @@ public class StudySibaRebornApplication {
     public SqlSessionFactory sqlSessionFactory(DataSource dataSource) throws Exception {
         SqlSessionFactoryBean sqlSessionFactory = new SqlSessionFactoryBean();
         sqlSessionFactory.setDataSource(dataSource);
-        Resource confiigLocation =  new PathMatchingResourcePatternResolver().getResource("classpath:mybatis-config.xml");
+        Resource confiigLocation = new PathMatchingResourcePatternResolver().getResource("classpath:mybatis-config.xml");
         sqlSessionFactory.setConfigLocation(confiigLocation);
         return sqlSessionFactory.getObject();
     }
@@ -42,6 +43,11 @@ public class StudySibaRebornApplication {
     @Bean
     public HttpSessionListener httpSessionListener() {
         return new SessionListener();
+    }
+
+    @Bean
+    public CommonsMultipartResolver multipartResolver() {
+        return new CommonsMultipartResolver();
     }
 
 

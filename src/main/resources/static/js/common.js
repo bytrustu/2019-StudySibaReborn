@@ -49,8 +49,8 @@ $(document).ready(function () {
 // 모달 로그인 버튼
     $('.modal-loginbtn').on('click', function () {
         let memberInfo = new Map();
-        memberInfo.set('mbrId', $('#input-loginid').val());
-        memberInfo.set('mbrPass', $('#input-loginpass').val());
+        memberInfo.set('mbrId', $('#input-loginid').val().toLowerCase());
+        memberInfo.set('mbrPass', $('#input-loginpass').val().toLowerCase());
         let memberJson = mapToJson(memberInfo);
         for (let item of memberInfo) {
             if (item[1] === '') {
@@ -82,10 +82,10 @@ $(document).ready(function () {
 // 회원가입
     $('.modal-joinbtn').on('click', function () {
         const memberInfo = new Map();
-        memberInfo.set('mbrId', $('#input-joinid').val());
-        memberInfo.set('mbrPass', $('#input-joinpass').val());
-        memberInfo.set('mbrNick', $('#input-joinnick').val());
-        memberInfo.set('mbrEmail', $('#input-joinemail').val());
+        memberInfo.set('mbrId', $('#input-joinid').val().toLowerCase());
+        memberInfo.set('mbrPass', $('#input-joinpass').val().toLowerCase());
+        memberInfo.set('mbrNick', $('#input-joinnick').val().toLowerCase());
+        memberInfo.set('mbrEmail', $('#input-joinemail').val().toLowerCase());
         memberInfo.set('mbrProfile', 'profile-1.png');
 
         for (let item of memberInfo) {
@@ -147,7 +147,7 @@ $('#modal-deleteinfo').on('click', () => {
 $('#modal-resendmail').on('click', () => {
     $('#modalSendMail').modal('hide');
     let memberInfo = new Map();
-    memberInfo.set('mbrId', $('#sendmailid').val());
+    memberInfo.set('mbrId', $('#sendmailid').val().toLowerCase());
     setTimeout(() => {
         timerAlert('초대장 재발송', '초대장을 전송중입니다!', 100000);
     }, 300);

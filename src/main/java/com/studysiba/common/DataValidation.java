@@ -27,7 +27,6 @@ public class DataValidation {
         return stateCode;
     }
 
-
     /*
      *  영어 + 숫자 만 포함된 문자 체크
      *  @Param 텍스트

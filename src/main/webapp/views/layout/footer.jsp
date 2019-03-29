@@ -268,10 +268,13 @@
 
                     </div>
                     <div class="modal-body basic-modal-body">
-                    ...
+                            <form id="editorForm" method="post" action="/community/write">
+                                <textarea name="content" id="editor">
+                                </textarea>
+                            </form>
                     </div>
                     <div class="modal-footer basic-modal-footer">
-                        <button type="button" class="btn btn-yellow studysiba-button studysiba-button" >글쓰기</button>
+                        <button type="button" class="btn btn-yellow studysiba-button studysiba-button write-btn" >글쓰기</button>
                         <button type="button" class="btn btn-yellow studysiba-button studysiba-cancel" data-dismiss="modal">취소</button>
                     </div>
                 </div>
@@ -315,7 +318,8 @@
         <script type="text/javascript" src="/static/js/lib/mdb.js"></script>
         <script type="text/javascript" src="/static/js/lib/sweetalert2.all.min.js"></script>
         <script type="text/javascript" src="/static/js/lib/Liar.js"></script>
-        <script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
+        <script type="text/javascript" src="/static/js/lib/kakao.min.js"></script>
+        <script type="text/javascript" src="/static/dist/ckeditor.js"></script>
         <script type="text/javascript" src="/static/js/common.js"></script>
         <c:choose>
             <c:when test="${requestScope['javax.servlet.forward.servlet_path'] eq '/' }">

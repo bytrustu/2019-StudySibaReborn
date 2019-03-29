@@ -1,5 +1,6 @@
 package com.studysiba.common;
 
+import com.studysiba.domain.member.MemberVO;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,13 +74,12 @@ public class CommonTest {
         System.out.println("랜덥번호 생성3 : " + DataConversion.returnRanNum(10));
     }
 
-    @Test
+    //@Test
     public void DataTextLengthReturnTest(){
         System.out.println("데이터 크기만큼 반환 : " + DataValidation.textLengthReturns(12,"가나다라마바사아자차카"));
         System.out.println("데이터 크기만큼 반환 : " + DataValidation.textLengthReturns(12,"1234567890abcdefghijklmn"));
         System.out.println("데이터 크기만큼 반환 : " + DataValidation.textLengthReturns(12,"aaa"));
 
     }
-
 
 }
