@@ -196,7 +196,7 @@
     </select>
 
     <!-- 1~3위 랭킹 유저조회 -->
-    <select id="viewUserTotalRanking" resultType="hashmap">
+    <select id="viewUserTotalRanking" resultType="PointVO">
         SELECT PNT_ID, PNT_SCORE,
         ( SELECT COUNT(*)+1 FROM POINT WHERE PNT_SCORE > T.PNT_SCORE ) AS PNT_RANK,
         MBR_ID, MBR_NICK, MBR_PROFILE

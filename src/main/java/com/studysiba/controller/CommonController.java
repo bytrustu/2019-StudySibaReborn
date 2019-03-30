@@ -3,6 +3,7 @@ package com.studysiba.controller;
 import com.studysiba.domain.board.BoardVO;
 import com.studysiba.domain.common.Criteria;
 import com.studysiba.domain.common.PageVO;
+import com.studysiba.domain.member.PointVO;
 import com.studysiba.service.board.BoardService;
 import com.studysiba.service.common.CommonService;
 import lombok.extern.log4j.Log4j;
@@ -37,7 +38,7 @@ public class CommonController {
      */
     @GetMapping("/")
     public String moveMain(Model model, @RequestParam(value = "requireLogin", required = false, defaultValue = "false") boolean requireLogin) throws Exception {
-        List<HashMap<String, Object>> userRankingList = commonService.viewUserTotalRanking();
+        List<PointVO> userRankingList = commonService.viewUserTotalRanking();
         model.addAttribute("rank", userRankingList);
         log.info(userRankingList);
         model.addAttribute("requireLogin", requireLogin);

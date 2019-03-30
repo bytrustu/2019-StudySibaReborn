@@ -206,9 +206,9 @@ public interface MemberMapper {
 
     /*
      *  유저랭킹 1~3위 조회
-     *  @Return HashMap<String,Object>
+     *  @Return List<PointVO>
      */
-    List<HashMap<String, Object>> viewUserTotalRanking();
+    List<PointVO> viewUserTotalRanking();
 
     /*
      *  유저 비밀번호 변경

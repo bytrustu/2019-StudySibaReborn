@@ -21,12 +21,12 @@
 
                     <c:forEach var="rank" items="${rank}" varStatus="status">
                         <div class="row mt-3 member-rank">
-                            <img src="/static/image/main/rank${rank.PNT_RANK}.png">
-                            <img src="/static/image/profile/${rank.MBR_PROFILE}">
+                            <img src="/static/image/main/rank${rank.pntRank}.png">
+                            <img src="/static/image/profile/${rank.mbrProfile}">
                             <p>
-                                <span>${rank.PNT_RANK}위 !!! ${rank.MBR_NICK}</span><br/>
-                                <span class="point" id="point${rank.PNT_RANK}"
-                                      data-accept="false">${rank.PNT_SCORE}</span><span>점</span>
+                                <span>${rank.pntRank}위 !!! ${rank.mbrNick}</span><br/>
+                                <span class="point" id="point${rank.pntRank}"
+                                      data-accept="false">${rank.pntScore}</span><span>점</span>
                             </p>
                         </div>
                     </c:forEach>
@@ -264,7 +264,7 @@
                 </div>
                 <div class="details">
                     <div class="image">
-                        <img src="/static/image/profile/profile-1.png">
+                        <img src="/static/image/profile/profile-2.png">
                     </div>
                     <h3>쟁비서2<br><span>마라톤걸</span></h3>
                 </div>
@@ -278,7 +278,7 @@
                 </div>
                 <div class="details">
                     <div class="image">
-                        <img src="/static/image/profile/profile-1.png">
+                        <img src="/static/image/profile/profile-3.png">
                     </div>
                     <h3>쟁비서3<br><span>마라톤걸</span></h3>
                 </div>
@@ -293,7 +293,7 @@
                 </div>
                 <div class="details">
                     <div class="image">
-                        <img src="/static/image/profile/profile-1.png">
+                        <img src="/static/image/profile/profile-4.png">
                     </div>
                     <h3>쟁비서4<br><span>마라톤걸</span></h3>
                 </div>
@@ -307,7 +307,7 @@
                 </div>
                 <div class="details">
                     <div class="image">
-                        <img src="/static/image/profile/profile-1.png">
+                        <img src="/static/image/profile/profile-5.png">
                     </div>
                     <h3>쟁비서5<br><span>마라톤걸</span></h3>
                 </div>
@@ -322,7 +322,7 @@
                 </div>
                 <div class="details">
                     <div class="image">
-                        <img src="/static/image/profile/profile-1.png">
+                        <img src="/static/image/profile/profile-6.png">
                     </div>
                     <h3>쟁비서6<br><span>마라톤걸</span></h3>
                 </div>
@@ -336,7 +336,7 @@
                 </div>
                 <div class="details">
                     <div class="image">
-                        <img src="/static/image/profile/profile-1.png">
+                        <img src="/static/image/profile/profile-7.png">
                     </div>
                     <h3>쟁비서7<br><span>마라톤걸</span></h3>
                 </div>
@@ -350,7 +350,7 @@
                 </div>
                 <div class="details">
                     <div class="image">
-                        <img src="/static/image/profile/profile-1.png">
+                        <img src="/static/image/profile/profile-8.png">
                     </div>
                     <h3>쟁비서8<br><span>마라톤걸</span></h3>
                 </div>
@@ -364,7 +364,7 @@
                 </div>
                 <div class="details">
                     <div class="image">
-                        <img src="/static/image/profile/profile-1.png">
+                        <img src="/static/image/profile/profile-9.png">
                     </div>
                     <h3>쟁비서9<br><span>마라톤걸</span></h3>
                 </div>
@@ -378,7 +378,7 @@
                 </div>
                 <div class="details">
                     <div class="image">
-                        <img src="/static/image/profile/profile-1.png">
+                        <img src="/static/image/profile/profile-10.png">
                     </div>
                     <h3>쟁비서10<br><span>마라톤걸</span></h3>
                 </div>
@@ -393,7 +393,7 @@
                 </div>
                 <div class="details">
                     <div class="image">
-                        <img src="/static/image/profile/profile-1.png">
+                        <img src="/static/image/profile/profile-11.png">
                     </div>
                     <h3>쟁비서11<br><span>마라톤걸</span></h3>
                 </div>
@@ -407,7 +407,7 @@
                 </div>
                 <div class="details">
                     <div class="image">
-                        <img src="/static/image/profile/profile-1.png">
+                        <img src="/static/image/profile/profile-12.png">
                     </div>
                     <h3>쟁비서12<br><span>마라톤걸</span></h3>
                 </div>
@@ -421,7 +421,7 @@
                 </div>
                 <div class="details">
                     <div class="image">
-                        <img src="/static/image/profile/profile-1.png">
+                        <img src="/static/image/profile/profile-13.png">
                     </div>
                     <h3>쟁비서13<br><span>마라톤걸</span></h3>
                 </div>
@@ -436,7 +436,7 @@
                 </div>
                 <div class="details">
                     <div class="image">
-                        <img src="/static/image/profile/profile-1.png">
+                        <img src="/static/image/profile/profile-14.png">
                     </div>
                     <h3>쟁비서14<br><span>마라톤걸</span></h3>
                 </div>
@@ -450,7 +450,7 @@
                 </div>
                 <div class="details">
                     <div class="image">
-                        <img src="/static/image/profile/profile-1.png">
+                        <img src="/static/image/profile/profile-15.png">
                     </div>
                     <h3>쟁비서15<br><span>마라톤걸</span></h3>
                 </div>
@@ -465,7 +465,7 @@
                 </div>
                 <div class="details">
                     <div class="image">
-                        <img src="/static/image/profile/profile-1.png">
+                        <img src="/static/image/profile/profile-16.png">
                     </div>
                     <h3>쟁비서16<br><span>마라톤걸</span></h3>
                 </div>
@@ -479,7 +479,7 @@
                 </div>
                 <div class="details">
                     <div class="image">
-                        <img src="/static/image/profile/profile-1.png">
+                        <img src="/static/image/profile/profile-17.png">
                     </div>
                     <h3>쟁비서17<br><span>마라톤걸</span></h3>
                 </div>
@@ -493,7 +493,7 @@
                 </div>
                 <div class="details">
                     <div class="image">
-                        <img src="/static/image/profile/profile-1.png">
+                        <img src="/static/image/profile/profile-18.png">
                     </div>
                     <h3>쟁비서18<br><span>마라톤걸</span></h3>
                 </div>

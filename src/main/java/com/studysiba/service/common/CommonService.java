@@ -27,7 +27,7 @@ public interface CommonService {
     /*
      *  유저 랭킹 1~3위 정보 조회
      */
-    List<HashMap<String, Object>> viewUserTotalRanking() throws Exception;
+    List<PointVO> viewUserTotalRanking() throws Exception;
 
     /*
      *  페이지 별 안내 게시글 반환

@@ -5,6 +5,7 @@ import com.studysiba.common.DataValidation;
 import com.studysiba.config.SocialKeys;
 import com.studysiba.domain.common.Criteria;
 import com.studysiba.domain.common.PageVO;
+import com.studysiba.domain.member.PointVO;
 import com.studysiba.mapper.board.BoardMapper;
 import com.studysiba.mapper.common.CommonMapper;
 import com.studysiba.mapper.member.MemberMapper;
@@ -88,9 +89,9 @@ public class CommonServiceImpl implements CommonService {
      *  1~3위 유저 랭킹 정보 조회
      */
     @Override
-    public List<HashMap<String, Object>> viewUserTotalRanking() throws Exception {
-        List<HashMap<String, Object>> userRankingList = new ArrayList<>();
-        userRankingList = (List<HashMap<String, Object>>) memberMapper.viewUserTotalRanking();
+    public List<PointVO> viewUserTotalRanking() throws Exception {
+        List<PointVO> userRankingList = new ArrayList<>();
+        userRankingList = memberMapper.viewUserTotalRanking();
         return userRankingList;
     }
 
