@@ -49,8 +49,8 @@ $(document).ready(function () {
 // 모달 로그인 버튼
     $('.modal-loginbtn').on('click', function () {
         let memberInfo = new Map();
-        memberInfo.set('mbrId', $('#input-loginid').val().toLowerCase());
-        memberInfo.set('mbrPass', $('#input-loginpass').val().toLowerCase());
+        memberInfo.set('mbrId', $('#input-loginid').val());
+        memberInfo.set('mbrPass', $('#input-loginpass').val());
         let memberJson = mapToJson(memberInfo);
         for (let item of memberInfo) {
             if (item[1] === '') {
@@ -82,10 +82,10 @@ $(document).ready(function () {
 // 회원가입
     $('.modal-joinbtn').on('click', function () {
         const memberInfo = new Map();
-        memberInfo.set('mbrId', $('#input-joinid').val().toLowerCase());
-        memberInfo.set('mbrPass', $('#input-joinpass').val().toLowerCase());
-        memberInfo.set('mbrNick', $('#input-joinnick').val().toLowerCase());
-        memberInfo.set('mbrEmail', $('#input-joinemail').val().toLowerCase());
+        memberInfo.set('mbrId', $('#input-joinid').val());
+        memberInfo.set('mbrPass', $('#input-joinpass').val());
+        memberInfo.set('mbrNick', $('#input-joinnick').val());
+        memberInfo.set('mbrEmail', $('#input-joinemail').val());
         memberInfo.set('mbrProfile', 'profile-1.png');
 
         for (let item of memberInfo) {
@@ -147,7 +147,7 @@ $('#modal-deleteinfo').on('click', () => {
 $('#modal-resendmail').on('click', () => {
     $('#modalSendMail').modal('hide');
     let memberInfo = new Map();
-    memberInfo.set('mbrId', $('#sendmailid').val().toLowerCase());
+    memberInfo.set('mbrId', $('#sendmailid').val());
     setTimeout(() => {
         timerAlert('초대장 재발송', '초대장을 전송중입니다!', 100000);
     }, 300);
@@ -225,9 +225,6 @@ var checkFacebookLoginStatus = (response) => {
         errorAlert("로그인 실패 했습니다.")
     }
 
-
-
-
 }
 
 
@@ -301,13 +298,18 @@ let initElement = (className) => {
 
 
 // Map을 Json 으로 변환
-const mapToJson = (map) => {
-    return JSON.stringify(mapToObject(map));
+const mapToJson = (map,isCheck) => {
+    return JSON.stringify(mapToObject(map,isCheck));
 }
-const mapToObject = (map) => {
+const mapToObject = (map,isCheck) => {
+    if ( !isCheck ) isCheck = false;
     let obj = Object.create(null);
     for (let [key, value] of map) {
-        obj[key] = value;
+        if ( isCheck ) {
+            typeof value == 'string' ? obj[key] = value.toLowerCase() : obj[key] = value;
+        } else {
+            obj[key] = value;
+        }
     }
     return obj;
 }
@@ -614,6 +616,25 @@ let changePassword = (memberJson) => {
     });
 }
 
+// 게시판 게시글 등록
+let writeBoard = (boardJson, currentPath) => {
+    return new Promise( (resolve, reject) => {
+        console.log(`오냐? > ${boardJson}`);
+        $.ajax({
+            type : 'POST',
+            url : `/${currentPath}/write`,
+            data : boardJson,
+            contentType : 'application/json; charset=utf-8',
+            success : (data) => {
+                resolve(data);
+            },
+            error : (error) => {
+                reject(error);
+            }
+        });
+    });
+}
+
 
 // SwertAlert Error
 const errorAlert = (text) => {
@@ -637,6 +658,30 @@ const successAlert = (text) => {
         allowOutsideClick: false,
         timer: 2500
     });
+}
+
+const confirmAlert = (title, text, path) => {
+    Swal.fire({
+        title: title,
+        text: text,
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#fbc02d',
+        cancelButtonColor: '#e4b67c ',
+        confirmButtonText: '네'
+    }).then((result) => {
+        if (result.value) {
+            if (path){
+                location.href = path;
+            }else {
+                Swal.fire(
+                    '성공',
+                    '성공했습니다.',
+                    'success'
+                )
+            }
+        }
+    })
 }
 
 // SweetAlert Timer

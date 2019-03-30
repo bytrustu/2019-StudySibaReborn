@@ -1,6 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
+<%
+    session.setAttribute("id","test1");
+%>
+
+
 <div class="sub-page">
 
 
@@ -16,7 +21,7 @@
     <div class="board-box">
         <div class="board-top">
             <div class="board-total">총 521 게시글</div>
-            <button class="btn btn-warning content-writebtn">글쓰기</button>
+            <button class="btn btn-warning content-writebtn" data-write="<c:if test="${sessionScope.id ne null}">true</c:if>">글쓰기</button>
         </div>
 
         <table class="board-table">

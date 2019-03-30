@@ -4,6 +4,30 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.studysiba.mapper.board.BoardMapper">
 
+    <!-- 게시글등록 -->
+    <insert id="writePost" parameterType="BoardVO">
+        <selectKey keyProperty="brdNo" order="BEFORE" resultType="int">
+            SELECT COALESCE(MAX(BRD_NO+1),1) AS BRD_NO FROM BOARD
+        </selectKey>
+        INSERT INTO BOARD( BRD_NO, BRD_TYPE, BRD_DIVIDE, BRD_ID, BRD_TITLE, BRD_CONTENT, BRD_GNO,
+                                            BRD_STEP, BRD_INDENT, BRD_COUNT, BRD_AVAILABLE, BRD_DATE )
+        VALUES(#{brdNo}, #{brdType}, #{brdDivide}, #{brdId}, #{brdTitle}, #{brdContent}, #{brdNo}, 0, 0, 0, 1, NOW() )
+    </insert>
 
+    <!-- 답글로 먼저 등록된 게시글 STEP 증가 -->
+    <update id="replyShape" parameterType="BoardVO">
+        UPDATE BOARD SET BRD_STEP = BRD_STEP+1
+        WHERE BRD_GNO = #{brdGno} AND BRD_STEP > #{brdStep}
+    </update>
+
+    <!-- 답글등록 -->
+    <insert id="replyPost" parameterType="BoardVO">
+        <selectKey keyProperty="brdNo" order="BEFORE" resultType="int">
+            SELECT COALESCE(MAX(BRD_NO+1),1) AS BRD_NO FROM BOARD
+        </selectKey>
+        INSERT INTO BOARD( BRD_NO, BRD_TYPE, BRD_DIVIDE, BRD_ID, BRD_TITLE, BRD_CONTENT, BRD_GNO,
+        BRD_STEP, BRD_INDENT, BRD_COUNT, BRD_AVAILABLE, BRD_DATE )
+        VALUES(#{brdNo}, #{brdType}, #{brdDivide}, #{brdId}, #{brdTitle}, #{brdContent}, #{brdNo}, #{brdGno}, #{brdStep}+1, #{brdIndent}+1, 1, NOW() )
+    </insert>
 
 </mapper>

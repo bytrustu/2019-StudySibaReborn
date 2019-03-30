@@ -149,69 +149,71 @@
                 </div>
             </div>
 
-            <!-- 비밀번호 변경 모달 -->
-            <div class="modal fade" id="modalChangePass" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                <div class="modal-dialog cascading-modal modal-avatar modal-sm" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <img src="/static/image/common/character-5.png" alt="avatar" class="rounded-circle img-responsive">
-                        </div>
-                        <div class="modal-body text-center mb-1">
-                            <h6 class="mt-1 mb-2 modal-resendtext"><span class='modal-resendpoint'>비밀번호</span>를 입력해주세요.</h6>
-                            <h6 class="mt-1 mb-2 modal-resendtext"><span class='modal-resendpoint'>영어숫자</span>포함 5~16자 설정!</h6>
-                            <h5 class=""></h5>
-                            <div class="md-form ml-0 mr-0">
-                                <input type="password" class="form-control form-control-sm modal-input">
+            <c:if test="${sessionScope.id ne null }">
+                <!-- 비밀번호 변경 모달 -->
+                <div class="modal fade" id="modalChangePass" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog cascading-modal modal-avatar modal-sm" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <img src="/static/image/common/character-5.png" alt="avatar" class="rounded-circle img-responsive">
                             </div>
-                            <div class="text-center mt-4 modal-sendbox">
-                                <button class="btn btn-warning mt-1 modal-resendbtn change-btn" data-change="password">비밀번호변경</button>
+                            <div class="modal-body text-center mb-1">
+                                <h6 class="mt-1 mb-2 modal-resendtext"><span class='modal-resendpoint'>비밀번호</span>를 입력해주세요.</h6>
+                                <h6 class="mt-1 mb-2 modal-resendtext"><span class='modal-resendpoint'>영어숫자</span>포함 5~16자 설정!</h6>
+                                <h5 class=""></h5>
+                                <div class="md-form ml-0 mr-0">
+                                    <input type="password" class="form-control form-control-sm modal-input">
+                                </div>
+                                <div class="text-center mt-4 modal-sendbox">
+                                    <button class="btn btn-warning mt-1 modal-resendbtn change-btn" data-change="password">비밀번호변경</button>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- 닉네임 변경 모달 -->
-            <div class="modal fade" id="modalChangeNick" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                <div class="modal-dialog cascading-modal modal-avatar modal-sm" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <img src="/static/image/common/character-4.png" alt="avatar" class="rounded-circle img-responsive">
-                        </div>
-                        <div class="modal-body text-center mb-1">
-                            <h6 class="mt-1 mb-2 modal-resendtext">원하는<span class='modal-resendpoint'> 닉네임</span>를 입력해주세요.</h6>
-                            <h6 class="mt-1 mb-2 modal-resendtext">한글6자,영문숫자12자 <span class='modal-resendpoint'>제한!</span></h6>
-                            <h5 class=""></h5>
-                            <div class="md-form ml-0 mr-0">
-                                <input type="text" class="form-control form-control-sm modal-input">
+                <!-- 닉네임 변경 모달 -->
+                <div class="modal fade" id="modalChangeNick" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog cascading-modal modal-avatar modal-sm" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <img src="/static/image/common/character-4.png" alt="avatar" class="rounded-circle img-responsive">
                             </div>
-                            <div class="text-center mt-4 modal-sendbox">
-                                <button class="btn btn-warning mt-1 modal-resendbtn change-btn" data-change="nick">닉네임변경</button>
+                            <div class="modal-body text-center mb-1">
+                                <h6 class="mt-1 mb-2 modal-resendtext">원하는<span class='modal-resendpoint'> 닉네임</span>를 입력해주세요.</h6>
+                                <h6 class="mt-1 mb-2 modal-resendtext">한글6자,영문숫자12자 <span class='modal-resendpoint'>제한!</span></h6>
+                                <h5 class=""></h5>
+                                <div class="md-form ml-0 mr-0">
+                                    <input type="text" class="form-control form-control-sm modal-input">
+                                </div>
+                                <div class="text-center mt-4 modal-sendbox">
+                                    <button class="btn btn-warning mt-1 modal-resendbtn change-btn" data-change="nick">닉네임변경</button>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- 프로필 변경 모달 -->
-            <div class="modal fade" id="modalChangeProfile" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                <div class="modal-dialog cascading-modal modal-avatar modal-sm" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <img src="/static/image/common/rotate.png" class="image-target">
-                            <img src="/static/image/profile/${profile}" alt="프로필사진" class="rounded-circle img-responsive logined-profile">
-                        </div>
-                        <div class="modal-body text-center mb-1">
-                            <h6 class="mt-1 mb-2 modal-resendtext">원하는 <span class='modal-resendpoint'>프로필</span>을 설정 해보세요</h6>
-                            <h6 class="mt-1 mb-2 modal-resendtext">상단 <span class='modal-resendpoint'>버튼</span>으로 바꿀수 있어요!</h6>
-                            <div class="text-center mt-4 modal-sendbox">
-                                <input type="text" class="form-control form-control-sm modal-input modal-inputprofile" value="${sessionScope.profile}">
-                                <button class="btn btn-warning mt-1 modal-resendbtn change-btn" data-change="profile">프로필변경</button>
+                <!-- 프로필 변경 모달 -->
+                <div class="modal fade" id="modalChangeProfile" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog cascading-modal modal-avatar modal-sm" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <img src="/static/image/common/rotate.png" class="image-target">
+                                <img src="/static/image/profile/${profile}" alt="프로필사진" class="rounded-circle img-responsive logined-profile">
+                            </div>
+                            <div class="modal-body text-center mb-1">
+                                <h6 class="mt-1 mb-2 modal-resendtext">원하는 <span class='modal-resendpoint'>프로필</span>을 설정 해보세요</h6>
+                                <h6 class="mt-1 mb-2 modal-resendtext">상단 <span class='modal-resendpoint'>버튼</span>으로 바꿀수 있어요!</h6>
+                                <div class="text-center mt-4 modal-sendbox">
+                                    <input type="text" class="form-control form-control-sm modal-input modal-inputprofile" value="${sessionScope.profile}">
+                                    <button class="btn btn-warning mt-1 modal-resendbtn change-btn" data-change="profile">프로필변경</button>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </c:if>
 
             <!-- 페이스북 sdk init -->
             <script type="text/javascript">
@@ -262,19 +264,16 @@
                         </select>
 
                         <div class="md-form md-outline margin-init basic-modal-title">
-                            <input type="text" id="board-input-title" class="form-control">
+                            <input type="text" id="board-input-title" class="form-control board-input-title">
                             <label for="board-input-title">제목</label>
                         </div>
 
                     </div>
                     <div class="modal-body basic-modal-body">
-                            <form id="editorForm" method="post" action="/community/write">
-                                <textarea name="content" id="editor">
-                                </textarea>
-                            </form>
+                                <textarea name="editor" id="editor"></textarea>
                     </div>
                     <div class="modal-footer basic-modal-footer">
-                        <button type="button" class="btn btn-yellow studysiba-button studysiba-button write-btn" >글쓰기</button>
+                        <button type="button" class="btn btn-yellow studysiba-button studysiba-button write-btn">글쓰기</button>
                         <button type="button" class="btn btn-yellow studysiba-button studysiba-cancel" data-dismiss="modal">취소</button>
                     </div>
                 </div>

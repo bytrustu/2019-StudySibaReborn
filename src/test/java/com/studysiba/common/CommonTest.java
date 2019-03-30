@@ -8,6 +8,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
+
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -79,7 +82,6 @@ public class CommonTest {
         System.out.println("데이터 크기만큼 반환 : " + DataValidation.textLengthReturns(12,"가나다라마바사아자차카"));
         System.out.println("데이터 크기만큼 반환 : " + DataValidation.textLengthReturns(12,"1234567890abcdefghijklmn"));
         System.out.println("데이터 크기만큼 반환 : " + DataValidation.textLengthReturns(12,"aaa"));
-
     }
 
 }

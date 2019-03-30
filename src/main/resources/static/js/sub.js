@@ -7,35 +7,61 @@ $(document).ready(function () {
         contentWidthFix(widthSize);
     });
 
+    // 게시글 등록
+    let ckContent = '';
     $('.write-btn').on('click', () => {
-        $('#editorForm').submit();
+        let currentPath = window.location.pathname;
+        currentPath = currentPath.substring(1, currentPath.lastIndexOf('/'));
+        let boardInfo = new Map();
+        boardInfo.set('brdType', currentPath);
+        boardInfo.set('brdDivide', $('.basic-modal-select').val());
+        boardInfo.set('brdTitle', $('.board-input-title').val());
+        boardInfo.set('brdContent', ckContent.getData());
+        let boardJson = mapToJson(boardInfo, false);
+
+        writeBoard(boardJson, currentPath)
+            .then((data) => {
+                console.log(`SUCCESS : ${data}`);
+            }).catch((error) => {
+            console.log(`ERROR : ${error}`);
+        });
     });
 
 
+    // CKEDITOR5 설정
     ClassicEditor
-        .create( document.querySelector( '#editor' ),{
+        .create(document.querySelector('#editor'), {
             language: 'ko',
-            toolbar : {
+            toolbar: {
                 viewportTopOffset: 30
             },
             ckfinder: {
                 uploadUrl: '/upload/community'
             }
-        } )
-        .catch( error => {
-            console.error( error );
-        } );
+        })
+        .then(editor => {
+            ckContent = editor;
+        })
+        .catch(error => {
+            console.error(error);
+        });
 
 
-    $('.content-writebtn').on('click', () => {
-        $('#basicModal').modal('show');
-        $('.navbar').css('z-index', 1050);
-        $('body.modal-open').css('overflow','hidden');
-        $('body').css('overflow','hidden');
+    // 글쓰기 버튼
+    $('.content-writebtn').on('click', function () {
+        // 로그인 여부 확인
+        if ($(this).attr('data-write') == 'true') {
+            $('#basicModal').modal('show');
+            $('.navbar').css('z-index', 1050);
+            $('body.modal-open').css('overflow', 'hidden');
+            $('body').css('overflow', 'hidden');
+        } else {
+            confirmAlert('로그인이 필요합니다', '로그인화면으로 이동하시겠습니까?', '/?requireLogin=true')
+        }
     });
 
     $('.studysiba-cancel').on('click', () => {
-        $('body').css('overflow','auto');
+        $('body').css('overflow', 'auto');
     })
 
 
