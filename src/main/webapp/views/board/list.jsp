@@ -1,9 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<%
-    session.setAttribute("id","test1");
-%>
+<%--<%--%>
+    <%--session.setAttribute("id","test1");--%>
+<%--%>--%>
 
 
 <div class="sub-page">
@@ -28,397 +28,84 @@
             <thead class="board-thead"></thead>
             <tbody class="board-tbody">
 
+            <c:forEach items="${boardList}" var="boardList">
+                <tr>
+                    <td class="board-divide">
+                        <span>
+                            <c:choose>
+                                <c:when test="${boardList.brdDivide eq 1}">공지</c:when>
+                                <c:when test="${boardList.brdDivide eq 2}">이벤</c:when>
+                                <c:when test="${boardList.brdDivide eq 3}">잡담</c:when>
+                                <c:when test="${boardList.brdDivide eq 4}">정보</c:when>
+                                <c:when test="${boardList.brdDivide eq 5}">요청</c:when>
+                            </c:choose>
+                        </span>
+                    </td>
+                    <td class="board-subject">
+                        <div class="board-thumb">
+                            <a class="board-imgbox">
+                                <img src="/static/image/profile/${boardList.mbrProfile}">
+                            </a>
 
-            <!-- -->
-            <tr>
-                <td class="board-divide">
-                    <span>정보</span>
-                </td>
-                <td class="board-subject">
-                    <div class="board-thumb">
-                        <a class="board-imgbox">
-                            <img src="/static/image/profile/profile-14.png">
-                        </a>
-
-                        <div class="board-content">
-                            <div class="board-title">
-                                <p class="board-titletext">
-                                    <a class="title-text" href="#">안녕하세욯ㅎㅎㅎㅎ123gggg456789</a>
-                                </p>
-                                <img src="" class="icon-new">
+                            <div class="board-content">
+                                <div class="board-title">
+                                    <p class="board-titletext">
+                                        <a class="title-text" href="#">${boardList.brdTitle}}</a>
+                                    </p>
+                                    <img src="" class="icon-new">
+                                </div>
+                                <span class="board-writer"><a>${boardList.mbrNick}</a></span>
+                                <span class="board-bar">｜</span>
+                                <span class="board-time">${boardList.lastTime}</span>
                             </div>
-                            <span class="board-writer"><a>침착해내자신</a></span>
-                            <span class="board-bar">｜</span>
-                            <span class="board-time"><span>5</span><span>분전</span></span>
+
                         </div>
+                    </td>
+                    <td class="board-hit">
+                        <i class="fab fa-sistrix"></i>
+                        ${boardList.brdCount}
+                    </td>
+                    <td class="board-like">
+                        <i class="fas fa-heart"></i>
+                        21
+                    </td>
+                </tr>
+            </c:forEach>
 
-                    </div>
-                </td>
-                <td class="board-hit">
-                    <i class="fab fa-sistrix"></i>
-                    123
-                </td>
-                <td class="board-like">
-                    <i class="fas fa-heart"></i>
-                    21
-                </td>
-            </tr>
+            <%--<tr>--%>
+                <%--<td class="board-divide">--%>
+                    <%--<span>정보</span>--%>
+                <%--</td>--%>
+                <%--<td class="board-subject">--%>
+                    <%--<div class="board-thumb">--%>
+                        <%--<a class="board-imgbox">--%>
+                            <%--<img src="/static/image/profile/profile-14.png">--%>
+                        <%--</a>--%>
+
+                        <%--<div class="board-content">--%>
+                            <%--<div class="board-title">--%>
+                                <%--<p class="board-titletext">--%>
+                                    <%--<a class="title-text" href="#">안녕하세욯ㅎㅎㅎㅎ123gggg456789</a>--%>
+                                <%--</p>--%>
+                                <%--<img src="" class="icon-new">--%>
+                            <%--</div>--%>
+                            <%--<span class="board-writer"><a>침착해내자신</a></span>--%>
+                            <%--<span class="board-bar">｜</span>--%>
+                            <%--<span class="board-time"><span>5</span><span>분전</span></span>--%>
+                        <%--</div>--%>
+
+                    <%--</div>--%>
+                <%--</td>--%>
+                <%--<td class="board-hit">--%>
+                    <%--<i class="fab fa-sistrix"></i>--%>
+                    <%--123--%>
+                <%--</td>--%>
+                <%--<td class="board-like">--%>
+                    <%--<i class="fas fa-heart"></i>--%>
+                    <%--21--%>
+                <%--</td>--%>
+            <%--</tr>--%>
             <!-- -->
-
-
-
-            <!-- -->
-            <tr>
-                <td class="board-divide">
-                    <span>정보</span>
-                </td>
-                <td class="board-subject">
-                    <div class="board-thumb">
-                        <a class="board-imgbox">
-                            <img src="/static/image/profile/profile-14.png">
-                        </a>
-
-                        <div class="board-content">
-                            <div class="board-title">
-                                <p class="board-titletext">
-                                    <a class="title-text" href="#">?????뭐하냐 ㅋㅋㅋㅋㅋ</a>
-                                </p>
-                                <img src="" class="icon-new">
-                            </div>
-                            <span class="board-writer"><a>침착해내자신</a></span>
-                            <span class="board-bar">｜</span>
-                            <span class="board-time"><span>5</span><span>분전</span></span>
-                        </div>
-
-                    </div>
-                </td>
-                <td class="board-hit">
-                    <i class="fab fa-sistrix"></i>
-                    123
-                </td>
-                <td class="board-like">
-                    <i class="fas fa-heart"></i>
-                    21
-                </td>
-            </tr>
-            <!-- -->
-
-
-            <!-- -->
-            <tr>
-                <td class="board-divide">
-                    <span>정보</span>
-                </td>
-                <td class="board-subject">
-                    <div class="board-thumb">
-                        <a class="board-imgbox">
-                            <img src="/static/image/profile/profile-14.png">
-                        </a>
-
-                        <div class="board-content">
-                            <div class="board-title">
-                                <p class="board-titletext">
-                                    <a class="title-text" href="#">ㅋㅋㅋㅋㅋㅋㅋㅋㅋ</a>
-                                </p>
-                                <img src="" class="icon-new">
-                            </div>
-                            <span class="board-writer"><a>침착해내자신</a></span>
-                            <span class="board-bar">｜</span>
-                            <span class="board-time"><span>5</span><span>분전</span></span>
-                        </div>
-
-                    </div>
-                </td>
-                <td class="board-hit">
-                    <i class="fab fa-sistrix"></i>
-                    123
-                </td>
-                <td class="board-like">
-                    <i class="fas fa-heart"></i>
-                    21
-                </td>
-            </tr>
-            <!-- -->
-
-
-
-
-            <!-- -->
-            <tr>
-                <td class="board-divide">
-                    <span>정보</span>
-                </td>
-                <td class="board-subject">
-                    <div class="board-thumb">
-                        <a class="board-imgbox">
-                            <img src="/static/image/profile/profile-14.png">
-                        </a>
-
-                        <div class="board-content">
-                            <div class="board-title">
-                                <p class="board-titletext">
-                                    <a class="title-text" href="#">하하하하하하하하하</a>
-                                </p>
-                                <img src="" class="icon-new">
-                            </div>
-                            <span class="board-writer"><a>침착해내자신</a></span>
-                            <span class="board-bar">｜</span>
-                            <span class="board-time"><span>5</span><span>분전</span></span>
-                        </div>
-
-                    </div>
-                </td>
-                <td class="board-hit">
-                    <i class="fab fa-sistrix"></i>
-                    123
-                </td>
-                <td class="board-like">
-                    <i class="fas fa-heart"></i>
-                    21
-                </td>
-            </tr>
-            <!-- -->
-
-
-
-
-            <!-- -->
-            <tr>
-                <td class="board-divide">
-                    <span>정보</span>
-                </td>
-                <td class="board-subject">
-                    <div class="board-thumb">
-                        <a class="board-imgbox">
-                            <img src="/static/image/profile/profile-14.png">
-                        </a>
-
-                        <div class="board-content">
-                            <div class="board-title">
-                                <p class="board-titletext">
-                                    <a class="title-text" href="#">하하하하하하하하하</a>
-                                </p>
-                                <img src="" class="icon-new">
-                            </div>
-                            <span class="board-writer"><a>침착해내자신</a></span>
-                            <span class="board-bar">｜</span>
-                            <span class="board-time"><span>5</span><span>분전</span></span>
-                        </div>
-
-                    </div>
-                </td>
-                <td class="board-hit">
-                    <i class="fab fa-sistrix"></i>
-                    123
-                </td>
-                <td class="board-like">
-                    <i class="fas fa-heart"></i>
-                    21
-                </td>
-            </tr>
-            <!-- -->
-
-
-
-
-            <!-- -->
-            <tr>
-                <td class="board-divide">
-                    <span>정보</span>
-                </td>
-                <td class="board-subject">
-                    <div class="board-thumb">
-                        <a class="board-imgbox">
-                            <img src="/static/image/profile/profile-14.png">
-                        </a>
-
-                        <div class="board-content">
-                            <div class="board-title">
-                                <p class="board-titletext">
-                                    <a class="title-text" href="#">하하하하하하하하하</a>
-                                </p>
-                                <img src="" class="icon-new">
-                            </div>
-                            <span class="board-writer"><a>침착해내자신</a></span>
-                            <span class="board-bar">｜</span>
-                            <span class="board-time"><span>5</span><span>분전</span></span>
-                        </div>
-
-                    </div>
-                </td>
-                <td class="board-hit">
-                    <i class="fab fa-sistrix"></i>
-                    123
-                </td>
-                <td class="board-like">
-                    <i class="fas fa-heart"></i>
-                    21
-                </td>
-            </tr>
-            <!-- -->
-
-
-
-
-            <!-- -->
-            <tr>
-                <td class="board-divide">
-                    <span>정보</span>
-                </td>
-                <td class="board-subject">
-                    <div class="board-thumb">
-                        <a class="board-imgbox">
-                            <img src="/static/image/profile/profile-14.png">
-                        </a>
-
-                        <div class="board-content">
-                            <div class="board-title">
-                                <p class="board-titletext">
-                                    <a class="title-text" href="#">하하하하하하하하하</a>
-                                </p>
-                                <img src="" class="icon-new">
-                            </div>
-                            <span class="board-writer"><a>침착해내자신</a></span>
-                            <span class="board-bar">｜</span>
-                            <span class="board-time"><span>5</span><span>분전</span></span>
-                        </div>
-
-                    </div>
-                </td>
-                <td class="board-hit">
-                    <i class="fab fa-sistrix"></i>
-                    123
-                </td>
-                <td class="board-like">
-                    <i class="fas fa-heart"></i>
-                    21
-                </td>
-            </tr>
-            <!-- -->
-
-
-
-
-            <!-- -->
-            <tr>
-                <td class="board-divide">
-                    <span>정보</span>
-                </td>
-                <td class="board-subject">
-                    <div class="board-thumb">
-                        <a class="board-imgbox">
-                            <img src="/static/image/profile/profile-14.png">
-                        </a>
-
-                        <div class="board-content">
-                            <div class="board-title">
-                                <p class="board-titletext">
-                                    <a class="title-text" href="#">하하하하하하하하하</a>
-                                </p>
-                                <img src="" class="icon-new">
-                            </div>
-                            <span class="board-writer"><a>침착해내자신</a></span>
-                            <span class="board-bar">｜</span>
-                            <span class="board-time"><span>5</span><span>분전</span></span>
-                        </div>
-
-                    </div>
-                </td>
-                <td class="board-hit">
-                    <i class="fab fa-sistrix"></i>
-                    123
-                </td>
-                <td class="board-like">
-                    <i class="fas fa-heart"></i>
-                    21
-                </td>
-            </tr>
-            <!-- -->
-
-
-
-
-            <!-- -->
-            <tr>
-                <td class="board-divide">
-                    <span>정보</span>
-                </td>
-                <td class="board-subject">
-                    <div class="board-thumb">
-                        <a class="board-imgbox">
-                            <img src="/static/image/profile/profile-14.png">
-                        </a>
-
-                        <div class="board-content">
-                            <div class="board-title">
-                                <p class="board-titletext">
-                                    <a class="title-text" href="#">하하하하하하하하하</a>
-                                </p>
-                                <img src="" class="icon-new">
-                            </div>
-                            <span class="board-writer"><a>침착해내자신</a></span>
-                            <span class="board-bar">｜</span>
-                            <span class="board-time"><span>5</span><span>분전</span></span>
-                        </div>
-
-                    </div>
-                </td>
-                <td class="board-hit">
-                    <i class="fab fa-sistrix"></i>
-                    123
-                </td>
-                <td class="board-like">
-                    <i class="fas fa-heart"></i>
-                    21
-                </td>
-            </tr>
-            <!-- -->
-
-
-
-
-            <!-- -->
-            <tr>
-                <td class="board-divide">
-                    <span>정보</span>
-                </td>
-                <td class="board-subject">
-                    <div class="board-thumb">
-                        <a class="board-imgbox">
-                            <img src="/static/image/profile/profile-14.png">
-                        </a>
-
-                        <div class="board-content">
-                            <div class="board-title">
-                                <p class="board-titletext">
-                                    <a class="title-text" href="#">하하하하하하하하하</a>
-                                </p>
-                                <img src="" class="icon-new">
-                            </div>
-                            <span class="board-writer"><a>침착해내자신</a></span>
-                            <span class="board-bar">｜</span>
-                            <span class="board-time"><span>5</span><span>분전</span></span>
-                        </div>
-
-                    </div>
-                </td>
-                <td class="board-hit">
-                    <i class="fab fa-sistrix"></i>
-                    123
-                </td>
-                <td class="board-like">
-                    <i class="fas fa-heart"></i>
-                    21
-                </td>
-            </tr>
-            <!-- -->
-
-
-
-
-
-
-
 
             </tbody>
         </table>

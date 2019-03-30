@@ -9,25 +9,53 @@
         <selectKey keyProperty="brdNo" order="BEFORE" resultType="int">
             SELECT COALESCE(MAX(BRD_NO+1),1) AS BRD_NO FROM BOARD
         </selectKey>
-        INSERT INTO BOARD( BRD_NO, BRD_TYPE, BRD_DIVIDE, BRD_ID, BRD_TITLE, BRD_CONTENT, BRD_GNO,
-                                            BRD_STEP, BRD_INDENT, BRD_COUNT, BRD_AVAILABLE, BRD_DATE )
-        VALUES(#{brdNo}, #{brdType}, #{brdDivide}, #{brdId}, #{brdTitle}, #{brdContent}, #{brdNo}, 0, 0, 0, 1, NOW() )
+        INSERT INTO BOARD( BRD_NO, BRD_TYPE, BRD_DIVIDE, BRD_ID, BRD_TITLE, BRD_CONTENT,
+                                            BRD_GNO, BRD_STEP, BRD_INDENT, BRD_COUNT, BRD_AVAILABLE, BRD_DATE )
+        VALUES(#{brdNo}, #{brdType}, #{brdDivide}, #{brdId}, #{brdTitle}, #{brdContent}, #{brdNo},
+                        0, 0, 0, 1, NOW() )
     </insert>
-
-    <!-- 답글로 먼저 등록된 게시글 STEP 증가 -->
-    <update id="replyShape" parameterType="BoardVO">
-        UPDATE BOARD SET BRD_STEP = BRD_STEP+1
-        WHERE BRD_GNO = #{brdGno} AND BRD_STEP > #{brdStep}
-    </update>
 
     <!-- 답글등록 -->
     <insert id="replyPost" parameterType="BoardVO">
         <selectKey keyProperty="brdNo" order="BEFORE" resultType="int">
             SELECT COALESCE(MAX(BRD_NO+1),1) AS BRD_NO FROM BOARD
         </selectKey>
-        INSERT INTO BOARD( BRD_NO, BRD_TYPE, BRD_DIVIDE, BRD_ID, BRD_TITLE, BRD_CONTENT, BRD_GNO,
-        BRD_STEP, BRD_INDENT, BRD_COUNT, BRD_AVAILABLE, BRD_DATE )
-        VALUES(#{brdNo}, #{brdType}, #{brdDivide}, #{brdId}, #{brdTitle}, #{brdContent}, #{brdNo}, #{brdGno}, #{brdStep}+1, #{brdIndent}+1, 1, NOW() )
+        INSERT INTO BOARD( BRD_NO, BRD_TYPE, BRD_DIVIDE, BRD_ID, BRD_TITLE, BRD_CONTENT,
+                                            BRD_GNO, BRD_STEP, BRD_INDENT, BRD_COUNT, BRD_AVAILABLE, BRD_DATE )
+        VALUES(#{brdNo}, #{brdType}, #{brdDivide}, #{brdId}, #{brdTitle}, #{brdContent}, #{brdNo},
+                      #{brdGno}, #{brdStep}+1, #{brdIndent}+1, 1, NOW() )
     </insert>
+
+    <!-- 답글로 먼저 등록된 게시글 STEP 증가 -->
+    <update id="replyShape" parameterType="BoardVO">
+        UPDATE BOARD SET BRD_STEP = BRD_STEP+1
+        WHERE
+        BRD_GNO = ( SELECT * FROM ( SELECT BRD_GNO FROM BOARD WHERE BRD_NO = #{brdGno} ) AS A )
+        AND
+        BRD_STEP > ( SELECT * FROM ( SELECT BRD_STEP FROM BOARD WHERE BRD_NO = #{brdStep} ) AS B )
+    </update>
+
+    <!-- 게시글 글수 반환 -->
+    <select id="getPostCount" parameterType="String" resultType="int">
+        SELECT COUNT(*) FROM BOARD
+        WHERE BRD_TYPE = #{menu}
+    </select>
+
+    <select id="getPostList" parameterType="PageVO" resultType="BoardVO">
+        <![CDATA[
+            SELECT BRD_NO, BRD_TYPE, BRD_DIVIDE, BRD_ID, BRD_TITLE, BRD_CONTENT, BRD_GNO, BRD_STEP, BRD_INDENT, BRD_COUNT, BRD_AVAILABLE, BRD_DATE,
+                          MEMBER.MBR_PROFILE, MEMBER.MBR_NICK
+            FROM (
+                          SELECT * FROM BOARD
+                          WHERE BRD_TYPE = #{menu}
+                          ORDER BY BRD_GNO DESC, BRD_STEP ASC
+                          LIMIT #{startRow}, #{pageSize}
+            ) AS BOARD
+            LEFT JOIN MEMBER
+            ON MEMBER.MBR_ID = BOARD.BRD_ID
+        ]]>
+    </select>
+
+
 
 </mapper>

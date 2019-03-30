@@ -1,5 +1,7 @@
 package com.studysiba.service.common;
 
+import com.studysiba.domain.common.Criteria;
+import com.studysiba.domain.common.PageVO;
 import com.studysiba.domain.common.UploadVO;
 import com.studysiba.domain.member.MemberVO;
 import com.studysiba.domain.member.PointVO;
@@ -36,9 +38,15 @@ public interface CommonService {
 
     /*
      *  공통 파일 업로드
-     *  @Param MultipartFile
+     *  @Param MultipartFile, menu
      *  @Return 업로드 파일 이름
      */
-    String uploadFile(MultipartFile multipartFile) throws Exception;
+    String uploadFile(MultipartFile multipartFile, String menu) throws Exception;
 
+    /*
+     *  페이지 정보 조회
+     *  @Param menu, criteria
+     *  @Return 페이지정보 반환
+     */
+    PageVO getPageInfomation(String menu, Criteria criteria);
 }

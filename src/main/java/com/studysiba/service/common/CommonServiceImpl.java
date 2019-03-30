@@ -3,9 +3,9 @@ package com.studysiba.service.common;
 import com.studysiba.common.DataConversion;
 import com.studysiba.common.DataValidation;
 import com.studysiba.config.SocialKeys;
-import com.studysiba.domain.common.UploadVO;
-import com.studysiba.domain.member.MemberVO;
-import com.studysiba.domain.member.PointVO;
+import com.studysiba.domain.common.Criteria;
+import com.studysiba.domain.common.PageVO;
+import com.studysiba.mapper.board.BoardMapper;
 import com.studysiba.mapper.common.CommonMapper;
 import com.studysiba.mapper.member.MemberMapper;
 import lombok.extern.log4j.Log4j;
@@ -40,6 +40,9 @@ public class CommonServiceImpl implements CommonService {
 
     @Resource
     MemberMapper memberMapper;
+
+    @Resource
+    BoardMapper boardMapper;
 
     @Autowired
     HttpSession httpSession;
@@ -132,10 +135,12 @@ public class CommonServiceImpl implements CommonService {
      */
     @Transactional
     @Override
-    public String uploadFile(MultipartFile multipartFile) throws Exception {
+    public String uploadFile(MultipartFile multipartFile, String menu) throws Exception {
 
+        if ( multipartFile.isEmpty() ) return null;
         if ( httpSession.getAttribute("id") == null ) return null;
-        String path = "C:\\upload\\studysiba";
+
+        String path = "C:\\upload\\studysiba\\" + menu;
         File destdir = new File(path);
         String fileName = null;
         if ( !destdir.exists() ) destdir.mkdir();
@@ -151,5 +156,21 @@ public class CommonServiceImpl implements CommonService {
         return fileName;
     }
 
+    /*
+     *  페이지 정보 조회
+     *  @Param menu, criteria
+     *  @Return 페이지정보 반환
+     */
+    @Override
+    public PageVO getPageInfomation(String menu, Criteria criteria) {
+        PageVO pageVO = null;
+        switch (menu) {
+            case "community" :
+                pageVO = new PageVO(criteria, boardMapper.getPostCount(menu), 10, 3);
+                pageVO.setMenu(menu);
+                break;
+        }
+        return pageVO;
+    }
 
 }

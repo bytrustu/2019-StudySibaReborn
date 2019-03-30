@@ -17,6 +17,7 @@ $(document).ready(function () {
         boardInfo.set('brdDivide', $('.basic-modal-select').val());
         boardInfo.set('brdTitle', $('.board-input-title').val());
         boardInfo.set('brdContent', ckContent.getData());
+        boardInfo.set('isReply', 'false');
         let boardJson = mapToJson(boardInfo, false);
 
         writeBoard(boardJson, currentPath)
@@ -34,6 +35,9 @@ $(document).ready(function () {
             language: 'ko',
             toolbar: {
                 viewportTopOffset: 30
+            },
+            container : {
+               overflow : scroll
             },
             ckfinder: {
                 uploadUrl: '/upload/community'

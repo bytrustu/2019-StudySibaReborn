@@ -1,10 +1,14 @@
 package com.studysiba.domain.common;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.sql.Timestamp;
 
-@Data
+@Getter
+@Setter
+@ToString
 public class UploadVO {
 
     private int uldNo;

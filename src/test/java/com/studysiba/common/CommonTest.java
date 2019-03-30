@@ -9,7 +9,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.lang.reflect.Array;
+import java.sql.Time;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 
 
 @RunWith(SpringRunner.class)
@@ -82,6 +87,25 @@ public class CommonTest {
         System.out.println("데이터 크기만큼 반환 : " + DataValidation.textLengthReturns(12,"가나다라마바사아자차카"));
         System.out.println("데이터 크기만큼 반환 : " + DataValidation.textLengthReturns(12,"1234567890abcdefghijklmn"));
         System.out.println("데이터 크기만큼 반환 : " + DataValidation.textLengthReturns(12,"aaa"));
+    }
+
+    @Test
+    public void durationDate(){
+        SimpleDateFormat formatter = new SimpleDateFormat ("yyyy-MM-dd hh:mm:ss");
+        Calendar cal = Calendar.getInstance();
+        String today = null;
+        today = formatter.format(cal.getTime());
+        Timestamp ts1 = Timestamp.valueOf(today);
+        cal.add(Calendar.MINUTE,-10);
+        today = formatter.format(cal.getTime());
+        Timestamp ts2 = Timestamp.valueOf(today);
+        cal.add(Calendar.DAY_OF_MONTH,-10);
+        today = formatter.format(cal.getTime());
+        Timestamp ts3 = Timestamp.valueOf(today);
+
+        System.out.println(DataConversion.DurationFromNow(ts1));
+        System.out.println(DataConversion.DurationFromNow(ts2));
+        System.out.println(DataConversion.DurationFromNow(ts3));
     }
 
 }

@@ -1,6 +1,8 @@
 package com.studysiba.controller;
 
 import com.studysiba.domain.board.BoardVO;
+import com.studysiba.domain.common.Criteria;
+import com.studysiba.domain.common.PageVO;
 import com.studysiba.service.board.BoardService;
 import com.studysiba.service.common.CommonService;
 import lombok.extern.log4j.Log4j;
@@ -48,22 +50,27 @@ public class CommonController {
      *  @Param menu [ 메뉴이름 ]
      *  @Return 게시판별 list 경로 이동
      */
-    // 공지사항 커뮤니티 스터디참여 스터디그룹 이동
     @GetMapping("/{menu}/list")
-    public String moveMenu(Model model, @PathVariable("menu") String menu) {
+    public String moveMenu(Model model, @PathVariable("menu") String menu, @ModelAttribute Criteria criteria) {
         log.info("move community");
+        log.info(criteria);
         // 게시판 별 안내 글귀
         Map<String, String> introComment = commonService.getIntroduceComment(menu);
         model.addAttribute("intro", introComment);
 
+        PageVO pageVO = commonService.getPageInfomation(menu, criteria);
+        log.info(pageVO);
         // 이동 경로
         String location = "/";
         switch (menu) {
             case "notice":
                 location += "board/list";
                 break;
-            case "community":
+            case "community" :
                 location += "board/list";
+                List<BoardVO> communityList = boardService.getPostList(pageVO);
+                log.info(communityList);
+                model.addAttribute("boardList",communityList);
                 break;
             default:
                 location += menu + "/list";
@@ -83,7 +90,7 @@ public class CommonController {
         log.info(menu + " : " +boardVO);
         String stateCode = boardService.writePost(boardVO);
         log.info("글등록 상태 : " + stateCode);
-        return stateCode.equals("BOARD_STATE_SUCCESS") ?
+        return stateCode.equals("BOARD_WRITE_SUCCESS") ?
                 new ResponseEntity<>(stateCode,HttpStatus.OK) : new ResponseEntity<>(stateCode,HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
@@ -100,15 +107,7 @@ public class CommonController {
         log.info(upload.getOriginalFilename());
         String stateCode = null;
 
-        try {
-            if (upload.isEmpty())  {
-                throw new Exception();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        String fileName = commonService.uploadFile(upload);
+        String fileName = commonService.uploadFile(upload, menu);
         if ( fileName == null ) {
             stateCode = "FILE_STATE_ERROR";
             log.info(stateCode);
@@ -119,7 +118,7 @@ public class CommonController {
             case "community" :
                 HashMap<String, String> uploadInfo = new HashMap<>();
                 uploadInfo.put("uploaded","true");
-                uploadInfo.put("url","/file/view/"+fileName);
+                uploadInfo.put("url","/file/view/" + menu+ "/" + fileName);
                 return new ResponseEntity<>(uploadInfo,HttpStatus.OK);
             case "notice" :
                 break;

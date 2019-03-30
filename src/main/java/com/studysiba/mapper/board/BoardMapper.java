@@ -1,7 +1,11 @@
 package com.studysiba.mapper.board;
 
 import com.studysiba.domain.board.BoardVO;
+import com.studysiba.domain.common.PageVO;
 import org.apache.ibatis.annotations.Mapper;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Mapper
 public interface BoardMapper {
@@ -26,4 +30,18 @@ public interface BoardMapper {
      *  @Return 답글 등록 여부 반환
      */
     int replyPost(BoardVO boardVO);
+
+    /*
+     *  게시글수 조회
+     *  @Param menu
+     *  @Return 게시글 글수 반환
+     */
+    int getPostCount(String menu);
+
+    /*
+     *  게시글 리스트조회
+     *  @Param pageVO
+     *  @Return 조건에 맞는 게시글 리스트 반환
+     */
+    ArrayList<BoardVO> getPostList(PageVO pageVO);
 }
