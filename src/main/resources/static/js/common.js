@@ -619,7 +619,6 @@ let changePassword = (memberJson) => {
 // 게시판 게시글 등록
 let writeBoard = (boardJson, currentPath) => {
     return new Promise( (resolve, reject) => {
-        console.log(`오냐? > ${boardJson}`);
         $.ajax({
             type : 'POST',
             url : `/${currentPath}/write`,

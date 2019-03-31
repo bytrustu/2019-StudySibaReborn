@@ -48,10 +48,29 @@ public class BoardServiceImpl implements BoardService{
         return stateCode;
     }
 
+    /*
+     *  게시판 게시글 리스트 조회
+     *  @Param pageVO
+     *  @Return 게시판별 게시글 리스트 조회
+ */
     @Override
     public ArrayList<BoardVO> getPostList(PageVO pageVO) {
         ArrayList<BoardVO> postList = boardMapper.getPostList(pageVO);
+        // 지난기간 [ 몇분전, 몇일전 ] 변환
         for ( BoardVO vo : postList ) vo.setLastTime( DataConversion.DurationFromNow(vo.getBrdDate()) );
         return postList;
+    }
+
+    /*
+     *  게시판 게시글 조회
+     *  @Param no
+     *  @Return 해당 메뉴, 글번호에 해당하는 글 조회
+     */
+    @Override
+    public BoardVO getPostOne(String menu, int no) {
+        BoardVO boardVO = new BoardVO();
+        boardVO.setBrdType(menu);
+        boardVO.setBrdNo(no);
+        return boardMapper.getPostOne(boardVO);
     }
 }

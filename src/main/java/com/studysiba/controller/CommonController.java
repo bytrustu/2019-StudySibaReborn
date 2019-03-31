@@ -60,21 +60,61 @@ public class CommonController {
         model.addAttribute("intro", introComment);
 
         PageVO pageVO = commonService.getPageInfomation(menu, criteria);
-        log.info(pageVO);
+        model.addAttribute("page", pageVO);
+
+        List<BoardVO> boardList = null;
+
         // 이동 경로
         String location = "/";
         switch (menu) {
             case "notice":
                 location += "board/list";
+                boardList = boardService.getPostList(pageVO);
+                model.addAttribute("boardList",boardList);
                 break;
-            case "community" :
+            case "community":
                 location += "board/list";
-                List<BoardVO> communityList = boardService.getPostList(pageVO);
-                log.info(communityList);
-                model.addAttribute("boardList",communityList);
+                boardList = boardService.getPostList(pageVO);
+                model.addAttribute("boardList",boardList);
                 break;
             default:
                 location += menu + "/list";
+                break;
+        }
+        return location;
+    }
+
+    /*
+     *  게시판별이동 뷰 [ 공지사항, 커뮤니티, 스터디참여, 스터디그룹 ]
+     *  @Param menu [ 메뉴이름 ]
+     *  @Return 게시판별 list 경로 이동
+     */
+    @GetMapping("/{menu}/view")
+    public String moveView(Model model, @PathVariable("menu") String menu, @RequestParam("no") int no, @ModelAttribute Criteria criteria) {
+        log.info("move community view");
+        log.info(criteria);
+        // 게시판 별 안내 글귀
+        Map<String, String> introComment = commonService.getIntroduceComment(menu);
+        model.addAttribute("intro", introComment);
+
+        BoardVO boardVO = null;
+
+
+        // 이동 경로
+        String location = "/";
+        switch (menu) {
+            case "notice":
+                location += "board/view";
+                boardVO = boardService.getPostOne(menu, no);
+                model.addAttribute("board", boardVO);
+                break;
+            case "community" :
+                location += "board/view";
+                boardVO = boardService.getPostOne(menu, no);
+                model.addAttribute("board", boardVO);
+                break;
+            default:
+                location += menu + "/view";
                 break;
         }
         return location;
@@ -129,35 +169,6 @@ public class CommonController {
 
     }
 
-
-    /*
-     *  게시판별이동 뷰 [ 공지사항, 커뮤니티, 스터디참여, 스터디그룹 ]
-     *  @Param menu [ 메뉴이름 ]
-     *  @Return 게시판별 list 경로 이동
-     */
-    @GetMapping("/{menu}/view")
-    public String moveView(Model model, @PathVariable("menu") String menu, @ModelAttribute Criteria criteria) {
-        log.info("move community view");
-        log.info(criteria);
-        // 게시판 별 안내 글귀
-        Map<String, String> introComment = commonService.getIntroduceComment(menu);
-        model.addAttribute("intro", introComment);
-
-        // 이동 경로
-        String location = "/";
-        switch (menu) {
-            case "notice":
-                location += "board/view";
-                break;
-            case "community" :
-                location += "board/view";
-                break;
-            default:
-                location += menu + "/view";
-                break;
-        }
-        return location;
-    }
 
 
 }

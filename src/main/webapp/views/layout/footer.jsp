@@ -318,6 +318,7 @@
         <script type="text/javascript" src="/static/js/lib/sweetalert2.all.min.js"></script>
         <script type="text/javascript" src="/static/js/lib/Liar.js"></script>
         <script type="text/javascript" src="/static/js/lib/kakao.min.js"></script>
+        <script async charset="utf-8" src="//cdn.embedly.com/widgets/platform.js"></script>
         <script type="text/javascript" src="/static/dist/ckeditor.js"></script>
         <script type="text/javascript" src="/static/js/common.js"></script>
         <c:choose>

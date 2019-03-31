@@ -1,9 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<%--<%--%>
-    <%--session.setAttribute("id","test1");--%>
-<%--%>--%>
+<%
+    session.setAttribute("id","test1");
+%>
 
 
 <div class="sub-page">
@@ -21,7 +21,17 @@
     <div class="board-box">
         <div class="board-top">
             <div class="board-total">총 521 게시글</div>
-            <button class="btn btn-warning content-writebtn" data-write="<c:if test="${sessionScope.id ne null}">true</c:if>">글쓰기</button>
+
+            <c:choose>
+                <c:when test="${requestScope['javax.servlet.forward.servlet_path'] eq '/notice/list' }">
+                    <button class="btn btn-warning content-writebtn" data-reply="false" data-write="<c:if test="${sessionScope.auth eq 'ADMIN'}">true</c:if>">글쓰기</button>
+                </c:when>
+
+                <c:when test="${requestScope['javax.servlet.forward.servlet_path'] eq '/community/list' }">
+                    <button class="btn btn-warning content-writebtn" data-reply="false" data-write="<c:if test="${sessionScope.id ne null}">true</c:if>">글쓰기</button>
+                </c:when>
+            </c:choose>
+
         </div>
 
         <table class="board-table">
@@ -50,7 +60,7 @@
                             <div class="board-content">
                                 <div class="board-title">
                                     <p class="board-titletext">
-                                        <a class="title-text" href="/${boardList.brdType}/view?${boardList.brdNo}">${boardList.brdTitle}}</a>
+                                        <a class="title-text" href="/${boardList.brdType}/view?no=${boardList.brdNo}">${boardList.brdTitle}</a>
                                     </p>
                                     <img src="" class="icon-new">
                                 </div>
@@ -153,23 +163,24 @@
         <nav>
             <ul class="pagination pg-amber board-pagination">
                 <li class="page-item">
-                    <a class="page-link" aria-label="Previous">
-                        <span aria-hidden="true">&laquo;</span>
-                        <span class="sr-only">Previous</span>
-                    </a>
+                    <c:if test="${page.startPage ne 1 }">
+                        <a class="page-link" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                    </c:if>
                 </li>
-                <li class="page-item active board-pageactive">
-                    <a class="page-link">1</a>
-                </li>
-                <li class="page-item"><a class="page-link">2</a></li>
-                <li class="page-item"><a class="page-link">3</a></li>
-                <li class="page-item"><a class="page-link">4</a></li>
-                <li class="page-item"><a class="page-link">5</a></li>
-                <li class="page-item">
-                    <a class="page-link" aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                        <span class="sr-only">Next</span>
-                    </a>
+                    <c:forEach begin="${page.startPage }" end="${page.endPage }" step="1" var="i">
+                        <li class="page-item board-pageactive <c:if test="${page.criteria.pageNum eq i}">active</c:if>">
+                            <a class="page-link" href="/community/list?pageNum=${i}">${i}</a>
+                        </li>
+                    </c:forEach>
+                    <c:if test="${page.endPage lt page.pageCount }">
+                        <a class="page-link" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </c:if>
                 </li>
             </ul>
         </nav>

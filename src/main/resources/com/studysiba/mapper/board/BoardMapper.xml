@@ -17,22 +17,23 @@
 
     <!-- 답글등록 -->
     <insert id="replyPost" parameterType="BoardVO">
-        <selectKey keyProperty="brdNo" order="BEFORE" resultType="int">
-            SELECT COALESCE(MAX(BRD_NO+1),1) AS BRD_NO FROM BOARD
-        </selectKey>
-        INSERT INTO BOARD( BRD_NO, BRD_TYPE, BRD_DIVIDE, BRD_ID, BRD_TITLE, BRD_CONTENT,
-                                            BRD_GNO, BRD_STEP, BRD_INDENT, BRD_COUNT, BRD_AVAILABLE, BRD_DATE )
-        VALUES(#{brdNo}, #{brdType}, #{brdDivide}, #{brdId}, #{brdTitle}, #{brdContent}, #{brdNo},
-                      #{brdGno}, #{brdStep}+1, #{brdIndent}+1, 1, NOW() )
+        INSERT INTO BOARD( BRD_NO, BRD_TYPE, BRD_DIVIDE, BRD_ID, BRD_TITLE, BRD_CONTENT, BRD_GNO, BRD_STEP, BRD_INDENT, BRD_COUNT, BRD_AVAILABLE, BRD_DATE )
+        VALUES(
+                        ( SELECT * FROM ( SELECT MAX(BRD_NO)+1 FROM BOARD ) X ),
+                        #{brdType}, #{brdDivide}, #{brdId}, #{brdTitle}, #{brdContent},
+                        ( SELECT * FROM ( SELECT BRD_GNO FROM BOARD WHERE BRD_NO = #{brdNo} ) X ),
+                        ( SELECT * FROM ( SELECT BRD_STEP+1 FROM BOARD WHERE  BRD_NO = #{brdNo} ) X ),
+                        ( SELECT * FROM ( SELECT BRD_INDENT+1 FROM BOARD WHERE BRD_NO = #{brdNo} ) X ),
+                        0, 1, NOW() )
     </insert>
 
     <!-- 답글로 먼저 등록된 게시글 STEP 증가 -->
     <update id="replyShape" parameterType="BoardVO">
         UPDATE BOARD SET BRD_STEP = BRD_STEP+1
         WHERE
-        BRD_GNO = ( SELECT * FROM ( SELECT BRD_GNO FROM BOARD WHERE BRD_NO = #{brdGno} ) AS A )
+        BRD_GNO = ( SELECT * FROM ( SELECT BRD_GNO FROM BOARD WHERE BRD_NO = #{brdNo} ) AS A )
         AND
-        BRD_STEP > ( SELECT * FROM ( SELECT BRD_STEP FROM BOARD WHERE BRD_NO = #{brdStep} ) AS B )
+        BRD_STEP > ( SELECT * FROM ( SELECT BRD_STEP FROM BOARD WHERE BRD_NO = #{brdNo} ) AS B )
     </update>
 
     <!-- 게시글 글수 반환 -->
@@ -58,6 +59,18 @@
 
     <select id="getPostMaxNum" resultType="int">
         SELECT MAX(BRD_NO) FROM BOARD
+    </select>
+
+    <select id="getPostOne" parameterType="BoardVO" resultType="BoardVO">
+            SELECT BRD_NO, BRD_TYPE, BRD_DIVIDE, BRD_ID, BRD_TITLE, BRD_CONTENT, BRD_GNO, BRD_STEP, BRD_INDENT, BRD_COUNT, BRD_AVAILABLE, BRD_DATE,
+                          MEMBER.MBR_PROFILE, MEMBER.MBR_NICK, MEMBER.MBR_ID
+            FROM (
+                          SELECT * FROM BOARD
+                          WHERE BRD_NO = #{brdNo}
+                          AND BRD_TYPE = #{brdType}
+            ) AS BOARD
+            LEFT JOIN MEMBER
+            ON MEMBER.MBR_ID = BOARD.BRD_ID
     </select>
 
 

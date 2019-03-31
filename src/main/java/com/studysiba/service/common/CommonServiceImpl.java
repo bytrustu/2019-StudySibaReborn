@@ -166,6 +166,10 @@ public class CommonServiceImpl implements CommonService {
     public PageVO getPageInfomation(String menu, Criteria criteria) {
         PageVO pageVO = null;
         switch (menu) {
+            case "notice" :
+                pageVO = new PageVO(criteria, boardMapper.getPostCount(menu), 10, 3);
+                pageVO.setMenu(menu);
+                break;
             case "community" :
                 pageVO = new PageVO(criteria, boardMapper.getPostCount(menu), 10, 3);
                 pageVO.setMenu(menu);

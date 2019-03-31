@@ -50,4 +50,11 @@ public interface BoardMapper {
      *  @Return MAX 게시글 번호 반환
      */
     int getPostMaxNum();
+
+    /*
+     *  게시판 게시글 조회
+     *  @Param boardVO
+     *  @Return 해당 메뉴, 글번호에 해당하는 글 조회
+     */
+    BoardVO getPostOne(BoardVO boardVO);
 }

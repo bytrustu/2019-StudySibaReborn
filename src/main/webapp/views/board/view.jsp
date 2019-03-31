@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <div class="sub-page">
 
@@ -17,25 +18,46 @@
 
         <div class="board-top">
             <div class="board-total">총 521 게시글</div>
-            <button class="btn btn-warning content-writebtn" data-write="<c:if test="${sessionScope.id ne null}">true</c:if>">답글쓰기</button>
+
+            <c:choose>
+                <c:when test="${requestScope['javax.servlet.forward.servlet_path'] eq '/notice/view' }">
+
+                </c:when>
+
+                <c:when test="${requestScope['javax.servlet.forward.servlet_path'] eq '/community/view' }">
+                    <button class="btn btn-warning content-writebtn" data-reply="true" data-write="<c:if test="${sessionScope.id ne null}">true</c:if>">답글쓰기</button>
+                </c:when>
+            </c:choose>
+
         </div>
 
         <div class="board-body">
 
             <div class="post-head">
-                <div class="post-divide"><span>잡담</span></div>
-                <div class="post-date"><span>2019-03-31</span></div>
+                <div class="post-divide">
+                    <span>
+                        <c:choose>
+                            <c:when test="${board.brdDivide eq 1}">공지</c:when>
+                            <c:when test="${board.brdDivide eq 2}">이벤</c:when>
+                            <c:when test="${board.brdDivide eq 3}">잡담</c:when>
+                            <c:when test="${board.brdDivide eq 4}">정보</c:when>
+                            <c:when test="${board.brdDivide eq 5}">요청</c:when>
+                        </c:choose>
+                    </span>
+                </div>
+                <div class="post-date"><span><fmt:formatDate value="${board.brdDate}" pattern="yy-MM-dd"/></span></div>
                 <div class="post-info"><span>댓글수1</span></div>
                 <div class="post-info"><span>추천수0</span></div>
-                <div class="post-info"><span>조회수14</span></div>
+                <div class="post-info"><span>조회수${board.brdCount}</span></div>
+                <input type="hidden" class="post-no" value="${board.brdNo}">
             </div>
 
             <div class="post-top">
-                <div class="post-title">하하하하호호호호하하하</div>
-                <div class="post-nick">침착해내자신</div>
+                <div class="post-title">${board.brdTitle}</div>
+                <div class="post-nick">${board.mbrNick}</div>
             </div>
             <div class="post-body">
-
+                ${board.brdContent}
             </div>
             <div class="post-member">
                 <div class="member-left">

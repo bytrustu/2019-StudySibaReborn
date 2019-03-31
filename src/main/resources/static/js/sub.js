@@ -13,12 +13,16 @@ $(document).ready(function () {
         let currentPath = window.location.pathname;
         currentPath = currentPath.substring(1, currentPath.lastIndexOf('/'));
         let boardInfo = new Map();
+
+        if ( typeof $('.post-no').val() != 'undefined' )
+        boardInfo.set('brdNo', $('.post-no').val());
         boardInfo.set('brdType', currentPath);
         boardInfo.set('brdDivide', $('.basic-modal-select').val());
         boardInfo.set('brdTitle', $('.board-input-title').val());
         boardInfo.set('brdContent', ckContent.getData());
-        boardInfo.set('isReply', 'false');
+        boardInfo.set('isReply', $('.content-writebtn').attr('data-reply'));
         let boardJson = mapToJson(boardInfo, false);
+        console.log(boardJson);
 
         writeBoard(boardJson, currentPath)
             .then((data) => {
@@ -27,6 +31,18 @@ $(document).ready(function () {
             console.log(`ERROR : ${error}`);
         });
     });
+
+
+    document.querySelectorAll( 'oembed[url]' ).forEach( element => {
+        // Create the <a href="..." class="embedly-card"></a> element that Embedly uses
+        // to discover the media.
+        const anchor = document.createElement( 'a' );
+
+        anchor.setAttribute( 'href', element.getAttribute( 'url' ) );
+        anchor.className = 'embedly-card';
+
+        element.appendChild( anchor );
+    } );
 
 
     // CKEDITOR5 설정
@@ -53,15 +69,30 @@ $(document).ready(function () {
 
     // 글쓰기 버튼
     $('.content-writebtn').on('click', function () {
-        // 로그인 여부 확인
-        if ($(this).attr('data-write') == 'true') {
-            $('#basicModal').modal('show');
-            $('.navbar').css('z-index', 1050);
-            $('body.modal-open').css('overflow', 'hidden');
-            $('body').css('overflow', 'hidden');
-        } else {
-            confirmAlert('로그인이 필요합니다', '로그인화면으로 이동하시겠습니까?', '/?requireLogin=true')
+
+        let currentPath = window.location.pathname;
+        currentPath = currentPath.substring(1, currentPath.lastIndexOf('/')).toLowerCase();
+        if ( currentPath == 'notice' ) {
+            if ($(this).attr('data-write') == 'true') {
+                $('#basicModal').modal('show');
+                $('.navbar').css('z-index', 1050);
+                $('body.modal-open').css('overflow', 'hidden');
+                $('body').css('overflow', 'hidden');
+            } else {
+                errorAlert('관리자만 접근가능합니다.');
+            }
+        } else if ( 'community' ) {
+            // 로그인 여부 확인
+            if ($(this).attr('data-write') == 'true') {
+                $('#basicModal').modal('show');
+                $('.navbar').css('z-index', 1050);
+                $('body.modal-open').css('overflow', 'hidden');
+                $('body').css('overflow', 'hidden');
+            } else {
+                confirmAlert('로그인이 필요합니다', '로그인화면으로 이동하시겠습니까?', '/?requireLogin=true')
+            }
         }
+
     });
 
     $('.studysiba-cancel').on('click', () => {

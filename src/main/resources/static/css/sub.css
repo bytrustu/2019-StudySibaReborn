@@ -57,6 +57,7 @@
     font-size: 14px;
     height: 45px;
     margin-right: 20px;
+    margin-top: 25px;
     font-weight: bold;
 }
 
@@ -674,6 +675,21 @@
 
 .comment-info  p:nth-of-type(2) {
     font-size: 0.9rem;
+}
+
+
+/* 게시글 ck에디터 글뷰 커스텀 */
+
+.post-body > figure > img {
+    max-width: 100%;
+}
+
+.post-body > figure > oembed {
+    margin: auto;
+}
+
+.embdscl0{
+    display: none !important;
 }
 
 
