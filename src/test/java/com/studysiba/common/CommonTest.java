@@ -89,7 +89,7 @@ public class CommonTest {
         System.out.println("데이터 크기만큼 반환 : " + DataValidation.textLengthReturns(12,"aaa"));
     }
 
-    @Test
+    //@Test
     public void durationDate(){
         SimpleDateFormat formatter = new SimpleDateFormat ("yyyy-MM-dd hh:mm:ss");
         Calendar cal = Calendar.getInstance();
@@ -106,6 +106,23 @@ public class CommonTest {
         System.out.println(DataConversion.DurationFromNow(ts1));
         System.out.println(DataConversion.DurationFromNow(ts2));
         System.out.println(DataConversion.DurationFromNow(ts3));
+    }
+
+
+    //@Test
+    public void testStr(){
+        String test = "thank you very much";
+        char[] arr = test.toCharArray();
+        int checkNum = 0;
+        for ( int i=0; i<test.length(); i++ ) {
+            if ( arr[i] != ' ' ) {
+                if ( checkNum % 2 == 0 ) {
+                    arr[i] = Character.toUpperCase(arr[i]);
+                }
+                checkNum++;
+            }
+        }
+        System.out.println(new String(arr));
     }
 
 }

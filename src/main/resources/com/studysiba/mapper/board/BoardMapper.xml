@@ -56,6 +56,10 @@
         ]]>
     </select>
 
+    <select id="getPostMaxNum" resultType="int">
+        SELECT MAX(BRD_NO) FROM BOARD
+    </select>
+
 
 
 </mapper>

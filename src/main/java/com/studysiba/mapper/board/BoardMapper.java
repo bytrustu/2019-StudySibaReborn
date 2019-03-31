@@ -44,4 +44,10 @@ public interface BoardMapper {
      *  @Return 조건에 맞는 게시글 리스트 반환
      */
     ArrayList<BoardVO> getPostList(PageVO pageVO);
+
+    /*
+     *  가장 마지막에 작성된 게시글 번호
+     *  @Return MAX 게시글 번호 반환
+     */
+    int getPostMaxNum();
 }

@@ -248,12 +248,12 @@
                         <select class="browser-default custom-select basic-modal-select">
 
                             <c:choose>
-                                <c:when test="${requestScope['javax.servlet.forward.servlet_path'] eq '/notice/list' }">
+                                <c:when test="${requestScope['javax.servlet.forward.servlet_path'] eq '/notice/list' || requestScope['javax.servlet.forward.servlet_path'] eq '/notice/view'  }">
                                     <option value="1" selected>공지</option>
                                     <option value="2">이벤</option>
                                 </c:when>
 
-                                <c:when test="${requestScope['javax.servlet.forward.servlet_path'] eq '/community/list' }">
+                                <c:when test="${requestScope['javax.servlet.forward.servlet_path'] eq '/community/list' || requestScope['javax.servlet.forward.servlet_path'] eq '/community/view' }">
                                     <option value="3" selected>잡담</option>
                                     <option value="4">정보</option>
                                     <option value="5">요청</option>

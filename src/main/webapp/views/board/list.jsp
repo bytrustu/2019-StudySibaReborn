@@ -50,7 +50,7 @@
                             <div class="board-content">
                                 <div class="board-title">
                                     <p class="board-titletext">
-                                        <a class="title-text" href="#">${boardList.brdTitle}}</a>
+                                        <a class="title-text" href="/${boardList.brdType}/view?${boardList.brdNo}">${boardList.brdTitle}}</a>
                                     </p>
                                     <img src="" class="icon-new">
                                 </div>

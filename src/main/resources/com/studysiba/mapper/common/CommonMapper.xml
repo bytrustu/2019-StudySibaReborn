@@ -12,7 +12,4 @@
       VALUES (#{uldNo}, #{uldFno}, #{uldId}, #{uldType}, #{uldText}, #{uldUuid}, #{uldFilename}, NOW() )
     </insert>
 
-
-
-
 </mapper>

@@ -24,6 +24,14 @@
 .sub-subject > .sub-bottomcomment {
     font-size: 13px;
     font-weight: 600;
+    padding: 0 30px;
+}
+
+@media( min-width: 410px ) {
+    .sub-subject > .sub-bottomcomment {
+        font-size: 13px;
+        font-weight: 600;
+    }
 }
 
 .board-box {
@@ -31,6 +39,7 @@
     height: auto;
     margin: auto;
     letter-spacing: 1px;
+    padding: 0 20px;
 }
 
 
@@ -178,6 +187,7 @@
 
 .board-writer > a {
     color: #46909b !important;
+    font-weight: bold;
 }
 
 .board-bar {
@@ -327,6 +337,344 @@
 
 
 
+/* 게시판 바디 부분 */
+
+
+
+.board-body {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    border-collapse: separate;
+    border-spacing: 0;
+    border: 0;
+    clear: both;
+    margin: 40px 0 5% 0;
+    border-top: 2px solid #373f52;
+    border-bottom: 2px solid #eaeef0;
+}
+
+
+.post-head{
+    width: 100%;
+    display: table;
+    background-color: #f8f8f8;
+    color: #8d8d8d;
+    border-top: 1px solid #e0e0e0;
+    border-bottom: 1px solid #e0e0e0;
+    font-size: 14px;
+    font-weight: bold;
+    margin: auto;
+    padding: 2% 0;
+}
+
+.post-divide {
+    width: 50%;
+    text-align: center;
+    display: inline-block;
+    text-align: center;
+    padding-bottom: 10px;
+}
+
+.post-date {
+    width: 50% ;
+    text-align: center ;
+    display: inline-block ;
+    border-left: 1px solid silver ;
+    text-align: center ;
+    padding-bottom: 10px;
+}
+
+.post-info{
+    width: 33.3%;
+    text-align: center;
+    display: inline-block;
+    border-top: 1px solid silver;
+    padding-top: 10px;
+}
+
+@media(min-width : 586px ) {
+    .post-divide {
+        width: 20%;
+        text-align: center;
+        display: inline-block;
+        text-align: center;
+        padding-bottom: 0;
+    }
+
+    .post-date {
+        width: 20%;
+        text-align: center;
+        border-left: 1px solid silver;
+        display: inline-block;
+        padding-bottom: 0;
+    }
+
+    .post-info{
+        width: 20%;
+        text-align: center;
+        border-left: 1px solid silver;
+        display: inline-block;
+        border-top: none;
+        padding-top: 0;
+    }
+}
+
+@media(min-width: 992px) {
+    .post-divide {
+        width: 10%;
+        float: left;
+        text-align: center;
+        border-right: 1px solid silver;
+        padding-bottom: 0;
+    }
+
+    .post-date {
+        width: 10%;
+        float: right;
+        text-align: center;
+        border-left: 1px solid silver;
+        padding-bottom: 0;
+    }
+
+    .post-info{
+        width: 10%;
+        float: right;
+        text-align: center;
+        border-left: 1px solid silver;
+        border-top: none;
+        padding-top: 0;
+    }
+}
+
+.post-top {
+    width: 100%;
+    display: table;
+    padding: 15px 0;
+    border-bottom: 1px solid #e0e0e0;
+    color: #8d8d8d;
+}
+
+.post-title{
+    width: 70%;
+    float: left;
+    color: #2d2d2d;
+    font-weight: 700;
+    padding: 0 20px;
+}
+
+.post-nick{
+    width: 30%;
+    float: left;
+    text-align: center;
+}
+
+.post-body{
+    padding: 20px;
+    min-height: 500px;
+}
+
+.post-member {
+    padding: 30px;
+    border-top: 1px solid #e0e0e0;
+    border-bottom: 1px solid #e0e0e0;
+    min-height: 50px;
+}
+
+.member-left{
+    width: 98%;
+    padding-left: 20px;
+    display: inline-block;
+    vertical-align: middle;
+    text-align: left;
+}
+
+.member-left > img {
+    width: 60px;
+    height: 60px;
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+    border-radius: 20px;
+}
+
+.member-left > span {
+    font-weight: bold;
+    color: #46909b;
+    margin-left: 25px;
+}
+
+.member-right {
+    width: 0;
+    padding-right: 20px;
+    display: none;
+    vertical-align: middle;
+}
+
+.member-right > div {
+    display: inline-block;
+    float: right;
+}
+
+.member-right > div:nth-of-type(2) {
+    margin-right: 20px;
+}
+
+.member-right > div > img {
+    width: 30px;
+    height: 30px;
+}
+
+.member-right > div > span{
+    margin-left: 5px;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+@media(min-width: 500px) {
+
+    .member-left{
+        width: 48%;
+        padding-left: 20px;
+        display: inline-block;
+        vertical-align: middle;
+        text-align: left;
+    }
+
+    .member-right {
+        width: 48%;
+        padding-right: 20px;
+        display: inline-block;
+        vertical-align: middle;
+    }
+}
+
+.post-bottom{
+    height: 120px;
+    padding: 20px 0 0 0;
+    text-align: center;
+}
+
+.post-bottom > button{
+    font-weight: bold;
+    float: none;
+}
+
+.comment-top{
+    padding: 0px 20px 20px 20px;
+}
+
+.comment-subject{
+    padding: 0 0 10px 10px;
+}
+
+.comment-subject > span:nth-of-type(1){
+    font-weight: bold;
+    font-size: 1.4rem;
+    color: #117a8b;
+}
+
+.comment-subject > span:nth-of-type(2){
+    font-size: 0.9rem;
+}
+
+.comment-bottom {
+    padding: 10px;
+    background-color: #f8f8f8;
+    text-align: center;
+    min-width: 310px;
+}
+
+
+.comment-btn {
+    height: 48px;
+    width: 93px;
+    font-weight: bold;
+}
+
+.comment-input {
+    padding: 10px 20px 10px 20px;
+    width: 60%;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+}
+
+.comment-text{
+    padding: 0;
+    margin: 0;
+    padding-left: 15px;
+}
+
+@media(min-width: 430px) {
+    .comment-input {
+        padding: 10px 20px 10px 20px;
+        width: 70%;
+        border-radius: 10px;
+        border: 1px solid #ccc;
+    }
+
+    .post-bottom{
+        height: 120px;
+        padding: 20px 80px 0 0;
+    }
+
+    .post-bottom > button{
+        font-weight: bold;
+        float: right;
+    }
+
+}
+
+@media(min-width: 600px) {
+    .comment-input {
+        padding: 10px 20px 10px 20px;
+        width: 80%;
+        border-radius: 10px;
+        border: 1px solid #ccc;
+    }
+}
+
+.comment-list {
+    height: auto;
+    border-top: 1px solid #ccc;
+    padding: 15px 15px 20px 15px;
+    min-width: 280px;
+}
+
+.comment-content {
+    height: auto;
+    border-top: 1px solid #ccc;
+    padding: 15px 15px 15px 15px;
+}
+
+.comment-content:nth-of-type(1){
+    border-top: 0 !important;
+}
+
+.comment-content > img {
+    width: 45px;
+    height: 45px;
+    border-radius: 8px;
+    margin-right: 20px;
+}
+
+.comment-info{
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.comment-info  p {
+    margin: 0;
+}
+
+.comment-info  p:nth-of-type(1) {
+    font-weight: bold;
+    color: #117a8b;
+    font-size: 0.9rem;
+}
+
+.comment-info  p:nth-of-type(2) {
+    font-size: 0.9rem;
+}
 
 
 
