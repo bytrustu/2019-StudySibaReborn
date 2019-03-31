@@ -4,6 +4,7 @@ import com.studysiba.domain.board.BoardVO;
 import com.studysiba.domain.common.Criteria;
 import com.studysiba.domain.common.PageVO;
 import com.studysiba.domain.member.PointVO;
+import com.studysiba.mapper.common.StateVO;
 import com.studysiba.service.board.BoardService;
 import com.studysiba.service.common.CommonService;
 import lombok.extern.log4j.Log4j;
@@ -127,13 +128,13 @@ public class CommonController {
      *  @Return 게시글 작성 상태코드 반환
      */
     @ResponseBody
-    @PostMapping(value="/{menu}/write", consumes = "application/json", produces = {MediaType.TEXT_PLAIN_VALUE})
-    public ResponseEntity<String> writePost(Model model, @PathVariable("menu") String menu, @RequestBody BoardVO boardVO ) {
+    @PostMapping(value="/{menu}/write", consumes = "application/json", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    public ResponseEntity<StateVO> writePost(Model model, @PathVariable("menu") String menu, @RequestBody BoardVO boardVO ) throws Exception {
         log.info(menu + " : " +boardVO);
-        String stateCode = boardService.writePost(boardVO);
-        log.info("글등록 상태 : " + stateCode);
-        return stateCode.equals("BOARD_WRITE_SUCCESS") ?
-                new ResponseEntity<>(stateCode,HttpStatus.OK) : new ResponseEntity<>(stateCode,HttpStatus.INTERNAL_SERVER_ERROR);
+        StateVO postState = boardService.writePost(boardVO);
+        log.info("글등록 상태 : " + postState.getStateCode());
+        return postState.getStateCode().equals("BOARD_WRITE_SUCCESS") ?
+                new ResponseEntity<>(postState,HttpStatus.OK) : new ResponseEntity<>(postState,HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 
@@ -166,7 +167,6 @@ public class CommonController {
                 break;
         }
         return null;
-
     }
 
 

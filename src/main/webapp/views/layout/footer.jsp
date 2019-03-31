@@ -264,7 +264,7 @@
                         </select>
 
                         <div class="md-form md-outline margin-init basic-modal-title">
-                            <input type="text" id="board-input-title" class="form-control board-input-title">
+                            <input type="text" id="board-input-title" class="form-control board-input-title" maxlength="50">
                             <label for="board-input-title">제목</label>
                         </div>
 

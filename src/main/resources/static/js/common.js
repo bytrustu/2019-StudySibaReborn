@@ -623,6 +623,7 @@ let writeBoard = (boardJson, currentPath) => {
             type : 'POST',
             url : `/${currentPath}/write`,
             data : boardJson,
+            dataType : 'json',
             contentType : 'application/json; charset=utf-8',
             success : (data) => {
                 resolve(data);
@@ -748,4 +749,32 @@ const ajaxAlert = (title, url, successText, errorText) => {
     })
 }
 
+
+
+// CKEDITOR5 설정
+ClassicEditor
+    .create(document.querySelector('#editor'), {
+        language: 'ko',
+        toolbar: {
+            viewportTopOffset: 30
+        },
+        container : {
+            overflow : scroll
+        },
+        ckfinder: {
+            uploadUrl: '/upload/community'
+        }
+    })
+    .then(editor => {
+        ckContent = editor;
+    })
+    .catch(error => {
+        console.error(error);
+    });
+document.querySelectorAll( 'oembed[url]' ).forEach( element => {
+    const anchor = document.createElement( 'a' );
+    anchor.setAttribute( 'href', element.getAttribute( 'url' ) );
+    anchor.className = 'embedly-card';
+    element.appendChild( anchor );
+});
 

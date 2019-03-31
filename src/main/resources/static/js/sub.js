@@ -14,6 +14,11 @@ $(document).ready(function () {
         currentPath = currentPath.substring(1, currentPath.lastIndexOf('/'));
         let boardInfo = new Map();
 
+        if ( $('.board-input-title').val().trim() == '' || ckContent.getData().trim() == '' ){
+            errorAlert('항목을 모두 입력해주세요');
+            return false;
+        }
+
         if ( typeof $('.post-no').val() != 'undefined' )
         boardInfo.set('brdNo', $('.post-no').val());
         boardInfo.set('brdType', currentPath);
@@ -21,50 +26,21 @@ $(document).ready(function () {
         boardInfo.set('brdTitle', $('.board-input-title').val());
         boardInfo.set('brdContent', ckContent.getData());
         boardInfo.set('isReply', $('.content-writebtn').attr('data-reply'));
+        console.log(boardInfo);
         let boardJson = mapToJson(boardInfo, false);
         console.log(boardJson);
 
         writeBoard(boardJson, currentPath)
             .then((data) => {
-                console.log(`SUCCESS : ${data}`);
+                $('#basicModal').modal('hide');
+                timerAlert("글쓰기","글의 정보를 확인중입니다.",1500);
+                setTimeout(()=>{successAlert("게시글이 등록되었습니다.");},1500);
+                setTimeout(()=>{location.href = `/${currentPath}/view?no=${data.no}`;},3000);
             }).catch((error) => {
-            console.log(`ERROR : ${error}`);
+                errorAlert('글등록에 실패했습니다');
+            });
         });
-    });
 
-
-    document.querySelectorAll( 'oembed[url]' ).forEach( element => {
-        // Create the <a href="..." class="embedly-card"></a> element that Embedly uses
-        // to discover the media.
-        const anchor = document.createElement( 'a' );
-
-        anchor.setAttribute( 'href', element.getAttribute( 'url' ) );
-        anchor.className = 'embedly-card';
-
-        element.appendChild( anchor );
-    } );
-
-
-    // CKEDITOR5 설정
-    ClassicEditor
-        .create(document.querySelector('#editor'), {
-            language: 'ko',
-            toolbar: {
-                viewportTopOffset: 30
-            },
-            container : {
-               overflow : scroll
-            },
-            ckfinder: {
-                uploadUrl: '/upload/community'
-            }
-        })
-        .then(editor => {
-            ckContent = editor;
-        })
-        .catch(error => {
-            console.error(error);
-        });
 
 
     // 글쓰기 버튼
