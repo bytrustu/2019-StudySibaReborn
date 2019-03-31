@@ -1,9 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<%
-    session.setAttribute("id","test1");
-%>
+<%--<%--%>
+    <%--session.setAttribute("id","test1");--%>
+<%--%>--%>
 
 
 <div class="sub-page">
@@ -72,12 +72,14 @@
                         </div>
                     </td>
                     <td class="board-hit">
-                        <i class="fab fa-sistrix"></i>
-                        ${boardList.brdCount}
+                        <%--<i class="fab fa-sistrix"></i>--%>
+                        <img src="/static/image/common/board_search.png">
+                        <span>${boardList.brdCount}</span>
                     </td>
                     <td class="board-like">
-                        <i class="fas fa-heart"></i>
-                        21
+                        <%--<i class="fas fa-heart"></i>--%>
+                        <img src="/static/image/common/board_like.png">
+                        <span>21</span>
                     </td>
                 </tr>
             </c:forEach>
@@ -164,8 +166,8 @@
             <ul class="pagination pg-amber board-pagination">
                 <li class="page-item">
                     <c:if test="${page.startPage ne 1 }">
-                        <a class="page-link" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
+                        <a class="page-link" href="/community/list?pageNum=${page.startPage-1}"  aria-label="Previous">
+                            <span aria-hidden="true"><i class="fas fa-angle-double-left"></i></span>
                             <span class="sr-only">Previous</span>
                         </a>
                     </c:if>
@@ -175,9 +177,10 @@
                             <a class="page-link" href="/community/list?pageNum=${i}">${i}</a>
                         </li>
                     </c:forEach>
+                <li class="page-item">
                     <c:if test="${page.endPage lt page.pageCount }">
-                        <a class="page-link" aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
+                        <a class="page-link" href="/community/list?pageNum=${page.endPage+1}" aria-label="Next">
+                            <span aria-hidden="true"><i class="fas fa-angle-double-right"></i></span>
                             <span class="sr-only">Next</span>
                         </a>
                     </c:if>

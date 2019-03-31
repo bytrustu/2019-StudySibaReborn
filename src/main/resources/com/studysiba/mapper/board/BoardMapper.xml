@@ -57,10 +57,12 @@
         ]]>
     </select>
 
+    <!-- 게시글 가장 높은 번호 조회 -->
     <select id="getPostMaxNum" resultType="int">
         SELECT MAX(BRD_NO) FROM BOARD
     </select>
 
+    <!-- 게시글 내용 조회 -->
     <select id="getPostOne" parameterType="BoardVO" resultType="BoardVO">
             SELECT BRD_NO, BRD_TYPE, BRD_DIVIDE, BRD_ID, BRD_TITLE, BRD_CONTENT, BRD_GNO, BRD_STEP, BRD_INDENT, BRD_COUNT, BRD_AVAILABLE, BRD_DATE,
                           MEMBER.MBR_PROFILE, MEMBER.MBR_NICK, MEMBER.MBR_ID
@@ -73,6 +75,52 @@
             ON MEMBER.MBR_ID = BOARD.BRD_ID
     </select>
 
+    <!-- 좋아요 추가 여부 확인 -->
+    <select id="alreadyRegisteredLike" parameterType="LikeVO" resultType="int">
+          SELECT COUNT(*) FROM LIKES
+          WHERE LIKE_FNO = #{likeFno} AND LIKE_ID = #{likeId}
+    </select>
+
+    <!-- 좋아요 추가 -->
+    <insert id="addLike" parameterType="LikeVO">
+        <selectKey keyProperty="likeNo" order="BEFORE" resultType="int">
+            SELECT COALESCE(MAX(LIKE_NO+1),1) AS LIKE_NO FROM LIKES
+        </selectKey>
+          INSERT INTO LIKES(LIKE_NO, LIKE_FNO, LIKE_ID, LIKE_DATE)
+          VALUES(#{likeNo}, #{likeFno}, #{likeId}, NOW())
+    </insert>
+
+    <!-- 댓글 리스트 조회 -->
+    <select id="getCommentList" parameterType="int" resultType="CommentVO">
+        SELECT CMT_NO, CMT_BNO, CMT_ID, CMT_CONTENT, CMT_AVAILABLE, CMT_DATE,
+                      MBR_NICK, MBR_PROFILE
+        FROM   ( SELECT * FROM COMMENT WHERE CMT_BNO = #{no} ORDER BY CMT_NO ASC ) COMMENT
+        LEFT JOIN MEMBER
+        ON MEMBER.MBR_ID = CMT_ID
+    </select>
+
+    <!-- 댓글 등록 -->
+    <insert id="writeComment" parameterType="CommentVO">
+        <selectKey keyProperty="cmtNo" order="BEFORE" resultType="int">
+            SELECT COALESCE(MAX(CMT_NO+1),1) AS CMT_NO FROM COMMENT
+        </selectKey>
+        INSERT INTO COMMENT(CMT_NO, CMT_BNO, CMT_ID, CMT_CONTENT, CMT_AVAILABLE, CMT_DATE)
+        VALUES(#{cmtNo}, #{cmtBno}, #{cmtId}, #{cmtContent}, 1, NOW())
+    </insert>
+
+    <!-- 방금 작성한 댓글 번호 조회 -->
+    <select id="getCommentMaxNum" parameterType="CommentVO" resultType="int">
+        SELECT MAX(CMT_NO) FROM COMMENT
+        WHERE CMT_ID = #{cmtId}
+    </select>
+
+    <select id="getCommentOne" parameterType="int" resultType="CommentVO">
+        SELECT CMT_NO, CMT_BNO, CMT_ID, CMT_CONTENT, CMT_AVAILABLE, DATE_FORMAT(CMT_DATE, '%Y-%m-%d %h:%i:%s') AS CMT_DATE,
+                      MBR_ID, MBR_NICK, MBR_PROFILE
+        FROM ( SELECT * FROM COMMENT WHERE CMT_NO = #{no} ) COMMENT
+        JOIN MEMBER
+        ON MEMBER.MBR_ID = CMT_ID
+    </select>
 
 
 </mapper>

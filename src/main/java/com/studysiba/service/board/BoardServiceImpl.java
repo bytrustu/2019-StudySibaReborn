@@ -3,6 +3,8 @@ package com.studysiba.service.board;
 import com.studysiba.common.DataConversion;
 import com.studysiba.common.DataValidation;
 import com.studysiba.domain.board.BoardVO;
+import com.studysiba.domain.board.CommentVO;
+import com.studysiba.domain.board.LikeVO;
 import com.studysiba.domain.common.PageVO;
 import com.studysiba.mapper.board.BoardMapper;
 import com.studysiba.mapper.common.CommonMapper;
@@ -71,7 +73,7 @@ public class BoardServiceImpl implements BoardService{
      *  @Return 게시판별 게시글 리스트 조회
  */
     @Override
-    public ArrayList<BoardVO> getPostList(PageVO pageVO) {
+    public ArrayList<BoardVO> getPostList(PageVO pageVO) throws Exception {
         ArrayList<BoardVO> postList = boardMapper.getPostList(pageVO);
         // 지난기간 [ 몇분전, 몇일전 ] 변환
         for ( BoardVO vo : postList ) vo.setLastTime( DataConversion.DurationFromNow(vo.getBrdDate()) );
@@ -84,10 +86,80 @@ public class BoardServiceImpl implements BoardService{
      *  @Return 해당 메뉴, 글번호에 해당하는 글 조회
      */
     @Override
-    public BoardVO getPostOne(String menu, int no) {
+    public BoardVO getPostOne(String menu, int no) throws Exception {
         BoardVO boardVO = new BoardVO();
         boardVO.setBrdType(menu);
         boardVO.setBrdNo(no);
         return boardMapper.getPostOne(boardVO);
+    }
+
+    /*
+     *  게시글 좋아요 추가
+     *  @Param menu, no
+     *  @Return 좋아요 추가상태 코드 반환
+     */
+    @Override
+    public StateVO addLike(String menu, int no) throws Exception {
+        StateVO stateVO = new StateVO();
+        stateVO.setNo(no);
+        stateVO.setStateCode("LIKE_STATE_ERROR");
+        if ( httpSession.getAttribute("id") != null ) {
+            LikeVO likeVO = new LikeVO();
+            likeVO.setLikeFno(no);
+            likeVO.setLikeId((String) httpSession.getAttribute("id"));
+            // 이미 등록 추가한 회원인 경우
+            if ( boardMapper.alreadyRegisteredLike(likeVO) == 1){
+                stateVO.setStateCode("LIKE_STATE_ALREADY");
+                return stateVO;
+            }
+            // 좋아요 추가
+            int likeState = boardMapper.addLike(likeVO);
+            if ( likeState == 1 ) stateVO.setStateCode("LIKE_STATE_SUCCESS");
+        }
+        return stateVO;
+    }
+
+    /*
+     *  게시판 댓글 리스트 조회
+     *  @Param no
+     *  @Return 게시판별 댓글 리스트 조회
+     */
+    @Override
+    public ArrayList<CommentVO> getCommentList(int no) throws Exception {
+        ArrayList<CommentVO> commentList = boardMapper.getCommentList(no);
+        return commentList;
+    }
+
+    /*
+     *  게시판 댓글 등록
+     *  @Param commentVO
+     *  @Return 댓글 등록 상태코드 반환
+     */
+    @Transactional
+    @Override
+    public StateVO writeComment(CommentVO commentVO) {
+        StateVO stateVO = new StateVO();
+        stateVO.setNo(commentVO.getCmtBno());
+        stateVO.setStateCode("COMMENT_WRITE_ERROR");
+        if ( httpSession.getAttribute("id") != null ) {
+            commentVO.setCmtId((String) httpSession.getAttribute("id"));
+            int commentState = boardMapper.writeComment(commentVO);
+            if ( commentState == 1 ) {
+                stateVO.setStateCode("COMMENT_WRITE_SUCCESS");
+                stateVO.setNo(boardMapper.getCommentMaxNum(commentVO));
+            }
+
+        }
+        return stateVO;
+    }
+
+    /*
+     *  게시판 댓글 조회
+     *  @Param  no
+     *  @Return 댓글 정보 리턴
+     */
+    @Override
+    public CommentVO getCommentOne(int no) {
+        return boardMapper.getCommentOne(no);
     }
 }

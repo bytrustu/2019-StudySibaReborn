@@ -37,13 +37,13 @@
                                                 <div class="modal-body mb-1 modal-body-login">
                                                         <div class="md-form form-sm mb-">
                                                             <i class="far fa-laugh-wink prefix"></i>
-                                                            <input type="email" id="input-loginid" class="form-control form-control-sm modal-input">
+                                                            <input type="email" id="input-loginid" class="form-control form-control-sm modal-input login-input">
                                                             <label data-error="wrong" data-success="right" for="input-loginid">아이디</label>
                                                         </div>
 
                                                         <div class="md-form form-sm mb-4">
                                                                 <i class="fas fa-lock prefix"></i>
-                                                                <input type="password" id="input-loginpass" class="form-control form-control-sm modal-input">
+                                                                <input type="password" id="input-loginpass" class="form-control form-control-sm modal-input login-input">
                                                                 <label for="input-loginpass">비밀번호</label>
                                                         </div>
                                                         <div class="text-center mt-2">
@@ -65,25 +65,25 @@
                                                 <div class="modal-body modal-body-join">
                                                         <div class="md-form form-sm mb-1">
                                                                 <i class="far fa-laugh-wink prefix"></i>
-                                                                <input type="text" id="input-joinid" class="form-control form-control-sm modal-input">
+                                                                <input type="text" id="input-joinid" class="form-control form-control-sm modal-input join-input">
                                                                 <label data-error="wrong" data-success="right" for="input-joinid">아이디</label>
                                                         </div>
 
                                                         <div class="md-form form-sm mb-1">
                                                                 <i class="fas fa-lock prefix"></i>
-                                                                <input type="password" id="input-joinpass" class="form-control form-control-sm modal-input">
+                                                                <input type="password" id="input-joinpass" class="form-control form-control-sm modal-input join-input">
                                                                 <label data-error="wrong" data-success="right" for="input-joinpass">비밀번호</label>
                                                         </div>
 
                                                         <div class="md-form form-sm mb-1">
                                                                 <i class="far fa-kiss-wink-heart prefix"></i>
-                                                                <input type="text" id="input-joinnick" class="form-control form-control-sm modal-input">
+                                                                <input type="text" id="input-joinnick" class="form-control form-control-sm modal-input join-input">
                                                                 <label data-error="wrong" data-success="right" for="input-joinnick">닉네임</label>
                                                         </div>
 
                                                         <div class="md-form form-sm mb-1">
                                                                 <i class="far fa-envelope prefix"></i>
-                                                                <input type="email" id="input-joinemail" class="form-control form-control-sm modal-input">
+                                                                <input type="email" id="input-joinemail" class="form-control form-control-sm modal-input join-input">
                                                                 <label data-error="wrong" data-success="right" for="input-joinemail">이메일</label>
                                                         </div>
 

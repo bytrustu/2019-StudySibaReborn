@@ -13,6 +13,8 @@
         <typeAlias alias="UploadVO" type="com.studysiba.domain.common.UploadVO"/>
         <typeAlias alias="BoardVO" type="com.studysiba.domain.board.BoardVO"/>
         <typeAlias alias="PageVO" type="com.studysiba.domain.common.PageVO"/>
+        <typeAlias alias="LikeVO" type="com.studysiba.domain.board.LikeVO"/>
+        <typeAlias alias="CommentVO" type="com.studysiba.domain.board.CommentVO"/>
     </typeAliases>
 
 </configuration>

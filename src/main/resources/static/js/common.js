@@ -283,6 +283,24 @@ stateCode.set("SOCIAL_PASSWORD_ERROR", "소셜회원은 변경 할수 없습니�
 stateCode.set("LOGOUT_STATE_SUCCESS", "로그아웃 되었습니다.");
 stateCode.set("LOGOUT_STATE_ERROR", "잘못된 접근입니다.");
 
+stateCode.set("BOARD_WRITE_SUCCESS","게시글이 등록되었습니다.");
+stateCode.set("BOARD_WRITE_ERROR","게시글 등록에 실패했습니다.");
+stateCode.set("BOARD_UPDATE_SUCCESS","게시글이 수정되었습니다.");
+stateCode.set("BOARD_UPDATE_ERROR","게시글 수정에 실패했습니다.");
+stateCode.set("BOARD_DELETE_SUCCESS","게시글이 삭제되었습니다.");
+stateCode.set("BOARD_DELETE_ERROR","게시글 삭제에 실패했습니다.");
+
+stateCode.set("LIKE_STATE_SUCCESS", "추천 등록되었습니다.");
+stateCode.set("LIKE_STATE_ERROR", "추천 실패했습니다.");
+stateCode.set("LIKE_STATE_ALREADY", "이미 추천 하였습니다.");
+
+stateCode.set("COMMENT_WRITE_SUCCESS","댓글이 등록되었습니다.");
+stateCode.set("COMMENT_WRITE_ERROR","댓글 등록에 실패했습니다.");
+stateCode.set("COMMENT_UPDATE_SUCCESS","댓글이 수정되었습니다.");
+stateCode.set("COMMENT_UPDATE_ERROR","댓글 수정에 실패했습니다.");
+stateCode.set("COMMENT_DELETE_SUCCESS","댓글이 삭제되었습니다.");
+stateCode.set("COMMENT_DELETE_ERROR","댓글 삭제에 실패했습니다.");
+
 
 // KAKAO API
 Kakao.init('672b34ad5f77dd65240951209b6cbd32');
@@ -294,6 +312,13 @@ let initElement = (className) => {
     for (let element of elements) {
         element.value = '';
     }
+}
+
+let enterPressAction = (inputName, targetName) => {
+    $(`.${inputName}`).keyup( function(e) {
+        if ( e.keyCode == 13 )
+            $(`.${targetName}`).click();
+    });
 }
 
 
@@ -322,6 +347,14 @@ let trimTitleLength = (className, length) => {
             element.innerHTML = calByte.cuteByteLength(element.innerHTML, length-2) + '...';
         }
     }
+}
+
+
+// 첫번째 루트 경로 반환
+let firstPath = () => {
+    let currentPath = window.location.pathname;
+    currentPath = currentPath.substring(1, currentPath.lastIndexOf('/'));
+    return currentPath;
 }
 
 
@@ -617,12 +650,48 @@ let changePassword = (memberJson) => {
 }
 
 // 게시판 게시글 등록
-let writeBoard = (boardJson, currentPath) => {
+let writeBoard = (boardJson) => {
     return new Promise( (resolve, reject) => {
         $.ajax({
             type : 'POST',
-            url : `/${currentPath}/write`,
+            url : `/board/write`,
             data : boardJson,
+            dataType : 'json',
+            contentType : 'application/json; charset=utf-8',
+            success : (data) => {
+                resolve(data);
+            },
+            error : (error) => {
+                reject(error);
+            }
+        });
+    });
+}
+
+// 게시판 댓글 등록
+let writeComment = (boardJson) => {
+    return new Promise( (resolve, reject) => {
+        $.ajax({
+            type : 'POST',
+            url : `/comment/write`,
+            data : boardJson,
+            dataType : 'json',
+            contentType : 'application/json; charset=utf-8',
+            success : (data) => {
+                resolve(data);
+            },
+            error : (error) => {
+                reject(error);
+            }
+        });
+    });
+}
+
+let getComment = (no) => {
+    return new Promise( (resolve, reject) => {
+        $.ajax({
+            type : 'GET',
+            url : `/comment/get/${no}`,
             dataType : 'json',
             contentType : 'application/json; charset=utf-8',
             success : (data) => {
@@ -644,7 +713,7 @@ const errorAlert = (text) => {
         title: text,
         showConfirmButton: false,
         allowOutsideClick: false,
-        timer: 2500,
+        timer: 1500,
     });
 }
 
@@ -656,7 +725,7 @@ const successAlert = (text) => {
         title: text,
         showConfirmButton: false,
         allowOutsideClick: false,
-        timer: 2500
+        timer: 1500
     });
 }
 
@@ -748,33 +817,4 @@ const ajaxAlert = (title, url, successText, errorText) => {
         }, 300);
     })
 }
-
-
-
-// CKEDITOR5 설정
-ClassicEditor
-    .create(document.querySelector('#editor'), {
-        language: 'ko',
-        toolbar: {
-            viewportTopOffset: 30
-        },
-        container : {
-            overflow : scroll
-        },
-        ckfinder: {
-            uploadUrl: '/upload/community'
-        }
-    })
-    .then(editor => {
-        ckContent = editor;
-    })
-    .catch(error => {
-        console.error(error);
-    });
-document.querySelectorAll( 'oembed[url]' ).forEach( element => {
-    const anchor = document.createElement( 'a' );
-    anchor.setAttribute( 'href', element.getAttribute( 'url' ) );
-    anchor.className = 'embedly-card';
-    element.appendChild( anchor );
-});
 

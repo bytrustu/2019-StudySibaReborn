@@ -2,6 +2,15 @@
 
 $(document).ready(function () {
 
+
+    /*
+            mainpage Enterkey 적용
+     */
+    enterPressAction('login-input', 'modal-loginbtn');
+    enterPressAction('join-input', 'modal-joinbtn');
+
+
+
     // 992px 이상일 경우 시바랭킹 카운팅
     if (window.innerWidth >= 992) {
         catchElement('.point', '.info-box', 18, true);

@@ -217,6 +217,12 @@
     text-align: center;
 }
 
+.board-hit > img , .board-like > img {
+    width: 15px;
+    height: 15px;
+    margin-right: 10px;
+}
+
 .board-hit > i, .board-like > i {
     margin-right: 0;
 }
@@ -472,7 +478,7 @@
 
 .post-body{
     padding: 20px;
-    min-height: 500px;
+    min-height: 250px;
 }
 
 .post-member {
@@ -578,7 +584,7 @@
     font-size: 0.9rem;
 }
 
-.comment-bottom {
+.comment-middle {
     padding: 10px;
     background-color: #f8f8f8;
     text-align: center;
@@ -637,7 +643,7 @@
 .comment-list {
     height: auto;
     border-top: 1px solid #ccc;
-    padding: 15px 15px 20px 15px;
+    padding: 10px 15px 15px 15px;
     min-width: 280px;
 }
 
@@ -675,6 +681,7 @@
 
 .comment-info  p:nth-of-type(2) {
     font-size: 0.9rem;
+    letter-spacing: normal;
 }
 
 
@@ -837,4 +844,13 @@
 .ck.ck-editor__main>.ck-editor__editable {
     max-height: 576px;
     height: 576px !important;
+}
+
+
+
+
+/* Custom Etc */
+
+.page-item{
+    margin: 0 10px;
 }

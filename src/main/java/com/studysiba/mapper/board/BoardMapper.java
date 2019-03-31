@@ -1,6 +1,8 @@
 package com.studysiba.mapper.board;
 
 import com.studysiba.domain.board.BoardVO;
+import com.studysiba.domain.board.CommentVO;
+import com.studysiba.domain.board.LikeVO;
 import com.studysiba.domain.common.PageVO;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -57,4 +59,46 @@ public interface BoardMapper {
      *  @Return 해당 메뉴, 글번호에 해당하는 글 조회
      */
     BoardVO getPostOne(BoardVO boardVO);
+
+    /*
+     *  좋아요 추가여부 확인
+     *  @Param likeVO
+     *  @Return 좋아요 추가여부 조회 반환
+     */
+    int alreadyRegisteredLike(LikeVO likeVO);
+
+    /*
+     *  좋아요 추가
+     *  @Param likeVO
+     *  @Return 좋아요 추가여부 반환
+     */
+    int addLike(LikeVO likeVO);
+
+    /*
+     *  게시글 댓글 리스트조회
+     *  @Param no
+     *  @Return 댓글 리스트 반환
+     */
+    ArrayList<CommentVO> getCommentList(int no);
+
+    /*
+     *  게시판 댓글 등록
+     *  @Param commentVO
+     *  @Return 댓글 등록
+     */
+    int writeComment(CommentVO commentVO);
+
+    /*
+     *  게시판 댓글 작성한 댓글 번호 조회
+     *  @Param commentVO
+     *  @Return 자기가 작성한 마지막 댓글 조회
+     */
+    int getCommentMaxNum(CommentVO commentVO);
+
+    /*
+     *  댓글번호에 해당하는 글 정보 조회
+     *  @Param no
+     *  @Return 글번호에 해당하는 글정보 회원정보 조회
+     */
+    CommentVO getCommentOne(int no);
 }
