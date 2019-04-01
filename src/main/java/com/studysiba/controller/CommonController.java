@@ -5,7 +5,7 @@ import com.studysiba.domain.board.CommentVO;
 import com.studysiba.domain.common.Criteria;
 import com.studysiba.domain.common.PageVO;
 import com.studysiba.domain.member.PointVO;
-import com.studysiba.mapper.common.StateVO;
+import com.studysiba.domain.common.StateVO;
 import com.studysiba.service.board.BoardService;
 import com.studysiba.service.common.CommonService;
 import lombok.extern.log4j.Log4j;
@@ -21,7 +21,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
 
 
 @Controller
@@ -56,14 +55,15 @@ public class CommonController {
      */
     @GetMapping("/{menu}/list")
     public String moveList(Model model, @PathVariable("menu") String menu, @ModelAttribute Criteria criteria) throws Exception {
-        log.info("move community");
-        log.info(criteria);
         // 게시판 별 안내 글귀
         Map<String, String> introComment = commonService.getIntroduceComment(menu);
         model.addAttribute("intro", introComment);
 
         PageVO pageVO = commonService.getPageInfomation(menu, criteria);
         model.addAttribute("page", pageVO);
+        model.addAttribute("cri",criteria);
+
+        log.info(">>>>>>" + pageVO.getCount());
 
         List<?> commoonList = null;
 
@@ -99,6 +99,7 @@ public class CommonController {
         // 게시판 별 안내 글귀
         Map<String, String> introComment = commonService.getIntroduceComment(menu);
         model.addAttribute("intro", introComment);
+        model.addAttribute("cri",criteria);
 
         BoardVO boardVO = null;
 
@@ -192,9 +193,9 @@ public class CommonController {
      *  @Return 게시글 삭제 상태코드 반환
      */
     @ResponseBody
-    @RequestMapping(value="/{type}/delete", method=RequestMethod.DELETE, consumes = "application/json", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
-    public ResponseEntity<StateVO> deletePost(Model model, @PathVariable("type") String type, @RequestBody CommentVO deleteVO ) throws Exception {
-        log.info(type + " : " + deleteVO);
+    @DeleteMapping(value="/board/delete" , consumes = "application/json", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    public ResponseEntity<StateVO> deletePost(Model model, @RequestBody CommentVO deleteVO ) throws Exception {
+        log.info(deleteVO);
         StateVO deleteState = null;
         deleteState = boardService.deletePost(deleteVO);
         log.info("글삭제 상태 : " + deleteState.getStateCode());
@@ -202,6 +203,20 @@ public class CommonController {
                 new ResponseEntity<>(deleteState,HttpStatus.OK) : new ResponseEntity<>(deleteState,HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    /*
+     *  게시판별게시글수정 [ 공지사항, 커뮤니티 ]
+     *  @Param deleteVO
+     *  @Return 게시글 수정 내용반환
+     */
+    @ResponseBody
+    @PutMapping(value="/board/update")
+    public ResponseEntity<BoardVO> updatePost(Model model, @RequestBody BoardVO boardVO) throws Exception {
+        log.info(boardVO);
+        StateVO stateVO;
+        stateVO = boardService.updatePost(boardVO);
+        log.info(boardVO);
+        return stateVO.getStateCode().equals("BOARD_UPDATE_SUCCESS") ? new ResponseEntity<>(boardVO,HttpStatus.OK) : new ResponseEntity<>(boardVO,HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 
 
 

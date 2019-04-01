@@ -179,6 +179,17 @@
     font-weight: bold;
 }
 
+.board-commentcount{
+    color: #46909b;
+    font-weight: bold;
+}
+
+.board-containimg {
+    width: 15px;
+    height: 15px;
+    vertical-align: -2px;
+}
+
 .board-titletext > a {
     color: #444;
     font-size: 13px;
@@ -230,7 +241,7 @@
 .board-hit > img , .board-like > img {
     width: 15px;
     height: 15px;
-    margin-right: 10px;
+    margin-right: 0px;
 }
 
 .board-hit > i, .board-like > i {
@@ -278,6 +289,12 @@
 
 
 @media(min-width : 586px) {
+
+    .board-hit > img , .board-like > img {
+        width: 15px;
+        height: 15px;
+        margin-right: 10px;
+    }
 
     .board-table > .board-tbody > tr > td {
         margin: 0;
@@ -484,6 +501,7 @@
     width: 30%;
     float: left;
     text-align: center;
+    font-weight: bold;
 }
 
 .post-body{
@@ -817,6 +835,11 @@
 
 .studysiba-cancel{
     background-color: #e4b67c !important;
+}
+
+.update-btn{
+    display: none;
+    display: inline-block;
 }
 
 @media(min-width : 430px ) {

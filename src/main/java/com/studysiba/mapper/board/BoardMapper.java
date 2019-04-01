@@ -7,6 +7,7 @@ import com.studysiba.domain.common.PageVO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @Mapper
@@ -38,7 +39,7 @@ public interface BoardMapper {
      *  @Param menu
      *  @Return 게시글 글수 반환
      */
-    int getPostCount(String menu);
+    int getPostCount(HashMap<String,String> searchMap);
 
     /*
      *  게시글 리스트조회
@@ -122,4 +123,11 @@ public interface BoardMapper {
      *  @Return 댓글 삭제 업데이트 여부 반환
      */
     int deleteComment(CommentVO deleteVO);
+
+    /*
+     *  게시글 수정
+     *  @Param boardVO
+     *  @Return 게시글 수정 여부 반환
+     */
+    int updatePost(BoardVO boardVO);
 }

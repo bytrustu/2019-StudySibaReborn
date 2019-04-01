@@ -37,20 +37,49 @@
     </update>
 
     <!-- 게시글 글수 반환 -->
-    <select id="getPostCount" parameterType="String" resultType="int">
+    <select id="getPostCount" parameterType="hashmap" resultType="int">
         SELECT COUNT(*) FROM BOARD
         WHERE BRD_TYPE = #{menu}
+            AND BRD_AVAILABLE = 1
+
+        <choose>
+            <when test="type == '-1' || type == '-2' || type == null">
+            </when>
+            <otherwise>
+                AND BRD_DIVIDE = #{type}
+            </otherwise>
+        </choose>
+
+        <if test="keyword != null">
+            AND ( BRD_TITLE LIKE CONCAT('%', #{keyword}, '%')
+            OR BRD_CONTENT LIKE CONCAT('%', #{keyword}, '%') )
+        </if>
     </select>
 
     <!-- 게시글 리스트 조회 -->
     <select id="getPostList" parameterType="PageVO" resultType="BoardVO">
-        <![CDATA[
             SELECT BRD_NO, BRD_TYPE, BRD_DIVIDE, BRD_ID, BRD_TITLE, BRD_CONTENT, BRD_GNO, BRD_STEP, BRD_INDENT, BRD_COUNT, BRD_AVAILABLE, BRD_DATE,
                           MEMBER.MBR_PROFILE, MEMBER.MBR_NICK,
-                          COALESCE(BRD_LIKECOUNT,0) AS BRD_LIKECOUNT
+                          COALESCE(BRD_LIKECOUNT,0) AS BRD_LIKECOUNT,
+                          COALESCE(BRD_COMMENTCOUNT,0) AS BRD_COMMENTCOUNT
             FROM (
                           SELECT * FROM BOARD
                           WHERE BRD_TYPE = #{menu} AND BRD_AVAILABLE = 1
+
+                              <choose>
+                                  <when test="criteria.type == '-1' || criteria.type == '-2' || criteria.type == null">
+
+                                  </when>
+                                  <otherwise>
+                                      AND BRD_DIVIDE = #{criteria.type}
+                                  </otherwise>
+                              </choose>
+
+                              <if test="criteria.keyword != null">
+                                  AND ( BRD_TITLE LIKE CONCAT('%', #{criteria.keyword}, '%')
+                                  OR BRD_CONTENT LIKE CONCAT('%', #{criteria.keyword}, '%') )
+                              </if>
+
                           ORDER BY BRD_GNO DESC, BRD_STEP ASC
                           LIMIT #{startRow}, #{pageSize}
             ) AS BOARD
@@ -61,7 +90,13 @@
                                 FROM LIKES
              ) LIKES
             ON LIKES.LIKE_FNO = BRD_NO
-        ]]>
+            LEFT JOIN (
+                                SELECT CMT_BNO, COUNT(*) AS BRD_COMMENTCOUNT
+                                FROM COMMENT
+                                WHERE CMT_AVAILABLE = 1
+                                GROUP BY CMT_BNO
+             ) COMMENT
+            ON COMMENT.CMT_BNO = BRD_NO
     </select>
 
     <!-- 게시글 가장 높은 번호 조회 -->
@@ -89,7 +124,7 @@
             ON LIKES.LIKE_FNO = BRD_NO
             LEFT JOIN (
                                 SELECT CMT_BNO, COUNT(*) AS BRD_COMMENTCOUNT
-                                FROM COMMENT WHERE CMT_BNO = #{brdNo}
+                                FROM COMMENT WHERE CMT_BNO = #{brdNo} AND CMT_AVAILABLE = 1
              ) COMMENT
             ON COMMENT.CMT_BNO = BRD_NO
     </select>
@@ -120,7 +155,9 @@
     <select id="getCommentList" parameterType="int" resultType="CommentVO">
         SELECT CMT_NO, CMT_BNO, CMT_ID, CMT_CONTENT, CMT_AVAILABLE, CMT_DATE,
                       MBR_NICK, MBR_PROFILE
-        FROM   ( SELECT * FROM COMMENT WHERE CMT_BNO = #{no} ORDER BY CMT_NO ASC ) COMMENT
+        FROM   ( SELECT * FROM COMMENT
+                       WHERE CMT_BNO = #{no} AND CMT_AVAILABLE = 1
+                       ORDER BY CMT_NO ASC ) COMMENT
         LEFT JOIN MEMBER
         ON MEMBER.MBR_ID = CMT_ID
     </select>
@@ -161,6 +198,12 @@
         UPDATE COMMENT
         SET CMT_AVAILABLE = 0
         WHERE CMT_NO = #{cmtNo}
+    </update>
+
+    <update id="updatePost" parameterType="BoardVO">
+        UPDATE BOARD
+        SET BRD_DIVIDE = #{brdDivide}, BRD_TITLE = #{brdTitle}, BRD_CONTENT = #{brdContent}
+        WHERE BRD_NO = #{brdNo}
     </update>
 
 </mapper>

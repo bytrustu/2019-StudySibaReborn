@@ -6,10 +6,9 @@ import com.studysiba.domain.board.BoardVO;
 import com.studysiba.domain.board.CommentVO;
 import com.studysiba.domain.board.LikeVO;
 import com.studysiba.domain.common.PageVO;
-import com.studysiba.domain.member.MemberVO;
 import com.studysiba.mapper.board.BoardMapper;
 import com.studysiba.mapper.common.CommonMapper;
-import com.studysiba.mapper.common.StateVO;
+import com.studysiba.domain.common.StateVO;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -185,21 +184,48 @@ public class BoardServiceImpl implements BoardService{
                 case "comment" :
                     if ( httpSession.getAttribute("id").equals(boardMapper.getCommentOne(deleteVO.getCmtNo()).getCmtId())  || httpSession.getAttribute("auth").toString().toUpperCase().equals("ADMIN")  ) {
                         deleteState = boardMapper.deleteComment(deleteVO);
-                        log.info(">>>>>>>>>>" + deleteState);
-                        stateVO.setStateCode("COMMENT_DELETE_SUCCESS");
-                        stateVO.setNo(deleteVO.getCmtNo());
+                        if ( deleteState == 1 ) {
+                            stateVO.setStateCode("COMMENT_DELETE_SUCCESS");
+                            stateVO.setNo(deleteVO.getCmtNo());
+                        }
                     }
                     break;
                 default :
                     if ( httpSession.getAttribute("id").equals(boardMapper.getPostOne(deleteVO).getMbrId())  || httpSession.getAttribute("auth").toString().toUpperCase().equals("ADMIN") ) {
                         deleteState = boardMapper.deletePost(deleteVO);
-                        log.info(">>>>>>>>>>" + deleteState);
-                        stateVO.setStateCode("BOARD_DELETE_SUCCESS");
-                        stateVO.setNo(deleteVO.getBrdNo());
+                        if ( deleteState == 1 ) {
+                            stateVO.setStateCode("BOARD_DELETE_SUCCESS");
+                            stateVO.setNo(deleteVO.getBrdNo());
+                        }
                     }
                     break;
             }
             // 아닐경우 에러상태코드 반환
+        }
+        return stateVO;
+    }
+
+    /*
+     *  게시글 수정
+     *  @Param boardVO
+     *  @Return 게시글수정 상태코드 반환
+     */
+    @Override
+    public StateVO updatePost(BoardVO boardVO) {
+        StateVO stateVO = new StateVO();
+        stateVO.setNo(boardVO.getBrdNo());
+        stateVO.setStateCode("BOARD_UPDATE_ERROR");
+        // 등록한회원 또는 관리자만 변경 가능
+        if ( httpSession.getAttribute("id") != null || httpSession.getAttribute("auth").toString().toUpperCase().equals("ADMIN") ) {
+            int updateState = 0;
+            if ( httpSession.getAttribute("id").equals(boardMapper.getPostOne(boardVO).getBrdId())  || httpSession.getAttribute("auth").toString().toUpperCase().equals("ADMIN")  ) {
+                updateState = boardMapper.updatePost(boardVO);
+                stateVO.setStateCode("BOARD_UPDATE_SUCCESS");
+                if ( updateState == 1 ) {
+                    stateVO.setStateCode("BOARD_UPDATE_SUCCESS");
+                    stateVO.setObj(boardMapper.getPostOne(boardVO));
+                }
+            }
         }
         return stateVO;
     }

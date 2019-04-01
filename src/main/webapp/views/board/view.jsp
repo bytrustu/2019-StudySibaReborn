@@ -4,11 +4,6 @@
 
 <div class="sub-page">
 
-    <%
-        session.setAttribute("id","test1");
-        session.setAttribute("auth","ADMIN");
-    %>
-
     <div class="sub-subject">
         <span class="sub-topcomment">${intro.top}</span>
         <span class="sub-bottomcomment">
@@ -76,7 +71,7 @@
             </div>
 
             <div class="post-bottom">
-                <button class="btn btn-primary">목록</button>
+                <button class="btn btn-primary board-listbtn">목록</button>
                 <button class="btn btn-danger post-like" data-write="<c:if test="${sessionScope.id ne null}">true</c:if>" >추천</button>
             </div>
             <div class="comment-top">

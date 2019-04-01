@@ -165,16 +165,21 @@ public class CommonServiceImpl implements CommonService {
     @Override
     public PageVO getPageInfomation(String menu, Criteria criteria) {
         PageVO pageVO = null;
+        HashMap<String, String> searchMap = new HashMap<>();
+        searchMap.put("menu",menu);
+        searchMap.put("keyword",criteria.getKeyword());
+        searchMap.put("type", criteria.getType());
         switch (menu) {
             case "notice" :
-                pageVO = new PageVO(criteria, boardMapper.getPostCount(menu), 10, 3);
+                pageVO = new PageVO(criteria, boardMapper.getPostCount(searchMap), 10, 3);
                 pageVO.setMenu(menu);
                 break;
             case "community" :
-                pageVO = new PageVO(criteria, boardMapper.getPostCount(menu), 10, 3);
+                pageVO = new PageVO(criteria, boardMapper.getPostCount(searchMap), 10, 3);
                 pageVO.setMenu(menu);
                 break;
         }
+        log.info("잘하자 좀 >>>>>>>>>>> ");
         return pageVO;
     }
 

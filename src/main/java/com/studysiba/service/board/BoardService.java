@@ -3,11 +3,9 @@ package com.studysiba.service.board;
 import com.studysiba.domain.board.BoardVO;
 import com.studysiba.domain.board.CommentVO;
 import com.studysiba.domain.common.PageVO;
-import com.studysiba.mapper.common.StateVO;
+import com.studysiba.domain.common.StateVO;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 public interface BoardService {
 
@@ -67,4 +65,10 @@ public interface BoardService {
      */
     StateVO deletePost(CommentVO deleteVO);
 
+    /*
+     *  게시글 수정
+     *  @Param boardVO
+     *  @Return 게시글수정 상태코드 반환
+     */
+    StateVO updatePost(BoardVO boardVO);
 }

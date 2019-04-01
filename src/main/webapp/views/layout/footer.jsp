@@ -1,6 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
+    <div class="pageinfo-box">
+        <input type="hidden" id="page-num" value="${cri.pageNum}">
+        <input type="hidden" id="page-keyword" value="${cri.keyword}">
+        <input type="hidden" id="page-type" value="${cri.type}">
+    </div>
+
+
 
     <footer class="page-footer font-small pt-4">
         <div class="container">
@@ -273,13 +280,19 @@
                                 <textarea name="editor" id="editor"></textarea>
                     </div>
                     <div class="modal-footer basic-modal-footer">
-                        <button type="button" class="btn btn-yellow studysiba-button studysiba-button write-btn update-btn">글쓰기</button>
+                        <button type="button" class="btn btn-yellow studysiba-button write-btn">글쓰기</button>
+                        <button type="button" class="btn btn-yellow studysiba-button update-btn">수정</button>
                         <button type="button" class="btn btn-yellow studysiba-button studysiba-cancel" data-dismiss="modal">취소</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+        <%--<%--%>
+        <%--session.setAttribute("id","test1");--%>
+        <%--session.setAttribute("auth","ADMIN");--%>
+    <%--%>--%>
 
 
         <!-- / 경로가 아닌경우 로그인/회원가입 모달 클릭시 -->

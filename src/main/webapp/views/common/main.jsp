@@ -167,7 +167,16 @@
                         </div>
                         <div class="user-body">
                             <div>
-                                <p id="loggined-nick">${sessionScope.nick}</p>
+                                <p id="loggined-nick"><span class="user-auth">
+                                    <c:choose>
+                                        <c:when test="${sessionScope.auth eq 'ADMIN'}">
+                                            관리자
+                                        </c:when>
+                                        <c:when test="${sessionScope.auth eq 'NORMAL'}">
+                                            일반회원
+                                        </c:when>
+                                    </c:choose>
+                                </span>${sessionScope.nick}</p>
                                 <p><span>${sessionScope.rank}위</span><span class="point">${sessionScope.score}</span><span>점</span></p>
                                 <div id="loggined-id">${sessionScope.id}</div>
                             </div>
