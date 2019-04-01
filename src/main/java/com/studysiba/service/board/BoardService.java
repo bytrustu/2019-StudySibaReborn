@@ -59,4 +59,12 @@ public interface BoardService {
      *  @Return 댓글번호에 해당하는 댓글 정보 조회
      */
     CommentVO getCommentOne(int no);
+
+    /*
+     *  게시글,댓글 삭제
+     *  @Param deleteVO
+     *  @Return 게시글,댓글 삭제 상태코드 반환
+     */
+    StateVO deletePost(CommentVO deleteVO);
+
 }

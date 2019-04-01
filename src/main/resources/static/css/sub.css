@@ -44,12 +44,22 @@
 
 
 .board-box > div > .board-total {
-    float: left;
-    font-weight: bold;
-    font-size: 14px;
-    color: #8d8d8d;
-    margin-left: 20px;
-    padding: 38px 14px 14px 14px;
+     float: left;
+     font-weight: bold;
+     font-size: 14px;
+     color: #8d8d8d;
+     margin-left: 20px;
+     padding: 38px 14px 14px 14px;
+ }
+
+.board-box > div > .board-total > img {
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+}
+
+.board-box > div > .board-total > img:nth-of-type(1) {
+    margin-right: 10px;
 }
 
 .board-box > div > .content-writebtn {
@@ -669,6 +679,14 @@
     vertical-align: middle;
 }
 
+.comment-info > p > img {
+    width: 15px;
+    height: 15px;
+    cursor: pointer;
+    vertical-align: -1px;
+    margin-left: 3px;
+}
+
 .comment-info  p {
     margin: 0;
 }
@@ -676,12 +694,13 @@
 .comment-info  p:nth-of-type(1) {
     font-weight: bold;
     color: #117a8b;
-    font-size: 0.9rem;
+    font-size: 15px !important;
 }
 
 .comment-info  p:nth-of-type(2) {
     font-size: 0.9rem;
     letter-spacing: normal;
+    color: #8d8d8d;
 }
 
 
@@ -854,3 +873,5 @@
 .page-item{
     margin: 0 10px;
 }
+
+

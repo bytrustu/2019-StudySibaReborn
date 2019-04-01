@@ -6,6 +6,7 @@ import com.studysiba.domain.board.BoardVO;
 import com.studysiba.domain.board.CommentVO;
 import com.studysiba.domain.board.LikeVO;
 import com.studysiba.domain.common.PageVO;
+import com.studysiba.domain.member.MemberVO;
 import com.studysiba.mapper.board.BoardMapper;
 import com.studysiba.mapper.common.CommonMapper;
 import com.studysiba.mapper.common.StateVO;
@@ -90,6 +91,8 @@ public class BoardServiceImpl implements BoardService{
         BoardVO boardVO = new BoardVO();
         boardVO.setBrdType(menu);
         boardVO.setBrdNo(no);
+        // 조회수증가
+        boardMapper.increaseReadCount(boardVO);
         return boardMapper.getPostOne(boardVO);
     }
 
@@ -161,5 +164,43 @@ public class BoardServiceImpl implements BoardService{
     @Override
     public CommentVO getCommentOne(int no) {
         return boardMapper.getCommentOne(no);
+    }
+
+    /*
+     *  게시판 댓글 삭제
+     *  @Param  deleteVO
+     *  @Return 게시판 댓글 삭제 상태코드 반환
+     */
+    @Override
+    public StateVO deletePost(CommentVO deleteVO) {
+        StateVO stateVO = new StateVO();
+        stateVO.setNo(deleteVO.getBrdNo());
+        // 타입에 따른 에러상태코드 초기화
+        if (deleteVO.getBrdType().equals("board") ) stateVO.setStateCode("BOARD_DELETE_ERROR");
+        else stateVO.setStateCode("COMMENT_DELETE_ERROR");
+        // 등록한회원 또는 관리자만 변경 가능
+        if ( httpSession.getAttribute("id") != null || httpSession.getAttribute("auth").toString().toUpperCase().equals("ADMIN") ) {
+            int deleteState = 0;
+            switch ( deleteVO.getBrdType() ) {
+                case "comment" :
+                    if ( httpSession.getAttribute("id").equals(boardMapper.getCommentOne(deleteVO.getCmtNo()).getCmtId())  || httpSession.getAttribute("auth").toString().toUpperCase().equals("ADMIN")  ) {
+                        deleteState = boardMapper.deleteComment(deleteVO);
+                        log.info(">>>>>>>>>>" + deleteState);
+                        stateVO.setStateCode("COMMENT_DELETE_SUCCESS");
+                        stateVO.setNo(deleteVO.getCmtNo());
+                    }
+                    break;
+                default :
+                    if ( httpSession.getAttribute("id").equals(boardMapper.getPostOne(deleteVO).getMbrId())  || httpSession.getAttribute("auth").toString().toUpperCase().equals("ADMIN") ) {
+                        deleteState = boardMapper.deletePost(deleteVO);
+                        log.info(">>>>>>>>>>" + deleteState);
+                        stateVO.setStateCode("BOARD_DELETE_SUCCESS");
+                        stateVO.setNo(deleteVO.getBrdNo());
+                    }
+                    break;
+            }
+            // 아닐경우 에러상태코드 반환
+        }
+        return stateVO;
     }
 }

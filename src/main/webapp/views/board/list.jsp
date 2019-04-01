@@ -79,7 +79,7 @@
                     <td class="board-like">
                         <%--<i class="fas fa-heart"></i>--%>
                         <img src="/static/image/common/board_like.png">
-                        <span>21</span>
+                        <span>${boardList.brdLikeCount}</span>
                     </td>
                 </tr>
             </c:forEach>

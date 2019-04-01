@@ -93,7 +93,11 @@ $(document).ready(function () {
                     .then( (data) => {
                         successAlert(stateCode.get(data.stateCode));
                         initElement('comment-input');
-                        getComment(data.no)
+                        let cnt = $('.post-replycnt').html();
+                        cnt = parseInt(cnt)+1;
+                        $('.post-replycnt').html(cnt);
+                        $('.comment-cnt').html(cnt);
+                        getBoard('comment',data.no)
                             .then( (data) => {
                                 $('.comment-bottom').append(addComment(data));
                             }).catch( (error) => {
@@ -114,7 +118,9 @@ $(document).ready(function () {
                     <div class="comment-content">
                     <img src="/static/image/profile/${commentJson.mbrProfile}">
                     <div class="comment-info">
-                    <p>[ ${commentJson.mbrNick} ]</p>   
+                    <p>[ ${commentJson.mbrNick} ]
+                    <img class="comment-delete" src="/static/image/common/delete2.png">
+                    </p>   
                     <p>${commentJson.cmtDate}</p>
                     </div>
                     </div>
@@ -155,7 +161,132 @@ $(document).ready(function () {
     // 모달 취소버튼
     $('.studysiba-cancel').on('click', () => {
         $('body').css('overflow', 'auto');
+        let currentPath = firstPath();
+        if ( currentPath == 'notice' ) {
+            $('.basic-modal-select').val('1').prop('selected', true);
+        } else if ( currentPath == 'community' ) {
+            $('.basic-modal-select').val('3').prop('selected', true);
+        }
+        initElement('board-input-title');
+        ckContent.setData('');
+        $('.write-btn').html('글쓰기');
     });
+
+
+    // 게시글 삭제
+    $('.board-delete').on('click', ()=>{
+        let no = $('.post-no').val();
+        let currentPath = firstPath();
+        let boardInfo = new Map();
+        boardInfo.set('brdNo', no);
+        boardInfo.set('brdType',currentPath);
+        let boardJson = mapToJson(boardInfo);
+        Swal.fire({
+            title: '게시글삭제',
+            text: '선택하신 게시글을 삭제하시겠습니까?',
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#fbc02d',
+            cancelButtonColor: '#e4b67c ',
+            confirmButtonText: '네'
+        }).then((result) => {
+            if (result.value) {
+                deleteBoard(boardJson)
+                    .then( (data) => {
+                        successAlert(stateCode.get(data.stateCode));
+                        setTimeout(()=>{
+                            location.href=`/${currentPath}/list`;
+                        },1500);
+                    }).catch( (error) => {
+                    errorAlert(stateCode.get(error.responseText.stateCode));
+                });
+            }
+        });
+    });
+
+
+    // 댓글 삭제
+    $('.comment-delete').on('click', function(){
+        let currentList = $(this).parents('.comment-list');
+        let no = currentList.children('.comment-no').val();
+        console.log(no);
+        let boardInfo = new Map();
+        boardInfo.set('cmtNo', no);
+        boardInfo.set('brdType','comment');
+        let boardJson = mapToJson(boardInfo);
+        Swal.fire({
+            title: '댓글삭제',
+            text: '선택하신 댓글을 삭제하시겠습니까?',
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#fbc02d',
+            cancelButtonColor: '#e4b67c ',
+            confirmButtonText: '네'
+        }).then((result) => {
+            if (result.value) {
+                deleteBoard(boardJson)
+                    .then( (data) => {
+                        currentList.remove();
+                        successAlert(stateCode.get(data.stateCode));
+                    }).catch( (error) => {
+                        errorAlert(stateCode.get(error.responseText.stateCode));
+                });
+            }
+        });
+    });
+
+    
+
+    // 게시글 수정
+    $('.board-edit').on('click', () => {
+        let currentPath = firstPath();
+        let no = parseInt($('.post-no').val());
+        $('#basicModal').modal('show');
+
+        getBoard(currentPath,no)
+            .then( (data) => {
+                $('.basic-modal-select').val(data.brdDivide).prop('selected', true);
+                $('.board-input-title').val(data.brdTitle);
+                ckContent.setData(data.brdContent);
+                $('.update-btn').html('수정');
+            }).catch( (error) => {
+            $('#basicModal').modal('hide');
+                errorAlert('잘못된 접근 입니다.');
+        })
+    });
+
+
+    $('.update-btn').on('click', () => {
+        let currentPath =firstPath();
+        let boardInfo = new Map();
+
+        if ( $('.board-input-title').val().trim() == '' || ckContent.getData().trim() == '' ){
+            errorAlert('항목을 모두 입력해주세요');
+            return false;
+        }
+        boardInfo.set('brdNo', $('.post-no').val());
+        boardInfo.set('brdType', currentPath);
+        boardInfo.set('brdDivide', $('.basic-modal-select').val());
+        boardInfo.set('brdTitle', $('.board-input-title').val());
+        boardInfo.set('brdContent', ckContent.getData());
+        let boardJson = mapToJson(boardInfo, false);
+
+        writeBoard(boardJson)
+            .then((data) => {
+                console.log(data);
+                $('#basicModal').modal('hide');
+                timerAlert("글수정","글의 정보를 확인중입니다.",1500);
+                setTimeout(()=>{successAlert("게시글이 수정되었습니다.");},1500);
+                setTimeout(()=>{
+                    $('.post-divide span').html(boardInfo.get('brdDivide'));
+                    $('.post-title').html(boardInfo.get('brdTitle'));
+                    $('.post-body').html(boardInfo.get('brdContent'));
+                },2500);
+            }).catch((error) => {
+            errorAlert('글수정에 실패했습니다');
+        });
+    });
+
 
     // 추천 버튼
     $('.post-like').on('click', function() {
@@ -196,6 +327,7 @@ let contentWidthFix = (widthSize) => {
 }
 
 
+// 추천 등록
 let likeRegister = (path) => {
     return new Promise((resolve, reject) => {
         $.ajax({

@@ -31,8 +31,13 @@ public class BoardVO extends MemberVO {
     private int brdAvailable;
     // 게시글 등록일자
     private Timestamp brdDate;
+    // 좋아요 갯수
+    private int brdLikeCount;
+    // 댓글 갯수
+    private int brdCommentCount;
     // 게시글 지난시간 변환 문자
     private String lastTime;
     // 게시글이 답글인지 여부
     private String isReply;
+
 }

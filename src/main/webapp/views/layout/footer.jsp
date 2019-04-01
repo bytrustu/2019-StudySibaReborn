@@ -273,7 +273,7 @@
                                 <textarea name="editor" id="editor"></textarea>
                     </div>
                     <div class="modal-footer basic-modal-footer">
-                        <button type="button" class="btn btn-yellow studysiba-button studysiba-button write-btn">글쓰기</button>
+                        <button type="button" class="btn btn-yellow studysiba-button studysiba-button write-btn update-btn">글쓰기</button>
                         <button type="button" class="btn btn-yellow studysiba-button studysiba-cancel" data-dismiss="modal">취소</button>
                     </div>
                 </div>

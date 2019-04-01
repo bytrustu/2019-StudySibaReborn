@@ -101,4 +101,25 @@ public interface BoardMapper {
      *  @Return 글번호에 해당하는 글정보 회원정보 조회
      */
     CommentVO getCommentOne(int no);
+
+    /*
+     *  글 조회수 증가
+     *  @Param boardVO
+     *  @Return 글 조회수 증가 여부 반환
+     */
+    int increaseReadCount(BoardVO boardVO);
+
+    /*
+     *  게시글 삭제
+     *  @Param deleteVO
+     *  @Return 게시글 삭제 업데이트 여부 반환
+     */
+    int deletePost(CommentVO deleteVO);
+
+    /*
+     *  댓글 삭제
+     *  @Param deleteVO
+     *  @Return 댓글 삭제 업데이트 여부 반환
+     */
+    int deleteComment(CommentVO deleteVO);
 }

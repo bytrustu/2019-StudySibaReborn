@@ -687,11 +687,52 @@ let writeComment = (boardJson) => {
     });
 }
 
-let getComment = (no) => {
+// 게시판 게시글 삭제
+let deleteBoard = (boardJson) => {
+    return new Promise ( (resolve, reject) => {
+        $.ajax({
+            type : 'DELETE',
+            url : `/board/delete`,
+            data : boardJson,
+            dataType : 'json',
+            contentType : 'application/json; charset=utf-8',
+            success : (data) => {
+                resolve(data);
+            },
+            error : (error) => {
+                reject(error);
+            }
+        });
+    });
+}
+
+// 게시판 업데이트
+let updateBoard = (boardJson) => {
+    return new Promise( (resolve, reject) => {
+        $.ajax({
+            type : 'PUT',
+            url : '/board/update',
+            data : boardJson,
+            dataType : 'json',
+            contentType : 'application/json; charset=utf-8',
+            success : (data) => {
+                resolve(data);
+            },
+            error : (error) => {
+                reject(error);
+            }
+        });
+    });
+}
+
+
+
+// 댓글 게시글 조회
+let getBoard = (type,no) => {
     return new Promise( (resolve, reject) => {
         $.ajax({
             type : 'GET',
-            url : `/comment/get/${no}`,
+            url : `/${type}/get/${no}`,
             dataType : 'json',
             contentType : 'application/json; charset=utf-8',
             success : (data) => {

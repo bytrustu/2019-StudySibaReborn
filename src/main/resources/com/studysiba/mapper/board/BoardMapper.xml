@@ -42,18 +42,25 @@
         WHERE BRD_TYPE = #{menu}
     </select>
 
+    <!-- 게시글 리스트 조회 -->
     <select id="getPostList" parameterType="PageVO" resultType="BoardVO">
         <![CDATA[
             SELECT BRD_NO, BRD_TYPE, BRD_DIVIDE, BRD_ID, BRD_TITLE, BRD_CONTENT, BRD_GNO, BRD_STEP, BRD_INDENT, BRD_COUNT, BRD_AVAILABLE, BRD_DATE,
-                          MEMBER.MBR_PROFILE, MEMBER.MBR_NICK
+                          MEMBER.MBR_PROFILE, MEMBER.MBR_NICK,
+                          COALESCE(BRD_LIKECOUNT,0) AS BRD_LIKECOUNT
             FROM (
                           SELECT * FROM BOARD
-                          WHERE BRD_TYPE = #{menu}
+                          WHERE BRD_TYPE = #{menu} AND BRD_AVAILABLE = 1
                           ORDER BY BRD_GNO DESC, BRD_STEP ASC
                           LIMIT #{startRow}, #{pageSize}
             ) AS BOARD
-            LEFT JOIN MEMBER
+            JOIN MEMBER
             ON MEMBER.MBR_ID = BOARD.BRD_ID
+            LEFT JOIN (
+                                SELECT LIKE_FNO, COUNT(*) AS BRD_LIKECOUNT
+                                FROM LIKES
+             ) LIKES
+            ON LIKES.LIKE_FNO = BRD_NO
         ]]>
     </select>
 
@@ -65,15 +72,34 @@
     <!-- 게시글 내용 조회 -->
     <select id="getPostOne" parameterType="BoardVO" resultType="BoardVO">
             SELECT BRD_NO, BRD_TYPE, BRD_DIVIDE, BRD_ID, BRD_TITLE, BRD_CONTENT, BRD_GNO, BRD_STEP, BRD_INDENT, BRD_COUNT, BRD_AVAILABLE, BRD_DATE,
-                          MEMBER.MBR_PROFILE, MEMBER.MBR_NICK, MEMBER.MBR_ID
+                          MEMBER.MBR_PROFILE, MEMBER.MBR_NICK, MEMBER.MBR_ID,
+                          COALESCE(BRD_LIKECOUNT,0) AS BRD_LIKECOUNT,
+                          COALESCE(BRD_COMMENTCOUNT,0) AS BRD_COMMENTCOUNT
             FROM (
                           SELECT * FROM BOARD
                           WHERE BRD_NO = #{brdNo}
                           AND BRD_TYPE = #{brdType}
             ) AS BOARD
-            LEFT JOIN MEMBER
+            JOIN MEMBER
             ON MEMBER.MBR_ID = BOARD.BRD_ID
+            LEFT JOIN (
+                                SELECT LIKE_FNO, COUNT(*) AS BRD_LIKECOUNT
+                                FROM LIKES WHERE LIKE_FNO = #{brdNo}
+             ) LIKES
+            ON LIKES.LIKE_FNO = BRD_NO
+            LEFT JOIN (
+                                SELECT CMT_BNO, COUNT(*) AS BRD_COMMENTCOUNT
+                                FROM COMMENT WHERE CMT_BNO = #{brdNo}
+             ) COMMENT
+            ON COMMENT.CMT_BNO = BRD_NO
     </select>
+
+    <!-- 게시글 조회수 증가 -->
+    <update id="increaseReadCount" parameterType="BoardVO">
+        UPDATE BOARD
+        SET BRD_COUNT = BRD_COUNT+1
+        WHERE BRD_NO = #{brdNo}
+    </update>
 
     <!-- 좋아요 추가 여부 확인 -->
     <select id="alreadyRegisteredLike" parameterType="LikeVO" resultType="int">
@@ -114,6 +140,7 @@
         WHERE CMT_ID = #{cmtId}
     </select>
 
+    <!-- 댓글 조회 -->
     <select id="getCommentOne" parameterType="int" resultType="CommentVO">
         SELECT CMT_NO, CMT_BNO, CMT_ID, CMT_CONTENT, CMT_AVAILABLE, DATE_FORMAT(CMT_DATE, '%Y-%m-%d %h:%i:%s') AS CMT_DATE,
                       MBR_ID, MBR_NICK, MBR_PROFILE
@@ -122,5 +149,18 @@
         ON MEMBER.MBR_ID = CMT_ID
     </select>
 
+    <!-- 게시글 삭제 업데이트 -->
+    <update id="deletePost" parameterType="CommentVO">
+        UPDATE BOARD
+        SET BRD_AVAILABLE = 0
+        WHERE BRD_NO = #{brdNo}
+    </update>
+
+    <!-- 댓글 삭제 업데이트 -->
+    <update id="deleteComment" parameterType="CommentVO">
+        UPDATE COMMENT
+        SET CMT_AVAILABLE = 0
+        WHERE CMT_NO = #{cmtNo}
+    </update>
 
 </mapper>

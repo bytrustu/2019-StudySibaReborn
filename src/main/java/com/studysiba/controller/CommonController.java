@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 
 
 @Controller
@@ -64,20 +65,20 @@ public class CommonController {
         PageVO pageVO = commonService.getPageInfomation(menu, criteria);
         model.addAttribute("page", pageVO);
 
-        List<BoardVO> boardList = null;
+        List<?> commoonList = null;
 
         // 이동 경로
         String location = "/";
         switch (menu) {
             case "notice":
                 location += "board/list";
-                boardList = boardService.getPostList(pageVO);
-                model.addAttribute("boardList",boardList);
+                commoonList = boardService.getPostList(pageVO);
+                model.addAttribute("boardList",commoonList);
                 break;
             case "community":
                 location += "board/list";
-                boardList = boardService.getPostList(pageVO);
-                model.addAttribute("boardList",boardList);
+                commoonList = boardService.getPostList(pageVO);
+                model.addAttribute("boardList",commoonList);
                 break;
             default:
                 location += menu + "/list";
@@ -138,10 +139,16 @@ public class CommonController {
     @GetMapping(value="/{type}/get/{no}", consumes = "application/json", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
     public ResponseEntity<Object> getPost(@PathVariable("type") String type, @PathVariable("no") int no ) throws Exception {
         log.info(type + " : " +no);
-
+        log.info(">>>>>>>" + type);
         Object obj = null;
         switch (type) {
-            case "board" :
+            case "community" :
+                obj = boardService.getPostOne(type,no);
+                if ( obj != null )   log.info("커뮤니티글조회 : " + obj);
+                break;
+            case "notice" :
+                obj = boardService.getPostOne(type,no);
+                if ( obj != null )   log.info("공지사항글조회 : " + obj);
                 break;
             case "comment" :
                 obj = boardService.getCommentOne(no);
@@ -149,7 +156,7 @@ public class CommonController {
                 break;
         }
 
-        return obj != null ?
+        return ( obj != null ) ?
                 new ResponseEntity<>(obj, HttpStatus.OK) :
                 new ResponseEntity<>(obj, HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -179,38 +186,21 @@ public class CommonController {
                 new ResponseEntity<>(writeState,HttpStatus.OK) : new ResponseEntity<>(writeState,HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-
     /*
-     *  게시판별댓글작성 [ 공지사항, 커뮤니티 ]
-     *  @Param menu, commentVO
-     *  @Return 게시글 작성 상태코드 반환
+     *  게시판별게시글삭제 [ 공지사항, 커뮤니티 ]
+     *  @Param menu, type, deleteVO
+     *  @Return 게시글 삭제 상태코드 반환
      */
-//    @ResponseBody
-//    @PostMapping(value="/{menu}/comment/write")
-//    public ResponseEntity<StateVO> writeComment(Model model, @PathVariable("menu") String menu, @RequestBody CommentVO commentVO ) throws Exception {
-//        log.info(menu + " : " +commentVO);
-//        StateVO commentState = boardService.writeComment(commentVO);
-//        log.info("댓글등록 상태 : " + commentState.getStateCode());
-//        return commentState.getStateCode().equals("BOARD_WRITE_SUCCESS") ?
-//                new ResponseEntity<>(commentState,HttpStatus.OK) : new ResponseEntity<>(commentState,HttpStatus.INTERNAL_SERVER_ERROR);
-//    }
-
-
-    /*
-     *  게시판별댓글수정 [ 공지사항, 커뮤니티 ]
-     *  @Param menu, commentVO
-     *  @Return 게시글 작성 상태코드 반환
-     */
-//    @ResponseBody
-//    @PostMapping(value="/{menu}/comment/write")
-//    public ResponseEntity<StateVO> writeComment(Model model, @PathVariable("menu") String menu, @RequestBody CommentVO commentVO ) throws Exception {
-//
-//    }
-
-
-
-
-
+    @ResponseBody
+    @RequestMapping(value="/{type}/delete", method=RequestMethod.DELETE, consumes = "application/json", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    public ResponseEntity<StateVO> deletePost(Model model, @PathVariable("type") String type, @RequestBody CommentVO deleteVO ) throws Exception {
+        log.info(type + " : " + deleteVO);
+        StateVO deleteState = null;
+        deleteState = boardService.deletePost(deleteVO);
+        log.info("글삭제 상태 : " + deleteState.getStateCode());
+        return deleteState.getStateCode().contains("SUCCESS") ?
+                new ResponseEntity<>(deleteState,HttpStatus.OK) : new ResponseEntity<>(deleteState,HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 
 
 

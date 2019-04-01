@@ -4,6 +4,10 @@
 
 <div class="sub-page">
 
+    <%
+        session.setAttribute("id","test1");
+        session.setAttribute("auth","ADMIN");
+    %>
 
     <div class="sub-subject">
         <span class="sub-topcomment">${intro.top}</span>
@@ -17,13 +21,14 @@
     <div class="board-box">
 
         <div class="board-top">
-            <div class="board-total">총 521 게시글</div>
-
+            <div class="board-total">
+                <c:if test="${sessionScope.id eq board.brdId || sessionScope.auth eq 'ADMIN'}">
+                    <img src="/static/image/common/edit.png" class="board-edit"><img src="/static/image/common/delete.png" class="board-delete">
+                </c:if>
+            </div>
             <c:choose>
                 <c:when test="${requestScope['javax.servlet.forward.servlet_path'] eq '/notice/view' }">
-
                 </c:when>
-
                 <c:when test="${requestScope['javax.servlet.forward.servlet_path'] eq '/community/view' }">
                     <button class="btn btn-warning content-writebtn" data-reply="true" data-write="<c:if test="${sessionScope.id ne null}">true</c:if>">답글쓰기</button>
                 </c:when>
@@ -46,8 +51,8 @@
                     </span>
                 </div>
                 <div class="post-date"><span><fmt:formatDate value="${board.brdDate}" pattern="yy-MM-dd"/></span></div>
-                <div class="post-info"><span>댓글수</span><span class="post-replycnt">1</span></div>
-                <div class="post-info"><span>추천수</span><span class="post-likecnt">0</span></div>
+                <div class="post-info"><span>댓글수</span><span class="post-replycnt">${board.brdCommentCount}</span></div>
+                <div class="post-info"><span>추천수</span><span class="post-likecnt">${board.brdLikeCount}</span></div>
                 <div class="post-info"><span>조회수</span><span class="post-readcnt">${board.brdCount}</span></div>
                 <input type="hidden" class="post-no" value="${board.brdNo}">
             </div>
@@ -61,8 +66,8 @@
             </div>
             <div class="post-member">
                 <div class="member-left">
-                    <img src="/static/image/profile/profile-1.png">
-                    <span>침착해내자신</span>
+                    <img src="/static/image/profile/${board.mbrProfile}">
+                    <span>${board.mbrNick}</span>
                 </div>
                 <div class="member-right">
                     <div><img src="/static/image/common/friendship.png"><span>글보기</span></div>
@@ -76,7 +81,7 @@
             </div>
             <div class="comment-top">
                 <div class="comment-subject">
-                    <span>3</span><span>개의 댓글이 있습니다.</span>
+                    <span class="comment-cnt">${board.brdCommentCount}</span><span>개의 댓글이 있습니다.</span>
                 </div>
             </div>
             <div class="comment-middle">
@@ -87,10 +92,15 @@
             <div class="comment-bottom">
                 <c:forEach items="${comment}" var="comment">
                         <div class="comment-list">
+                            <input type="hidden" class="comment-no" value="${comment.cmtNo}"/>
                             <div class="comment-content">
                                 <img src="/static/image/profile/${comment.mbrProfile}">
                                 <div class="comment-info">
-                                    <p>[ ${comment.mbrNick} ]</p>
+                                    <p>[ ${comment.mbrNick} ]
+                                        <c:if test="${sessionScope.id eq comment.cmtId || sessionScope.auth eq 'ADMIN'}">
+                                            <img class="comment-delete" src="/static/image/common/delete2.png">
+                                        </c:if>
+                                    </p>
                                     <p><fmt:formatDate value="${board.brdDate}" pattern="yy-MM-dd HH:mm:ss"/></p>
                                 </div>
                             </div>
@@ -98,7 +108,6 @@
                         </div>
                 </c:forEach>
             </div>
-
 
 
 
