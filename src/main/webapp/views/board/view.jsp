@@ -12,9 +12,7 @@
         </span>
     </div>
 
-
     <div class="board-box">
-
         <div class="board-top">
             <div class="board-total">
                 <c:if test="${sessionScope.id eq board.brdId || sessionScope.auth eq 'ADMIN'}">
@@ -28,11 +26,9 @@
                     <button class="btn btn-warning content-writebtn" data-reply="true" data-write="<c:if test="${sessionScope.id ne null}">true</c:if>">답글쓰기</button>
                 </c:when>
             </c:choose>
-
         </div>
 
         <div class="board-body">
-
             <div class="post-head">
                 <div class="post-divide">
                     <span>
@@ -103,27 +99,7 @@
                         </div>
                 </c:forEach>
             </div>
-
-
-
-
-            <%--<div class="comment-list">--%>
-                <%--<div class="comment-content">--%>
-                    <%--<img src="/static/image/profile/profile-1.png">--%>
-                    <%--<div class="comment-info">--%>
-                        <%--<p>[ 침착해내자신 ]</p>--%>
-                        <%--<p>2019.03.03 20:47</p>--%>
-                    <%--</div>--%>
-                <%--</div>--%>
-                <%--<p class="comment-text">안녕하세요 ㅎㅎㅎㅎㅎ</p>--%>
-            <%--</div>--%>
-
-
-
         </div>
-
-
-
 
     </div>
 

@@ -1,0 +1,156 @@
+.st-ul{
+
+}
+
+.st-box{
+    transform: translateX(-0.5rem);
+    display: flex;
+    flex-flow: wrap;
+    padding: 0;
+    margin: 0;
+    width: calc(100% + 1rem);
+    list-style: none;
+    padding: 0;
+    margin-top: 1rem;
+}
+
+.st-item{
+    position: relative;
+    float: left;
+    min-height: 0.0625rem;
+    padding: 0 0.5rem;
+    width: 100%;
+    padding: 0 0.5rem 1rem 0.5rem;
+    padding-bottom: 0;
+    border-bottom: 0.0625rem solid #D7E2EB;
+    padding: 10px 20px;
+}
+
+.st-link{
+    padding: 1rem 0;
+    display: flex;
+    padding: 0;
+    font-size: 0;
+}
+
+.st-thumb{
+    max-width: 16%;
+    min-width: 16%;
+    display: inline-block;
+    vertical-align: top;
+    font-size: 1rem;
+}
+
+.st-thumb > img{
+    position: relative;
+    border-radius: 0.1875rem;
+    width: 100%;
+}
+
+.st-body {
+    padding: 0 2rem;
+    max-width: 64%;
+    min-width: 64%;
+    display: inline-block;
+    vertical-align: top;
+    font-size: 1rem;
+}
+
+.st-title {
+    font-size: 18px;
+    margin-top: 0;
+    line-height: 1.4;
+    font-weight: 700;
+    font-family: Roboto;
+}
+
+.st-status{
+    margin-top: 0.375rem;
+    color: #828b8e;
+}
+
+.st-icon{
+    display: inline-block;
+    vertical-align: text-top;
+    margin-right: 6px;
+    fill: #98A8B9;
+    width: 15px;
+    height: 15px;
+    vertical-align: -2px;
+}
+
+.st-pericon > img {
+    width: 20px;
+    height: 20px;
+}
+
+.st-group{
+    color: #c03a2b !important;
+    font-weight: bold;
+}
+
+.st-locate, .st-time{
+    font-size: 0.8rem;
+    color: darkcyan;
+}
+
+.st-description{
+    margin-top: 0.5rem;
+    color: #7890A0;
+}
+
+.st-taglist{
+    margin: 0.75rem 0 0 -0.125rem;
+    font-size: 0;
+    color: #263747;
+}
+
+.st-tag{
+    font-size: 12px;
+    line-height: 14px;
+    display: inline-block;
+    vertical-align: top;
+    border-radius: 0.1875rem;
+    padding: 0.125rem 0.5rem;
+    font-weight: 700;
+    color: #263747;
+    background-color: #E9ECF3;
+    margin: 0 0.125rem 0.125rem 0;
+}
+
+.st-person{
+    padding: 1.5rem 1.5rem 0 2rem;
+    text-align: right;
+    max-width: 20%;
+    min-width: 20%;
+    display: inline-block;
+    vertical-align: top;
+    font-size: 1rem;
+}
+
+.st-per{
+    font-weight: 700;
+    color: #263747;
+}
+
+.st-pericon{
+    font-weight: 700;
+}
+
+.st-percount{
+    border-radius: 0.1875rem;
+    color: #0078FF;
+    font-weight: 700;
+}
+
+.st-now{
+    margin-top: 8px;
+    color: #fff;
+    padding: 0px 6px;
+    border: 1px solid #00BFB6;
+    display: inline-block;
+    border-radius: 2px;
+    font-size: 12px;
+    background-color: #00BFB6;
+    margin-bottom: 10px;
+}

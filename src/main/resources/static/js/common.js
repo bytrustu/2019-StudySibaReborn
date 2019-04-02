@@ -40,7 +40,9 @@ $(document).ready(function () {
             case 'logout' :
                 let logginedId = $(this).attr('data-id');
                 let currentUrl = $(location).attr('pathname');
-                let moveUrl = `/member/logout/${logginedId}?currentUrl=${currentUrl}`;
+                let searchUrl = $(location).attr('search');
+                let moveUrl = `/member/logout/${logginedId}?currentUrl=${currentUrl}${searchUrl}`;
+                console.log(moveUrl);
                 location.href = moveUrl;
                 break;
         }
@@ -283,6 +285,8 @@ stateCode.set("SOCIAL_PASSWORD_ERROR", "소셜회원은 변경 할수 없습니�
 stateCode.set("LOGOUT_STATE_SUCCESS", "로그아웃 되었습니다.");
 stateCode.set("LOGOUT_STATE_ERROR", "잘못된 접근입니다.");
 
+stateCode.set("BOARD_READ_SUCCESS","게시글을 조회 했습니다.");
+stateCode.set("BOARD_READ_ERROR","잘못된 접근 입니다.");
 stateCode.set("BOARD_WRITE_SUCCESS","게시글이 등록되었습니다.");
 stateCode.set("BOARD_WRITE_ERROR","게시글 등록에 실패했습니다.");
 stateCode.set("BOARD_UPDATE_SUCCESS","게시글이 수정되었습니다.");
@@ -858,24 +862,3 @@ const ajaxAlert = (title, url, successText, errorText) => {
         }, 300);
     })
 }
-
-
-
-
-// youtube fix
-if (!window.YT) var YT = {loading: 0, loaded: 0};
-if (!window.YTConfig) var YTConfig = {host: "https://www.youtube.com"};
-YT.loading || (YT.loading = 1, function () {
-    var o = [];
-    YT.ready = function (n) {
-        YT.loaded ? n() : o.push(n)
-    }, window.onYTReady = function () {
-        YT.loaded = 1;
-        for (var n = 0; n < o.length; n++) try {
-            o[n]()
-        } catch (i) {
-        }
-    }, YT.setConfig = function (o) {
-        for (var n in o) o.hasOwnProperty(n) && (YTConfig[n] = o[n])
-    }
-}());

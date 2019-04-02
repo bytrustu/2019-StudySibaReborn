@@ -1,6 +1,25 @@
 $(document).ready(function () {
 
 
+    // youtube fix
+    if (!window.YT) var YT = {loading: 0, loaded: 0};
+    if (!window.YTConfig) var YTConfig = {host: "https://www.youtube.com"};
+    YT.loading || (YT.loading = 1, function () {
+        var o = [];
+        YT.ready = function (n) {
+            YT.loaded ? n() : o.push(n)
+        }, window.onYTReady = function () {
+            YT.loaded = 1;
+            for (var n = 0; n < o.length; n++) try {
+                o[n]()
+            } catch (i) {
+            }
+        }, YT.setConfig = function (o) {
+            for (var n in o) o.hasOwnProperty(n) && (YTConfig[n] = o[n])
+        }
+    }());
+
+
 
     // CKEDITOR5 설정
     ClassicEditor
@@ -20,7 +39,6 @@ $(document).ready(function () {
             ckContent = editor;
         })
         .catch(error => {
-            console.error(error);
         });
 
     document.querySelectorAll( 'oembed[url]' ).forEach( element => {
@@ -33,14 +51,6 @@ $(document).ready(function () {
 
 
 
-
-
-
-
-
-
-
-
     /*
             subpage Enterkey 적용
      */
@@ -48,30 +58,27 @@ $(document).ready(function () {
 
 
     // 게시판 화면사이즈별 text크기 조절
-    let contentWidthFix = (widthSize) => {
-        switch (window.location.pathname) {
-            case '/community/list' :
-                if (widthSize <= 375) trimTitleLength('title-text', 14);
-                else if (widthSize <= 440) trimTitleLength('title-text', 18);
-                else if (widthSize <= 760) trimTitleLength('title-text', 14);
-                break;
-            case '/notice/list' :
-                if (widthSize <= 375) trimTitleLength('title-text', 14);
-                else if (widthSize <= 440) trimTitleLength('title-text', 18);
-                else if (widthSize <= 760) trimTitleLength('title-text', 14);
-                break;
-        }
-    }
-
-
-
+    // let contentWidthFix = (widthSize) => {
+    //     switch (window.location.pathname) {
+    //         case '/community/list' :
+    //             if (widthSize <= 375) trimTitleLength('title-text', 16);
+    //             else if (widthSize <= 440) trimTitleLength('title-text', 18);
+    //             else if (widthSize <= 760) trimTitleLength('title-text', 14);
+    //             break;
+    //         case '/notice/list' :
+    //             if (widthSize <= 375) trimTitleLength('title-text', 16);
+    //             else if (widthSize <= 440) trimTitleLength('title-text', 18);
+    //             else if (widthSize <= 760) trimTitleLength('title-text', 14);
+    //             break;
+    //     }
+    // }
 
     // 공지사항, 커뮤니티 게시판 반응형 제목 크기 변화
-    let widthSize = window.innerWidth;
-    contentWidthFix(widthSize);
-    $(window).resize(function () {
-        contentWidthFix(widthSize);
-    });
+    // let widthSize = window.innerWidth;
+    // contentWidthFix(widthSize);
+    // $(window).resize(function () {
+    //     contentWidthFix(widthSize);
+    // });
 
     // 게시글 등록
     let ckContent = '';
@@ -252,7 +259,6 @@ $(document).ready(function () {
     $(document).on('click','.comment-delete', function(){
         let currentList = $(this).parents('.comment-list');
         let no = currentList.children('.comment-no').val();
-        console.log(no);
         let boardInfo = new Map();
         boardInfo.set('cmtNo', no);
         boardInfo.set('brdType','comment');
@@ -322,7 +328,6 @@ $(document).ready(function () {
         let boardJson = mapToJson(boardInfo, false);
         updateBoard(boardJson)
             .then((data) => {
-                console.log(data);
                 $('#basicModal').modal('hide');
                 timerAlert("글수정","글의 정보를 확인중입니다.",1500);
                 setTimeout(()=>{successAlert("게시글이 수정되었습니다.");},1500);
@@ -359,7 +364,6 @@ $(document).ready(function () {
                     successAlert(stateCode.get(data.stateCode));
                     let cnt = $('.post-likecnt').html();
                     $('.post-likecnt').html(parseInt(cnt)+1);
-                    console.log(cnt);
                 }).catch( (error) => {
                 errorAlert(stateCode.get(error.responseText));
             });
@@ -456,7 +460,6 @@ $('.board-postlink, .board-listbtn').on('click', function(e){
     pathMap.set('type',type);
     pathMap.set('keyword',keyword);
     let path = `/${currentPath}/${nextMove}${makePath(pathMap)}`;
-    console.log(path);
     location.href=path;
 });
 

@@ -40,7 +40,7 @@
     <select id="getPostCount" parameterType="hashmap" resultType="int">
         SELECT COUNT(*) FROM BOARD
         WHERE BRD_TYPE = #{menu}
-            AND BRD_AVAILABLE = 1
+--             AND BRD_AVAILABLE = 1
 
         <choose>
             <when test="type == '-1' || type == '-2' || type == null">
@@ -64,7 +64,8 @@
                           COALESCE(BRD_COMMENTCOUNT,0) AS BRD_COMMENTCOUNT
             FROM (
                           SELECT * FROM BOARD
-                          WHERE BRD_TYPE = #{menu} AND BRD_AVAILABLE = 1
+                          WHERE BRD_TYPE = #{menu}
+--                           AND BRD_AVAILABLE = 1
 
                               <choose>
                                   <when test="criteria.type == '-1' || criteria.type == '-2' || criteria.type == null">

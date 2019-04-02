@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <%--<%--%>
     <%--session.setAttribute("id","test1");--%>
@@ -39,9 +40,15 @@
             <thead class="board-thead"></thead>
             <tbody class="board-tbody">
 
+            <jsp:useBean id="now" class="java.util.Date"/>
+            <fmt:formatDate value="${now}" var="now" pattern="yyyyMMdd" />
+
             <c:forEach items="${boardList}" var="boardList">
-                <tr>
-                    <td class="board-divide">
+
+                <c:choose>
+                    <c:when test="${boardList.brdAvailable ne 0}">
+                        <tr>
+                            <td class="board-divide">
                         <span>
                             <c:choose>
                                 <c:when test="${boardList.brdDivide eq 1}">공지</c:when>
@@ -51,88 +58,99 @@
                                 <c:when test="${boardList.brdDivide eq 5}">요청</c:when>
                             </c:choose>
                         </span>
-                    </td>
-                    <td class="board-subject">
-                        <div class="board-thumb">
-                            <a class="board-imgbox">
-                                <img src="/static/image/profile/${boardList.mbrProfile}">
-                            </a>
+                            </td>
+                            <td class="board-subject">
+                                <div class="board-thumb">
+                                    <a class="board-imgbox">
+                                        <img src="/static/image/profile/${boardList.mbrProfile}">
+                                    </a>
 
-                            <div class="board-content">
-                                <div class="board-title">
-                                    <p class="board-titletext">
-                                        <a class="title-text board-postlink" href="${boardList.brdNo}">${boardList.brdTitle}</a>
-                                        <c:if test="${boardList.brdCommentCount gt 0}">
-                                            <span class="board-commentcount">[${boardList.brdCommentCount}]</span>
-                                        </c:if>
-                                        <c:choose>
-                                            <c:when test="${fn:containsIgnoreCase(boardList.brdContent,'image' ) && fn:containsIgnoreCase(boardList.brdContent,'media'  )}">
-                                                <img class="board-containimg" src="/static/image/common/picture.png">
-                                            </c:when>
-                                            <c:when test="${fn:containsIgnoreCase(boardList.brdContent,'image' )}">
-                                                <img class="board-containimg" src="/static/image/common/landscape.png">
-                                            </c:when>
-                                            <c:when test="${fn:containsIgnoreCase(boardList.brdContent,'media' )}">
-                                                <img class="board-containimg" src="/static/image/common/youtube.png">
-                                            </c:when>
-                                        </c:choose>
-                                    </p>
-                                    <img src="" class="icon-new">
+                                    <div class="board-content">
+                                        <div class="board-title">
+                                            <p class="board-titletext">
+                                                <a class="title-text board-postlink" href="${boardList.brdNo}">
+                                                    <c:if test="${boardList.brdStep > 0}"><img class="board-replyicon" src="/static/image/common/re.png"></c:if>
+                                                    ${boardList.brdTitle}</a>
+                                                <c:if test="${boardList.brdCommentCount gt 0}">
+                                                    <span class="board-commentcount">[${boardList.brdCommentCount}]</span>
+                                                </c:if>
+
+
+                                                <fmt:formatDate value="${boardList.brdDate}" var="brdDate" pattern="yyyyMMdd"/>
+                                                <c:if test="${brdDate eq now}"><img class="board-containimg" src="/static/image/common/new.png"></c:if>
+                                                <c:choose>
+                                                    <c:when test="${fn:containsIgnoreCase(boardList.brdContent,'image' ) && fn:containsIgnoreCase(boardList.brdContent,'media'  )}">
+                                                        <img class="board-containimg" src="/static/image/common/picture.png">
+                                                    </c:when>
+                                                    <c:when test="${fn:containsIgnoreCase(boardList.brdContent,'image' )}">
+                                                        <img class="board-containimg" src="/static/image/common/landscape.png">
+                                                    </c:when>
+                                                    <c:when test="${fn:containsIgnoreCase(boardList.brdContent,'media' )}">
+                                                        <img class="board-containimg" src="/static/image/common/youtube.png">
+                                                    </c:when>
+                                                </c:choose>
+                                            </p>
+                                            <img src="" class="icon-new">
+                                        </div>
+                                        <span class="board-writer"><a>${boardList.mbrNick}</a></span>
+                                        <span class="board-bar">｜</span>
+                                        <span class="board-time">${boardList.lastTime}</span>
+                                    </div>
+
                                 </div>
-                                <span class="board-writer"><a>${boardList.mbrNick}</a></span>
-                                <span class="board-bar">｜</span>
-                                <span class="board-time">${boardList.lastTime}</span>
-                            </div>
+                            </td>
+                            <td class="board-hit">
+                                <img src="/static/image/common/board_search.png">
+                                <span>${boardList.brdCount}</span>
+                            </td>
+                            <td class="board-like">
+                                <img src="/static/image/common/board_like.png">
+                                <span>${boardList.brdLikeCount}</span>
+                            </td>
+                        </tr>
+                    </c:when>
 
-                        </div>
-                    </td>
-                    <td class="board-hit">
-                        <%--<i class="fab fa-sistrix"></i>--%>
-                        <img src="/static/image/common/board_search.png">
-                        <span>${boardList.brdCount}</span>
-                    </td>
-                    <td class="board-like">
-                        <%--<i class="fas fa-heart"></i>--%>
-                        <img src="/static/image/common/board_like.png">
-                        <span>${boardList.brdLikeCount}</span>
-                    </td>
-                </tr>
+                    <c:otherwise>
+                        <tr>
+                            <td class="board-divide">
+                        <span>
+                            삭제
+                        </span>
+                            </td>
+                            <td class="board-subject">
+                                <div class="board-thumb">
+                                    <a class="board-imgbox">
+                                        <img src="/static/image/profile/lock2.png">
+                                    </a>
+                                    <div class="board-content">
+                                        <div class="board-title">
+                                            <p class="board-titletext">
+                                                <a class="title-text board-postlink" href="${boardList.brdNo}">삭제 된 게시글 입니다.</a>
+                                            </p>
+                                            <img src="" class="icon-new">
+                                        </div>
+                                        <span class="board-writer board-delwriter"><a>알수없음</a></span>
+                                        <span class="board-bar">｜</span>
+                                        <span class="board-time">-</span>
+                                    </div>
+
+                                </div>
+                            </td>
+                            <td class="board-hit">
+                                <img src="/static/image/common/board_search.png">
+                                <span>-</span>
+                            </td>
+                            <td class="board-like">
+                                <img src="/static/image/common/board_like.png">
+                                <span>-</span>
+                            </td>
+                        </tr>
+
+                    </c:otherwise>
+                </c:choose>
+
+
             </c:forEach>
-
-            <%--<tr>--%>
-                <%--<td class="board-divide">--%>
-                    <%--<span>정보</span>--%>
-                <%--</td>--%>
-                <%--<td class="board-subject">--%>
-                    <%--<div class="board-thumb">--%>
-                        <%--<a class="board-imgbox">--%>
-                            <%--<img src="/static/image/profile/profile-14.png">--%>
-                        <%--</a>--%>
-
-                        <%--<div class="board-content">--%>
-                            <%--<div class="board-title">--%>
-                                <%--<p class="board-titletext">--%>
-                                    <%--<a class="title-text" href="#">안녕하세욯ㅎㅎㅎㅎ123gggg456789</a>--%>
-                                <%--</p>--%>
-                                <%--<img src="" class="icon-new">--%>
-                            <%--</div>--%>
-                            <%--<span class="board-writer"><a>침착해내자신</a></span>--%>
-                            <%--<span class="board-bar">｜</span>--%>
-                            <%--<span class="board-time"><span>5</span><span>분전</span></span>--%>
-                        <%--</div>--%>
-
-                    <%--</div>--%>
-                <%--</td>--%>
-                <%--<td class="board-hit">--%>
-                    <%--<i class="fab fa-sistrix"></i>--%>
-                    <%--123--%>
-                <%--</td>--%>
-                <%--<td class="board-like">--%>
-                    <%--<i class="fas fa-heart"></i>--%>
-                    <%--21--%>
-                <%--</td>--%>
-            <%--</tr>--%>
-            <!-- -->
 
             </tbody>
         </table>

@@ -172,6 +172,7 @@
 .board-title {
     line-height: 36px;
     height: 50px;
+    overflow : hidden;
 }
 
 
@@ -188,6 +189,16 @@
     width: 15px;
     height: 15px;
     vertical-align: -2px;
+    display: none;
+}
+
+@media(min-width: 586px){
+    .board-containimg {
+        width: 15px;
+        height: 15px;
+        vertical-align: -2px;
+        display: inline-block;
+    }
 }
 
 .board-titletext > a {
@@ -209,6 +220,11 @@
 
 .board-writer > a {
     color: #46909b !important;
+    font-weight: bold;
+}
+
+.board-delwriter > a{
+    color: #c03a2b !important;
     font-weight: bold;
 }
 

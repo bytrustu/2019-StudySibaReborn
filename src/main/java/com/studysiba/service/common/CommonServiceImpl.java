@@ -179,7 +179,6 @@ public class CommonServiceImpl implements CommonService {
                 pageVO.setMenu(menu);
                 break;
         }
-        log.info("잘하자 좀 >>>>>>>>>>> ");
         return pageVO;
     }
 

@@ -61,9 +61,7 @@ public class CommonController {
 
         PageVO pageVO = commonService.getPageInfomation(menu, criteria);
         model.addAttribute("page", pageVO);
-        model.addAttribute("cri",criteria);
-
-        log.info(">>>>>>" + pageVO.getCount());
+        model.addAttribute("cri", criteria);
 
         List<?> commoonList = null;
 
@@ -73,12 +71,12 @@ public class CommonController {
             case "notice":
                 location += "board/list";
                 commoonList = boardService.getPostList(pageVO);
-                model.addAttribute("boardList",commoonList);
+                model.addAttribute("boardList", commoonList);
                 break;
             case "community":
                 location += "board/list";
                 commoonList = boardService.getPostList(pageVO);
-                model.addAttribute("boardList",commoonList);
+                model.addAttribute("boardList", commoonList);
                 break;
             default:
                 location += menu + "/list";
@@ -99,33 +97,40 @@ public class CommonController {
         // 게시판 별 안내 글귀
         Map<String, String> introComment = commonService.getIntroduceComment(menu);
         model.addAttribute("intro", introComment);
-        model.addAttribute("cri",criteria);
+        model.addAttribute("cri", criteria);
 
         BoardVO boardVO = null;
 
 
         // 이동 경로
         String location = "/";
-        switch (menu) {
-            case "notice":
-                location += "board/view";
-                boardVO = boardService.getPostOne(menu, no);
-                model.addAttribute("board", boardVO);
-                List<CommentVO> noticeCommentList = boardService.getCommentList(no);
-                if ( noticeCommentList != null ) model.addAttribute("comment",noticeCommentList);
-                log.info(noticeCommentList);
-                break;
-            case "community" :
-                location += "board/view";
-                boardVO = boardService.getPostOne(menu, no);
-                model.addAttribute("board", boardVO);
-                List<CommentVO> communityCommentList = boardService.getCommentList(no);
-                if ( communityCommentList != null ) model.addAttribute("comment",communityCommentList);
-                log.info(communityCommentList);
-                break;
-            default:
-                location += menu + "/view";
-                break;
+        try {
+            switch (menu) {
+                case "notice":
+                    location += "board/view";
+                    boardVO = boardService.getPostOne(menu, no);
+                    if (boardVO == null) return "redirect:/community/list";
+                    model.addAttribute("board", boardVO);
+                    List<CommentVO> noticeCommentList = boardService.getCommentList(no);
+                    if (noticeCommentList != null) model.addAttribute("comment", noticeCommentList);
+                    log.info(noticeCommentList);
+                    break;
+                case "community":
+                    location += "board/view";
+                    boardVO = boardService.getPostOne(menu, no);
+                    if (boardVO == null) return "redirect:/community/list";
+                    List<CommentVO> communityCommentList = boardService.getCommentList(no);
+                    model.addAttribute("board", boardVO);
+                    if (communityCommentList != null) model.addAttribute("comment", communityCommentList);
+                    log.info(communityCommentList);
+                    break;
+                default:
+                    location += menu + "/view";
+                    break;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "redirect:/"+menu+"/list";
         }
         return location;
     }
@@ -137,27 +142,27 @@ public class CommonController {
      *  @Return 번호에 해당하는 정보 반환
      */
     @ResponseBody
-    @GetMapping(value="/{type}/get/{no}", consumes = "application/json", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
-    public ResponseEntity<Object> getPost(@PathVariable("type") String type, @PathVariable("no") int no ) throws Exception {
-        log.info(type + " : " +no);
+    @GetMapping(value = "/{type}/get/{no}", consumes = "application/json", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    public ResponseEntity<Object> getPost(@PathVariable("type") String type, @PathVariable("no") int no) throws Exception {
+        log.info(type + " : " + no);
         log.info(">>>>>>>" + type);
         Object obj = null;
         switch (type) {
-            case "community" :
-                obj = boardService.getPostOne(type,no);
-                if ( obj != null )   log.info("커뮤니티글조회 : " + obj);
+            case "community":
+                obj = boardService.getPostOne(type, no);
+                if (obj != null) log.info("커뮤니티글조회 : " + obj);
                 break;
-            case "notice" :
-                obj = boardService.getPostOne(type,no);
-                if ( obj != null )   log.info("공지사항글조회 : " + obj);
+            case "notice":
+                obj = boardService.getPostOne(type, no);
+                if (obj != null) log.info("공지사항글조회 : " + obj);
                 break;
-            case "comment" :
+            case "comment":
                 obj = boardService.getCommentOne(no);
-                if ( obj != null )   log.info("댓글조회 : " + obj);
+                if (obj != null) log.info("댓글조회 : " + obj);
                 break;
         }
 
-        return ( obj != null ) ?
+        return (obj != null) ?
                 new ResponseEntity<>(obj, HttpStatus.OK) :
                 new ResponseEntity<>(obj, HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -169,22 +174,22 @@ public class CommonController {
      *  @Return 게시글 작성 상태코드 반환
      */
     @ResponseBody
-    @PostMapping(value="/{type}/write", consumes = "application/json", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
-    public ResponseEntity<StateVO> writePost(Model model, @PathVariable("type") String type, @RequestBody CommentVO writeVO ) throws Exception {
-        log.info(type + " : " +writeVO);
+    @PostMapping(value = "/{type}/write", consumes = "application/json", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    public ResponseEntity<StateVO> writePost(Model model, @PathVariable("type") String type, @RequestBody CommentVO writeVO) throws Exception {
+        log.info(type + " : " + writeVO);
         StateVO writeState = null;
         switch (type) {
-            case "board" :
+            case "board":
                 writeState = boardService.writePost(writeVO);
                 log.info("글등록 상태 : " + writeState.getStateCode());
                 break;
-            case "comment" :
+            case "comment":
                 writeState = boardService.writeComment(writeVO);
                 log.info("댓글등록 상태 : " + writeState.getStateCode());
                 break;
         }
         return writeState.getStateCode().contains("SUCCESS") ?
-                new ResponseEntity<>(writeState,HttpStatus.OK) : new ResponseEntity<>(writeState,HttpStatus.INTERNAL_SERVER_ERROR);
+                new ResponseEntity<>(writeState, HttpStatus.OK) : new ResponseEntity<>(writeState, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     /*
@@ -193,15 +198,16 @@ public class CommonController {
      *  @Return 게시글 삭제 상태코드 반환
      */
     @ResponseBody
-    @DeleteMapping(value="/board/delete" , consumes = "application/json", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
-    public ResponseEntity<StateVO> deletePost(Model model, @RequestBody CommentVO deleteVO ) throws Exception {
+    @DeleteMapping(value = "/board/delete", consumes = "application/json", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    public ResponseEntity<StateVO> deletePost(Model model, @RequestBody CommentVO deleteVO) throws Exception {
         log.info(deleteVO);
         StateVO deleteState = null;
         deleteState = boardService.deletePost(deleteVO);
         log.info("글삭제 상태 : " + deleteState.getStateCode());
         return deleteState.getStateCode().contains("SUCCESS") ?
-                new ResponseEntity<>(deleteState,HttpStatus.OK) : new ResponseEntity<>(deleteState,HttpStatus.INTERNAL_SERVER_ERROR);
+                new ResponseEntity<>(deleteState, HttpStatus.OK) : new ResponseEntity<>(deleteState, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
 
     /*
      *  게시판별게시글수정 [ 공지사항, 커뮤니티 ]
@@ -209,18 +215,14 @@ public class CommonController {
      *  @Return 게시글 수정 내용반환
      */
     @ResponseBody
-    @PutMapping(value="/board/update")
+    @PutMapping(value = "/board/update")
     public ResponseEntity<BoardVO> updatePost(Model model, @RequestBody BoardVO boardVO) throws Exception {
         log.info(boardVO);
         StateVO stateVO;
         stateVO = boardService.updatePost(boardVO);
         log.info(boardVO);
-        return stateVO.getStateCode().equals("BOARD_UPDATE_SUCCESS") ? new ResponseEntity<>(boardVO,HttpStatus.OK) : new ResponseEntity<>(boardVO,HttpStatus.INTERNAL_SERVER_ERROR);
+        return stateVO.getStateCode().equals("BOARD_UPDATE_SUCCESS") ? new ResponseEntity<>(boardVO, HttpStatus.OK) : new ResponseEntity<>(boardVO, HttpStatus.INTERNAL_SERVER_ERROR);
     }
-
-
-
-
 
 
     /*
@@ -229,15 +231,14 @@ public class CommonController {
      *  @Return 메뉴별 반환
      */
     @ResponseBody
-    @PostMapping(value="/{menu}/like/{no}", consumes = "application/json", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    @PostMapping(value = "/{menu}/like/{no}", consumes = "application/json", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
     public ResponseEntity<StateVO> addLike(Model model, @PathVariable("menu") String menu, @PathVariable("no") int no) throws Exception {
-        log.info(menu +" : " + no);
+        log.info(menu + " : " + no);
         StateVO stateVO = boardService.addLike(menu, no);
         log.info("좋아요상태 : " + stateVO);
         return stateVO.getStateCode().equals("LIKE_STATE_ERROR") ?
                 new ResponseEntity<>(stateVO, HttpStatus.INTERNAL_SERVER_ERROR) : new ResponseEntity<>(stateVO, HttpStatus.OK);
     }
-
 
 
     /*
@@ -253,28 +254,23 @@ public class CommonController {
         String stateCode = null;
 
         String fileName = commonService.uploadFile(upload, menu);
-        if ( fileName == null ) {
+        if (fileName == null) {
             stateCode = "FILE_STATE_ERROR";
             log.info(stateCode);
             return null;
         }
 
         switch (menu) {
-            case "community" :
+            case "community":
                 HashMap<String, String> uploadInfo = new HashMap<>();
-                uploadInfo.put("uploaded","true");
-                uploadInfo.put("url","/file/view/" + menu+ "/" + fileName);
-                return new ResponseEntity<>(uploadInfo,HttpStatus.OK);
-            case "notice" :
+                uploadInfo.put("uploaded", "true");
+                uploadInfo.put("url", "/file/view/" + menu + "/" + fileName);
+                return new ResponseEntity<>(uploadInfo, HttpStatus.OK);
+            case "notice":
                 break;
         }
         return null;
     }
-
-
-
-
-
 
 
 }

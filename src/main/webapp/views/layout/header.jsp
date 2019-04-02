@@ -22,6 +22,7 @@
                 <link href="/static/css/sweetalert2.min.css" rel="stylesheet">
                 <link type="text/css" rel="stylesheet" href="/static/css/main.css">
                 <link type="text/css" rel="stylesheet" href="/static/css/sub.css">
+                <link type="text/css" rel="stylesheet" href="/static/css/study.css">
                 <script type="text/javascript" src="/static/js/lib/jquery-3.3.1.min.js"></script>
         </head>
 
