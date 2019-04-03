@@ -762,6 +762,10 @@
     top: 60px;
 }
 
+.study-modal{
+    top: 81px;
+}
+
 .basic-modal-dialog{
     height: 93.2%;
     width: 100% !important;

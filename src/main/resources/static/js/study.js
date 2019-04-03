@@ -3,10 +3,20 @@ $(document).ready(function(){
 
 
 
+    $('.content-studybtn').on('click', function(){
+        $('#studyModal').modal('show');
+    });
+
 
     $('.content-studybtn').on('click', function(){
         $('#studyModal').modal('show');
     });
+
+
+    // $('.file-upload-input').on('change', function(){
+    //     readURL(this);
+    // });
+
 
 
 
@@ -17,16 +27,55 @@ $(document).ready(function(){
 
 
     $('.ico').on('click', function(){
+        let subjectValue = parseInt($('.sujectCnt').html());
         $(this).toggleClass('liked');
         if ( $(this).hasClass('liked') ) {
-            $(this).prev('input').val('ok');
+            if ( subjectValue >= 5 ) {
+                errorAlert('5개 이상 지정 할 수 없습니다.');
+                $(this).toggleClass('liked');
+                return false;
+            }
+            subjectValue++;
+            $(this).prev('.input-subject').val('true');
         } else {
-            $(this).prev('input').val('no');
+            $(this).prev('.input-subject').val('false');
+            subjectValue--;
         }
+        $('.sujectCnt').html(subjectValue);
     });
 
 
 
+
+
+    $('.stm-step1').on('click', function(){
+        let map = checkSubject('input-subject');
+        console.log(map);
+    });
+
+    $('.stm-step2').on('click', function(){
+        let lat = $('#stm-lat').val();
+        let lng = $('#stm-lng').val();
+        let address = $('#pac-input').val();
+        let toPer = $('.inputs_toPer').val();
+        let fromPer = $('.inputs_fromPer').val();
+        console.log(`${lat} : ${lng} : ${address} : ${toPer} : ${fromPer}`);
+    });
+
+
+
+    // 클래스 value 초기화
+    let checkSubject = (className) => {
+        let subject = [];
+        let elements = document.getElementsByClassName(className);
+        for (let element of elements) {
+            if ( element.value == 'true' ) {
+                subject.push(element.getAttribute('data-subject'));
+            }
+        }
+        console.log(subject);
+        return subject;
+    }
 
 
 
@@ -135,4 +184,47 @@ $(document).ready(function(){
             }, 500);
         }
     });
+
+    $.datepicker.setDefaults({
+        dateFormat: 'yy-mm-dd',
+        prevText: '이전 달',
+        nextText: '다음 달',
+        monthNames: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+        monthNamesShort: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+        dayNames: ['일', '월', '화', '수', '목', '금', '토'],
+        dayNamesShort: ['일', '월', '화', '수', '목', '금', '토'],
+        dayNamesMin: ['일', '월', '화', '수', '목', '금', '토'],
+        showMonthAfterYear: true,
+        yearSuffix: '년'
+    });
+    $('.datepickter').datepicker();
+
+
+
+
+
+
+
+
+
+
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

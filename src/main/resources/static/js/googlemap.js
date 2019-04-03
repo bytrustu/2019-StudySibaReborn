@@ -46,13 +46,11 @@ function initAutocomplete() {
 
         console.log(places[0].geometry);
         console.log(places[0].geometry.viewport);
-        console.log(places[0].geometry.viewport.ma);
 
         var lat = places[0].geometry.viewport.ma.j;
         var lng = places[0].geometry.viewport.ga.j;
-        // $('.inputs_lat').val(lat);
-        // $('.inputs_lng').val(lng);
-        // $('#pac-input').val(places[0].formatted_address);
+        $('#stm-lat').val(lat);
+        $('#stm-lng').val(lng);
         $('#pac-input').val(places[0].formatted_address);
 
 

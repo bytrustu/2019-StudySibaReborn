@@ -1,5 +1,7 @@
         <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
         <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+        <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+        <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
         <!DOCTYPE html>
         <html lang="ko">
 
@@ -20,10 +22,14 @@
                 <link href="/static/css/bootstrap.min.css" rel="stylesheet">
                 <link href="/static/css/mdb.min.css" rel="stylesheet">
                 <link href="/static/css/sweetalert2.min.css" rel="stylesheet">
+                <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
                 <link type="text/css" rel="stylesheet" href="/static/css/main.css">
                 <link type="text/css" rel="stylesheet" href="/static/css/sub.css">
-                <link type="text/css" rel="stylesheet" href="/static/css/study.css">
+                <c:if test="${fn:contains(requestScope['javax.servlet.forward.servlet_path'] , '/study') }">
+                        <link type="text/css" rel="stylesheet" href="/static/css/study.css">
+                </c:if>
                 <script type="text/javascript" src="/static/js/lib/jquery-3.3.1.min.js"></script>
+                <script type="text/javascript" src="/static/js/lib/jquery-ui.min.js"></script>
         </head>
 
 

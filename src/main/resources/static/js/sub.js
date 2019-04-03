@@ -1,5 +1,6 @@
 $(document).ready(function () {
 
+    console.log('dddd');
 
     // youtube fix
     if (!window.YT) var YT = {loading: 0, loaded: 0};
@@ -24,6 +25,33 @@ $(document).ready(function () {
     // CKEDITOR5 설정
     ClassicEditor
         .create(document.querySelector('#editor'), {
+            language: 'ko',
+            toolbar: {
+                viewportTopOffset: 30
+            },
+            container : {
+                overflow : scroll
+            },
+            ckfinder: {
+                uploadUrl: '/upload/community'
+            }
+        })
+        .then(editor => {
+            ckContent = editor;
+        })
+        .catch(error => {
+        });
+
+    document.querySelectorAll( 'oembed[url]' ).forEach( element => {
+        const anchor = document.createElement( 'a' );
+        anchor.setAttribute( 'href', element.getAttribute( 'url' ) );
+        anchor.className = 'embedly-card';
+        element.appendChild( anchor );
+    });
+
+    // CKEDITOR5 설정
+    ClassicEditor
+        .create(document.querySelector('#studyEditor'), {
             language: 'ko',
             toolbar: {
                 viewportTopOffset: 30
