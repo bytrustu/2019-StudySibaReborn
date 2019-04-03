@@ -1,6 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
+
+    <%
+        session.setAttribute("id","test1");
+        session.setAttribute("auth","ADMIN");
+    %>
+
+
     <div class="pageinfo-box">
         <input type="hidden" id="page-num" value="${cri.pageNum}">
         <input type="hidden" id="page-keyword" value="${cri.keyword}">
@@ -289,6 +296,343 @@
         </div>
     </div>
 
+
+
+
+
+
+    <!-- Modal -->
+    <div class="modal fade basic-modal" id="studyModal" tabindex="-1" role="dialog" aria-labelledby="studyModalLabel" aria-hidden="true">
+        <div class="modal-dialog basic-modal-dialog" role="document">
+            <div class="modal-content basic-modal-content">
+                <div class="basic-modal-box">
+                    <div class="modal-header basic-modal-header">
+
+
+
+
+
+
+
+    <section id="employer-post-new-job">
+        <div class="row">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-10 col-xs-offset-1 stm-top" id="container">
+                        <div class="res-steps-container">
+                            <div class="res-steps res-step-one active" data-class=".res-form-one">
+                            <div class="res-step-bar">1</div>
+                            <div class="res-progress-bar"></div>
+                            <div class="res-progress-title">주제</div>
+                            </div>
+                            <div class="res-steps res-step-two" data-class=".res-form-two">
+                            <div class="res-step-bar">2</div>
+                            <div class="res-progress-bar"></div>
+                            <div class="res-progress-title">일정</div>
+                            </div>
+                            <div class="res-steps res-step-three" data-class=".res-form-three">
+                            <div class="res-step-bar">3</div>
+                            <div class="res-progress-bar"></div>
+                            <div class="res-progress-title">그룹</div>
+                            </div>
+                            <div class="res-steps res-step-four" data-class=".res-form-four">
+                            <div class="res-step-bar">4</div>
+                            <div class="res-progress-bar"></div>
+                            <div class="res-progress-title">상세</div>
+                            </div>
+                        </div>
+                        <div class="clearfix">&nbsp;</div>
+                        <div class="clearfix">&nbsp;</div>
+
+                        <div class="res-step-form col-md-6 col-md-offset-2 res-form-one">
+                            <div class="stm-title">
+                                <img src="/static/image/study/reading.png">
+                                <p>어떤 주제와 관련된 스터디 인가요?</p>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-12 control-label">주제선정</label>
+                                <div class="col-sm-12">
+                                    <span class="stm-divide">
+                                    <span>프로그래밍</span>
+                                    <input type="hidden" class="like1">
+                                    <svg class="ico" width="24" height="24" viewBox="0 0 24 24">
+                                    <path d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"></path>
+                                    </svg>
+                                    </span>
+
+                                    <span class="stm-divide">
+                                    <span>외국어</span>
+                                    <input type="hidden" class="like1">
+                                    <svg class="ico" width="24" height="24" viewBox="0 0 24 24">
+                                    <path d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"></path>
+                                    </svg>
+                                    </span>
+
+                                    <span class="stm-divide">
+                                    <span>취업</span>
+                                    <input type="hidden" class="like1">
+                                    <svg class="ico" width="24" height="24" viewBox="0 0 24 24">
+                                    <path d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"></path>
+                                    </svg>
+                                    </span>
+
+                                    <span class="stm-divide">
+                                    <span>자격증</span>
+                                    <input type="hidden" class="like1">
+                                    <svg class="ico" width="24" height="24" viewBox="0 0 24 24">
+                                    <path d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"></path>
+                                    </svg>
+                                    </span>
+
+                                    <span class="stm-divide">
+                                    <span>동기부여</span>
+                                    <input type="hidden" class="like1">
+                                    <svg class="ico" width="24" height="24" viewBox="0 0 24 24">
+                                    <path d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"></path>
+                                    </svg>
+                                    </span>
+
+                                    <span class="stm-divide">
+                                    <span>맛집</span>
+                                    <input type="hidden" class="like1">
+                                    <svg class="ico" width="24" height="24" viewBox="0 0 24 24">
+                                    <path d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"></path>
+                                    </svg>
+                                    </span>
+
+                                    <span class="stm-divide">
+                                    <span>면접</span>
+                                    <input type="hidden" class="like1">
+                                    <svg class="ico" width="24" height="24" viewBox="0 0 24 24">
+                                    <path d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"></path>
+                                    </svg>
+                                    </span>
+
+                                    <span class="stm-divide">
+                                    <span>IT</span>
+                                    <input type="hidden" class="like1">
+                                    <svg class="ico" width="24" height="24" viewBox="0 0 24 24">
+                                    <path d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"></path>
+                                    </svg>
+                                    </span>
+
+                                    <span class="stm-divide">
+                                    <span>수능</span>
+                                    <input type="hidden" class="like1">
+                                    <svg class="ico" width="24" height="24" viewBox="0 0 24 24">
+                                    <path d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"></path>
+                                    </svg>
+                                    </span>
+
+                                    <span class="stm-divide">
+                                    <span>여행</span>
+                                    <input type="hidden" class="like1">
+                                    <svg class="ico" width="24" height="24" viewBox="0 0 24 24">
+                                    <path d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"></path>
+                                    </svg>
+                                    </span>
+
+                                    <span class="stm-divide">
+                                    <span>공부진도체크</span>
+                                    <input type="hidden" class="like1">
+                                    <svg class="ico" width="24" height="24" viewBox="0 0 24 24">
+                                    <path d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"></path>
+                                    </svg>
+                                    </span>
+
+    <span class="stm-divide">
+    <span>자바</span>
+    <input type="hidden" class="like1">
+    <svg class="ico" width="24" height="24" viewBox="0 0 24 24">
+    <path d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"></path>
+    </svg>
+    </span>
+
+    <span class="stm-divide">
+    <span>자바스크립트</span>
+    <input type="hidden" class="like1">
+    <svg class="ico" width="24" height="24" viewBox="0 0 24 24">
+    <path d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"></path>
+    </svg>
+    </span>
+
+    <span class="stm-divide">
+    <span>스프링</span>
+    <input type="hidden" class="like1">
+    <svg class="ico" width="24" height="24" viewBox="0 0 24 24">
+    <path d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"></path>
+    </svg>
+    </span>
+
+    <span class="stm-divide">
+    <span>DB</span>
+    <input type="hidden" class="like1">
+    <svg class="ico" width="24" height="24" viewBox="0 0 24 24">
+    <path d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"></path>
+    </svg>
+    </span>
+
+    <span class="stm-divide">
+    <span>파이썬</span>
+    <input type="hidden" class="like1">
+    <svg class="ico" width="24" height="24" viewBox="0 0 24 24">
+    <path d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"></path>
+    </svg>
+    </span>
+
+    <span class="stm-divide">
+    <span>웹개발</span>
+    <input type="hidden" class="like1">
+    <svg class="ico" width="24" height="24" viewBox="0 0 24 24">
+    <path d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"></path>
+    </svg>
+    </span>
+
+    <span class="stm-divide">
+    <span>앱개발</span>
+    <input type="hidden" class="like1">
+    <svg class="ico" width="24" height="24" viewBox="0 0 24 24">
+    <path d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"></path>
+    </svg>
+    </span>
+
+
+                                    <span class="stm-divide">
+                                    <span>그외</span>
+                                    <input type="hidden" class="like1">
+                                    <svg class="ico" width="24" height="24" viewBox="0 0 24 24">
+                                    <path d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"></path>
+                                    </svg>
+                                    </span>
+
+                                 </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="text-center">
+                                    <button type="button" class="btn btn-warning col-xs-offset-1 btn res-btn-orange" data-class=".res-form-one">다음</button>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <div class="res-step-form col-md-6 col-md-offset-2 res-form-two">
+                        <div class="stm-title">
+                        <img src="/static/image/study/round-table.png">
+                        <p>스터디장소와 기간을 지정해주세요.</p>
+                        </div>
+                        <div class="form-group">
+                        <label class="col-sm-12 control-label">장소</label>
+                        <div class="col-sm-12">
+                            <input type="text" class="form-control" id="pac-input" name="address" placeholder="스터디 장소를 검색하세요.">
+                            <div id="map" style="width: 100%;height: 300px"></div>
+                        </div>
+                        </div>
+                        <div class="form-group">
+                        <label class="col-sm-12 control-label">기간</label>
+                        <div class="col-sm-12">
+                        <input type="text" class="form-control" id="pac-input" name="address" placeholder="스터디 장소를 검색하세요.">
+                        <div id="map" style="width: 100%;height: 300px"></div>
+                        </div>
+                        </div>
+                        <div class="form-group">
+                        <div class="text-center">
+                        <button type="button" class="btn btn-warning btn res-btn-gray" data-class=".res-form-two">이전</button>
+                        <button type="button" class="btn btn-warning col-xs-offset-1 btn res-btn-orange" data-class=".res-form-two">다음</button>
+                        </div>
+                        </div>
+                        </form>
+                        </div>
+
+                        <div class="res-step-form col-md-6 col-md-offset-2 res-form-three">
+                        <h3 class="text-center">Add Title &amp; Description 3</h3>
+                        <form class="form-horizontal">
+                        <div class="form-group">
+                        <label for="choose-title" class="col-sm-3 control-label">Choose Title</label>
+                        <div class="col-sm-8">
+                        <input type="text" class="form-control" id="choose-title" placeholder="Choose Title">
+                        </div>
+                        </div>
+                        <div class="form-group">
+                        <label for="inputPassword3" class="col-sm-3 control-label">Description</label>
+                        <div class="col-sm-8">
+                        <textarea class="form-control" rows="3" placeholder="Add Description"></textarea>
+                        </div>
+                        </div>
+                        <div class="form-group">
+                        <div class="text-center">
+                        <button type="button" class="btn btn-default btn res-btn-gray" data-class=".res-form-three">Back</button>
+                        <button type="button" class="btn btn-default col-xs-offset-1 btn res-btn-orange" data-class=".res-form-three">Next</button>
+                        </div>
+                        </div>
+                        </form>
+                        </div>
+
+                        <div class="res-step-form col-md-6 col-md-offset-2 res-form-four">
+
+    <input type="text" id="board-input-title" class="form-control board-input-title" maxlength="50">
+    <label for="board-input-title">제목</label>
+
+    <textarea name="editor" id="editor"></textarea>
+    <button type="button" class="btn btn-yellow studysiba-button write-btn">글쓰기</button>
+    <button type="button" class="btn btn-yellow studysiba-button update-btn">수정</button>
+    <button type="button" class="btn btn-yellow studysiba-button studysiba-cancel" data-dismiss="modal">취소</button>
+
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+
+
+
+
+
+                    <%--<select class="browser-default custom-select basic-modal-select">--%>
+
+                        <%--<c:choose>--%>
+                            <%--<c:when test="${requestScope['javax.servlet.forward.servlet_path'] eq '/notice/list' || requestScope['javax.servlet.forward.servlet_path'] eq '/notice/view'  }">--%>
+                                <%--<option value="1" selected>공지</option>--%>
+                                <%--<option value="2">이벤</option>--%>
+                            <%--</c:when>--%>
+
+                            <%--<c:when test="${requestScope['javax.servlet.forward.servlet_path'] eq '/community/list' || requestScope['javax.servlet.forward.servlet_path'] eq '/community/view' }">--%>
+                                <%--<option value="3" selected>잡담</option>--%>
+                                <%--<option value="4">정보</option>--%>
+                                <%--<option value="5">요청</option>--%>
+                            <%--</c:when>--%>
+                        <%--</c:choose>--%>
+
+
+                    <%--</select>--%>
+
+                    <%--<div class="md-form md-outline margin-init basic-modal-title">--%>
+                        <%--<input type="text" id="board-input-title" class="form-control board-input-title" maxlength="50">--%>
+                        <%--<label for="board-input-title">제목</label>--%>
+                    <%--</div>--%>
+
+                    <%--</div>--%>
+                    <%--<div class="modal-body basic-modal-body">--%>
+                        <%--<textarea name="editor" id="editor"></textarea>--%>
+                    <%--</div>--%>
+                    <%--<div class="modal-footer basic-modal-footer">--%>
+                        <%--<button type="button" class="btn btn-yellow studysiba-button write-btn">글쓰기</button>--%>
+                        <%--<button type="button" class="btn btn-yellow studysiba-button update-btn">수정</button>--%>
+                        <%--<button type="button" class="btn btn-yellow studysiba-button studysiba-cancel" data-dismiss="modal">취소</button>--%>
+                    <%--</div>--%>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
         <%--<%--%>
         <%--session.setAttribute("id","test1");--%>
         <%--session.setAttribute("auth","ADMIN");--%>
@@ -330,6 +674,7 @@
         <script type="text/javascript" src="/static/js/lib/mdb.js"></script>
         <script type="text/javascript" src="/static/js/lib/sweetalert2.all.min.js"></script>
         <script type="text/javascript" src="/static/js/lib/Liar.js"></script>
+        <script type="text/javascript" src="/static/js/lib/jquery-ui.min.js"></script>
         <script type="text/javascript" src="/static/js/lib/kakao.min.js"></script>
         <script async charset="utf-8" src="//cdn.embedly.com/widgets/platform.js"></script>
         <script type="text/javascript" src="/static/dist/ckeditor.js"></script>
@@ -339,7 +684,10 @@
                 <script type="text/javascript" src="/static/js/main.js"></script>
             </c:when>
             <c:otherwise>
+                <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyByjX-fIiEVgNTofLuWWpxgGqQADaoNSWk&libraries=places&callback=initAutocomplete" async defer></script>
+                <script type="text/javascript" src="/static/js/googlemap.js"></script
                 <script type="text/javascript" src="/static/js/sub.js"></script>
+                <script type="text/javascript" src="/static/js/study.js"></script>
             </c:otherwise>
         </c:choose>
 

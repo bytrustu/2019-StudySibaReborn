@@ -91,7 +91,7 @@
 
 .st-locate, .st-time{
     font-size: 0.8rem;
-    color: darkcyan;
+    color: #212529;
 }
 
 .st-description{
@@ -154,3 +154,199 @@
     background-color: #00BFB6;
     margin-bottom: 10px;
 }
+
+
+
+
+
+/*
+        구글 지도
+ */
+
+#pac-input{
+    width: 88% !important;
+    height: 40px;
+    z-index: 100 !important;
+    position: absolute;
+    left: 5px !important;
+    top: 8px !important;
+}
+.gmnoprint{
+    display: none !important;
+}
+
+.pac-container{
+    z-index: 9999 !important;
+}
+
+
+
+
+
+
+
+
+
+
+.res-steps-container{
+    transform: translateX(6%);
+}
+
+#employer-post-new-job .res-steps-container .res-steps {
+    width: 25%;
+    text-align: center;
+    float: left;
+    cursor: pointer
+}
+
+#employer-post-new-job .res-steps-container .res-steps .res-step-bar {
+    -webkit-border-radius: 50% !important;
+    -moz-border-radius: 50% !important;
+    -ms-border-radius: 50% !important;
+    border-radius: 50% !important;
+    background: #0aa7e1;
+    display: inline-block;
+    height: 40px;
+    width: 40px;
+    margin-top: 10px;
+    text-align: center;
+    color: #fff;
+    padding-top: 7px;
+    font-size: 20px;
+    margin-right: 39px;
+}
+
+#employer-post-new-job .res-steps-container .res-steps .res-progress-title {
+    text-align: center;
+    font-size: 15px;
+    padding-top: 10px;
+    display: block;
+    margin-left: -39px;
+}
+
+#employer-post-new-job .res-steps-container .res-steps .res-progress-bar {
+    height: 5px;
+    background: #0aa7e1;
+    width: 50%;
+    margin: -22px 0 0 50%;
+    float: left
+}
+
+#employer-post-new-job .res-steps-container .res-step-two .res-progress-bar, #employer-post-new-job .res-steps-container .res-step-three .res-progress-bar, #employer-post-new-job .res-steps-container .res-step-four .res-progress-bar {
+    width: 100%;
+    margin-left: 0%
+}
+
+#employer-post-new-job .res-steps-container .res-step-four .res-progress-bar {
+    width: 50%;
+    margin-right: 50%
+}
+
+#employer-post-new-job .res-step-form {
+    border: 1px solid #d2d2d2;
+    box-shadow: 0px 6px 4px -2px silver;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+#employer-post-new-job .res-step-form h3 {
+    margin: 10px 0;
+    color: #0aa7e1;
+    font-size: 18px
+}
+
+#employer-post-new-job .res-step-form .form-horizontal label {
+    font-weight: normal
+}
+
+#employer-post-new-job .res-form-two, #employer-post-new-job .res-form-three, #employer-post-new-job .res-form-four {
+    left: 150%
+}
+
+#employer-post-new-job .active .res-step-bar {
+    background: #f19b20 !important
+}
+
+#employer-post-new-job .active .res-progress-title {
+    color: #0aa7e1
+}
+
+.stm-top{
+    margin: auto;
+
+}
+
+.stm-title{
+    margin: 20px auto;
+    text-align: center;
+}
+
+.stm-title > img{
+    width: 64px;
+    height: 64px;
+    display: inline-block;
+}
+
+.stm-title > p{
+    margin: 0;
+    display: inline-block;
+    vertical-align: -20px;
+    margin-left: 20px;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+
+.stm-divide{
+    border-radius: 5px;
+    border: 1px solid #a1a2a5;
+    font-weight: bold;
+    font-size: 13px;
+    padding: 10px;
+    margin: 10px 1px;
+    display: inline-block;
+}
+
+
+
+
+
+
+
+
+.test1{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 90vh;
+}
+
+.ico {
+    border-radius: 50%;
+    cursor: pointer;
+    fill: #8d8d94;
+    transition: .4s;
+    width: 20px;
+    height: 20px;
+}
+
+.liked {
+    transform: scale(1.05) rotate(360deg);
+    background-color: #C62828;
+    padding: 5px;
+    fill: #ffffff;
+}
+
+
+
+
+
+
+
+
+
+
+
