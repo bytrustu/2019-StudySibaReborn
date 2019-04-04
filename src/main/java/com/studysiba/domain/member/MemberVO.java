@@ -1,11 +1,12 @@
 package com.studysiba.domain.member;
 
+import com.studysiba.domain.common.UploadVO;
 import lombok.Data;
 
 import java.sql.Timestamp;
 
 @Data
-public class MemberVO {
+public class MemberVO extends UploadVO {
     // 유저정보 순번
     private int mbrNo;
     // 로그인 타입 ( normal, google, kakao, facebook, naver )

@@ -305,6 +305,11 @@ stateCode.set("COMMENT_UPDATE_ERROR","댓글 수정에 실패했습니다.");
 stateCode.set("COMMENT_DELETE_SUCCESS","댓글이 삭제되었습니다.");
 stateCode.set("COMMENT_DELETE_ERROR","댓글 삭제에 실패했습니다.");
 
+stateCode.set("STUDY_REGISTER_SUCCESS","스터디가 등록되었습니다.");
+stateCode.set("STUDY_REGISTER_ERROR","스터디 등록에 실패했습니다.");
+stateCode.set("UPLOAD_STATE_SUCCESS","파일이 업로드 되었습니다.");
+stateCode.set("UPLOAD_STATE_ERROR","파일 업로드에 실패했습니다.");
+
 
 // KAKAO API
 Kakao.init('672b34ad5f77dd65240951209b6cbd32');
@@ -767,6 +772,30 @@ let getBoard = (type,no) => {
         });
     });
 }
+
+
+let fileUpload = (formData, menu) => {
+    return new Promise( (resolve, reject) => {
+        $.ajax({
+            type: 'POST',
+            url : `/upload/${menu}`,
+            data : formData,
+            dataType : 'json',
+            processData : false,
+            contentType : false,
+            success : ( data ) => {
+                resolve = data;
+            },
+            error : (error) => {
+                    reject = error;
+            }
+        });
+    });
+}
+
+
+
+
 
 
 // SwertAlert Error

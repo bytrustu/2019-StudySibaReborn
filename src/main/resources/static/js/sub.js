@@ -408,7 +408,7 @@ $('.board-select').on('change', function(){
     let pageNum = $('#page-num').val();
     let keyword = $('#page-keyword').val();
     let type = selected;
-    if ( pageNum == 1 ) pageNum='';
+    if ( pageNum <= 1 ) pageNum='';
     if ( type == -1 || type == -2 ) type='';
     if ( keyword == undefined ) keyword='';
     let pathMap = new Map();
@@ -421,13 +421,15 @@ $('.board-select').on('change', function(){
 
 
 // 검색 enter 시
-$('.board-searchinput').on('keydown', function(e){
+$('.board-searchinput, .st-searchinput').on('keydown', function(e){
     if ( e.keyCode == 13 ) {
-        let keyword = $(this).val();
-        let type = $('.board-select').val();
         let pathMap = new Map();
+        if ( $(this).hasClass('board-searchinput') ) {
+            let type = $('.board-select').val();
+            pathMap.set('type',type);
+        }
+        let keyword = $(this).val();
         pathMap.set('keyword',keyword);
-        pathMap.set('type',type);
         let path = `${window.location.pathname}${makePath(pathMap)}`;
         location.href=path;
     }

@@ -1,7 +1,7 @@
 function initMap() {
 
-    var lat = 35.16273177463202;
-    var lng = 129.04514129669803;
+    var lat = 37.5640253;
+    var lng = 126.97377929999993;
 
     var origin = {lat: lat, lng: lng};
 
@@ -19,11 +19,11 @@ function initMap() {
 
 
 function initAutocomplete() {
-    var lat = 35.16273177463202;
-    var lng = 129.04514129669803;
+    var lat = 37.5640253;
+    var lng = 126.97377929999993;
     var map = new google.maps.Map(document.getElementById('map'), {
         center: {lat: lat, lng: lng},
-        zoom: 13,
+        zoom: 15,
     });
     var input = document.getElementById('pac-input');
     var searchBox = new google.maps.places.SearchBox(input);
@@ -44,11 +44,13 @@ function initAutocomplete() {
         markers = [];
         var bounds = new google.maps.LatLngBounds();
 
-        console.log(places[0].geometry);
-        console.log(places[0].geometry.viewport);
+        // console.log(places[0].geometry);
+        // console.log(places[0].geometry.viewport);
 
-        var lat = places[0].geometry.viewport.ma.j;
-        var lng = places[0].geometry.viewport.ga.j;
+        // var lat = places[0].geometry.viewport.ma.j;
+        // var lng = places[0].geometry.viewport.ga.j;
+        let lat = places[0].geometry.location.lat();
+        let lng = places[0].geometry.location.lng();
         $('#stm-lat').val(lat);
         $('#stm-lng').val(lng);
         $('#pac-input').val(places[0].formatted_address);

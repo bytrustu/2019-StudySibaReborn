@@ -11,6 +11,6 @@ public interface CommonMapper {
      *  @Param UploadVO
      *  @Return 파일등록상태
      */
-    int uploadFile(UploadVO uploadVO);
+    int contentUploadFile(UploadVO uploadVO);
 
 }

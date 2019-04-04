@@ -4,7 +4,15 @@
  */
 
 .st-ul{
+    padding-left: 0;
+}
 
+.st-stepper{
+    margin-left: 0 !important;
+}
+
+.st-table{
+    border-bottom: 0 !important;
 }
 
 .st-box{
@@ -31,32 +39,40 @@
     padding: 10px 20px;
 }
 
+.st-item:hover{
+    transform: scale(1.015);
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.2);
+}
+
 .st-link{
-    padding: 1rem 0;
-    display: flex;
+    padding: 0;
+    display: block;
     padding: 0;
     font-size: 0;
 }
 
 .st-thumb{
-    max-width: 16%;
-    min-width: 16%;
-    display: inline-block;
+    display: block;
     vertical-align: top;
     font-size: 1rem;
+    margin-bottom: 10px;
 }
 
 .st-thumb > img{
     position: relative;
-    border-radius: 0.1875rem;
-    width: 100%;
+    border-radius: 10px;
+    width: 168px;
+    height: 92px;
+    max-height: 135px;
+    padding: 5px;
 }
 
 .st-body {
-    padding: 0 2rem;
-    max-width: 64%;
+    padding: 0;
+    max-width: 100%;
     min-width: 64%;
-    display: inline-block;
+    display: block;
     vertical-align: top;
     font-size: 1rem;
 }
@@ -124,11 +140,11 @@
 }
 
 .st-person{
-    padding: 1.5rem 1.5rem 0 2rem;
-    text-align: right;
-    max-width: 20%;
+    padding: 0.5rem 0 0 0;
+    text-align: left;
+    max-width: 100%;
     min-width: 20%;
-    display: inline-block;
+    display: block;
     vertical-align: top;
     font-size: 1rem;
 }
@@ -136,6 +152,8 @@
 .st-per{
     font-weight: 700;
     color: #263747;
+    display: inline-block;
+    margin-left: 10px;
 }
 
 .st-pericon{
@@ -158,6 +176,148 @@
     font-size: 12px;
     background-color: #00BFB6;
     margin-bottom: 10px;
+}
+
+.content-studybtn{
+    float: right;
+    font-size: 14px;
+    height: 45px;
+    margin-right: 20px;
+    margin-top: 25px;
+    font-weight: bold;
+}
+
+.study-modal-content{
+    overflow-y : auto;
+}
+
+#dangerMessage{
+    z-index: 9999;
+    position: absolute;
+    top: 23%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-weight: bold;
+    width: 82%;
+    text-align: center;
+}
+
+.gm-fullscreen-control{
+    display: none !important;
+}
+
+.st-searchinput{
+    width: 80%;
+    margin-left: 50%;
+    transform: translateX(-50%);
+}
+
+.st-subject{
+    text-align: center;
+}
+
+.st-subject > span{
+    border-radius: 5px;
+    background-color: #e7e8e9;
+    border: #e7e8e9;
+    font-weight: bold;
+    font-size: 10px;
+    padding: 3px 6px;
+    margin: 3px 1px;
+    display: inline-block;
+    cursor: pointer;
+}
+
+
+@media(min-width: 586px){
+    #dangerMessage{
+        z-index: 9999;
+        position: absolute;
+        top: 23%;
+        left: 50%;
+        width: 50%;
+        transform: translateX(-50%);
+        font-weight: bold;
+    }
+    .gm-fullscreen-control{
+        display: inline-block !important;
+    }
+    .st-subject{
+        text-align: center;
+    }
+    .st-subject > span {
+        border-radius: 5px;
+        background-color: #e7e8e9;
+        border: #e7e8e9;
+        font-weight: bold;
+        font-size: 13px;
+        padding: 5px 10px;
+        margin: 10px 1px;
+        display: inline-block;
+        cursor: pointer;
+    }
+    .st-subject > span:hover {
+        transform: scale(1.1);
+        transition: all 0.5s ease-in-out;
+        box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.2);
+        background-color: white;
+        border: 1px solid #e7e8e9;
+    }
+}
+
+@media(min-width: 992px){
+    .st-link{
+        padding: 1rem 0;
+        display: flex;
+        padding: 0;
+        font-size: 0;
+    }
+    .st-thumb{
+        display: inline-block;
+        vertical-align: top;
+        font-size: 1rem;
+        margin: auto;
+    }
+
+    .st-thumb > img{
+        position: relative;
+        border-radius: 10px;
+        width: 168px;
+        max-height: 135px;
+    }
+
+    .st-body {
+        padding: 0 2rem;
+        max-width: 64%;
+        min-width: 64%;
+        display: inline-block;
+        vertical-align: top;
+        font-size: 1rem;
+    }
+    .st-person{
+        padding: 1.5rem 1.5rem 0 0;
+        text-align: right;
+        max-width: 20%;
+        min-width: 20%;
+        display: inline-block;
+        vertical-align: top;
+        font-size: 1rem;
+    }
+    .st-per{
+        font-weight: 700;
+        color: #263747;
+    }
+    .st-now{
+        margin-top: 8px;
+        color: #fff;
+        padding: 0px 6px;
+        border: 1px solid #00BFB6;
+        display: inline-block;
+        border-radius: 2px;
+        font-size: 12px;
+        background-color: #00BFB6;
+        margin-bottom: 10px;
+    }
 }
 
 
@@ -470,7 +630,7 @@
 
 .stm-subtext > span:nth-of-type(3){
     font-weight: bold;
-    font-size: 20px;
+    font-size: 16px;
     color: #c62828;
 }
 
@@ -490,15 +650,7 @@
     transform: translateX(-50%);
 }
 
-#dangerMessage{
-    z-index: 9999;
-    position: absolute;
-    top: 23%;
-    left: 50%;
-    transform: translateX(-50%);
-    display: none;
-    font-weight: bold;
-}
+
 
 
 .test1{

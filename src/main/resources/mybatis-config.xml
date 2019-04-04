@@ -4,17 +4,27 @@
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
     <settings>
+        <!-- 카멜케이스 적용 -->
         <setting name="mapUnderscoreToCamelCase" value="true"/>
     </settings>
 
     <typeAliases>
+        <!-- 회원-->
         <typeAlias alias="MemberVO" type="com.studysiba.domain.member.MemberVO"/>
+        <!-- 포인트-->
         <typeAlias alias="PointVO" type="com.studysiba.domain.member.PointVO"/>
+        <!-- 공통파일업로드-->
         <typeAlias alias="UploadVO" type="com.studysiba.domain.common.UploadVO"/>
+        <!-- 공통게시판-->
         <typeAlias alias="BoardVO" type="com.studysiba.domain.board.BoardVO"/>
+        <!-- 공통페이지-->
         <typeAlias alias="PageVO" type="com.studysiba.domain.common.PageVO"/>
+        <!-- 공통좋아요-->
         <typeAlias alias="LikeVO" type="com.studysiba.domain.board.LikeVO"/>
+        <!-- 공통댓글-->
         <typeAlias alias="CommentVO" type="com.studysiba.domain.board.CommentVO"/>
+        <!-- 스터디-->
+        <typeAlias alias="StudyVO" type="com.studysiba.domain.study.StudyVO"/>
     </typeAliases>
 
 </configuration>

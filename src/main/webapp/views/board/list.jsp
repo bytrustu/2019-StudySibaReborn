@@ -163,9 +163,9 @@
 
                 <c:choose>
                     <c:when test="${requestScope['javax.servlet.forward.servlet_path'] eq '/board/notice/list' }">
-                        <option selected value="-1">전체</option>
-                        <option value="1">공지</option>
-                        <option value="2">이벤</option>
+                        <option value="-1" <c:if test="${cri.type eq null}">selected</c:if>>전체</option>
+                        <option value="1" <c:if test="${cri.type eq '1'}">selected</c:if>>공지</option>
+                        <option value="2" <c:if test="${cri.type eq '2'}">selected</c:if>>이벤</option>
                     </c:when>
 
                     <c:when test="${requestScope['javax.servlet.forward.servlet_path'] eq '/board/community/list' }">
@@ -195,7 +195,7 @@
                 <li class="page-item">
                     <c:if test="${page.startPage ne 1 }">
                         <a class="page-link"
-                           href='/community/list?pageNum=${page.startPage-1}<c:if test="${cri.type ne null}">&type=${cri.type}</c:if><c:if test="${cri.keyword ne null}">&keyword=${cri.keyword}</c:if>'  aria-label="Previous">
+                           href='/board/${boardList[0].brdType}/list?pageNum=${page.startPage-1}<c:if test="${cri.type ne null}">&type=${cri.type}</c:if><c:if test="${cri.keyword ne null}">&keyword=${cri.keyword}</c:if>'  aria-label="Previous">
                             <span aria-hidden="true"><i class="fas fa-angle-double-left"></i></span>
                             <span class="sr-only">Previous</span>
                         </a>
@@ -204,13 +204,13 @@
                     <c:forEach begin="${page.startPage }" end="${page.endPage }" step="1" var="i">
                         <li class="page-item board-pageactive <c:if test="${page.criteria.pageNum eq i}">active</c:if>">
                             <a class="page-link"
-                               href="/community/list?pageNum=${i}<c:if test='${cri.type ne null}'>&type=${cri.type}</c:if><c:if test='${cri.keyword ne null}'>&keyword=${cri.keyword}</c:if>">${i}</a>
+                               href="/board/${boardList[0].brdType}/list?pageNum=${i}<c:if test='${cri.type ne null}'>&type=${cri.type}</c:if><c:if test='${cri.keyword ne null}'>&keyword=${cri.keyword}</c:if>">${i}</a>
                         </li>
                     </c:forEach>
                 <li class="page-item">
                     <c:if test="${page.endPage lt page.pageCount}">
                         <a class="page-link"
-                           href='/community/list?pageNum=${page.endPage+1}<c:if test="${cri.type ne null}">&type=${cri.type}</c:if><c:if test="${cri.keyword ne null}">&keyword=${cri.keyword}</c:if>' aria-label="Next">
+                           href='/board/${boardList[0].brdType}/list?pageNum=${page.endPage+1}<c:if test="${cri.type ne null}">&type=${cri.type}</c:if><c:if test="${cri.keyword ne null}">&keyword=${cri.keyword}</c:if>' aria-label="Next">
                             <span aria-hidden="true"><i class="fas fa-angle-double-right"></i></span>
                             <span class="sr-only">Next</span>
                         </a>
@@ -224,3 +224,7 @@
 
 
 </div>
+
+
+
+

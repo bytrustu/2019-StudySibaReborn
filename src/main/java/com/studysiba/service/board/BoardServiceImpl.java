@@ -76,6 +76,7 @@ public class BoardServiceImpl implements BoardService {
      */
     @Override
     public ArrayList<BoardVO> getPostList(PageVO pageVO) throws Exception {
+        if ( pageVO.getCount() == 0 ) return null;
         ArrayList<BoardVO> postList = boardMapper.getPostList(pageVO);
         // 지난기간 [ 몇분전, 몇일전 ] 변환
         for (BoardVO vo : postList) vo.setLastTime(DataConversion.DurationFromNow(vo.getBrdDate()));

@@ -304,13 +304,13 @@
         <!-- 스터디모달 -->
         <div class="modal fade basic-modal" id="studyModal" tabindex="-1" role="dialog" aria-labelledby="studyModalLabel" aria-hidden="true">
             <div class="modal-dialog basic-modal-dialog" role="document">
-                <div class="modal-content basic-modal-content">
+                <div class="modal-content basic-modal-content study-modal-content">
                     <div class="basic-modal-box">
                         <div class="modal-header basic-modal-header">
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
 
                             <section id="employer-post-new-job">
-                                <div class="row">
+                                <div class="row st-stepper">
                                     <div class="container">
                                         <div class="row">
                                             <div class="col-xs-10 col-xs-offset-1 stm-top" id="container">
@@ -570,16 +570,16 @@
                                                     <div class="form-group">
                                                         <label class="col-sm-12 control-label">참여인원</label>
                                                         <div class="col-sm-12">
-                                                            <select name="person" class="form-control">
-                                                            <option value="2">2명</option>
-                                                            <option value="3">3명</option>
-                                                            <option value="4">4명</option>
-                                                            <option value="5">5명</option>
-                                                            <option value="5">6명</option>
-                                                            <option value="5">7명</option>
-                                                            <option value="5">8명</option>
-                                                            <option value="5">9명</option>
-                                                            <option value="99">제한없음</option>
+                                                            <select name="person" id="std-limit" class="form-control">
+                                                                <option value="2">2명</option>
+                                                                <option value="3">3명</option>
+                                                                <option value="4">4명</option>
+                                                                <option value="5">5명</option>
+                                                                <option value="5">6명</option>
+                                                                <option value="5">7명</option>
+                                                                <option value="5">8명</option>
+                                                                <option value="5">9명</option>
+                                                                <option value="99">제한없음</option>
                                                             </select>
                                                         </div>
                                                     </div>
@@ -587,7 +587,7 @@
                                                         <label class="col-sm-12 control-label">대표이미지</label>
                                                         <div class="file-upload">
                                                             <div class="image-upload-wrap">
-                                                                <input class="file-upload-input" type='file'  onchange="readURL(this);"  accept="image/*" />
+                                                                <input class="file-upload-input" id="studyFile" type='file'  onchange="readURL(this);"  accept="image/*" />
                                                                 <div class="drag-text">
                                                                     <h3>이미지 드래그앤드롭 & 클릭</h3>
                                                                 </div>

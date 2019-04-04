@@ -5,10 +5,12 @@ import com.studysiba.common.DataValidation;
 import com.studysiba.config.SocialKeys;
 import com.studysiba.domain.common.Criteria;
 import com.studysiba.domain.common.PageVO;
+import com.studysiba.domain.common.UploadVO;
 import com.studysiba.domain.member.PointVO;
 import com.studysiba.mapper.board.BoardMapper;
 import com.studysiba.mapper.common.CommonMapper;
 import com.studysiba.mapper.member.MemberMapper;
+import com.studysiba.mapper.study.StudyMapper;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.social.google.connect.GoogleConnectionFactory;
@@ -44,6 +46,9 @@ public class CommonServiceImpl implements CommonService {
 
     @Resource
     BoardMapper boardMapper;
+
+    @Resource
+    StudyMapper studyMapper;
 
     @Autowired
     HttpSession httpSession;
@@ -130,7 +135,7 @@ public class CommonServiceImpl implements CommonService {
 
 
     /*
-     *  공통 파일 업로드
+     *  CK에디터 공통 파일 업로드
      *  @Param MultipartFile
      *  @Return UploadVO
      */
@@ -157,6 +162,48 @@ public class CommonServiceImpl implements CommonService {
         return fileName;
     }
 
+
+    /*
+     *  게시판 공통 파일 업로드
+     *  @Param MultipartFile, menu, no
+     *  @Return 업로드 상태코드
+     */
+    @Transactional
+    @Override
+    public String contentUploadFile(MultipartFile multipartFile, String menu, int no) throws Exception {
+
+        String stateCode = null;
+        if ( multipartFile.isEmpty() ) return null;
+        if ( httpSession.getAttribute("id") == null ) return null;
+
+        String path = "C:\\upload\\studysiba\\" + menu;
+        File destdir = new File(path);
+        String fileName = null;
+        if ( !destdir.exists() ) destdir.mkdir();
+        //  JPG, JPEG, PNG, GIF, BMP 확장자 체크
+        if ( !DataValidation.checkImageFile(multipartFile.getOriginalFilename()) ) return null;
+        String uuid = DataConversion.returnUUID();
+        String originFileName = multipartFile.getOriginalFilename();
+        fileName = uuid+"_"+originFileName;
+        File target = new File(path, fileName);
+        try {
+            FileCopyUtils.copy(multipartFile.getBytes(), target);
+            UploadVO uploadVO = new UploadVO();
+            uploadVO.setUldId((String) httpSession.getAttribute("id"));
+            uploadVO.setUldFno(no);
+            uploadVO.setUldType(menu);
+            uploadVO.setUldText(menu);
+            uploadVO.setUldUuid(uuid);
+            uploadVO.setUldFilename(originFileName);
+            int uploadState = commonMapper.contentUploadFile(uploadVO);
+            stateCode = uploadState == 1 ? "UPLOAD_STATE_SUCCESS" : "UPLOAD_STATE_ERROR";
+        } catch ( IOException e ) {
+            e.printStackTrace();
+            return null;
+        }
+        return stateCode;
+    }
+
     /*
      *  페이지 정보 조회
      *  @Param menu, criteria
@@ -178,6 +225,8 @@ public class CommonServiceImpl implements CommonService {
                 pageVO = new PageVO(criteria, boardMapper.getPostCount(searchMap), 10, 3);
                 pageVO.setMenu(menu);
                 break;
+            case "study" :
+                pageVO = new PageVO(criteria, studyMapper.getStudyCount(searchMap), 10, 3);
         }
         return pageVO;
     }

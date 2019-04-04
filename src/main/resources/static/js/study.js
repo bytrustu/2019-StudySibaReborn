@@ -62,7 +62,6 @@ $(document).ready(function(){
                 subject.push(element.getAttribute('data-subject'));
             }
         }
-        //console.log(subject);
         return subject;
     }
 
@@ -134,11 +133,11 @@ $(document).ready(function(){
     // 스탭3 값 Map 저장
     function step3map(){
         let group = $('#stm-title').val();
-        let person = $('select[name=person]').val();
+        let limit = $('#std-limit').val();
         let file = $('.file-upload-input').val();
         let step3 = new Map();
         step3.set('stdGroup',group);
-        step3.set('stdTitle',person);
+        step3.set('stdLimit',limit);
         step3.set('stdFile',file);
         return step3;
     }
@@ -182,12 +181,38 @@ $(document).ready(function(){
         stepMap = pushMap(stepMap,step2);
         stepMap = pushMap(stepMap,step3);
         stepMap = pushMap(stepMap,step4);
-        for (let str of stepMap) {
-            console.log(`${str[0]} : ${str[1]}`);
-        }
+        let formData = mapToFormData(stepMap);
+        formData.append('stdFile', $('#studyFile')[0].files[0]);
+
+        registerStudy(formData)
+            .then( (data) => {
+                $('#studyModal').modal('hide');
+                timerAlert("스터디등록","입력하신 스터디를 등록중입니다.",2500);
+                setTimeout(()=>{location.href=`/study/view?no=${data.no}`},3000);
+            }).catch( (error) => {
+                errorAlert(stateCode.get(error.responseText.stateCode));
+        });
     });
-    
-    
+
+    let registerStudy = (formData) => {
+        return new Promise( (resolve, reject) => {
+            $.ajax({
+                type : 'POST',
+                url : '/study/register',
+                data : formData,
+                dataType : 'json',
+                processData : false,
+                contentType : false,
+                success : ( data ) => {
+                    resolve(data);
+                },
+                error : (error) => {
+                    reject(error);
+                }
+            });
+        });
+    }
+
     
     
     /*
@@ -232,12 +257,21 @@ $(document).ready(function(){
         }, delay);
     }
     
-    // Map 합치기
+    // Map 와 Map 합치기
     let pushMap = (originMap, addMap) => {
         for ( let map of addMap ) {
             originMap.set(map[0],map[1]);
         }
         return originMap;
+    }
+
+    // Map 을 FormData로
+    let mapToFormData = (map) => {
+        let formData = new FormData();
+        for ( let data of map ) {
+            formData.append(data[0],data[1]);
+        }
+        return formData;
     }
 
 
@@ -345,7 +379,6 @@ $(document).ready(function(){
     });
 
 
-
     /*
      *  DatePicker Custom 설정
      */
@@ -366,10 +399,44 @@ $(document).ready(function(){
 
 
 
+    // 스터디 클릭시
+    $('.st-move').on('click', function(e){
+        e.preventDefault();
+        let currentPath = firstPath();
+        let pathMap = new Map();
+        let nextMove;
+        let type;
+        if ( $(this).attr('class').includes('content-listbtn') ) {
+            type = $('#page-type').val();
+            nextMove = 'list';
+        } else {
+            type = $('.std-keyword').val();
+            let link = $(this).attr('data-no');
+            pathMap.set('no',link);
+            nextMove = 'view';
+        }
+        let pageNum = $('#page-num').val();
+        let keyword = $('#page-keyword').val();
+        if ( type == -1 || type == -2 || type == undefined ) type='';
+        if ( pageNum == 1 ) pageNum='';
+        pathMap.set('pageNum',pageNum);
+        pathMap.set('type',type);
+        pathMap.set('keyword',keyword);
+        let path = `/${currentPath}/${nextMove}${makePath(pathMap)}`;
+        location.href=path;
+    });
 
 
-
-
+    // 스터디 리스트 주제 선택 검색키워드 이동
+    $('.st-subject span').on('click', function(){
+        let keyword = $(this).html().trim();
+        console.log(keyword);
+        if ( keyword == '전체' ) {
+            location.href='/study/list';
+            return false;
+        }
+        location.href=`/study/list?keyword=${keyword}`;
+    });
 
 
 });

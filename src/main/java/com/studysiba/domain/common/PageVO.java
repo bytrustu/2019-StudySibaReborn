@@ -33,7 +33,9 @@ public class PageVO {
         this.count = count;
         this.pageSize = pageSize;
         this.pageBlock = pageBlock;
+        if ( criteria.getPageNum() < 1 ) criteria.setPageNum(1);
         this.pageCount = count / pageSize + ( count % pageSize == 0 ? 0 : 1 );
+        if ( criteria.getPageNum() > pageCount ) criteria.setPageNum(pageCount);
         this.startPage = ( ( criteria.getPageNum() -1 ) / pageBlock ) * pageBlock + 1;
         int endPage = this.startPage + pageBlock - 1;
         if ( endPage > pageCount ) endPage = pageCount;

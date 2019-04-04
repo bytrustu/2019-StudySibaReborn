@@ -4,6 +4,7 @@ import com.studysiba.domain.board.BoardVO;
 import com.studysiba.domain.board.CommentVO;
 import com.studysiba.domain.board.LikeVO;
 import com.studysiba.domain.common.PageVO;
+import com.studysiba.domain.common.UploadVO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.ArrayList;

@@ -44,6 +44,14 @@ public interface CommonService {
     String uploadFile(MultipartFile multipartFile, String menu) throws Exception;
 
     /*
+     *  게시판 공통 파일 업로드
+     *  @Param MultipartFile, menu, no
+     *  @Return UploadVO
+     */
+    String contentUploadFile(MultipartFile multipartFile, String menu, int no) throws Exception;
+
+
+    /*
      *  페이지 정보 조회
      *  @Param menu, criteria
      *  @Return 페이지정보 반환
