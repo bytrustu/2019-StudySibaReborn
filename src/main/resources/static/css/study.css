@@ -1,3 +1,8 @@
+
+/*
+ *   스터디 모달 부분
+ */
+
 .st-ul{
 
 }
@@ -473,8 +478,27 @@
     padding: 0 2%;
 }
 
+.stm-message{
+    font-weight: bold;
+    font-size: 15px;
+    color: #c03a2b;
+}
 
+.stm-msgbox{
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
 
+#dangerMessage{
+    z-index: 9999;
+    position: absolute;
+    top: 23%;
+    left: 50%;
+    transform: translateX(-50%);
+    display: none;
+    font-weight: bold;
+}
 
 
 .test1{
@@ -501,6 +525,9 @@
     padding: 5px;
     fill: #ffffff;
 }
+
+
+
 
 
 

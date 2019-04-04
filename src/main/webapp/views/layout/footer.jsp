@@ -1,12 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 
     <%
         session.setAttribute("id","test1");
         session.setAttribute("auth","ADMIN");
     %>
-
 
     <div class="pageinfo-box">
         <input type="hidden" id="page-num" value="${cri.pageNum}">
@@ -299,430 +300,394 @@
 
 
 
+    <c:if test="${fn:contains(requestScope['javax.servlet.forward.servlet_path'] , '/study' ) || fn:contains(requestScope['javax.servlet.forward.servlet_path'] , '/group' ) }">
+        <!-- 스터디모달 -->
+        <div class="modal fade basic-modal" id="studyModal" tabindex="-1" role="dialog" aria-labelledby="studyModalLabel" aria-hidden="true">
+            <div class="modal-dialog basic-modal-dialog" role="document">
+                <div class="modal-content basic-modal-content">
+                    <div class="basic-modal-box">
+                        <div class="modal-header basic-modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+                            <section id="employer-post-new-job">
+                                <div class="row">
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col-xs-10 col-xs-offset-1 stm-top" id="container">
+                                                <div class="res-steps-container">
+                                                    <div class="res-steps res-step-one active" data-class=".res-form-one">
+                                                        <div class="res-step-bar">1</div>
+                                                        <div class="res-progress-bar"></div>
+                                                        <div class="res-progress-title">주제</div>
+                                                    </div>
+                                                    <div class="res-steps res-step-two" data-class=".res-form-two">
+                                                        <div class="res-step-bar">2</div>
+                                                        <div class="res-progress-bar"></div>
+                                                        <div class="res-progress-title">일정</div>
+                                                    </div>
+                                                    <div class="res-steps res-step-three" data-class=".res-form-three">
+                                                        <div class="res-step-bar">3</div>
+                                                        <div class="res-progress-bar"></div>
+                                                        <div class="res-progress-title">그룹</div>
+                                                    </div>
+                                                    <div class="res-steps res-step-four" data-class=".res-form-four">
+                                                        <div class="res-step-bar">4</div>
+                                                        <div class="res-progress-bar"></div>
+                                                        <div class="res-progress-title">상세</div>
+                                                    </div>
+                                                </div>
+                                                <div class="clearfix">&nbsp;</div>
+                                                <div class="clearfix">&nbsp;</div>
 
 
-    <!-- Modal -->
+                                                <!-- Step 1 주제 -->
+                                                <div class="res-step-form col-md-6 col-md-offset-2 res-form-one">
+                                                    <div class="stm-title">
+                                                        <img src="/static/image/study/reading.png">
+                                                        <p>어떤 주제와 관련된 스터디 인가요?</p>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <p class="col-sm-12 stm-subtext"><span>주제선정 :</span><span>현재 </span><span class="sujectCnt">0</span><span> 개 선택</span></p>
+                                                        <div class="col-sm-12">
+                                                            <span class="stm-divide">
+                                                                <span>프로그래밍</span>
+                                                                <input type="hidden" class="input-subject" data-subject="프로그래밍" value="false">
+                                                                <svg class="ico" width="24" height="24" viewBox="0 0 24 24">
+                                                                    <path d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"></path>
+                                                                </svg>
+                                                            </span>
 
-    <div class="modal fade basic-modal" id="studyModal" tabindex="-1" role="dialog" aria-labelledby="studyModalLabel" aria-hidden="true">
-        <div class="modal-dialog basic-modal-dialog" role="document">
-            <div class="modal-content basic-modal-content">
-                <div class="basic-modal-box">
-                    <div class="modal-header basic-modal-header">
+                                                            <span class="stm-divide">
+                                                                <span>외국어</span>
+                                                                <input type="hidden" class="input-subject" data-subject="외국어" value="false">
+                                                                <svg class="ico" width="24" height="24" viewBox="0 0 24 24">
+                                                                    <path d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"></path>
+                                                                </svg>
+                                                            </span>
 
+                                                            <span class="stm-divide">
+                                                                <span>취업</span>
+                                                                <input type="hidden" class="input-subject" data-subject="취업" value="false">
+                                                                <svg class="ico" width="24" height="24" viewBox="0 0 24 24">
+                                                                    <path d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"></path>
+                                                                </svg>
+                                                            </span>
 
+                                                            <span class="stm-divide">
+                                                                <span>자격증</span>
+                                                                <input type="hidden" class="input-subject" data-subject="자격증" value="false">
+                                                                <svg class="ico" width="24" height="24" viewBox="0 0 24 24">
+                                                                    <path d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"></path>
+                                                                </svg>
+                                                            </span>
 
+                                                            <span class="stm-divide">
+                                                                <span>동기부여</span>
+                                                                <input type="hidden" class="input-subject" data-subject="동기부여" value="false">
+                                                                <svg class="ico" width="24" height="24" viewBox="0 0 24 24">
+                                                                    <path d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"></path>
+                                                                </svg>
+                                                            </span>
 
+                                                            <span class="stm-divide">
+                                                                <span>맛집</span>
+                                                                <input type="hidden" class="input-subject" data-subject="맛집" value="false">
+                                                                <svg class="ico" width="24" height="24" viewBox="0 0 24 24">
+                                                                    <path d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"></path>
+                                                                </svg>
+                                                            </span>
 
+                                                            <span class="stm-divide">
+                                                                <span>면접</span>
+                                                                <input type="hidden" class="input-subject" data-subject="면접" value="false">
+                                                                <svg class="ico" width="24" height="24" viewBox="0 0 24 24">
+                                                                    <path d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"></path>
+                                                                </svg>
+                                                            </span>
 
+                                                            <span class="stm-divide">
+                                                                <span>IT</span>
+                                                                <input type="hidden" class="input-subject" data-subject="IT" value="false">
+                                                                <svg class="ico" width="24" height="24" viewBox="0 0 24 24">
+                                                                    <path d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"></path>
+                                                                </svg>
+                                                            </span>
 
-    <section id="employer-post-new-job">
-        <div class="row">
-            <div class="container">
-                <div class="row">
-                    <div class="col-xs-10 col-xs-offset-1 stm-top" id="container">
-                        <div class="res-steps-container">
-                            <div class="res-steps res-step-one active" data-class=".res-form-one">
-                            <div class="res-step-bar">1</div>
-                            <div class="res-progress-bar"></div>
-                            <div class="res-progress-title">주제</div>
-                            </div>
-                            <div class="res-steps res-step-two" data-class=".res-form-two">
-                            <div class="res-step-bar">2</div>
-                            <div class="res-progress-bar"></div>
-                            <div class="res-progress-title">일정</div>
-                            </div>
-                            <div class="res-steps res-step-three" data-class=".res-form-three">
-                            <div class="res-step-bar">3</div>
-                            <div class="res-progress-bar"></div>
-                            <div class="res-progress-title">그룹</div>
-                            </div>
-                            <div class="res-steps res-step-four" data-class=".res-form-four">
-                            <div class="res-step-bar">4</div>
-                            <div class="res-progress-bar"></div>
-                            <div class="res-progress-title">상세</div>
-                            </div>
-                        </div>
-                        <div class="clearfix">&nbsp;</div>
-                        <div class="clearfix">&nbsp;</div>
+                                                            <span class="stm-divide">
+                                                                <span>수능</span>
+                                                                <input type="hidden" class="input-subject" data-subject="수능" value="false">
+                                                                <svg class="ico" width="24" height="24" viewBox="0 0 24 24">
+                                                                    <path d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"></path>
+                                                                </svg>
+                                                            </span>
 
-                        <div class="res-step-form col-md-6 col-md-offset-2 res-form-one">
-                            <div class="stm-title">
-                                <img src="/static/image/study/reading.png">
-                                <p>어떤 주제와 관련된 스터디 인가요?</p>
-                            </div>
-                            <div class="form-group">
-                                <p class="col-sm-12 stm-subtext"><span>주제선정 :</span><span>현재 </span><span class="sujectCnt">0</span><span> 개 선택</span></p>
-                                <div class="col-sm-12">
-                                    <span class="stm-divide">
-                                    <span>프로그래밍</span>
-                                    <input type="hidden" class="input-subject" data-subject="프로그래밍" value="false">
-                                    <svg class="ico" width="24" height="24" viewBox="0 0 24 24">
-                                    <path d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"></path>
-                                    </svg>
-                                    </span>
+                                                            <span class="stm-divide">
+                                                                <span>여행</span>
+                                                                <input type="hidden" class="input-subject" data-subject="여행" value="false">
+                                                                <svg class="ico" width="24" height="24" viewBox="0 0 24 24">
+                                                                    <path d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"></path>
+                                                                </svg>
+                                                            </span>
 
-                                    <span class="stm-divide">
-                                    <span>외국어</span>
-                                    <input type="hidden" class="input-subject" data-subject="외국어" value="false">
-                                    <svg class="ico" width="24" height="24" viewBox="0 0 24 24">
-                                    <path d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"></path>
-                                    </svg>
-                                    </span>
+                                                            <span class="stm-divide">
+                                                                <span>공부진도체크</span>
+                                                                <input type="hidden" class="input-subject" data-subject="공부진도체크" value="false">
+                                                                <svg class="ico" width="24" height="24" viewBox="0 0 24 24">
+                                                                    <path d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"></path>
+                                                                </svg>
+                                                            </span>
 
-                                    <span class="stm-divide">
-                                    <span>취업</span>
-                                    <input type="hidden" class="input-subject" data-subject="취업" value="false">
-                                    <svg class="ico" width="24" height="24" viewBox="0 0 24 24">
-                                    <path d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"></path>
-                                    </svg>
-                                    </span>
+                                                            <span class="stm-divide">
+                                                                <span>출석체크</span>
+                                                                <input type="hidden" class="input-subject" data-subject="출석체크" value="false">
+                                                                <svg class="ico" width="24" height="24" viewBox="0 0 24 24">
+                                                                    <path d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"></path>
+                                                                </svg>
+                                                            </span>
 
-                                    <span class="stm-divide">
-                                    <span>자격증</span>
-                                    <input type="hidden" class="input-subject" data-subject="자격증" value="false">
-                                    <svg class="ico" width="24" height="24" viewBox="0 0 24 24">
-                                    <path d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"></path>
-                                    </svg>
-                                    </span>
+                                                            <span class="stm-divide">
+                                                                <span>창업</span>
+                                                                <input type="hidden" class="input-subject" data-subject="창업" value="false">
+                                                                <svg class="ico" width="24" height="24" viewBox="0 0 24 24">
+                                                                    <path d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"></path>
+                                                                </svg>
+                                                            </span>
 
-                                    <span class="stm-divide">
-                                    <span>동기부여</span>
-                                    <input type="hidden" class="input-subject" data-subject="동기부여" value="false">
-                                    <svg class="ico" width="24" height="24" viewBox="0 0 24 24">
-                                    <path d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"></path>
-                                    </svg>
-                                    </span>
+                                                            <span class="stm-divide">
+                                                                <span>대학</span>
+                                                                <input type="hidden" class="input-subject" data-subject="대학" value="false">
+                                                                <svg class="ico" width="24" height="24" viewBox="0 0 24 24">
+                                                                    <path d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"></path>
+                                                                </svg>
+                                                            </span>
 
-                                    <span class="stm-divide">
-                                    <span>맛집</span>
-                                    <input type="hidden" class="input-subject" data-subject="맛집" value="false">
-                                    <svg class="ico" width="24" height="24" viewBox="0 0 24 24">
-                                    <path d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"></path>
-                                    </svg>
-                                    </span>
+                                                            <span class="stm-divide">
+                                                                <span>취미</span>
+                                                                <input type="hidden" class="input-subject" data-subject="취미" value="false">
+                                                                <svg class="ico" width="24" height="24" viewBox="0 0 24 24">
+                                                                    <path d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"></path>
+                                                                </svg>
+                                                            </span>
 
-                                    <span class="stm-divide">
-                                    <span>면접</span>
-                                    <input type="hidden" class="input-subject" data-subject="면접" value="false">
-                                    <svg class="ico" width="24" height="24" viewBox="0 0 24 24">
-                                    <path d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"></path>
-                                    </svg>
-                                    </span>
+                                                            <span class="stm-divide">
+                                                                <span>운동</span>
+                                                                <input type="hidden" class="input-subject" data-subject="운동" value="false">
+                                                                <svg class="ico" width="24" height="24" viewBox="0 0 24 24">
+                                                                    <path d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"></path>
+                                                                </svg>
+                                                            </span>
 
-                                    <span class="stm-divide">
-                                    <span>IT</span>
-                                    <input type="hidden" class="input-subject" data-subject="IT" value="false">
-                                    <svg class="ico" width="24" height="24" viewBox="0 0 24 24">
-                                    <path d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"></path>
-                                    </svg>
-                                    </span>
+                                                            <span class="stm-divide">
+                                                                <span>웹개발</span>
+                                                                <input type="hidden" class="input-subject" data-subject="웹개발" value="false">
+                                                                <svg class="ico" width="24" height="24" viewBox="0 0 24 24">
+                                                                    <path d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"></path>
+                                                                </svg>
+                                                            </span>
 
-                                    <span class="stm-divide">
-                                    <span>수능</span>
-                                    <input type="hidden" class="input-subject" data-subject="수능" value="false">
-                                    <svg class="ico" width="24" height="24" viewBox="0 0 24 24">
-                                    <path d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"></path>
-                                    </svg>
-                                    </span>
-
-                                    <span class="stm-divide">
-                                    <span>여행</span>
-                                    <input type="hidden" class="input-subject" data-subject="여행" value="false">
-                                    <svg class="ico" width="24" height="24" viewBox="0 0 24 24">
-                                    <path d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"></path>
-                                    </svg>
-                                    </span>
-
-                                    <span class="stm-divide">
-                                    <span>공부진도체크</span>
-                                    <input type="hidden" class="input-subject" data-subject="공부진도체크" value="false">
-                                    <svg class="ico" width="24" height="24" viewBox="0 0 24 24">
-                                    <path d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"></path>
-                                    </svg>
-                                    </span>
-
-                                    <span class="stm-divide">
-                                    <span>출석체크</span>
-                                    <input type="hidden" class="input-subject" data-subject="출석체크" value="false">
-                                    <svg class="ico" width="24" height="24" viewBox="0 0 24 24">
-                                    <path d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"></path>
-                                    </svg>
-                                    </span>
-
-                                    <span class="stm-divide">
-                                    <span>창업</span>
-                                    <input type="hidden" class="input-subject" data-subject="창업" value="false">
-                                    <svg class="ico" width="24" height="24" viewBox="0 0 24 24">
-                                    <path d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"></path>
-                                    </svg>
-                                    </span>
-
-                                    <span class="stm-divide">
-                                    <span>대학</span>
-                                    <input type="hidden" class="input-subject" data-subject="대학" value="false">
-                                    <svg class="ico" width="24" height="24" viewBox="0 0 24 24">
-                                    <path d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"></path>
-                                    </svg>
-                                    </span>
-
-                                    <span class="stm-divide">
-                                    <span>취미</span>
-                                    <input type="hidden" class="input-subject" data-subject="취미" value="false">
-                                    <svg class="ico" width="24" height="24" viewBox="0 0 24 24">
-                                    <path d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"></path>
-                                    </svg>
-                                    </span>
-
-                                    <span class="stm-divide">
-                                    <span>운동</span>
-                                    <input type="hidden" class="input-subject" data-subject="운동" value="false">
-                                    <svg class="ico" width="24" height="24" viewBox="0 0 24 24">
-                                    <path d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"></path>
-                                    </svg>
-                                    </span>
-
-                                    <span class="stm-divide">
-                                    <span>웹개발</span>
-                                    <input type="hidden" class="input-subject" data-subject="웹개발" value="false">
-                                    <svg class="ico" width="24" height="24" viewBox="0 0 24 24">
-                                    <path d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"></path>
-                                    </svg>
-                                    </span>
-
-                                    <span class="stm-divide">
-                                    <span>앱개발</span>
-                                    <input type="hidden" class="input-subject" data-subject="앱개발" value="false">
-                                    <svg class="ico" width="24" height="24" viewBox="0 0 24 24">
-                                    <path d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"></path>
-                                    </svg>
-                                    </span>
+                                                            <span class="stm-divide">
+                                                                <span>앱개발</span>
+                                                                <input type="hidden" class="input-subject" data-subject="앱개발" value="false">
+                                                                <svg class="ico" width="24" height="24" viewBox="0 0 24 24">
+                                                                    <path d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"></path>
+                                                                </svg>
+                                                            </span>
 
 
-                                    <span class="stm-divide">
-                                    <span>그외</span>
-                                    <input type="hidden" class="input-subject" data-subject="그외" value="false">
-                                    <svg class="ico" width="24" height="24" viewBox="0 0 24 24">
-                                    <path d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"></path>
-                                    </svg>
-                                    </span>
+                                                            <span class="stm-divide">
+                                                                <span>그외</span>
+                                                                <input type="hidden" class="input-subject" data-subject="그외" value="false">
+                                                                <svg class="ico" width="24" height="24" viewBox="0 0 24 24">
+                                                                    <path d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"></path>
+                                                                </svg>
+                                                            </span>
 
-                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="text-center">
-                                    <button type="button" class="btn btn-warning col-xs-offset-1 btn res-btn-orange stm-step1" data-class=".res-form-one">다음</button>
+                                                         </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div class="text-center">
+                                                            <button type="button" class="btn btn-warning col-xs-offset-1 btn res-btn-orange stm-step1" data-class=".res-form-one">다음</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+
+
+                                                <!-- Step 2 일정 -->
+                                                <div class="res-step-form col-md-6 col-md-offset-2 res-form-two">
+                                                    <div class="stm-title">
+                                                        <img src="/static/image/study/round-table.png">
+                                                        <p>팀원과 함께할 장소와 기간을 지정해주세요.</p>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-sm-12 control-label">장소</label>
+                                                        <div class="col-sm-12">
+                                                            <input type="hidden" id="stm-lat"><input type="hidden" id="stm-lng">
+                                                            <input type="text" class="form-control" id="pac-input" name="address" placeholder="스터디 장소를 검색하세요.">
+                                                            <div id="map" style="width: 100%;height: 300px"></div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group">
+
+                                                        <div class="row stm-date">
+                                                            <div class="col-sm-6">
+                                                            <label>시작일자</label>
+                                                            <input type="text" class="form-control datepickter inputs_toPer" id="inputs_toPer" name="toPer">
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                            <label>종료일자</label>
+                                                            <input type="text" class="form-control datepickter inputs_fromPer" id="inputs_fromPer" name="fromPer">
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div class="text-center">
+                                                            <button type="button" class="btn btn-warning btn res-btn-gray" data-class=".res-form-two">이전</button>
+                                                            <button type="button" class="btn btn-warning col-xs-offset-1 btn res-btn-orange stm-step2" data-class=".res-form-two">다음</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+
+
+
+                                                <!-- Step 3 그룹 -->
+                                                <div class="res-step-form col-md-6 col-md-offset-2 res-form-three">
+                                                    <div class="stm-title">
+                                                        <img src="/static/image/study/teamwork.png">
+                                                        <p>스터디그룹 정보를 입력 해주세요.</p>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-sm-12 control-label">스터디명</label>
+                                                        <div class="col-sm-12">
+                                                            <input type="text" class="form-control" id="stm-title" maxlength="20" placeholder="스터디명을 입력 해주세요.">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-sm-12 control-label">참여인원</label>
+                                                        <div class="col-sm-12">
+                                                            <select name="person" class="form-control">
+                                                            <option value="2">2명</option>
+                                                            <option value="3">3명</option>
+                                                            <option value="4">4명</option>
+                                                            <option value="5">5명</option>
+                                                            <option value="5">6명</option>
+                                                            <option value="5">7명</option>
+                                                            <option value="5">8명</option>
+                                                            <option value="5">9명</option>
+                                                            <option value="99">제한없음</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-sm-12 control-label">대표이미지</label>
+                                                        <div class="file-upload">
+                                                            <div class="image-upload-wrap">
+                                                                <input class="file-upload-input" type='file'  onchange="readURL(this);"  accept="image/*" />
+                                                                <div class="drag-text">
+                                                                    <h3>이미지 드래그앤드롭 & 클릭</h3>
+                                                                </div>
+                                                            </div>
+                                                            <div class="file-upload-content">
+                                                            <img class="file-upload-image" src="#" alt="your image" />
+                                                                <div class="image-title-wrap">
+                                                                    <button type="button" class="remove-image">삭제 : <span class="image-title">Uploaded Image</span></button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div class="text-center">
+                                                        <button type="button" class="btn btn-warning btn res-btn-gray" data-class=".res-form-three">이전</button>
+                                                        <button type="button" class="btn btn-warning col-xs-offset-1 btn res-btn-orange stm-step3" data-class=".res-form-three">다음</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+
+
+
+                                                <!-- Step 4 상세 -->
+                                                <div class="res-step-form col-md-6 col-md-offset-2 res-form-four">
+                                                    <div class="stm-title">
+                                                        <img src="/static/image/study/signature.png">
+                                                        <p>스터디 상세내용을 입력 해주세요.</p>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label class="col-sm-12 control-label">제목</label>
+                                                        <div class="col-sm-12">
+                                                            <input type="text" class="form-control" id="stm-detailtitle" maxlength="40" placeholder="제목을 입력 해주세요.">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label class="col-sm-12 control-label">내용</label>
+                                                        <div class="col-sm-12">
+                                                            <textarea name="editor" id="studyEditor"></textarea>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div class="text-center">
+                                                            <button type="button" class="btn btn-warning btn res-btn-gray" data-class=".res-form-four">이전</button>
+                                                            <button type="button" class="btn btn-primary col-xs-offset-1 btn stm-step4">등록</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-
-
-
-                        <div class="res-step-form col-md-6 col-md-offset-2 res-form-two">
-                        <div class="stm-title">
-                        <img src="/static/image/study/round-table.png">
-                        <p>팀원과 함께할 장소와 기간을 지정해주세요.</p>
-                        </div>
-                        <div class="form-group">
-                        <label class="col-sm-12 control-label">장소</label>
-                        <div class="col-sm-12">
-                            <input type="hidden" id="stm-lat"><input type="hidden" id="stm-lng">
-                            <input type="text" class="form-control" id="pac-input" name="address" placeholder="스터디 장소를 검색하세요.">
-                            <div id="map" style="width: 100%;height: 300px"></div>
-                        </div>
-                        </div>
-
-                        <div class="form-group">
-
-                            <div class="row stm-date">
-                                <div class="col-sm-6">
-                                <label>시작일자</label>
-                                <input type="text" class="form-control datepickter inputs_toPer" name="toPer">
-                                </div>
-                                <div class="col-sm-6">
-                                <label>종료일자</label>
-                                <input type="text" class="form-control datepickter inputs_fromPer" name="fromPer">
-                                </div>
-                            </div>
+                            </section>
 
                         </div>
-                        <div class="form-group">
-                        <div class="text-center">
-                        <button type="button" class="btn btn-warning btn res-btn-gray" data-class=".res-form-two">이전</button>
-                        <button type="button" class="btn btn-warning col-xs-offset-1 btn res-btn-orange stm-step2" data-class=".res-form-two">다음</button>
-                        </div>
-                        </div>
-                        </form>
-                        </div>
-
-                        <div class="res-step-form col-md-6 col-md-offset-2 res-form-three">
-                            <div class="stm-title">
-                                <img src="/static/image/study/teamwork.png">
-                                <p>스터디그룹 정보를 입력 해주세요.</p>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-12 control-label">스터디명</label>
-                                <div class="col-sm-12">
-                                    <input type="text" class="form-control" id="stm-title" placeholder="스터디명을 입력 해주세요.">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-12 control-label">참여인원</label>
-                                <div class="col-sm-12">
-                                    <select name="person" class="form-control">
-                                    <option value="1">1명</option>
-                                    <option value="2">2명</option>
-                                    <option value="3">3명</option>
-                                    <option value="4">4명</option>
-                                    <option value="5">5명</option>
-                                    <option value="5">6명</option>
-                                    <option value="5">7명</option>
-                                    <option value="5">8명</option>
-                                    <option value="5">9명</option>
-                                    <option value="99">제한없음</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-12 control-label">대표이미지</label>
-    <div class="file-upload">
-    <div class="image-upload-wrap">
-    <input class="file-upload-input" type='file' onchange="readURL(this);" accept="image/*" />
-    <div class="drag-text">
-    <h3>이미지 드래그앤드롭 & 클릭</h3>
-    </div>
-    </div>
-    <div class="file-upload-content">
-    <img class="file-upload-image" src="#" alt="your image" />
-    <div class="image-title-wrap">
-    <button type="button" class="remove-image">삭제 : <span class="image-title">Uploaded Image</span></button>
-    </div>
-    </div>
-    </div>
-
-                            </div>
-                            <div class="form-group">
-                                <div class="text-center">
-                                <button type="button" class="btn btn-warning btn res-btn-gray" data-class=".res-form-three">이전</button>
-                                <button type="button" class="btn btn-warning col-xs-offset-1 btn res-btn-orange stm-step3" data-class=".res-form-three">다음</button>
-                                </div>
-                            </div>
-                        </div>
-
-
-
-
-
-    <div class="res-step-form col-md-6 col-md-offset-2 res-form-four">
-    <div class="stm-title">
-    <img src="/static/image/study/signature.png">
-    <p>스터디 상세내용을 입력 해주세요.</p>
-    </div>
-
-    <div class="form-group">
-    <label class="col-sm-12 control-label">제목</label>
-    <div class="col-sm-12">
-    <input type="text" class="form-control" id="choose-title" placeholder="제목을 입력 해주세요.">
-    </div>
-    </div>
-
-    <div class="form-group">
-    <label class="col-sm-12 control-label">내용</label>
-    <div class="col-sm-12">
-
-    <textarea name="editor" id="studyEditor"></textarea>
-
-    </div>
-    </div>
-
-    <div class="form-group">
-    <div class="text-center">
-    <button type="button" class="btn btn-warning btn res-btn-gray" data-class=".res-form-four">이전</button>
-    <button type="button" class="btn btn-warning col-xs-offset-1 btn res-btn-orange stm-step4">등록</button>
-    </div>
-    </div>
-    </div>
-
-
-
-
-
-
-
-    </div>
-    </div>
-    </div>
-    </div>
-    </section>
-
-
-
-    <%--<button type="button" class="btn btn-yellow studysiba-button studysiba-cancel" data-dismiss="modal">취소</button>--%>
-
-
-
-
-
-
-<script>
-
-    $('.file-upload-input').change(function(){
-    readURL($(this));
-    });
-
-    $('.remove-image').on('click', function(){
-    removeUpload();
-    });
-
-    function readURL(input) {
-    if (input.files && input.files[0]) {
-
-    var reader = new FileReader();
-
-    reader.onload = function(e) {
-    $('.image-upload-wrap').hide();
-
-    $('.file-upload-image').attr('src', e.target.result);
-    $('.file-upload-content').show();
-
-    $('.image-title').html(input.files[0].name);
-    };
-
-    reader.readAsDataURL(input.files[0]);
-
-    } else {
-    removeUpload();
-    }
-    }
-
-
-
-    function removeUpload() {
-    $('.file-upload-input').replaceWith($('.file-upload-input').clone());
-    $('.file-upload-content').hide();
-    $('.image-upload-wrap').show();
-    }
-    $('.image-upload-wrap').bind('dragover', function () {
-    $('.image-upload-wrap').addClass('image-dropping');
-    });
-    $('.image-upload-wrap').bind('dragleave', function () {
-    $('.image-upload-wrap').removeClass('image-dropping');
-    });
-    </script>
-
-
-
-
-
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    </div>
 
-        <%--<%--%>
-        <%--session.setAttribute("id","test1");--%>
-        <%--session.setAttribute("auth","ADMIN");--%>
-    <%--%>--%>
+
+
+    <!-- 스터디모달 이미지 -->
+        <script type="text/javascript">
+            $('.remove-image').on('click', function(){
+                removeUpload();
+            });
+            function readURL(input) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function(e) {
+                        $('.image-upload-wrap').hide();
+                        $('.file-upload-image').attr('src', e.target.result);
+                        $('.file-upload-content').show();
+                        $('.image-title').html(input.files[0].name);
+                    };
+                    reader.readAsDataURL(input.files[0]);
+                } else {
+                    removeUpload();
+                }
+            }
+            function removeUpload() {
+                    $('.file-upload-input').replaceWith($('.file-upload-input').clone());
+                    $('.file-upload-content').hide();
+                    $('.image-upload-wrap').show();
+                }
+                $('.image-upload-wrap').bind('dragover', function () {
+                    $('.image-upload-wrap').addClass('image-dropping');
+                });
+                $('.image-upload-wrap').bind('dragleave', function () {
+                    $('.image-upload-wrap').removeClass('image-dropping');
+                });
+        </script>
+
+    </c:if>
 
 
         <!-- / 경로가 아닌경우 로그인/회원가입 모달 클릭시 -->
@@ -754,6 +719,13 @@
                 <c:remove var="stateCode" scope="session"/>
             </script>
         </c:if>
+
+
+
+
+    <div class="alert alert-danger" id="dangerMessage" style="display: none; z-index: 9999;">
+    </div>
+
 
         <script type="text/javascript" src="/static/js/lib/popper.min.js"></script>
         <script type="text/javascript" src="/static/js/lib/bootstrap.min.js"></script>

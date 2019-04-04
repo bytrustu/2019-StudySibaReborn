@@ -424,6 +424,17 @@ let studySlider = (left) => {
     }, 2500);
 }
 
+
+// 날짜포맷 YYYY-MM-DD 변환
+let formatDate = (date) => {
+    let pad = (num) => {
+        num = num + '';
+        return num.length < 2 ? '0' + num : num;
+    }
+    return date.getFullYear() + '-' + pad(date.getMonth() + 1) + '-' + pad(date.getDate());
+}
+
+
 // scoll 값이 element 접근시 이벤트 발생 ( 증가대상, 뷰표현대상, 메뉴바없을시생략 )
 let catchElement = (element, target, increaseNum, isNav) => {
     if (increaseNum === undefined) increaseNum = 33;
@@ -862,3 +873,6 @@ const ajaxAlert = (title, url, successText, errorText) => {
         }, 300);
     })
 }
+
+
+

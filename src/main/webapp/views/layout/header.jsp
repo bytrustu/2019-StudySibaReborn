@@ -25,7 +25,7 @@
                 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
                 <link type="text/css" rel="stylesheet" href="/static/css/main.css">
                 <link type="text/css" rel="stylesheet" href="/static/css/sub.css">
-                <c:if test="${fn:contains(requestScope['javax.servlet.forward.servlet_path'] , '/study') }">
+                <c:if test="${fn:contains(requestScope['javax.servlet.forward.servlet_path'] , '/study' ) || fn:contains(requestScope['javax.servlet.forward.servlet_path'] , '/group' ) }">
                         <link type="text/css" rel="stylesheet" href="/static/css/study.css">
                 </c:if>
                 <script type="text/javascript" src="/static/js/lib/jquery-3.3.1.min.js"></script>

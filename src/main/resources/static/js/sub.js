@@ -1,7 +1,5 @@
 $(document).ready(function () {
 
-    console.log('dddd');
-
     // youtube fix
     if (!window.YT) var YT = {loading: 0, loaded: 0};
     if (!window.YTConfig) var YTConfig = {host: "https://www.youtube.com"};
@@ -19,7 +17,6 @@ $(document).ready(function () {
             for (var n in o) o.hasOwnProperty(n) && (YTConfig[n] = o[n])
         }
     }());
-
 
 
     // CKEDITOR5 설정
@@ -48,34 +45,6 @@ $(document).ready(function () {
         anchor.className = 'embedly-card';
         element.appendChild( anchor );
     });
-
-    // CKEDITOR5 설정
-    ClassicEditor
-        .create(document.querySelector('#studyEditor'), {
-            language: 'ko',
-            toolbar: {
-                viewportTopOffset: 30
-            },
-            container : {
-                overflow : scroll
-            },
-            ckfinder: {
-                uploadUrl: '/upload/community'
-            }
-        })
-        .then(editor => {
-            ckContent = editor;
-        })
-        .catch(error => {
-        });
-
-    document.querySelectorAll( 'oembed[url]' ).forEach( element => {
-        const anchor = document.createElement( 'a' );
-        anchor.setAttribute( 'href', element.getAttribute( 'url' ) );
-        anchor.className = 'embedly-card';
-        element.appendChild( anchor );
-    });
-
 
 
 
@@ -107,6 +76,7 @@ $(document).ready(function () {
     // $(window).resize(function () {
     //     contentWidthFix(widthSize);
     // });
+
 
     // 게시글 등록
     let ckContent = '';
@@ -174,6 +144,7 @@ $(document).ready(function () {
         }
     });
 
+
     // 모달 취소버튼
     $('.studysiba-cancel').on('click', () => {
         $('body').css('overflow', 'auto');
@@ -224,7 +195,6 @@ $(document).ready(function () {
             }
         });
     });
-
 
 
     // 댓글 등록 버튼
@@ -401,9 +371,7 @@ $(document).ready(function () {
     });
 
 
-
 });
-
 
 
 
