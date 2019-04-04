@@ -92,7 +92,8 @@
                                             <img class="comment-delete" src="/static/image/common/delete2.png">
                                         </c:if>
                                     </p>
-                                    <p><fmt:formatDate value="${board.brdDate}" pattern="yy-MM-dd HH:mm:ss"/></p>
+                                    <%--<p><fmt:formatDate value="${board.brdDate}" pattern="yy-MM-dd HH:mm:ss"/></p>--%>
+                                    <p>${comment.lastTime}</p>
                                 </div>
                             </div>
                             <p class="comment-text">${comment.cmtContent}</p>

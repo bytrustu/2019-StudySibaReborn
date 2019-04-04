@@ -18,6 +18,8 @@ public class CommentVO extends BoardVO {
     // 댓글 노출여부
     private int cmtAvailable;
     // 댓글 등록 날짜
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
+    //@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private Timestamp cmtDate;
+    // 댓글 지난시간 변환문자
+    private String lastTime;
 }

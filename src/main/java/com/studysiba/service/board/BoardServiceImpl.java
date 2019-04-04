@@ -150,6 +150,12 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public ArrayList<CommentVO> getCommentList(int no) throws Exception {
         ArrayList<CommentVO> commentList = boardMapper.getCommentList(no);
+        for ( int i=0; i<commentList.size(); i++ ) {
+            String lastTime = DataConversion.DurationFromNow(commentList.get(i).getCmtDate());
+            commentList.get(i).setLastTime(lastTime);
+            System.out.println(commentList.get(i).getLastTime());
+        }
+
         return commentList;
     }
 
