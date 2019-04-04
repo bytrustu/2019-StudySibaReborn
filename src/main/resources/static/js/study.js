@@ -62,7 +62,7 @@ $(document).ready(function(){
                 subject.push(element.getAttribute('data-subject'));
             }
         }
-        console.log(subject);
+        //console.log(subject);
         return subject;
     }
 
@@ -159,7 +159,7 @@ $(document).ready(function(){
         return step4;
     }
 
-    // 스탭4 등록 버튼 클릭스
+    // 스탭4 등록 버튼 클릭
     $('.stm-step4').on('click', ()=>{
         let step1 = step1map();
         let step2 = step2map();

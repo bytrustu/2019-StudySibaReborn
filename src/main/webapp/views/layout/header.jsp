@@ -49,10 +49,10 @@
                                         <a class="nav-link" href="/">홈</a>
                                 </li>
                                 <li class="nav-item text-right">
-                                        <a class="nav-link" href="/notice/list">공지사항</a>
+                                        <a class="nav-link" href="/board/notice/list">공지사항</a>
                                 </li>
                                 <li class="nav-item">
-                                        <a class="nav-link" href="/community/list">커뮤니티</a>
+                                        <a class="nav-link" href="/board/community/list">커뮤니티</a>
                                 </li>
                                 <li class="nav-item text-right">
                                         <a class="nav-link" href="/study/list">스터디참여</a>

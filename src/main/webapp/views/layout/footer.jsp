@@ -263,12 +263,12 @@
                         <select class="browser-default custom-select basic-modal-select">
 
                             <c:choose>
-                                <c:when test="${requestScope['javax.servlet.forward.servlet_path'] eq '/notice/list' || requestScope['javax.servlet.forward.servlet_path'] eq '/notice/view'  }">
+                                <c:when test="${requestScope['javax.servlet.forward.servlet_path'] eq '/board/notice/list' || requestScope['javax.servlet.forward.servlet_path'] eq '/board/notice/view'  }">
                                     <option value="1" selected>공지</option>
                                     <option value="2">이벤</option>
                                 </c:when>
 
-                                <c:when test="${requestScope['javax.servlet.forward.servlet_path'] eq '/community/list' || requestScope['javax.servlet.forward.servlet_path'] eq '/community/view' }">
+                                <c:when test="${requestScope['javax.servlet.forward.servlet_path'] eq '/board/community/list' || requestScope['javax.servlet.forward.servlet_path'] eq '/board/community/view' }">
                                     <option value="3" selected>잡담</option>
                                     <option value="4">정보</option>
                                     <option value="5">요청</option>
@@ -742,10 +742,12 @@
                 <script type="text/javascript" src="/static/js/main.js"></script>
             </c:when>
             <c:otherwise>
-                <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyByjX-fIiEVgNTofLuWWpxgGqQADaoNSWk&libraries=places&callback=initAutocomplete" async defer></script>
-                <script type="text/javascript" src="/static/js/googlemap.js"></script>
                 <script type="text/javascript" src="/static/js/sub.js"></script>
                 <script type="text/javascript" src="/static/js/study.js"></script>
+                <c:if test="${fn:contains(requestScope['javax.servlet.forward.servlet_path'] , '/study' ) || fn:contains(requestScope['javax.servlet.forward.servlet_path'] , '/group' ) }">
+                    <script type="text/javascript" src="/static/js/googlemap.js"></script>
+                    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyByjX-fIiEVgNTofLuWWpxgGqQADaoNSWk&libraries=places&callback=initAutocomplete" async defer></script>
+                </c:if>
             </c:otherwise>
         </c:choose>
 

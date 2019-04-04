@@ -361,6 +361,14 @@ let firstPath = () => {
     return currentPath;
 }
 
+// 첫번째 루트 경로 반환
+let secondPath = () => {
+    let currentPath = window.location.pathname;
+    currentPath = currentPath.substring(1, currentPath.lastIndexOf('/'));
+    currentPath = currentPath.substring(currentPath.indexOf('/')+1);
+    return currentPath;
+}
+
 
 // 글자 byte 계산, 자르기
 let calByte = {
@@ -665,11 +673,11 @@ let changePassword = (memberJson) => {
 }
 
 // 게시판 게시글 등록
-let writeBoard = (boardJson) => {
+let writeBoard = (boardJson,currentPath) => {
     return new Promise( (resolve, reject) => {
         $.ajax({
             type : 'POST',
-            url : `/board/write`,
+            url : `/board/${currentPath}/write`,
             data : boardJson,
             dataType : 'json',
             contentType : 'application/json; charset=utf-8',
@@ -688,7 +696,7 @@ let writeComment = (boardJson) => {
     return new Promise( (resolve, reject) => {
         $.ajax({
             type : 'POST',
-            url : `/comment/write`,
+            url : `/board/comment/write`,
             data : boardJson,
             dataType : 'json',
             contentType : 'application/json; charset=utf-8',
@@ -747,7 +755,7 @@ let getBoard = (type,no) => {
     return new Promise( (resolve, reject) => {
         $.ajax({
             type : 'GET',
-            url : `/${type}/get/${no}`,
+            url : `/board/${type}/get/${no}`,
             dataType : 'json',
             contentType : 'application/json; charset=utf-8',
             success : (data) => {

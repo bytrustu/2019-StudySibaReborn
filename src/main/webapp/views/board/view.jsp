@@ -20,9 +20,9 @@
                 </c:if>
             </div>
             <c:choose>
-                <c:when test="${requestScope['javax.servlet.forward.servlet_path'] eq '/notice/view' }">
+                <c:when test="${requestScope['javax.servlet.forward.servlet_path'] eq '/board/notice/view' }">
                 </c:when>
-                <c:when test="${requestScope['javax.servlet.forward.servlet_path'] eq '/community/view' }">
+                <c:when test="${requestScope['javax.servlet.forward.servlet_path'] eq '/board/community/view' }">
                     <button class="btn btn-warning content-writebtn" data-reply="true" data-write="<c:if test="${sessionScope.id ne null}">true</c:if>">답글쓰기</button>
                 </c:when>
             </c:choose>

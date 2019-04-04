@@ -82,7 +82,7 @@ $(document).ready(function () {
     let ckContent = '';
     $('.write-btn').on('click', (e) => {
         e.preventDefault();
-        let currentPath =firstPath();
+        let currentPath =secondPath();
         let boardInfo = new Map();
 
         if ( $('.board-input-title').val().trim() == '' || ckContent.getData().trim() == '' ){
@@ -99,12 +99,12 @@ $(document).ready(function () {
         boardInfo.set('isReply', $('.content-writebtn').attr('data-reply'));
         let boardJson = mapToJson(boardInfo, false);
 
-        writeBoard(boardJson)
+        writeBoard(boardJson,currentPath)
             .then((data) => {
                 $('#basicModal').modal('hide');
                 timerAlert("글쓰기","글의 정보를 확인중입니다.",1500);
                 setTimeout(()=>{successAlert("게시글이 등록되었습니다.");},1500);
-                setTimeout(()=>{location.href = `/${currentPath}/view?no=${data.no}`;},3000);
+                setTimeout(()=>{location.href = `/board/${currentPath}/view?no=${data.no}`;},3000);
             }).catch((error) => {
                 errorAlert('글등록에 실패했습니다');
             });
@@ -113,7 +113,7 @@ $(document).ready(function () {
 
     // 글쓰기 버튼
     $('.content-writebtn').on('click', function () {
-        let currentPath = firstPath();
+        let currentPath = secondPath();
         if ( currentPath == 'notice' ) {
             if ($(this).attr('data-write') == 'true') {
                 $('#basicModal').modal('show');
@@ -148,7 +148,7 @@ $(document).ready(function () {
     // 모달 취소버튼
     $('.studysiba-cancel').on('click', () => {
         $('body').css('overflow', 'auto');
-        let currentPath = firstPath();
+        let currentPath = secondPath();
         if ( currentPath == 'notice' ) {
             $('.basic-modal-select').val('1').prop('selected', true);
         } else if ( currentPath == 'community' ) {
@@ -168,7 +168,7 @@ $(document).ready(function () {
     // 게시글 삭제
     $('.board-delete').on('click', ()=>{
         let no = $('.post-no').val();
-        let currentPath = firstPath();
+        let currentPath = secondPath();
         let boardInfo = new Map();
         boardInfo.set('brdNo', no);
         boardInfo.set('brdType',currentPath);
@@ -187,7 +187,7 @@ $(document).ready(function () {
                     .then( (data) => {
                         successAlert(stateCode.get(data.stateCode));
                         setTimeout(()=>{
-                            location.href=`/${currentPath}/list`;
+                            location.href=`/board/${currentPath}/list`;
                         },1500);
                     }).catch( (error) => {
                     errorAlert(stateCode.get(error.responseText.stateCode));
@@ -244,13 +244,14 @@ $(document).ready(function () {
                     <p>[ ${commentJson.mbrNick} ]
                     <img class="comment-delete" src="/static/image/common/delete2.png">
                     </p>   
-                    <p>${commentJson.cmtDate}</p>
+                    <p>방금 전</p>
                     </div>
                     </div>
                     <p class="comment-text">${commentJson.cmtContent}</p>
                     </div>`;
         return commentLayout;
     };
+// <p>${commentJson.cmtDate}</p>
 
 
     // 댓글 삭제
@@ -289,7 +290,7 @@ $(document).ready(function () {
 
     // 게시글 수정 모달버튼
     $('.board-edit').on('click', () => {
-        let currentPath = firstPath();
+        let currentPath = secondPath();
         let no = parseInt($('.post-no').val());
         $('#basicModal').modal('show');
 
@@ -311,7 +312,7 @@ $(document).ready(function () {
     // 게시글 수정 버튼
     $('.update-btn').on('click', (e) => {
         e.preventDefault();
-        let currentPath =firstPath();
+        let currentPath =secondPath();
         let boardInfo = new Map();
 
         if ( $('.board-input-title').val().trim() == '' || ckContent.getData().trim() == '' ){
@@ -354,9 +355,9 @@ $(document).ready(function () {
     // 추천 버튼
     $('.post-like').on('click', function() {
         if ($(this).attr('data-write') == 'true') {
-            let currentPath = firstPath();
+            let currentPath = secondPath();
             let no = $('.post-no').val();
-            let path = `/${currentPath}/like/${no}`;
+            let path = `/board/${currentPath}/like/${no}`;
             likeRegister(path)
                 .then( (data) => {
                     successAlert(stateCode.get(data.stateCode));
@@ -435,7 +436,7 @@ $('.board-searchinput').on('keydown', function(e){
 // 글제목, 목록 클릭시
 $('.board-postlink, .board-listbtn').on('click', function(e){
     e.preventDefault();
-    let currentPath = firstPath();
+    let currentPath = secondPath();
     let pathMap = new Map();
     let nextMove;
     let type;
@@ -455,7 +456,7 @@ $('.board-postlink, .board-listbtn').on('click', function(e){
     pathMap.set('pageNum',pageNum);
     pathMap.set('type',type);
     pathMap.set('keyword',keyword);
-    let path = `/${currentPath}/${nextMove}${makePath(pathMap)}`;
+    let path = `/board/${currentPath}/${nextMove}${makePath(pathMap)}`;
     location.href=path;
 });
 

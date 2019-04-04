@@ -25,11 +25,11 @@
             <div class="board-total">총 ${page.count} 게시글</div>
 
             <c:choose>
-                <c:when test="${requestScope['javax.servlet.forward.servlet_path'] eq '/notice/list' }">
+                <c:when test="${requestScope['javax.servlet.forward.servlet_path'] eq '/board/notice/list' }">
                     <button class="btn btn-warning content-writebtn" data-reply="false" data-write="<c:if test="${sessionScope.auth eq 'ADMIN'}">true</c:if>">글쓰기</button>
                 </c:when>
 
-                <c:when test="${requestScope['javax.servlet.forward.servlet_path'] eq '/community/list' }">
+                <c:when test="${requestScope['javax.servlet.forward.servlet_path'] eq '/board/community/list' }">
                     <button class="btn btn-warning content-writebtn" data-reply="false" data-write="<c:if test="${sessionScope.id ne null}">true</c:if>">글쓰기</button>
                 </c:when>
             </c:choose>
@@ -162,13 +162,13 @@
             <select class="custom-select custom-select-sm board-select">
 
                 <c:choose>
-                    <c:when test="${requestScope['javax.servlet.forward.servlet_path'] eq '/notice/list' }">
+                    <c:when test="${requestScope['javax.servlet.forward.servlet_path'] eq '/board/notice/list' }">
                         <option selected value="-1">전체</option>
                         <option value="1">공지</option>
                         <option value="2">이벤</option>
                     </c:when>
 
-                    <c:when test="${requestScope['javax.servlet.forward.servlet_path'] eq '/community/list' }">
+                    <c:when test="${requestScope['javax.servlet.forward.servlet_path'] eq '/board/community/list' }">
                         <option value="-2" <c:if test="${cri.type eq null}">selected</c:if>>전체</option>
                         <option value="3" <c:if test="${cri.type eq '3'}">selected</c:if>>잡담</option>
                         <option value="4" <c:if test="${cri.type eq '4'}">selected</c:if>>정보</option>
