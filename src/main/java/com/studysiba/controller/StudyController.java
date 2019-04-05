@@ -118,6 +118,15 @@ public class StudyController {
                 new ResponseEntity<>(stateVO, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    @ResponseBody
+    @DeleteMapping(value="/delete/{no}", consumes = "application/json", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    public ResponseEntity<StateVO> deleteStudy(@PathVariable("no") int no) throws Exception {
+        StateVO stateVO = studyService.deleteStudy(no);
+        return stateVO.getStateCode().equals("STUDY_DELETE_SUCCESS") ?
+                new ResponseEntity<>(stateVO, HttpStatus.OK) :
+                new ResponseEntity<>(stateVO, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
 
 
 }

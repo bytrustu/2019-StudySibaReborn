@@ -65,4 +65,11 @@ public interface StudyMapper {
      *  @Return 스터디그룹 업데이트 여부
      */
     int updateStudy(StudyVO studyVO);
+
+    /*
+     *  스터디삭제
+     *  @Param studyVO
+     *  @Return 스터디 삭제 여부 반환
+     */
+    int deleteStudy(StudyVO studyVO);
 }

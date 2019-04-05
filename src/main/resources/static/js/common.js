@@ -313,6 +313,9 @@ stateCode.set("UPLOAD_STATE_ERROR","파일 업로드에 실패했습니다.");
 stateCode.set("STUDY_UPDATE_SUCCESS","스터디가 수정 되었습니다.");
 stateCode.set("STUDY_UPDATE_ERROR","스터디 수정에 실패했습니다.");
 
+stateCode.set("STUDY_DELETE_SUCCESS","스터디가 비활성화 되었습니다..");
+stateCode.set("STUDY_DELETE_ERROR","스터디 비활성화에 실패했습니다.");
+
 
 // KAKAO API
 Kakao.init('672b34ad5f77dd65240951209b6cbd32');

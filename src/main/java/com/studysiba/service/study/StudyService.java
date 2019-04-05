@@ -36,4 +36,11 @@ public interface StudyService {
      *  @Return 스터디 수정에 대한 상태코드 반환
      */
     StateVO updateStudy(StudyVO studyVO) throws Exception;
+
+    /*
+     *  스터디 삭제
+     *  @Param studyVO
+     *  @Return 스터디 삭제에 대한 상태코드 반환
+     */
+    StateVO deleteStudy(int no);
 }

@@ -85,8 +85,8 @@
     border: 0;
     clear: both;
     margin: 40px 0 0;
-    border-top: 2px solid #373f52;
-    border-bottom: 2px solid #eaeef0;
+    border-top: 3px solid rgb(234, 234, 234);
+    border-bottom: 2px solid rgb(234, 234, 234);
 }
 
 .board-table > .board-thead {
@@ -400,7 +400,7 @@
     border: 0;
     clear: both;
     margin: 40px 0 5% 0;
-    border-top: 2px solid #373f52;
+    border-top: 2px solid rgb(234, 234, 234);
     border-bottom: 2px solid #eaeef0;
 }
 

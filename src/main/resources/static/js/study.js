@@ -184,7 +184,6 @@ $(document).ready(function(){
             idx = checkStep(step1,'one');
         }
 
-        console.log(step3);
         if ( idx > 0 ) return false;
         idx = checkStep(step2,'two');
         if ( idx > 0 ) return false;
@@ -503,12 +502,10 @@ $(document).ready(function(){
         let no = location.search.substring( location.search.lastIndexOf('=')+1 );
         
         initLiked();
+
         getStudy(no)
             .then( (data) => {
                 setTimeout(()=>{
-
-                    console.log(data);
-
                     //Step1 주제
                     let subject = data.stdDivide.split(',');
                     activeSubject('input-subject',subject);
@@ -530,10 +527,9 @@ $(document).ready(function(){
                     detailContent.setData(data.stdContent);
                 },500);
             }).catch( (error) => {
-                console.log(error.responseText);
+                errorAlert("잘못된 요청입니다.");
         });
     });
-
 
 });
 
@@ -590,13 +586,49 @@ let getStudy = (no) => {
     });
 }
 
-
-
-
-$('.stm-update').on('click', ()=>{
-
+// 스터디 비활성화 버튼
+$('.study-delete').on('click', ()=>{
+    let no = location.search.substring( location.search.lastIndexOf('=')+1 );
+    Swal.fire({
+        title: '스터디비활성화',
+        text: '선택하신 스터디를 비활성화 하시겠습니까?',
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#fbc02d',
+        cancelButtonColor: '#e4b67c ',
+        confirmButtonText: '네'
+    }).then((result) => {
+        if (result.value) {
+            deleteStudy(no)
+                .then( (data) => {
+                    successAlert(stateCode.get(data.stateCode));
+                    setTimeout(()=>{
+                        location.href=`/study/list`;
+                    },1500);
+                }).catch( (error) => {
+                errorAlert(stateCode.get(error.responseText.stateCode));
+            });
+        }
+    });
 });
 
+// 스터디 비활성화 처리
+let deleteStudy = (no) => {
+    return new Promise( (resolve, reject) => {
+        $.ajax({
+            type : 'DELETE',
+            url : `/study/delete/${no}`,
+            dataType : 'json',
+            contentType : 'application/json; charset=utf-8',
+            success : (data) => {
+                resolve(data);
+            },
+            error : (error) => {
+                resolve(error);
+            }
+        })
+    });
+}
 
 
 

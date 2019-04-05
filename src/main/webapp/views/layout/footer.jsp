@@ -710,6 +710,23 @@
                     title: '${studyView.stdGroup}'
                     });
                 </c:if>
+
+
+        <c:if test="${studyView ne null}">
+            var viewMap = new google.maps.Map(document.getElementById('viewMap'), {
+            center: {lat: lat, lng: lng},
+            zoom: 15
+            });
+            var origin = {lat: lat, lng: lng};
+            var marker = new google.maps.Marker({
+            position: origin,
+            map: viewMap,
+            title: '${studyView.stdGroup}'
+            });
+        </c:if>
+
+
+
                 var input = document.getElementById('pac-input');
                 var searchBox = new google.maps.places.SearchBox(input);
                 map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);

@@ -92,6 +92,10 @@ public class StudyServiceImpl implements StudyService {
     public List<StudyVO> getStudyList(PageVO pageVO) {
         if ( pageVO.getCount() <= 0 ) return null;
         List<StudyVO> studyList = studyMapper.getStudyList(pageVO);
+        for ( int i=0; i<studyList.size(); i++ ) {
+            String[] address = studyList.get(i).getStdAddress().split(" ");
+            studyList.get(i).setStdAddress( address[0] + " " + studyList.get(i).getStdPlace());
+        }
         return studyList;
     }
 
@@ -131,6 +135,25 @@ public class StudyServiceImpl implements StudyService {
             }
             httpSession.setAttribute("stateCode","STUDY_UPDATE_SUCCESS");
         }
+        return stateVO;
+    }
+
+    /*
+     *  스터디 삭제
+     *  @Param studyVO
+     *  @Return 스터디 삭제에 대한 상태코드 반환
+     */
+    @Override
+    public StateVO deleteStudy(int no) {
+        StateVO stateVO = new StateVO();
+        stateVO.setNo(no);
+        stateVO.setStateCode("STUDY_DELETE_ERROR");
+        if ( httpSession.getAttribute("id") == null ) return stateVO;
+        StudyVO studyVO = new StudyVO();
+        studyVO.setStdNo(no);
+        studyVO.setStdId((String) httpSession.getAttribute("id"));
+        int deleteState = studyMapper.deleteStudy(studyVO);
+        if ( deleteState == 1 ) stateVO.setStateCode("STUDY_DELETE_SUCCESS");
         return stateVO;
     }
 
