@@ -9,8 +9,8 @@
       <selectKey keyProperty="stdNo" order="BEFORE" resultType="int">
           SELECT COALESCE(MAX(STD_NO+1),1) AS STD_NO FROM STUDYBOARD
       </selectKey>
-      INSERT INTO STUDYBOARD ( STD_NO, STD_ID, STD_GROUP, STD_DIVIDE, STD_TITLE, STD_CONTENT, STD_ADDRESS, STD_START, STD_END, STD_LIMIT, STD_LAT, STD_LNG, STD_AVAILABLE, STD_UPDATE, STD_REG )
-      VALUES (#{stdNo}, #{stdId}, #{stdGroup}, #{stdDivide}, #{stdTitle}, #{stdContent}, #{stdAddress}, #{stdStart}, #{stdEnd}, #{stdLimit}, #{stdLat}, #{stdLng}, 1, NOW(), NOW() )
+      INSERT INTO STUDYBOARD ( STD_NO, STD_ID, STD_GROUP, STD_DIVIDE, STD_TITLE, STD_CONTENT, STD_ADDRESS, STD_PLACE, STD_START, STD_END, STD_LIMIT, STD_LAT, STD_LNG, STD_AVAILABLE, STD_UPDATE, STD_REG )
+      VALUES (#{stdNo}, #{stdId}, #{stdGroup}, #{stdDivide}, #{stdTitle}, #{stdContent}, #{stdAddress}, #{stdPlace}, #{stdStart}, #{stdEnd}, #{stdLimit}, #{stdLat}, #{stdLng}, 1, NOW(), NOW() )
     </insert>
 
     <!-- 가장 최근에 작성된 스터디번호 -->
@@ -49,7 +49,7 @@
     </select>
 
     <select id="getStudyList" parameterType="PageVO" resultType="StudyVO">
-         SELECT STD_NO, STD_ID, STD_GROUP, STD_DIVIDE, STD_ADDRESS, STD_TITLE, STD_CONTENT,
+         SELECT STD_NO, STD_ID, STD_GROUP, STD_DIVIDE, STD_ADDRESS, STD_PLACE, STD_TITLE, STD_CONTENT,
                        STD_START, STD_END, STD_LIMIT, STD_LAT, STD_LNG, STD_AVAILABLE, STD_UPDATE, STD_REG,
                        CONCAT(ULD_UUID,'_',ULD_FILENAME) AS ULD_FILENAME,
                         STD_PERSONCOUNT
@@ -80,17 +80,25 @@
 
     <!-- 스터디 조회 -->
     <select id="getStudyOne" parameterType="int" resultType="StudyVO">
-        SELECT STD_NO, STD_ID, STD_GROUP, STD_DIVIDE, STD_ADDRESS, STD_TITLE, STD_CONTENT,
-                      STD_START, STD_END, STD_LIMIT, STD_LAT, STD_LNG, STD_AVAILABLE, STD_UPDATE, STD_REG
+        SELECT STD_NO, STD_ID, STD_GROUP, STD_DIVIDE, STD_ADDRESS, STD_PLACE, STD_TITLE, STD_CONTENT,
+                      STD_START, STD_END, STD_LIMIT, STD_LAT, STD_LNG, STD_AVAILABLE, STD_UPDATE, STD_REG,
+                      CONCAT(ULD_UUID,'_',ULD_FILENAME) AS ULD_FILENAME
         FROM (
                       SELECT * FROM STUDYBOARD
                       WHERE STD_NO = #{no}
                       ) STUDYBOARD
+         JOIN UPLOAD
+         ON ULD_FNO = STD_NO
     </select>
 
-
-
-
-
+    <!-- 스터디 업데이트 -->
+    <update id="updateStudy" parameterType="StudyVO">
+        UPDATE STUDYBOARD
+        SET
+        STD_GROUP = #{stdGroup}, STD_DIVIDE = #{stdDivide}, STD_TITLE = #{stdTitle}, STD_CONTENT = #{stdContent},
+        STD_ADDRESS = #{stdAddress}, STD_PLACE = #{stdPlace}, STD_START = #{stdStart}, STD_END = #{stdEnd},
+        STD_LIMIT = #{stdLimit}, STD_LAT = #{stdLat}, STD_LNG = #{stdLng}
+        WHERE STD_NO = #{stdNo} AND STD_ID = #{stdId}
+    </update>
 
 </mapper>

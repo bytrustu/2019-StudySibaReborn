@@ -36,7 +36,7 @@
     padding: 0 0.5rem 1rem 0.5rem;
     padding-bottom: 0;
     border-bottom: 0.0625rem solid #D7E2EB;
-    padding: 10px 20px;
+    padding: 20px;
 }
 
 .st-item:hover{
@@ -214,6 +214,7 @@
 
 .st-subject{
     text-align: center;
+    min-height: 55px;
 }
 
 .st-subject > span{

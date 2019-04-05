@@ -8,6 +8,7 @@ import com.studysiba.service.study.StudyService;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,10 +28,11 @@ public class StudyController {
     @Autowired
     StudyService studyService;
 
+
     /*
-     *  게시판별이동 리스트 [ 공지사항, 커뮤니티, 스터디참여, 스터디그룹 ]
-     *  @Param menu [ 메뉴이름 ]
-     *  @Return 게시판별 list 경로 이동
+     *  스터디 리스트 이동
+     *  @Param criteria
+     *  @Return 검색조건에 따른 페이징 및 리스트 반환
      */
     @GetMapping("/list")
     public String moveList(Model model, @ModelAttribute Criteria criteria) throws Exception {
@@ -51,6 +53,12 @@ public class StudyController {
         return location;
     }
 
+
+    /*
+     *  스터디 뷰 이동
+     *  @Param criteria, no
+     *  @Return 스터디등록번호에 따른 정보 반환
+     */
     @GetMapping("/view")
     public String moveView(Model model, @ModelAttribute Criteria criteria, @RequestParam("no") int no) throws Exception {
         String menu = "study";
@@ -60,15 +68,20 @@ public class StudyController {
         model.addAttribute("intro", introComment);
 
         StudyVO studyVO = studyService.getStudyOne(no);
-        model.addAttribute("study",studyVO);
+        model.addAttribute("studyView",studyVO);
         log.info(studyVO);
         return location;
     }
 
 
+    /*
+     *  스터디 등록
+     *  @Param studyVO
+     *  @Return 스터디등록에 따른 상태코드 반환
+     */
     @ResponseBody
     @PostMapping("/register")
-    public ResponseEntity<StateVO> registerStudy(Model model, @ModelAttribute Criteria criteria, @ModelAttribute StudyVO studyVO) throws Exception {
+    public ResponseEntity<StateVO> registerStudy(@ModelAttribute StudyVO studyVO) throws Exception {
         StateVO stateVO = studyService.registerStudy(studyVO);
         log.info(stateVO);
         return stateVO.getStateCode().equals("STUDY_REGISTER_SUCCESS") ?
@@ -76,6 +89,34 @@ public class StudyController {
                 new ResponseEntity<>(stateVO, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+
+    /*
+     *  스터디 정보 조회
+     *  @Param no
+     *  @Return 스터디등록번에 대한 정보 반환
+     */
+    @ResponseBody
+    @GetMapping(value="/get/{no}",  consumes = "application/json", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    public ResponseEntity<StudyVO> getStudy(@PathVariable("no") int no) {
+        StudyVO studyVO = studyService.getStudyOne(no);
+        return studyVO != null ? new ResponseEntity<>(studyVO,HttpStatus.OK) : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+
+    /*
+     *  스터디 수정
+     *  @Param studyVO
+     *  @Return 스터디수정에 따른 상태코드 반환
+     */
+    @ResponseBody
+    @PostMapping(value="/update")
+    public ResponseEntity<StateVO> updateStudy(@ModelAttribute StudyVO studyVO) throws Exception {
+        StateVO stateVO = studyService.updateStudy(studyVO);
+        log.info(stateVO);
+        return stateVO.getStateCode().equals("STUDY_UPDATE_SUCCESS") ?
+                new ResponseEntity<>(stateVO, HttpStatus.OK) :
+                new ResponseEntity<>(stateVO, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 
 
 

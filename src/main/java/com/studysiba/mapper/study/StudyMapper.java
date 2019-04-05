@@ -59,5 +59,10 @@ public interface StudyMapper {
      */
     List<StudyVO> getStudyList(PageVO pageVO);
 
-
+    /*
+     *  스터디그룹 업데이트
+     *  @Param studyVO
+     *  @Return 스터디그룹 업데이트 여부
+     */
+    int updateStudy(StudyVO studyVO);
 }

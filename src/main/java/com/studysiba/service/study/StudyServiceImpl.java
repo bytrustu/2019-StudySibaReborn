@@ -39,7 +39,7 @@ public class StudyServiceImpl implements StudyService {
      *  @Return 스터디 등록에 대한 상태코드 반환
      */
     @Override
-//    @Transactional
+    @Transactional
     public StateVO registerStudy(StudyVO studyVO) throws Exception {
 
         StateVO stateVO = new StateVO();
@@ -48,7 +48,7 @@ public class StudyServiceImpl implements StudyService {
         if ( httpSession.getAttribute("id") == null ) return stateVO;
         studyVO.setStdId((String) httpSession.getAttribute("id"));
         // valdation check
-        String[] checkNames = {"stdId","stdGroup","stdDivide","stdTitle","stdContent","stdAddress","stdStart","stdEnd","stdLimit","stdLat","stdLng"};
+        String[] checkNames = {"stdId","stdGroup","stdDivide","stdTitle","stdContent","stdAddress","stdPlace","stdStart","stdEnd","stdLimit","stdLat","stdLng"};
         if ( !DataValidation.findEmptyValue(stateVO,checkNames).equals("VALUES_STATE_GOOD") ) return stateVO;
         if ( studyVO.getStdAddress().contains("대한민국 ") ) {
             studyVO.setStdAddress( studyVO.getStdAddress().replaceFirst("대한민국 ",""));
@@ -94,4 +94,45 @@ public class StudyServiceImpl implements StudyService {
         List<StudyVO> studyList = studyMapper.getStudyList(pageVO);
         return studyList;
     }
+
+
+    /*
+     *  스터디 등록
+     *  @Param studyVO
+     *  @Return 스터디 등록에 대한 상태코드 반환
+     */
+    @Override
+    @Transactional
+    public StateVO updateStudy(StudyVO studyVO) throws Exception {
+        StateVO stateVO = new StateVO();
+        stateVO.setStateCode("STUDY_UPDATE_ERROR");
+        // 접속중인 회원인지 확인
+        if ( httpSession.getAttribute("id") == null ) return stateVO;
+        studyVO.setStdId((String) httpSession.getAttribute("id"));
+        // valdation check
+        String[] checkNames = {"stdId","stdGroup","stdDivide","stdTitle","stdContent","stdAddress","stdPlace","stdStart","stdEnd","stdLimit","stdLat","stdLng"};
+        if ( !DataValidation.findEmptyValue(stateVO,checkNames).equals("VALUES_STATE_GOOD") ) return stateVO;
+        if ( studyVO.getStdAddress().contains("대한민국 ") ) {
+            studyVO.setStdAddress( studyVO.getStdAddress().replaceFirst("대한민국 ",""));
+        }
+        // 스터디 수정
+        int registerState = studyMapper.updateStudy(studyVO);
+        if ( registerState == 1 ) {
+            stateVO.setNo(studyVO.getStdNo());
+            if ( studyVO.getUpdateFile().equals("true") ) {
+                // 파일업로드
+                if ( registerState == 1 ) stateVO.setStateCode( commonService.contentUpdateFile(studyVO.getStdFile(), "study", studyVO.getStdNo()) );
+                if (stateVO.getStateCode().equals("UPLOAD_STATE_SUCCESS")) {
+                    stateVO.setStateCode("STUDY_UPDATE_SUCCESS");
+
+                }
+            } else {
+                stateVO.setStateCode("STUDY_UPDATE_SUCCESS");
+            }
+            httpSession.setAttribute("stateCode","STUDY_UPDATE_SUCCESS");
+        }
+        return stateVO;
+    }
+
+
 }

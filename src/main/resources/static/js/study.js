@@ -26,6 +26,8 @@ $(document).ready(function(){
     // 스터디 등록 모달 버튼
     $('.content-studybtn').on('click', function(){
         $('#studyModal').modal('show');
+        $('.stm-update').css('display','none');
+        $('.stm-step4').css('display','inline-block');
     });
 
 
@@ -112,11 +114,13 @@ $(document).ready(function(){
         let lat = $('#stm-lat').val();
         let lng = $('#stm-lng').val();
         let address = $('#pac-input').val();
+        let place = $('#stm-place').val();
         let startPer = $('.inputs_toPer').val();
         let endPer = $('.inputs_fromPer').val();
         let step2 = new Map();
         step2.set('stdLat',lat);
         step2.set('stdLng',lng);
+        step2.set('stdPlace',place);
         step2.set('stdAddress',address);
         step2.set('stdStart',startPer);
         step2.set('stdEnd',endPer);
@@ -135,10 +139,21 @@ $(document).ready(function(){
         let group = $('#stm-title').val();
         let limit = $('#std-limit').val();
         let file = $('.file-upload-input').val();
+        let updateFile = 'true';
         let step3 = new Map();
+        if ( location.pathname.includes('view') ) {
+            step3.set('stdNo', location.search.substring( location.search.lastIndexOf('=')+1 ));
+            if ( $('.file-upload-image').attr('src').includes('/file') ) {
+                updateFile = 'false';
+            } else {
+                step3.set('stdFile',file);
+            }
+        } else {
+            step3.set('stdFile',file);
+        }
+        step3.set('updateFile',updateFile);
         step3.set('stdGroup',group);
         step3.set('stdLimit',limit);
-        step3.set('stdFile',file);
         return step3;
     }
 
@@ -159,7 +174,7 @@ $(document).ready(function(){
     }
 
     // 스탭4 등록 버튼 클릭
-    $('.stm-step4').on('click', ()=>{
+    $('.stm-step4, .stm-update').on('click', function(){
         let step1 = step1map();
         let step2 = step2map();
         let step3 = step3map();
@@ -168,6 +183,8 @@ $(document).ready(function(){
         if ( step1.constructor == Map ) {
             idx = checkStep(step1,'one');
         }
+
+        console.log(step3);
         if ( idx > 0 ) return false;
         idx = checkStep(step2,'two');
         if ( idx > 0 ) return false;
@@ -176,29 +193,65 @@ $(document).ready(function(){
         idx = checkStep(step4,'four');
         if ( idx > 0 ) return false;
 
+
+
         let stepMap = new Map();
         stepMap.set('stdDivide',step1.join(','));
         stepMap = pushMap(stepMap,step2);
         stepMap = pushMap(stepMap,step3);
         stepMap = pushMap(stepMap,step4);
         let formData = mapToFormData(stepMap);
-        formData.append('stdFile', $('#studyFile')[0].files[0]);
-
-        registerStudy(formData)
-            .then( (data) => {
-                $('#studyModal').modal('hide');
-                timerAlert("스터디등록","입력하신 스터디를 등록중입니다.",2500);
-                setTimeout(()=>{location.href=`/study/view?no=${data.no}`},3000);
-            }).catch( (error) => {
+        if ( $(this).hasClass('stm-update') ) {
+            if ( step3.get('updateFile') == 'false' ) {
+                //formData.append('uldFilename', step3.get('stdFile') );
+            } else {
+                formData.append('stdFile', $('#studyFile')[0].files[0]);
+            }
+            updateStudy(formData)
+                .then( (data) => {
+                    $('#studyModal').modal('hide');
+                    timerAlert("스터디수정","입력하신 정보로 수정중입니다.",2500);
+                    setTimeout(()=>{location.href=`/study/view?no=${data.no}`},3000);
+                }).catch( (error) => {
                 errorAlert(stateCode.get(error.responseText.stateCode));
-        });
+            });
+        } else {
+            formData.append('stdFile', $('#studyFile')[0].files[0]);
+            registerStudy(formData)
+                .then( (data) => {
+                    $('#studyModal').modal('hide');
+                    timerAlert("스터디등록","입력하신 스터디를 등록중입니다.",2500);
+                    setTimeout(()=>{location.href=`/study/view?no=${data.no}`},3000);
+                }).catch( (error) => {
+                errorAlert(stateCode.get(error.responseText.stateCode));
+            });
+        }
     });
 
     let registerStudy = (formData) => {
         return new Promise( (resolve, reject) => {
             $.ajax({
                 type : 'POST',
-                url : '/study/register',
+                url : `/study/register`,
+                data : formData,
+                dataType : 'json',
+                processData : false,
+                contentType : false,
+                success : ( data ) => {
+                    resolve(data);
+                },
+                error : (error) => {
+                    reject(error);
+                }
+            });
+        });
+    }
+
+    let updateStudy = (formData) => {
+        return new Promise( (resolve, reject) => {
+            $.ajax({
+                type : 'POST',
+                url : `/study/update`,
                 data : formData,
                 dataType : 'json',
                 processData : false,
@@ -430,7 +483,6 @@ $(document).ready(function(){
     // 스터디 리스트 주제 선택 검색키워드 이동
     $('.st-subject span').on('click', function(){
         let keyword = $(this).html().trim();
-        console.log(keyword);
         if ( keyword == '전체' ) {
             location.href='/study/list';
             return false;
@@ -439,9 +491,111 @@ $(document).ready(function(){
     });
 
 
+    $('.study-edit').on('click', function(){
+        $('#studyModal').modal('show');
+
+        $('.stm-update').css('display','inline-block');
+        $('.stm-step4').css('display','none');
+
+
+
+
+        let no = location.search.substring( location.search.lastIndexOf('=')+1 );
+        
+        initLiked();
+        getStudy(no)
+            .then( (data) => {
+                setTimeout(()=>{
+
+                    console.log(data);
+
+                    //Step1 주제
+                    let subject = data.stdDivide.split(',');
+                    activeSubject('input-subject',subject);
+                    //Step2 일정
+                    $('#pac-input').val(data.stdAddress);
+                    $('#stm-lat').val(data.stdLat);
+                    $('#stm-lng').val(data.stdLng);
+                    $('#stm-place').val(data.stdPlace);
+                    $('#inputs_toPer').val(data.stdStart);
+                    $('#inputs_fromPer').val(data.stdEnd);
+                    //Step3 그룹
+                    $('#stm-title').val(data.stdGroup);
+                    $('#std-limit').val(data.stdLimit);
+                    $('.file-upload-image').attr('src',`/file/view/study/${data.uldFilename}`);
+                    $('.file-upload-content').css('display','block');
+                    $('.image-upload-wrap').css('display','none');
+                    //Step4 상세
+                    $('#stm-detailtitle').val(data.stdTitle);
+                    detailContent.setData(data.stdContent);
+                },500);
+            }).catch( (error) => {
+                console.log(error.responseText);
+        });
+    });
+
+
 });
 
+// 등록되어잇는 주제선정 입력
+let activeSubject = (elements, array) =>{
+    let inputs = document.getElementsByClassName(elements);
+    let i =0;
+    for ( let element of inputs ) {
+        for ( let value of array ) {
+            if ( element.getAttribute('data-subject') == value ) {
+                    i++;
+                    element.value = 'true';
+                    liked(element, i);
+            }
+        }
+    }
+}
 
+// 주제선정 초기화
+function initLiked(){
+    let inputs = document.getElementsByClassName('input-subject');
+    for ( let element of inputs ) {
+        element.value = 'false';
+        element.nextSibling.nextSibling.classList.remove('liked');
+    }
+    $('.sujectCnt').html('0');
+}
+
+// 주제선정 순차적으로 클릭효과
+function liked(element,i){
+    setTimeout(()=>{
+        element.nextSibling.nextSibling.classList.add('liked');
+        $('.sujectCnt').html(i);
+    },400*i);
+}
+
+
+
+// 댓글 게시글 조회
+let getStudy = (no) => {
+    return new Promise( (resolve, reject) => {
+        $.ajax({
+            type : 'GET',
+            url : `/study/get/${no}`,
+            dataType : 'json',
+            contentType : 'application/json; charset=utf-8',
+            success : (data) => {
+                resolve(data);
+            },
+            error : (error) => {
+                reject(error);
+            }
+        });
+    });
+}
+
+
+
+
+$('.stm-update').on('click', ()=>{
+
+});
 
 
 

@@ -29,4 +29,11 @@ public interface StudyService {
      *  @Return page정보에 대한 스터디리스트 반환
      */
     List<StudyVO> getStudyList(PageVO pageVO);
+
+    /*
+     *  스터디 수정
+     *  @Param studyVO
+     *  @Return 스터디 수정에 대한 상태코드 반환
+     */
+    StateVO updateStudy(StudyVO studyVO) throws Exception;
 }

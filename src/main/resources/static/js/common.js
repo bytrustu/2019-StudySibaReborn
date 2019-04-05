@@ -310,6 +310,9 @@ stateCode.set("STUDY_REGISTER_ERROR","스터디 등록에 실패했습니다.");
 stateCode.set("UPLOAD_STATE_SUCCESS","파일이 업로드 되었습니다.");
 stateCode.set("UPLOAD_STATE_ERROR","파일 업로드에 실패했습니다.");
 
+stateCode.set("STUDY_UPDATE_SUCCESS","스터디가 수정 되었습니다.");
+stateCode.set("STUDY_UPDATE_ERROR","스터디 수정에 실패했습니다.");
+
 
 // KAKAO API
 Kakao.init('672b34ad5f77dd65240951209b6cbd32');

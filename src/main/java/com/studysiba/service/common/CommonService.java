@@ -50,6 +50,13 @@ public interface CommonService {
      */
     String contentUploadFile(MultipartFile multipartFile, String menu, int no) throws Exception;
 
+    /*
+     *  게시판 공통 파일 업데이트
+     *  @Param MultipartFile, menu, no
+     *  @Return UploadVO
+     */
+    String contentUpdateFile(MultipartFile multipartFile, String menu, int no) throws Exception;
+
 
     /*
      *  페이지 정보 조회

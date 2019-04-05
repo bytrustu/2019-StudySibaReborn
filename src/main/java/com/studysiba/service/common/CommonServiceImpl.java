@@ -205,6 +205,53 @@ public class CommonServiceImpl implements CommonService {
     }
 
     /*
+     *  게시판 공통 파일 업로드
+     *  @Param MultipartFile, menu, no
+     *  @Return 업로드 상태코드
+     */
+    @Transactional
+    @Override
+    public String contentUpdateFile(MultipartFile multipartFile, String menu, int no) throws Exception {
+
+        String stateCode = null;
+        if ( multipartFile.isEmpty() ) return null;
+        if ( httpSession.getAttribute("id") == null ) return null;
+
+        String path = "C:\\upload\\studysiba\\" + menu;
+        File destdir = new File(path);
+        String fileName = null;
+        if ( !destdir.exists() ) destdir.mkdir();
+        //  JPG, JPEG, PNG, GIF, BMP 확장자 체크
+        if ( !DataValidation.checkImageFile(multipartFile.getOriginalFilename()) ) return null;
+        String uuid = DataConversion.returnUUID();
+        String originFileName = multipartFile.getOriginalFilename();
+        fileName = uuid+"_"+originFileName;
+        File target = new File(path, fileName);
+        try {
+            FileCopyUtils.copy(multipartFile.getBytes(), target);
+            UploadVO uploadVO = new UploadVO();
+            uploadVO.setUldId((String) httpSession.getAttribute("id"));
+            uploadVO.setUldFno(no);
+            uploadVO.setUldType(menu);
+            uploadVO.setUldText(menu);
+            uploadVO.setUldUuid(uuid);
+            uploadVO.setUldFilename(originFileName);
+            // 이전 파일 삭제
+            String prevFileName = commonMapper.getPrevFileName(uploadVO.getUldFno());
+            File prevFile = new File(path, prevFileName);
+            if ( prevFile.exists() ) {
+                prevFile.delete();
+            }
+            int uploadState = commonMapper.contentUpdateFile(uploadVO);
+            stateCode = uploadState == 1 ? "UPLOAD_STATE_SUCCESS" : "UPLOAD_STATE_ERROR";
+        } catch ( IOException e ) {
+            e.printStackTrace();
+            return null;
+        }
+        return stateCode;
+    }
+
+    /*
      *  페이지 정보 조회
      *  @Param menu, criteria
      *  @Return 페이지정보 반환

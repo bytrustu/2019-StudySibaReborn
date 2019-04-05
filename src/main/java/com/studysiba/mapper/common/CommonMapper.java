@@ -13,4 +13,17 @@ public interface CommonMapper {
      */
     int contentUploadFile(UploadVO uploadVO);
 
+    /*
+     *  공통 파일 업로드
+     *  @Param UploadVO
+     *  @Return 파일등록상태
+     */
+    int contentUpdateFile(UploadVO uploadVO);
+
+    /*
+     *  파일 이름 조회
+     *  @Param uldFno
+     *  @Return 파일 이름 반환
+     */
+    String getPrevFileName(int uldFno);
 }

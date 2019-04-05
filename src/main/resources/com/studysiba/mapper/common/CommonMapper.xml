@@ -12,4 +12,15 @@
       VALUES (#{uldNo}, #{uldFno}, #{uldId}, #{uldType}, #{uldText}, #{uldUuid}, #{uldFilename}, NOW() )
     </insert>
 
+    <update id="contentUpdateFile" parameterType="UploadVO">
+        UPDATE UPLOAD
+        SET ULD_UUID = #{uldUuid}, ULD_FILENAME = #{uldFilename}, ULD_DATE = NOW()
+        WHERE ULD_FNO = #{uldFno} AND ULD_ID = #{uldId}
+    </update>
+
+    <select id="getPrevFileName" parameterType="int" resultType="String">
+        SELECT CONCAT(ULD_UUID,"_",ULD_FILENAME) AS ULD_PREVFILENAME FROM UPLOAD
+        WHERE ULD_FNO = #{uldFno}
+    </select>
+
 </mapper>

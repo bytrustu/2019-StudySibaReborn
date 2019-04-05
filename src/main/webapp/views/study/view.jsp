@@ -17,7 +17,7 @@
         <div class="board-top">
             <div class="board-total">
                 <c:if test="${sessionScope.id eq board.brdId || sessionScope.auth eq 'ADMIN'}">
-                    <img src="/static/image/common/edit.png" class="board-edit"><img src="/static/image/common/delete.png" class="board-delete">
+                    <img src="/static/image/common/edit.png" class="study-edit"><img src="/static/image/common/delete.png" class="study-delete">
                 </c:if>
             </div>
         </div>

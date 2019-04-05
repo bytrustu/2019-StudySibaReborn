@@ -523,7 +523,7 @@
                                                     <div class="form-group">
                                                         <label class="col-sm-12 control-label">장소</label>
                                                         <div class="col-sm-12">
-                                                            <input type="hidden" id="stm-lat"><input type="hidden" id="stm-lng">
+                                                            <input type="hidden" id="stm-lat"><input type="hidden" id="stm-lng"><input type="hidden" id="stm-place">
                                                             <input type="text" class="form-control" id="pac-input" name="address" placeholder="스터디 장소를 검색하세요.">
                                                             <div id="map" style="width: 100%;height: 300px"></div>
                                                         </div>
@@ -533,12 +533,12 @@
 
                                                         <div class="row stm-date">
                                                             <div class="col-sm-6">
-                                                            <label>시작일자</label>
-                                                            <input type="text" class="form-control datepickter inputs_toPer" id="inputs_toPer" name="toPer">
+                                                                <label>시작일자</label>
+                                                                <input type="text" class="form-control datepickter inputs_toPer" id="inputs_toPer" name="toPer" placeholder="일자가 선택되지 않았습니다.">
                                                             </div>
                                                             <div class="col-sm-6">
-                                                            <label>종료일자</label>
-                                                            <input type="text" class="form-control datepickter inputs_fromPer" id="inputs_fromPer" name="fromPer">
+                                                                <label>종료일자</label>
+                                                                <input type="text" class="form-control datepickter inputs_fromPer" id="inputs_fromPer" name="fromPer" placeholder="일자가 선택 되지않았습니다">
                                                             </div>
                                                         </div>
 
@@ -593,7 +593,7 @@
                                                                 </div>
                                                             </div>
                                                             <div class="file-upload-content">
-                                                            <img class="file-upload-image" src="#" alt="your image" />
+                                                                <img class="file-upload-image" src="#" alt="your image" />
                                                                 <div class="image-title-wrap">
                                                                     <button type="button" class="remove-image">삭제 : <span class="image-title">Uploaded Image</span></button>
                                                                 </div>
@@ -602,8 +602,8 @@
                                                     </div>
                                                     <div class="form-group">
                                                         <div class="text-center">
-                                                        <button type="button" class="btn btn-warning btn res-btn-gray" data-class=".res-form-three">이전</button>
-                                                        <button type="button" class="btn btn-warning col-xs-offset-1 btn res-btn-orange stm-step3" data-class=".res-form-three">다음</button>
+                                                            <button type="button" class="btn btn-warning btn res-btn-gray" data-class=".res-form-three">이전</button>
+                                                            <button type="button" class="btn btn-warning col-xs-offset-1 btn res-btn-orange stm-step3" data-class=".res-form-three">다음</button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -636,10 +636,10 @@
                                                         <div class="text-center">
                                                             <button type="button" class="btn btn-warning btn res-btn-gray" data-class=".res-form-four">이전</button>
                                                             <button type="button" class="btn btn-primary col-xs-offset-1 btn stm-step4">등록</button>
+                                                            <button type="button" class="btn btn-primary col-xs-offset-1 btn stm-update">수정</button>
                                                         </div>
                                                     </div>
                                                 </div>
-
 
                                             </div>
                                         </div>
@@ -685,6 +685,78 @@
                 $('.image-upload-wrap').bind('dragleave', function () {
                     $('.image-upload-wrap').removeClass('image-dropping');
                 });
+
+
+            function initAutocomplete() {
+                 <c:choose>
+                     <c:when test="${studyView eq null}">
+                         var lat = 37.5640253;
+                         var lng = 126.97377929999993;
+                     </c:when>
+                     <c:otherwise>
+                         var lat = ${studyView.stdLat};
+                         var lng = ${studyView.stdLng};
+                     </c:otherwise>
+                 </c:choose>
+                var map = new google.maps.Map(document.getElementById('map'), {
+                    center: {lat: lat, lng: lng},
+                    zoom: 15
+                });
+                <c:if test="${studyView ne null}">
+                    var origin = {lat: lat, lng: lng};
+                    var marker = new google.maps.Marker({
+                    position: origin,
+                    map: map,
+                    title: '${studyView.stdGroup}'
+                    });
+                </c:if>
+                var input = document.getElementById('pac-input');
+                var searchBox = new google.maps.places.SearchBox(input);
+                map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+                map.addListener('bounds_changed', function() {
+                searchBox.setBounds(map.getBounds());
+                });
+                var markers = [];
+
+                searchBox.addListener('places_changed', function() {
+                    var places = searchBox.getPlaces();
+
+                    if (places.length == 0) {
+                        return;
+                    }
+                    markers.forEach(function(marker) {
+                        marker.setMap(null);
+                    });
+                    markers = [];
+                    var bounds = new google.maps.LatLngBounds();
+                    let lat = places[0].geometry.location.lat();
+                    let lng = places[0].geometry.location.lng();
+                    let placeName = places[0].name;
+                    $('#stm-lat').val(lat);
+                    $('#stm-lng').val(lng);
+                    $('#stm-place').val(placeName);
+                    $('#pac-input').val(places[0].formatted_address);
+                    console.log(places[0].name);
+
+                    places.forEach(function(place) {
+                        if (!place.geometry) {
+                            return;
+                        }
+                        markers.push(new google.maps.Marker({
+                            map: map,
+                            title: place.name,
+                            position: place.geometry.location
+                        }));
+
+                        if (place.geometry.viewport) {
+                            bounds.union(place.geometry.viewport);
+                        } else {
+                            bounds.extend(place.geometry.location);
+                        }
+                    });
+                    map.fitBounds(bounds);
+                });
+            }
         </script>
 
     </c:if>
@@ -745,11 +817,10 @@
                 <script type="text/javascript" src="/static/js/sub.js"></script>
                 <script type="text/javascript" src="/static/js/study.js"></script>
                 <c:if test="${fn:contains(requestScope['javax.servlet.forward.servlet_path'] , '/study' ) || fn:contains(requestScope['javax.servlet.forward.servlet_path'] , '/group' ) }">
-                    <script type="text/javascript" src="/static/js/googlemap.js"></script>
                     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyByjX-fIiEVgNTofLuWWpxgGqQADaoNSWk&libraries=places&callback=initAutocomplete" async defer></script>
                 </c:if>
             </c:otherwise>
         </c:choose>
 
-        </body>
-        </html>
+    </body>
+    </html>

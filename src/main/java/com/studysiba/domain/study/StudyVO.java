@@ -2,11 +2,16 @@ package com.studysiba.domain.study;
 
 import com.studysiba.domain.member.MemberVO;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.sql.Timestamp;
 
-@Data
+@Getter
+@Setter
+@ToString
 public class StudyVO extends MemberVO {
     // 스터디 순번
     private int stdNo;
@@ -22,6 +27,8 @@ public class StudyVO extends MemberVO {
     private String stdContent;
     // 스터디 주소
     private String stdAddress;
+    // 스터디 지명
+    private String stdPlace;
     // 스터디 시작일자
     private String stdStart;
     // 스터디 종료일자
@@ -43,4 +50,8 @@ public class StudyVO extends MemberVO {
 
     // 스터디 참여 인원 카운트
     private int stdPersonCount;
+    // 파일 업데이트여부
+    private String updateFile;
+
+
 }
