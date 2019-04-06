@@ -39,6 +39,10 @@
     padding: 20px;
 }
 
+.st-item:last-child{
+    border-bottom: 0;
+}
+
 .st-item:hover{
     transform: scale(1.015);
     transition: all 0.3s ease-in-out;
@@ -228,7 +232,7 @@
 }
 
 .st-searchinput{
-    width: 80%;
+    width: 100%;
     margin-left: 50%;
     transform: translateX(-50%);
 }
@@ -557,6 +561,36 @@
 .study-edit, .study-latest{
     margin-right: 5px!important;
 }
+
+.group-box{
+    margin-bottom: 50px;
+}
+
+
+.group-notfound{
+    margin: 50px auto;
+}
+
+.group-notfound > p{
+    font-size: 35px;
+    color: #a2a5a5;
+    margin-bottom: 5px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

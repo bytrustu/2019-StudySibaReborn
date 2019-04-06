@@ -40,6 +40,16 @@
             <thead class="board-thead"></thead>
             <tbody class="board-tbody">
 
+
+
+            <c:if test="${page.count == 0}">
+                <div class="group-notfound">
+                    <p>(⁎˃ᆺ˂)</p>
+                    <p>조건에 맞는 게시글이 없습니다!</p>
+                </div>
+            </c:if>
+
+
             <jsp:useBean id="now" class="java.util.Date"/>
             <fmt:formatDate value="${now}" var="now" pattern="yyyyMMdd" />
 

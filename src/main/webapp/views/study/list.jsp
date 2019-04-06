@@ -78,6 +78,16 @@
                         </span>
                     </div>
 
+
+
+                    <c:if test="${page.count == 0}">
+                        <div class="group-notfound">
+                            <p>(⁎˃ᆺ˂)</p>
+                            <p>조건에 맞는 스터디가 없습니다!</p>
+                        </div>
+                    </c:if>
+
+
                     <c:forEach items="${study}" var="study">
                         <li class="st-item st-move" data-no="${study.stdNo}">
                             <a class="st-link">

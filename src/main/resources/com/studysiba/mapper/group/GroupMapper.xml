@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.studysiba.mapper.group.GroupMapper">
+
+
+    <!-- 참여중인 스터디 리스트 조회 -->
+    <select id="getGroupList" parameterType="String" resultType="GroupMemberVO">
+        SELECT GRM_NO, GRM_GNO, GRM_ID, GRM_DATE,
+                      STD_GROUP, STD_DIVIDE, STD_ADDRESS, STD_PLACE, STD_TITLE, STD_CONTENT,
+                      STD_START, STD_END, STD_LIMIT, STD_LAT, STD_LNG, STD_AVAILABLE, STD_UPDATE, STD_REG,
+                      CONCAT(ULD_UUID,'_',ULD_FILENAME) AS ULD_FILENAME,
+                      STD_PERSONCOUNT
+        FROM (
+                      SELECT * FROM GROUPMEMBER
+                      WHERE GRM_ID = #{id}
+                      ORDER BY GRM_DATE DESC
+        ) GROUPMEMBER
+        JOIN STUDYBOARD
+        ON STUDYBOARD.STD_NO = GROUPMEMBER.GRM_GNO
+        JOIN UPLOAD
+        ON UPLOAD.ULD_FNO = GROUPMEMBER.GRM_GNO
+        JOIN (
+                    SELECT GRM_GNO AS GRC_GNO, COUNT(*) AS STD_PERSONCOUNT
+                    FROM GROUPMEMBER
+                    GROUP BY GRC_GNO
+        ) GROUPCOUNT
+        ON GROUPCOUNT.GRC_GNO = GROUPMEMBER.GRM_GNO
+    </select>
+
+
+
+
+</mapper>

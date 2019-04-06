@@ -199,6 +199,13 @@
                         <div class="col-md-8">
 
 
+
+                            <c:if test="${fn:length(groupMember) == 1}">
+                                <div class="group-notfound text-left">
+                                    <p>(⁎˃ᆺ˂)</p>
+                                    <p>참여중인 멤버가 없습니다.</p>
+                                </div>
+                            </c:if>
                             <c:forEach items="${groupMember}" var="group" begin="1">
 
                                 <c:set var="imgStep" value='${fn:substring(group.mbrProfile, fn:indexOf(group.mbrProfile,"-")+1, fn:indexOf(group.mbrProfile,".png"))}'/>
