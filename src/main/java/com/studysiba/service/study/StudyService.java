@@ -3,6 +3,7 @@ package com.studysiba.service.study;
 import com.studysiba.domain.common.PageVO;
 import com.studysiba.domain.common.StateVO;
 import com.studysiba.domain.study.StudyVO;
+import com.studysiba.domain.group.GroupMemberVO;
 
 import java.util.List;
 
@@ -39,8 +40,36 @@ public interface StudyService {
 
     /*
      *  스터디 삭제
-     *  @Param studyVO
+     *  @Param no
      *  @Return 스터디 삭제에 대한 상태코드 반환
      */
     StateVO deleteStudy(int no);
+
+    /*
+     *  스터디 참여
+     *  @Param no
+     *  @Return 스터디 참여에 대한 상태코드 반환
+     */
+    StateVO joinStudy(int no);
+
+    /*
+     *  스터디 탈퇴
+     *  @Param no
+     *  @Return 스터디 탈퇴에 대한 상태코드 반환
+     */
+    StateVO outStudy(int no);
+
+    /*
+     *  스터디에 참여중인 멤버 리스트 조회
+     *  @Param no
+     *  @Return 스터디에 참여중인 멤버 리스트 반환
+     */
+    List<GroupMemberVO> getGroupMemberList(int no);
+
+    /*
+     *  스터디 탈퇴
+     *  @Param no
+     *  @Return 스터디 탈퇴 상태코드 반환
+     */
+    StateVO latestStudy(int no);
 }

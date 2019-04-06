@@ -7,14 +7,13 @@ import com.studysiba.domain.study.StudyVO;
 import com.studysiba.mapper.common.CommonMapper;
 import com.studysiba.mapper.study.StudyMapper;
 import com.studysiba.service.common.CommonService;
+import com.studysiba.domain.group.GroupMemberVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -108,6 +107,7 @@ public class StudyServiceImpl implements StudyService {
     @Override
     @Transactional
     public StateVO updateStudy(StudyVO studyVO) throws Exception {
+        System.out.println(studyVO);
         StateVO stateVO = new StateVO();
         stateVO.setStateCode("STUDY_UPDATE_ERROR");
         // 접속중인 회원인지 확인
@@ -119,13 +119,19 @@ public class StudyServiceImpl implements StudyService {
         if ( studyVO.getStdAddress().contains("대한민국 ") ) {
             studyVO.setStdAddress( studyVO.getStdAddress().replaceFirst("대한민국 ",""));
         }
+
+        // 관리자 일 경우 리더 아이디로 변경
+        if ( httpSession.getAttribute("auth").toString().toUpperCase().equals("ADMIN") ) {
+            studyVO.setStdId( studyMapper.getLeaderId(studyVO.getStdNo()) );
+        }
         // 스터디 수정
-        int registerState = studyMapper.updateStudy(studyVO);
-        if ( registerState == 1 ) {
+        int updateState = studyMapper.updateStudy(studyVO);
+        System.out.println("스터디수정여부 " + updateState);
+        if ( updateState == 1 ) {
             stateVO.setNo(studyVO.getStdNo());
             if ( studyVO.getUpdateFile().equals("true") ) {
                 // 파일업로드
-                if ( registerState == 1 ) stateVO.setStateCode( commonService.contentUpdateFile(studyVO.getStdFile(), "study", studyVO.getStdNo()) );
+                if ( updateState == 1 ) stateVO.setStateCode( commonService.contentUpdateFile(studyVO.getStdFile(), "study", studyVO.getStdNo()) );
                 if (stateVO.getStateCode().equals("UPLOAD_STATE_SUCCESS")) {
                     stateVO.setStateCode("STUDY_UPDATE_SUCCESS");
 
@@ -154,6 +160,91 @@ public class StudyServiceImpl implements StudyService {
         studyVO.setStdId((String) httpSession.getAttribute("id"));
         int deleteState = studyMapper.deleteStudy(studyVO);
         if ( deleteState == 1 ) stateVO.setStateCode("STUDY_DELETE_SUCCESS");
+        return stateVO;
+    }
+
+    /*
+     *  스터디 참여
+     *  @Param no
+     *  @Return 스터디 참여에 대한 상태코드 반환
+     */
+    @Override
+    public StateVO joinStudy(int no) {
+        StateVO stateVO = new StateVO();
+        stateVO.setNo(no);
+        stateVO.setStateCode("STUDY_JOIN_ERROR");
+        if ( httpSession.getAttribute("id") == null ) return stateVO;
+        StudyVO studyVO = new StudyVO();
+        studyVO.setStdNo(stateVO.getNo());
+        studyVO.setStdId((String) httpSession.getAttribute("id"));
+        int joinState = studyMapper.alreadyStudy(studyVO);
+        if ( joinState == 1 ) {
+            stateVO.setStateCode("STUDY_STATE_ALREADY");
+            return stateVO;
+        }
+        joinState = studyMapper.joinStudy(studyVO);
+        if ( joinState == 1 ) {
+            stateVO.setStateCode("STUDY_JOIN_SUCCESS");
+            httpSession.setAttribute("stateCode", stateVO.getStateCode());
+        }
+        return stateVO;
+    }
+
+    /*
+     *  스터디 탈퇴
+     *  @Param no
+     *  @Return 스터디 탈퇴에 대한 상태코드 반환
+     */
+    @Override
+    public StateVO outStudy(int no) {
+        StateVO stateVO = new StateVO();
+        stateVO.setNo(no);
+        stateVO.setStateCode("STUDY_OUT_ERROR");
+        if ( httpSession.getAttribute("id") == null ) return stateVO;
+        StudyVO studyVO = new StudyVO();
+        studyVO.setStdNo(stateVO.getNo());
+        studyVO.setStdId((String) httpSession.getAttribute("id"));
+        int outStudy = studyMapper.outStudy(studyVO);
+        if ( outStudy == 1 ) {
+            stateVO.setStateCode("STUDY_OUT_SUCCESS");
+            httpSession.setAttribute("stateCode", stateVO.getStateCode());
+        }
+        return stateVO;
+    }
+
+    /*
+     *  스터디에 참여중인 멤버 리스트 조회
+     *  @Param no
+     *  @Return 스터디에 참여중인 멤버 리스트 반환
+     */
+    @Override
+    public List<GroupMemberVO> getGroupMemberList(int no) {
+        return studyMapper.getGroupMemberList(no);
+    }
+
+    /*
+     *  스터디 탈퇴
+     *  @Param no
+     *  @Return 스터디 탈퇴 상태코드 반환
+     */
+    @Override
+    public StateVO latestStudy(int no) {
+        StateVO stateVO = new StateVO();
+        stateVO.setNo(no);
+        stateVO.setStateCode("STUDY_LATEST_ERROR");
+        if ( httpSession.getAttribute("id") == null ) return stateVO;
+        StudyVO studyVO = new StudyVO();
+        studyVO.setStdNo(stateVO.getNo());
+        studyVO.setStdId((String) httpSession.getAttribute("id"));
+        // 관리자 일 경우 리더 아이디로 변경
+        if ( httpSession.getAttribute("auth").toString().toUpperCase().equals("ADMIN") ) {
+            studyVO.setStdId( studyMapper.getLeaderId(no) );
+        }
+        int latestStudy = studyMapper.latestStudy(studyVO);
+        if ( latestStudy == 1 ) {
+            stateVO.setStateCode("STUDY_LATEST_SUCCESS");
+            httpSession.setAttribute("stateCode", stateVO.getStateCode());
+        }
         return stateVO;
     }
 

@@ -316,6 +316,15 @@ stateCode.set("STUDY_UPDATE_ERROR","스터디 수정에 실패했습니다.");
 stateCode.set("STUDY_DELETE_SUCCESS","스터디가 비활성화 되었습니다..");
 stateCode.set("STUDY_DELETE_ERROR","스터디 비활성화에 실패했습니다.");
 
+stateCode.set("STUDY_JOIN_SUCCESS","스터디에 참여 했습니다.");
+stateCode.set("STUDY_JOIN_ERROR","스터디 참여에 실패 했습니다.");
+stateCode.set("STUDY_OUT_SUCCESS","스터디를 탈퇴 했습니다.");
+stateCode.set("STUDY_OUT_ERROR","스터디 탈퇴에 실패 했습니다.");
+stateCode.set("STUDY_STATE_ALREADY","이미 스터디에 참여중 입니다.");
+
+stateCode.set("STUDY_LATEST_SUCCESS","스터디가 최신글로 갱신 되었습니다.");
+stateCode.set("STUDY_LATEST_ERROR","스터디 최신화에 실패 했습니다..");
+
 
 // KAKAO API
 Kakao.init('672b34ad5f77dd65240951209b6cbd32');
@@ -807,7 +816,6 @@ let fileUpload = (formData, menu) => {
 // SwertAlert Error
 const errorAlert = (text) => {
     Swal.fire({
-        position: 'top-end',
         type: 'error',
         title: text,
         showConfirmButton: false,
@@ -819,12 +827,11 @@ const errorAlert = (text) => {
 // SweetAlert Success
 const successAlert = (text) => {
     Swal.fire({
-        position: 'top-end',
         type: 'success',
         title: text,
         showConfirmButton: false,
         allowOutsideClick: false,
-        timer: 1500
+        timer: 2000
     });
 }
 

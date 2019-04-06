@@ -212,7 +212,7 @@ $(document).ready(function(){
                     timerAlert("스터디수정","입력하신 정보로 수정중입니다.",2500);
                     setTimeout(()=>{location.href=`/study/view?no=${data.no}`},3000);
                 }).catch( (error) => {
-                errorAlert(stateCode.get(error.responseText.stateCode));
+                    errorAlert(stateCode.get(error.stateCode));
             });
         } else {
             formData.append('stdFile', $('#studyFile')[0].files[0]);
@@ -222,7 +222,7 @@ $(document).ready(function(){
                     timerAlert("스터디등록","입력하신 스터디를 등록중입니다.",2500);
                     setTimeout(()=>{location.href=`/study/view?no=${data.no}`},3000);
                 }).catch( (error) => {
-                errorAlert(stateCode.get(error.responseText.stateCode));
+                    errorAlert(stateCode.get(error.stateCode));
             });
         }
     });
@@ -240,7 +240,7 @@ $(document).ready(function(){
                     resolve(data);
                 },
                 error : (error) => {
-                    reject(error);
+                    reject(JSON.parse(error.responseText));
                 }
             });
         });
@@ -259,7 +259,7 @@ $(document).ready(function(){
                     resolve(data);
                 },
                 error : (error) => {
-                    reject(error);
+                    reject(JSON.parse(error.responseText));
                 }
             });
         });
@@ -496,10 +496,7 @@ $(document).ready(function(){
         $('.stm-update').css('display','inline-block');
         $('.stm-step4').css('display','none');
 
-
-
-
-        let no = location.search.substring( location.search.lastIndexOf('=')+1 );
+        let no = contentNo();
         
         initLiked();
 
@@ -588,7 +585,7 @@ let getStudy = (no) => {
 
 // 스터디 비활성화 버튼
 $('.study-delete').on('click', ()=>{
-    let no = location.search.substring( location.search.lastIndexOf('=')+1 );
+    let no = contentNo();
     Swal.fire({
         title: '스터디비활성화',
         text: '선택하신 스터디를 비활성화 하시겠습니까?',
@@ -624,11 +621,136 @@ let deleteStudy = (no) => {
                 resolve(data);
             },
             error : (error) => {
-                resolve(error);
+                reject(JSON.parse(error.responseText));
             }
         })
     });
 }
+
+
+$('.study-joinbtn').on('click', function(){
+    let btnState = $(this).attr('data-join');
+    console.log(btnState);
+    switch (btnState) {
+        case 'already' :
+            errorAlert('이미 참여중인 스터디 입니다.');
+            break;
+        case 'unable' :
+            errorAlert('스터디 모집이 마감되었습니다.');
+            break;
+        case 'join' :
+            let no = contentNo();
+            joinStudy(no)
+                .then( (data) => {
+                    timerAlert('스터디참여', '스터디 참여정보를 확인중입니다.', 2000);
+                    setTimeout(()=>{
+                        location.href=`/study/view?no=${data.no}`;
+                    },2200);
+                }).catch( (error) => {
+                    errorAlert(stateCode.get(error.stateCode));
+            });
+            break;
+    }
+});
+
+$('.study-outbtn').on('click', function(){
+    let btnState = $(this).attr('data-out');
+    let no = contentNo();
+    if ( btnState == 'member' ) {
+        outStudy(no)
+            .then( (data) => {
+                timerAlert('스터디탈퇴', '스터디 탈퇴정보를 확인중입니다.', 2000);
+                setTimeout(()=>{
+                    location.href=`/study/view?no=${data.no}`;
+                },2200);
+            }).catch( (error) => {
+                errorAlert(stateCode.get(error.stateCode));
+        });
+    }
+});
+
+let joinStudy = (no) =>{
+    return new Promise( (resolve, reject ) => {
+        $.ajax({
+            type : 'POST',
+            url : `/study/join/${no}`,
+            dataType : 'json',
+            contentType : 'application/json; charset=utf-8',
+            success : (data) => {
+                resolve(data);
+            },
+            error : (error) => {
+                reject(JSON.parse(error.responseText));
+            }
+        });
+    });
+}
+
+let outStudy = (no) => {
+    return new Promise( (resolve, reject) => {
+        $.ajax({
+            type : 'DELETE',
+            url : `/study/out/${no}`,
+            dataType : 'json',
+            contentType : 'application/json; charset=utf-8',
+            success : (data) => {
+                resolve(data);
+            },
+            error : (error) => {
+                reject(JSON.parse(error.responseText));
+            }
+        });
+    });
+}
+
+let contentNo = () =>{
+    return location.search.substring( location.search.lastIndexOf('=')+1 );
+}
+
+
+
+$('.study-latest').on('click', ()=>{
+    let no = contentNo();
+    Swal.fire({
+        title: '스터디갱신',
+        text: '스터디 게시글을 최상단으로 갱신 하시겠습니까?',
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#fbc02d',
+        cancelButtonColor: '#e4b67c ',
+        confirmButtonText: '네'
+    }).then((result) => {
+        if (result.value) {
+            latestStudy(no)
+                .then( (data) => {
+                    timerAlert("스터디갱신","스터디 갱신 정보를 확인중입니다.",1500);
+                    setTimeout(()=>{
+                        location.href=`/study/list`;
+                    },1500);
+                }).catch( (error) => {
+                errorAlert(stateCode.get(error.responseText.stateCode));
+            });
+        }
+    });
+});
+
+let latestStudy = (no) => {
+    return new Promise( (resolve, reject) => {
+        $.ajax({
+            type : 'PUT',
+            url : `/study/latest/${no}`,
+            dataType : 'json',
+            contentType : 'application/json; charset=utf-8',
+            success : (data) => {
+                resolve(data);
+            },
+            error : (error) => {
+                reject(JSON.parse(error.responseText));
+            }
+        });
+    });
+}
+
 
 
 

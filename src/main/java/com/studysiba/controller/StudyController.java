@@ -4,6 +4,7 @@ import com.studysiba.domain.common.PageVO;
 import com.studysiba.domain.common.StateVO;
 import com.studysiba.domain.study.StudyVO;
 import com.studysiba.service.common.CommonService;
+import com.studysiba.domain.group.GroupMemberVO;
 import com.studysiba.service.study.StudyService;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,7 +70,10 @@ public class StudyController {
 
         StudyVO studyVO = studyService.getStudyOne(no);
         model.addAttribute("studyView",studyVO);
-        log.info(studyVO);
+
+        List<GroupMemberVO> groupMemberList = studyService.getGroupMemberList(no);
+        model.addAttribute("groupMember", groupMemberList);
+
         return location;
     }
 
@@ -118,6 +122,11 @@ public class StudyController {
                 new ResponseEntity<>(stateVO, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    /*
+     *  스터디 비활성화
+     *  @Param no
+     *  @Return 스터디 비활성화 상태코드 반환
+     */
     @ResponseBody
     @DeleteMapping(value="/delete/{no}", consumes = "application/json", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
     public ResponseEntity<StateVO> deleteStudy(@PathVariable("no") int no) throws Exception {
@@ -127,6 +136,48 @@ public class StudyController {
                 new ResponseEntity<>(stateVO, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    /*
+     *  스터디 참여
+     *  @Param no
+     *  @Return 스터디 참여 상태코드 반환
+     */
+    @ResponseBody
+    @PostMapping(value="/join/{no}", consumes = "application/json", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    public ResponseEntity<StateVO> joinStudy(@PathVariable("no") int no) throws Exception {
+        StateVO stateVO = studyService.joinStudy(no);
+        return stateVO.getStateCode().equals("STUDY_JOIN_SUCCESS") ?
+                new ResponseEntity<>(stateVO, HttpStatus.OK) :
+                new ResponseEntity<>(stateVO, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    /*
+     *  스터디 탈퇴
+     *  @Param no
+     *  @Return 스터디 탈퇴 상태코드 반환
+     */
+    @ResponseBody
+    @DeleteMapping(value="/out/{no}", consumes = "application/json", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    public ResponseEntity<StateVO> outStudy(@PathVariable("no") int no) throws Exception {
+        StateVO stateVO = studyService.outStudy(no);
+        return stateVO.getStateCode().equals("STUDY_OUT_SUCCESS") ?
+                new ResponseEntity<>(stateVO, HttpStatus.OK) :
+                new ResponseEntity<>(stateVO, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+
+    /*
+     *  스터디 탈퇴
+     *  @Param no
+     *  @Return 스터디 탈퇴 상태코드 반환
+     */
+    @ResponseBody
+    @PutMapping(value="/latest/{no}", consumes = "application/json", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    public ResponseEntity<StateVO> latestStudy(@PathVariable("no") int no) throws Exception {
+        StateVO stateVO = studyService.latestStudy(no);
+        return stateVO.getStateCode().equals("STUDY_LATEST_SUCCESS") ?
+                new ResponseEntity<>(stateVO, HttpStatus.OK) :
+                new ResponseEntity<>(stateVO, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 
 
 }

@@ -66,7 +66,7 @@
                             OR STD_CONTENT LIKE CONCAT('%', #{criteria.keyword}, '%')
                             )
                         </if>
-                        ORDER BY STD_NO DESC
+                        ORDER BY STD_UPDATE DESC
                         LIMIT #{startRow}, #{pageSize}
           ) AS STUDYBOARD
         JOIN UPLOAD
@@ -77,6 +77,7 @@
                     GROUP BY GRM_GNO
         ) GROUPMEMBER
         ON GRM_GNO = STD_NO
+        ORDER BY STD_UPDATE DESC
     </select>
 
 
@@ -110,6 +111,52 @@
     <update id="deleteStudy" parameterType="StudyVO">
         UPDATE STUDYBOARD
         SET STD_AVAILABLE = 0
+        WHERE STD_NO = #{stdNo} AND STD_ID = #{stdId}
+    </update>
+
+    <!-- 스터디 참여 -->
+    <insert id="joinStudy" parameterType="StudyVO">
+        <selectKey keyProperty="mbrNo" order="BEFORE" resultType="int">
+          SELECT COALESCE(MAX(GRM_NO+1),1) AS MBR_NO FROM GROUPMEMBER
+        </selectKey>
+        INSERT INTO GROUPMEMBER(GRM_NO, GRM_GNO, GRM_ID, GRM_DATE)
+        VALUES(#{mbrNo}, #{stdNo}, #{stdId}, NOW())
+    </insert>
+
+    <!-- 스터디 탈퇴-->
+    <delete id="outStudy" parameterType="StudyVO">
+        DELETE FROM GROUPMEMBER
+        WHERE GRM_GNO = #{stdNo} AND GRM_ID = #{stdId}
+    </delete>
+
+    <!-- 스터디에 참여중인지 결과 반환 -->
+    <select id="alreadyStudy" parameterType="StudyVO" resultType="int">
+        SELECT COUNT(*) FROM GROUPMEMBER
+        WHERE GRM_GNO = #{stdNo} AND GRM_ID = #{stdId}
+    </select>
+
+    <!-- 스터디에 참여중인 멤버 리스트 조회 -->
+    <select id="getGroupMemberList" parameterType="int" resultType="GroupMemberVO">
+        SELECT GRM_NO, GRM_GNO, GRM_ID, GRM_DATE,
+                      MBR_NICK, MBR_PROFILE
+        FROM (
+                      SELECT * FROM GROUPMEMBER
+                      WHERE GRM_GNO = #{no}
+        ) GROUPMEMBER
+        JOIN MEMBER
+        ON MEMBER.MBR_ID = GROUPMEMBER.GRM_ID
+    </select>
+
+    <!-- 스터디 리더 아이디 조회 -->
+    <select id="getLeaderId" parameterType="int" resultType="String">
+        SELECT STD_ID FROM STUDYBOARD
+        WHERE STD_NO = #{stdNo}
+    </select>
+
+    <!-- 스터디 최신화 업데이트 -->
+    <update id="latestStudy" parameterType="StudyVO">
+        UPDATE STUDYBOARD
+        SET STD_UPDATE = NOW()
         WHERE STD_NO = #{stdNo} AND STD_ID = #{stdId}
     </update>
 

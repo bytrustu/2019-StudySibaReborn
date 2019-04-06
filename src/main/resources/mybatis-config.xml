@@ -25,6 +25,10 @@
         <typeAlias alias="CommentVO" type="com.studysiba.domain.board.CommentVO"/>
         <!-- 스터디-->
         <typeAlias alias="StudyVO" type="com.studysiba.domain.study.StudyVO"/>
+        <!-- 스터디그룹 -->
+        <typeAlias alias="StudyGroupVO" type="com.studysiba.domain.group.StudyGroupVO"/>
+        <!-- 스터디그룹멤버 -->
+        <typeAlias alias="GroupMemberVO" type="com.studysiba.domain.group.GroupMemberVO"/>
     </typeAliases>
 
 </configuration>

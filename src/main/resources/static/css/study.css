@@ -544,6 +544,20 @@
     left: 7.5px;
 }
 
+.stv-line{
+    width: 6px;
+    height: 55px;
+    background-color: #ffce56;
+    position: absolute;
+    left: -6px;
+    top: 0px;
+    border-radius: 5px;
+}
+
+.study-edit, .study-latest{
+    margin-right: 5px!important;
+}
+
 
 
 

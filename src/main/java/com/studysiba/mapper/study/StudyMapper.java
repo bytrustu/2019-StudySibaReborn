@@ -2,8 +2,10 @@ package com.studysiba.mapper.study;
 
 import com.studysiba.domain.common.PageVO;
 import com.studysiba.domain.study.StudyVO;
+import com.studysiba.domain.group.GroupMemberVO;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -72,4 +74,46 @@ public interface StudyMapper {
      *  @Return 스터디 삭제 여부 반환
      */
     int deleteStudy(StudyVO studyVO);
+
+    /*
+     *  스터디 참여
+     *  @Param studyVO
+     *  @Return 스터디 참여에 대한 결과 반환
+     */
+    int joinStudy(StudyVO studyVO);
+
+    /*
+     *  스터디 탈퇴
+     *  @Param studyVO
+     *  @Return 스터디 탈퇴에 대한 결과 반환
+     */
+    int outStudy(StudyVO studyVO);
+
+    /*
+     *  스터디 참여 확인
+     *  @Param studyVO
+     *  @Return 스터디에 참여중인지 확인 결과 반환
+     */
+    int alreadyStudy(StudyVO studyVO);
+
+    /*
+     *  스터디에 참여중인 멤버 리스트 조회
+     *  @Param no
+     *  @Return 스터디에 참여중인 멤버 리스트 반환
+     */
+    ArrayList<GroupMemberVO> getGroupMemberList(int no);
+
+    /*
+     *  스터디를 개설한 리더 아이디 조회
+     *  @Param no
+     *  @Return 스터디 리더 아이디 반환
+     */
+    String getLeaderId(int no);
+
+    /*
+     *  스터디 최신화
+     *  @Param studyVO
+     *  @Return 스터디 최신화 업데이트 여부 반환
+     */
+    int latestStudy(StudyVO studyVO);
 }

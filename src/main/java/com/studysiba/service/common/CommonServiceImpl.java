@@ -172,16 +172,16 @@ public class CommonServiceImpl implements CommonService {
     @Override
     public String contentUploadFile(MultipartFile multipartFile, String menu, int no) throws Exception {
 
-        String stateCode = null;
-        if ( multipartFile.isEmpty() ) return null;
-        if ( httpSession.getAttribute("id") == null ) return null;
+        String stateCode = "UPLOAD_STATE_ERROR";
+        if ( multipartFile.isEmpty() ) return stateCode;
+        if ( httpSession.getAttribute("id") == null ) return stateCode;
 
         String path = "C:\\upload\\studysiba\\" + menu;
         File destdir = new File(path);
         String fileName = null;
         if ( !destdir.exists() ) destdir.mkdir();
         //  JPG, JPEG, PNG, GIF, BMP 확장자 체크
-        if ( !DataValidation.checkImageFile(multipartFile.getOriginalFilename()) ) return null;
+        if ( !DataValidation.checkImageFile(multipartFile.getOriginalFilename()) ) return stateCode;
         String uuid = DataConversion.returnUUID();
         String originFileName = multipartFile.getOriginalFilename();
         fileName = uuid+"_"+originFileName;

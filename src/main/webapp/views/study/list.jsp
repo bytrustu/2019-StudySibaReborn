@@ -76,10 +76,6 @@
                         <span class="stm-divide">
                             그외
                         </span>
-
-
-
-
                     </div>
 
                     <c:forEach items="${study}" var="study">
@@ -96,6 +92,7 @@
                                     <h6 class="st-status">
                                         <img class="st-icon" src="/static/image/study/circular-clock.png"><span
                                             class="st-time">${study.stdStart} - ${study.stdEnd}</span>
+
                                     </h6>
                                     <h6 class="st-status">
                                         <img class="st-icon" src="/static/image/study/global.png"><span class="st-locate">${study.stdAddress}</span>
@@ -108,9 +105,14 @@
                                     </h6>
                                 </div>
                                 <div class="st-person">
-                                    <div class="st-now">
-                                        진행중
-                                    </div>
+                                    <c:choose>
+                                        <c:when test="${now >= study.stdEnd || study.stdAvailable == '0'}">
+                                            <div class="st-ended">마감</div>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <div class="st-now">진행중</div>
+                                        </c:otherwise>
+                                    </c:choose>
                                     <h5 class="st-per">
                                     <span class="st-pericon">
                                         <img src="/static/image/study/networking.png">

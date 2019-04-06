@@ -5,8 +5,10 @@
 
 
     <%
-        session.setAttribute("id","test1");
+        session.setAttribute("id","test2");
+        session.setAttribute("nick","test4");
         session.setAttribute("auth","ADMIN");
+        session.setAttribute("profile","profile-1.png");
     %>
 
     <div class="pageinfo-box">
@@ -575,10 +577,10 @@
                                                                 <option value="3">3명</option>
                                                                 <option value="4">4명</option>
                                                                 <option value="5">5명</option>
-                                                                <option value="5">6명</option>
-                                                                <option value="5">7명</option>
-                                                                <option value="5">8명</option>
-                                                                <option value="5">9명</option>
+                                                                <option value="6">6명</option>
+                                                                <option value="7">7명</option>
+                                                                <option value="8">8명</option>
+                                                                <option value="9">9명</option>
                                                                 <option value="99">제한없음</option>
                                                             </select>
                                                         </div>
