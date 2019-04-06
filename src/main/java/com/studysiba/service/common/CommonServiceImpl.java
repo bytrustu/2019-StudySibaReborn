@@ -9,6 +9,7 @@ import com.studysiba.domain.common.UploadVO;
 import com.studysiba.domain.member.PointVO;
 import com.studysiba.mapper.board.BoardMapper;
 import com.studysiba.mapper.common.CommonMapper;
+import com.studysiba.mapper.group.GroupMapper;
 import com.studysiba.mapper.member.MemberMapper;
 import com.studysiba.mapper.study.StudyMapper;
 import lombok.extern.log4j.Log4j;
@@ -49,6 +50,9 @@ public class CommonServiceImpl implements CommonService {
 
     @Resource
     StudyMapper studyMapper;
+
+    @Resource
+    GroupMapper groupMapper;
 
     @Autowired
     HttpSession httpSession;
@@ -231,6 +235,9 @@ public class CommonServiceImpl implements CommonService {
             FileCopyUtils.copy(multipartFile.getBytes(), target);
             UploadVO uploadVO = new UploadVO();
             uploadVO.setUldId((String) httpSession.getAttribute("id"));
+            if ( httpSession.getAttribute("auth").toString().toUpperCase().equals("ADMIN") ) {
+                uploadVO.setUldId( studyMapper.getLeaderId(no) );
+            }
             uploadVO.setUldFno(no);
             uploadVO.setUldType(menu);
             uploadVO.setUldText(menu);
@@ -275,6 +282,12 @@ public class CommonServiceImpl implements CommonService {
             case "study" :
                 pageVO = new PageVO(criteria, studyMapper.getStudyCount(searchMap), 10, 3);
         }
+        return pageVO;
+    }
+
+    @Override
+    public PageVO getGroupPageInfomation(Criteria criteria, int no) {
+        PageVO pageVO = new PageVO(criteria, groupMapper.getNoticeCount(no), 5,3);
         return pageVO;
     }
 

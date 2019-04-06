@@ -43,7 +43,7 @@ public interface StudyService {
      *  @Param no
      *  @Return 스터디 삭제에 대한 상태코드 반환
      */
-    StateVO deleteStudy(int no);
+    StateVO deleteStudy(int no, String type);
 
     /*
      *  스터디 참여

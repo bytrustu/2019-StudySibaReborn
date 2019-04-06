@@ -33,7 +33,7 @@
                     </c:if>
 
                     <c:forEach items="${group}" var="group">
-                        <li class="st-item st-move" data-no="${group.stdNo}">
+                        <li class="st-item st-move" data-no="${group.grmGno}">
                             <a class="st-link">
                                 <div class="st-thumb">
                                     <img src="/file/view/study/${group.uldFilename}">
@@ -87,8 +87,6 @@
 
             </ul>
 
-            <%--<input type="text" class="form-control" id="pac-input" name="address" placeholder="스터디 장소를 검색하세요.">--%>
-            <%--<div id="map" style="width: 500px;height: 300px"></div>--%>
 
 
         </div>

@@ -114,6 +114,13 @@
         WHERE STD_NO = #{stdNo} AND STD_ID = #{stdId}
     </update>
 
+    <!-- 스터디 활성화 -->
+    <update id="activeStudy" parameterType="StudyVO">
+        UPDATE STUDYBOARD
+        SET STD_AVAILABLE = 1
+        WHERE STD_NO = #{stdNo} AND STD_ID = #{stdId}
+    </update>
+
     <!-- 스터디 참여 -->
     <insert id="joinStudy" parameterType="StudyVO">
         <selectKey keyProperty="mbrNo" order="BEFORE" resultType="int">

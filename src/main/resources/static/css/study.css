@@ -558,9 +558,16 @@
     border-radius: 5px;
 }
 
-.study-edit, .study-latest{
+.study-edit{
     margin-right: 5px!important;
 }
+
+
+
+
+/*
+        스터디 그룹
+ */
 
 .group-box{
     margin-bottom: 50px;
@@ -577,23 +584,115 @@
     margin-bottom: 5px;
 }
 
+.stg-top{
+    min-height: 200px;
+}
 
 
+.crown {
+    height: 30px;
+    width: 30px;
+    position: absolute;
+    z-index: 100;
+    top: 0px;
+    left: 62px;
+}
+
+.crown path {
+    fill : #d85e4f;
+}
 
 
+.icon {
+    display: inline-block;
+    width: 16em;
+    height: 16em;
+    transform: translate(-50%,-50%);
+}
 
+.stg-notice {
+    border-bottom: 1px solid #eaeaea;
+    width: 90%;
+    padding: 10px;
+    margin: 5px 0;
+}
 
+.stg-nav{
+    margin-top: 25px;
+    margin-bottom: 0;
+    font-weight: bold;
+}
 
+.stg-nav ul {
+    justify-content: center;
+    margin-bottom: 0;
+}
 
+.stg-groupname span{
+    font-size: 25px;
+    vertical-align: super;
+    color: #212529;
+    font-family: "Roboto";
+}
 
+.stg-notice span{
+    padding-left: 20px;
+    line-height: 17px;
+    cursor: pointer;
+}
 
+.stg-lasttime{
+    font-size: 10px;
+    font-weight: bold;
+    line-height: 25px !important;
+}
 
+.stg-edit {
+    width: 20px !important;
+    height: 20px !important;
+    margin-left: 10px !important;
+    vertical-align: 3px !important;
+}
 
+.stg-delete{
+    width: 20px !important;
+    height: 20px !important;
+    margin-left: 0 !important;
+    vertical-align: 3px !important;
+}
 
+.stg-icon{
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    margin-left: 10px;
+}
 
+.group-noticebtn{
+    float: right;
+    font-size: 14px;
+    height: 45px;
+    margin-right: 20px;
+    margin-top: 25px;
+    font-weight: bold;
+}
 
+.group-input-title{
+    width: 100%;
+}
 
+.group-modal-title{
+    width: 100%;
+}
 
+.input-default-wrapper{
+    padding: 0 1rem !important;
+}
+
+.ck-editor__editable {
+    min-height: 250px !important;
+    max-height: 250px !important;
+}
 
 
 

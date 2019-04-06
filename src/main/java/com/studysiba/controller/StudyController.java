@@ -15,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -129,9 +130,9 @@ public class StudyController {
      */
     @ResponseBody
     @DeleteMapping(value="/delete/{no}", consumes = "application/json", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
-    public ResponseEntity<StateVO> deleteStudy(@PathVariable("no") int no) throws Exception {
-        StateVO stateVO = studyService.deleteStudy(no);
-        return stateVO.getStateCode().equals("STUDY_DELETE_SUCCESS") ?
+    public ResponseEntity<StateVO> deleteStudy(@PathVariable("no") int no, @RequestBody HashMap map ) throws Exception {
+        StateVO stateVO = studyService.deleteStudy(no, (String) map.get("type"));
+        return stateVO.getStateCode().contains("SUCCESS") ?
                 new ResponseEntity<>(stateVO, HttpStatus.OK) :
                 new ResponseEntity<>(stateVO, HttpStatus.INTERNAL_SERVER_ERROR);
     }

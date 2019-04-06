@@ -255,7 +255,7 @@
 
 
 
-    <!-- Modal -->
+    <!-- 공지사항/커뮤니티 글쓰기 모달 -->
     <div class="modal fade basic-modal" id="basicModal" tabindex="-1" role="dialog" aria-labelledby="basicModalLabel" aria-hidden="true">
         <div class="modal-dialog basic-modal-dialog" role="document">
             <div class="modal-content basic-modal-content">
@@ -823,7 +823,6 @@
         <script type="text/javascript" src="/static/js/lib/mdb.js"></script>
         <script type="text/javascript" src="/static/js/lib/sweetalert2.all.min.js"></script>
         <script type="text/javascript" src="/static/js/lib/Liar.js"></script>
-
         <script type="text/javascript" src="/static/js/lib/kakao.min.js"></script>
         <script async charset="utf-8" src="//cdn.embedly.com/widgets/platform.js"></script>
         <script type="text/javascript" src="/static/dist/ckeditor.js"></script>

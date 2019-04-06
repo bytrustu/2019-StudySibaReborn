@@ -22,7 +22,15 @@
         <div class="board-top">
             <div class="board-total">
                 <c:if test="${sessionScope.id eq studyView.stdId || sessionScope.auth eq 'ADMIN'}">
-                    <img src="/static/image/common/edit.png" class="study-edit"><img src="/static/image/common/rollback.png" class="study-latest"><img src="/static/image/common/delete.png" class="study-delete">
+                    <img src="/static/image/common/edit.png" class="study-edit"><img src="/static/image/common/rollback.png" class="study-latest">
+                    <c:choose>
+                        <c:when test="${studyView.stdAvailable == 1}">
+                            <img src="/static/image/common/delete.png" class="study-delete" data-delete="delete">
+                        </c:when>
+                        <c:otherwise>
+                            <img src="/static/image/common/open.png" class="study-delete" data-delete="open">
+                        </c:otherwise>
+                    </c:choose>
                 </c:if>
             </div>
 
@@ -151,6 +159,16 @@
                         </div>
                         <div class="col-md-8">
 
+                            <svg class="crown" viewbox="0 0 140 140">
+                                <path fill="gold">
+                                    <animate
+                                            attributeName="d"
+                                            dur="1440ms"
+                                            repeatCount="indefinite"
+                                            values="M 10,110 L 10,10 L 40,50 L 70,10 L 100,50 L 130,10 L 130,110 z;M 30,110 L 0,0 L 50,50 L 70,0 L 90,50 L 140,0 L 110,110 z;M 10,110 L 10,10 L 40,50 L 70,10 L 100,50 L 130,10 L 130,110 z;"
+                                    />
+                                </path>
+                            </svg>
                             <c:set var="imgStep" value='${fn:substring(studyView.mbrProfile, fn:indexOf(studyView.mbrProfile,"-")+1, fn:indexOf(studyView.mbrProfile,".png"))}'/>
 
                             <div class="card stv-user">
@@ -177,7 +195,7 @@
                                     </div>
                                 </div>
                                 <div class="card-bottom text-center stv-userbottom">
-                                    용준
+                                    ${studyView.mbrNick}
                                 </div>
                             </div>
 

@@ -64,4 +64,11 @@ public interface CommonService {
      *  @Return 페이지정보 반환
      */
     PageVO getPageInfomation(String menu, Criteria criteria);
+
+    /*
+     *  그룹 공지사항 페이지 정보 조회
+     *  @Param criteria, no
+     *  @Return 페이지정보 반환
+     */
+    PageVO getGroupPageInfomation(Criteria criteria, int no);
 }

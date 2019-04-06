@@ -1,14 +1,22 @@
 package com.studysiba.controller;
 
+import com.studysiba.domain.common.Criteria;
+import com.studysiba.domain.common.PageVO;
+import com.studysiba.domain.common.StateVO;
+import com.studysiba.domain.group.GroupBoardVO;
 import com.studysiba.domain.group.GroupMemberVO;
+import com.studysiba.domain.study.StudyVO;
 import com.studysiba.service.common.CommonService;
 import com.studysiba.service.group.GroupService;
+import com.studysiba.service.study.StudyService;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
@@ -22,7 +30,11 @@ public class GroupController {
     GroupService groupService;
 
     @Autowired
+    StudyService studyService;
+
+    @Autowired
     CommonService commonService;
+
 
 
 
@@ -45,6 +57,83 @@ public class GroupController {
         log.info(groupList);
         return location;
     }
+
+
+    /*
+     *  그룹 뷰 이동
+     *  @Param  no
+     *  @Return 스터디그룹번호 따른 정보 반환
+     */
+    @GetMapping("/view")
+    public String moveView(Model model, @RequestParam("no") int no, @ModelAttribute Criteria criteria) throws Exception {
+
+        String menu = "group";
+        String location = "/"+menu+"/view";
+
+        // 게시판 별 안내 글귀
+        Map<String, String> introComment = commonService.getIntroduceComment(menu);
+        model.addAttribute("intro", introComment);
+
+        StudyVO studyVO = studyService.getStudyOne(no);
+        model.addAttribute("studyView",studyVO);
+
+        PageVO pageVO = commonService.getGroupPageInfomation(criteria,no);
+        model.addAttribute("page", pageVO);
+
+        List<GroupBoardVO> noticeList = groupService.getNoticeList(pageVO,no);
+        model.addAttribute("notice",noticeList);
+
+        List<GroupMemberVO> groupMemberList = studyService.getGroupMemberList(no);
+        model.addAttribute("groupMember", groupMemberList);
+
+        return location;
+    }
+
+
+
+    /*
+     *  그룹 공지사항 작성
+     *  @Param  groupBoardVO
+     *  @Return 스터디 공지사항 작성에 대한 상태코드 반환
+     */
+    @ResponseBody
+    @PostMapping(value = "/notice/write")
+    public ResponseEntity<StateVO> writeGroupPost(@ModelAttribute GroupBoardVO groupBoardVO) throws Exception {
+        StateVO stateVO = groupService.writeGroupPost(groupBoardVO);
+        return stateVO.getStateCode().equals("NOTICE_WRITE_SUCCESS") ?
+                new ResponseEntity<>(stateVO, HttpStatus.OK) : new ResponseEntity<>(stateVO, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+
+    /*
+     *  그룹 공지사항 업데이트
+     *  @Param  groupBoardVO
+     *  @Return 스터디 공지사항 업데이트 대한 상태코드 반환
+     */
+    @ResponseBody
+    @PostMapping(value = "/notice/update")
+    public ResponseEntity<StateVO> updateGroupPost(@RequestBody GroupBoardVO groupBoardVO) throws Exception {
+        StateVO stateVO = groupService.updateGroupPost(groupBoardVO);
+        return stateVO.getStateCode().equals("NOTICE_UPDATE_SUCCESS") ?
+                new ResponseEntity<>(stateVO, HttpStatus.OK) : new ResponseEntity<>(stateVO, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+
+
+    /*
+     *  그룹 공지사항 작성
+     *  @Param  groupBoardVO
+     *  @Return 스터디 공지사항 삭제에 대한 상태코드 반환
+     */
+    @ResponseBody
+    @DeleteMapping(value = "/notice/delete", consumes = "application/json", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    public ResponseEntity<StateVO> deleteGroupPost(Model model, @RequestBody GroupBoardVO groupBoardVO) throws Exception {
+        StateVO stateVO = groupService.deleteGroupPost(groupBoardVO);
+        return stateVO.getStateCode().equals("NOTICE_DELETE_SUCCESS") ?
+                new ResponseEntity<>(stateVO, HttpStatus.OK) : new ResponseEntity<>(stateVO, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+
 
 
 }

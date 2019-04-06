@@ -27,6 +27,61 @@
                     GROUP BY GRC_GNO
         ) GROUPCOUNT
         ON GROUPCOUNT.GRC_GNO = GROUPMEMBER.GRM_GNO
+        ORDER BY GRM_DATE DESC
+    </select>
+
+    <!-- 스터디 리더 여부 확인 -->
+    <select id="checkGroupLeader" parameterType="GroupBoardVO" resultType="int">
+        SELECT COUNT(*) AS ISLEADER FROM STUDYBOARD
+        WHERE STD_NO = #{grbGno} AND STD_ID = #{grbId}
+    </select>
+
+    <!-- 그룹 공지사항 등록 -->
+    <insert id="writeGroupPost" parameterType="GroupBoardVO">
+        <selectKey keyProperty="grbNo" order="BEFORE" resultType="int">
+            SELECT COALESCE(MAX(GRB_NO+1),1) AS GRB_NO FROM GROUPBOARD
+        </selectKey>
+          INSERT INTO GROUPBOARD(GRB_NO, GRB_GNO, GRB_ID, GRB_TITLE, GRB_CONTENT, GRB_AVAILABLE, GRB_DATE)
+          VALUES(#{grbNo}, #{grbGno}, #{grbId}, #{grbTitle}, #{grbContent}, 1, NOW())
+    </insert>
+
+    <!-- 그룹 공지사항 파일이름 조회 -->
+    <select id="getPrevFileName" parameterType="GroupBoardVO" resultType="String">
+          SELECT CONCAT(GRB_UUID,'_',GRB_FILENAME) AS FILENAME FROM GROUPBOARD
+          WHERE GRB_NO = #{grbNo} AND GRB_ID = #{grbId}
+    </select>
+
+
+    <!-- 그룹 공지사항 파일 업데이트 -->
+    <update id="updateGroupFilename" parameterType="GroupBoardVO">
+          UPDATE GROUPBOARD
+          SET GRB_UUID = #{grbUuid}, GRB_FILENAME = #{grbFilename}
+          WHERE GRB_NO = #{grbNo}
+    </update>
+
+    <!-- 그룹 공지사항 최근 글번호 조회 -->
+    <select id="getMaxNoticeNum" parameterType="GroupBoardVO" resultType="int">
+          SELECT MAX(GRB_NO) FROM GROUPBOARD
+          WHERE GRB_GNO = #{grbGno} AND GRB_ID = #{grbId}
+    </select>
+
+    <!-- 그룹 공지사항 리스트 조회 -->
+    <select id="getNoticeList" parameterType="HashMap" resultType="GroupBoardVO">
+        SELECT GRB_NO, GRB_GNO, GRB_ID, GRB_TITLE, GRB_CONTENT, GRB_UUID, GRB_FILENAME, GRB_AVAILABLE, GRB_DATE
+        FROM (
+                      SELECT * FROM GROUPBOARD
+                      WHERE GRB_GNO = #{no}
+                      ORDER BY GRB_DATE DESC
+                      LIMIT #{startRow}, #{pageSize}
+        ) AS GROUPBOARD
+        ORDER BY GRB_DATE DESC
+
+    </select>
+
+    <!-- 그룹 공지사항 카운트 조회 -->
+    <select id="getNoticeCount" parameterType="int" resultType="int">
+        SELECT COUNT(*) FROM GROUPBOARD
+        WHERE GRB_GNO = #{no}
     </select>
 
 

@@ -29,6 +29,8 @@
         <typeAlias alias="StudyGroupVO" type="com.studysiba.domain.group.StudyGroupVO"/>
         <!-- 스터디그룹멤버 -->
         <typeAlias alias="GroupMemberVO" type="com.studysiba.domain.group.GroupMemberVO"/>
+        <!-- 스터디공지사항 게시판 -->
+        <typeAlias alias="GroupBoardVO" type="com.studysiba.domain.group.GroupBoardVO"/>
     </typeAliases>
 
 </configuration>

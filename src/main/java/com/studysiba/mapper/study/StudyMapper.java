@@ -76,6 +76,13 @@ public interface StudyMapper {
     int deleteStudy(StudyVO studyVO);
 
     /*
+     *  스터디활성화
+     *  @Param studyVO
+     *  @Return 스터디 활성화 여부 반환
+     */
+    int activeStudy(StudyVO studyVO);
+
+    /*
      *  스터디 참여
      *  @Param studyVO
      *  @Return 스터디 참여에 대한 결과 반환
@@ -116,4 +123,5 @@ public interface StudyMapper {
      *  @Return 스터디 최신화 업데이트 여부 반환
      */
     int latestStudy(StudyVO studyVO);
+
 }

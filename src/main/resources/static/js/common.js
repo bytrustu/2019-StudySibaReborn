@@ -315,6 +315,8 @@ stateCode.set("STUDY_UPDATE_ERROR","스터디 수정에 실패했습니다.");
 
 stateCode.set("STUDY_DELETE_SUCCESS","스터디가 비활성화 되었습니다..");
 stateCode.set("STUDY_DELETE_ERROR","스터디 비활성화에 실패했습니다.");
+stateCode.set("STUDY_ACTIVE_SUCCESS","스터디가 활성화 되었습니다.");
+stateCode.set("STUDY_ACTIVE_ERROR","스터디 활성화에 실패했습니다.");
 
 stateCode.set("STUDY_JOIN_SUCCESS","스터디에 참여 했습니다.");
 stateCode.set("STUDY_JOIN_ERROR","스터디 참여에 실패 했습니다.");
@@ -324,6 +326,9 @@ stateCode.set("STUDY_STATE_ALREADY","이미 스터디에 참여중 입니다.");
 
 stateCode.set("STUDY_LATEST_SUCCESS","스터디가 최신글로 갱신 되었습니다.");
 stateCode.set("STUDY_LATEST_ERROR","스터디 최신화에 실패 했습니다..");
+
+stateCode.set("NOTICE_WRITE_SUCCESS","공지사항이 등록 되었습니다.");
+stateCode.set("NOTICE_WRITE_ERROR","공지사항 등록에 실패 했습니다.");
 
 
 // KAKAO API

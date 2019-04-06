@@ -150,16 +150,26 @@ public class StudyServiceImpl implements StudyService {
      *  @Return 스터디 삭제에 대한 상태코드 반환
      */
     @Override
-    public StateVO deleteStudy(int no) {
+    public StateVO deleteStudy(int no, String type) {
         StateVO stateVO = new StateVO();
         stateVO.setNo(no);
-        stateVO.setStateCode("STUDY_DELETE_ERROR");
+        if ( type.equals("delete") ) {
+            stateVO.setStateCode("STUDY_DELETE_ERROR");
+        } else {
+            stateVO.setStateCode("STUDY_ACTIVE_ERROR");
+        }
         if ( httpSession.getAttribute("id") == null ) return stateVO;
         StudyVO studyVO = new StudyVO();
         studyVO.setStdNo(no);
         studyVO.setStdId((String) httpSession.getAttribute("id"));
-        int deleteState = studyMapper.deleteStudy(studyVO);
-        if ( deleteState == 1 ) stateVO.setStateCode("STUDY_DELETE_SUCCESS");
+        if ( type.equals("delete") ) {
+            int deleteState = studyMapper.deleteStudy(studyVO);
+            if ( deleteState == 1 ) stateVO.setStateCode("STUDY_DELETE_SUCCESS");
+        } else {
+            int deleteState = studyMapper.activeStudy(studyVO);
+            if ( deleteState == 1 ) stateVO.setStateCode("STUDY_ACTIVE_SUCCESS");
+        }
+
         return stateVO;
     }
 
