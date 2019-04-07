@@ -2,15 +2,12 @@ package com.studysiba.service.common;
 
 import com.studysiba.domain.common.Criteria;
 import com.studysiba.domain.common.PageVO;
-import com.studysiba.domain.common.UploadVO;
-import com.studysiba.domain.member.MemberVO;
 import com.studysiba.domain.member.PointVO;
+import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public interface CommonService {
 
@@ -71,4 +68,11 @@ public interface CommonService {
      *  @Return 페이지정보 반환
      */
     PageVO getGroupPageInfomation(Criteria criteria, int no);
+
+    /*
+     *  파일다운로드
+     *  @Param menu, no
+     *  @Return HashMap<String, Object>
+     */
+    HashMap<String, Object> downloadFile(String menu, int no);
 }

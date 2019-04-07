@@ -33,6 +33,13 @@ public interface GroupMapper {
     int writeGroupPost(GroupBoardVO groupBoardVO);
 
     /*
+     *  그룹 공지사항 등록
+     *  @Param groupBoardVO
+     *  @Return 그룹 공지사항 등록여부 반환
+     */
+    int updateGroupPost(GroupBoardVO groupBoardVO);
+
+    /*
      *  그룹 공지사항 파일이름조회
      *  @Param groupBoardVO
      *  @Return 파일이름 반환
@@ -66,4 +73,19 @@ public interface GroupMapper {
      *  @Return  그룹 공지사항 글카운트 반환
      */
     int getNoticeCount(int no);
+
+    /*
+     *  그룹 공지사항 게시글 조회
+     *  @Param  no
+     *  @Return  그룹 공지사항 게시글 정보 반환
+     */
+    GroupBoardVO getGroupPost(int no);
+
+
+    /*
+     *  그룹 탈퇴
+     *  @Param  groupMemberVO
+     *  @Return 그룹탈퇴 여부 반환
+     */
+    int outGroup(GroupMemberVO groupMemberVO);
 }

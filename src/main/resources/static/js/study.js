@@ -22,6 +22,34 @@ $(document).ready(function () {
         .catch(error => {
         });
 
+    // 스터디그룹 공지사항 CkEditor 설정
+    let groupContent;
+    ClassicEditor
+        .create(document.querySelector('#groupEditor'), {
+            language: 'ko',
+            toolbar: {
+                viewportTopOffset: 30
+            },
+            container: {
+                overflow: scroll
+            },
+            ckfinder: {
+                uploadUrl: '/upload/group'
+            },
+            config: {
+                ui: {
+                    width: '500px',
+                    height: '800px'
+                }
+            }
+        })
+        .then(editor => {
+            groupContent = editor;
+        })
+        .catch(error => {
+        });
+
+
 
     // 스터디 등록 모달 버튼
     $('.content-studybtn').on('click', function () {
@@ -784,60 +812,68 @@ $(document).ready(function () {
 
 
 
-    // 스터디그룹 공지사항 CkEditor 설정
-    let groupContent;
-    ClassicEditor
-        .create(document.querySelector('#groupEditor'), {
-            language: 'ko',
-            toolbar: {
-                viewportTopOffset: 30
-            },
-            container: {
-                overflow: scroll
-            },
-            ckfinder: {
-                uploadUrl: '/upload/community'
-            },
-            config: {
-                ui: {
-                    width: '500px',
-                    height: '800px'
-                }
-            }
-        })
-        .then(editor => {
-            groupContent = editor;
-        })
-        .catch(error => {
-        });
 
 
-    $('.group-noticebtn').on('click', ()=>{
+    // 공지사항 작성 버튼
+    $('.group-noticebtn').on('click', function(){
         $('#groupModal').modal('show');
+        $('.stg-update').css('display','none');
+        $('.stg-register').css('display','inline-block');
+        $('#stg-titleinput').val('');
+        groupContent.setData('');
+        $('.span-choose-file').html('파일선택');
+        $('#stg-fileinput').val('');
     });
 
-    $('.stg-register').on('click', ()=> {
+
+    // 공지사항 등록/수정 버튼
+    $('.stg-register, .stg-update').on('click',  function(){
         let groupMap = new Map();
         groupMap.set('grbTitle',$('#stg-titleinput').val());
         groupMap.set('grbContent',groupContent.getData());
         groupMap.set('grbGno', contentNo());
+        // 업데이트 일 경우 no 추가
+        if ( $(this).hasClass('stg-update') ) {
+            groupMap.set('grbNo', $('.stg-noticeedit').attr('data-no'));
+        }
+        for ( let str of groupMap ) {
+            if ( str[1].trim() == '' ) {
+                errorAlert('모두 입력해주세요.');
+                return false;
+            }
+        }
         let formData = mapToFormData(groupMap);
         if ( $('#stg-fileinput').val() != '' ) {
             formData.append('grbFile', $('#stg-fileinput')[0].files[0]);
         }
-        registerNotice(formData)
-            .then( (data) =>{
-                console.log(data);
-                $('.modal').modal('hide');
-                timerAlert("공지사항등록","공지사항을 등록중입니다", 1500);
-                setTimeout(()=>{successAlert(stateCode.get(data.stateCode))},1500);
-                setTimeout(()=>{location.href=currentUrl()},3200);
-            }).catch( (error) => {
+
+        // 등록일 경우
+        if ( $(this).hasClass('stg-register') ) {
+            registerNotice(formData)
+                .then( (data) =>{
+                    $('.modal').modal('hide');
+                    timerAlert("공지사항등록","공지사항을 등록중입니다", 1500);
+                    setTimeout(()=>{successAlert(stateCode.get(data.stateCode))},1500);
+                    setTimeout(()=>{location.href=currentUrl()},3200);
+                }).catch( (error) => {
                 errorAlert(stateCode.get(error.stateCode));
-        });
+            });
+            // 수정일 경우
+        } else {
+            updateNotice(formData)
+                .then( (data) => {
+                    $('.modal').modal('hide');
+                    timerAlert("공지사항수정","공지사항을 수정중입니다", 1500);
+                    setTimeout(()=>{successAlert(stateCode.get(data.stateCode))},1500);
+                    setTimeout(()=>{location.href=currentUrl()},3200);
+                }).catch( (error) => {
+                errorAlert(stateCode.get(error.stateCode));
+            });
+        }
     });
 
 
+    // 공지사항 등록처리
     let registerNotice = (formData) => {
         return new Promise( (resolve, reject) => {
             $.ajax({
@@ -855,8 +891,170 @@ $(document).ready(function () {
                 }
             });
         });
-
     }
+
+    // 공지사항 업데이트
+    let updateNotice = (formData) => {
+        return new Promise( (resolve, reject) => {
+            $.ajax({
+                type: 'POST',
+                url: `/group/notice/update`,
+                data: formData,
+                dataType: 'json',
+                processData: false,
+                contentType: false,
+                success: (data) => {
+                    resolve(data);
+                },
+                error: (error) => {
+                    reject(JSON.parse(error.responseText));
+                }
+            });
+        });
+    }
+
+
+    $('#basicModal, #studyModal, #groupModal, #noticeModal').on('show.bs.modal', function () {
+        $('.sub-page').css('overflow-y','hidden');
+    });
+
+    $("#basicModal, #studyModal, #groupModal, #noticeModal").on('hide.bs.modal', function () {
+        $('.sub-page').css('overflow-y','auto');
+    });
+
+    // 공지사항 조회
+
+    $(document).on('click','.stg-notice span:nth-of-type(1)', function(){
+        $('#noticeModal').modal('show');
+        let no = $(this).attr('data-no');
+        $('.stg-noticeedit').attr('data-no',no);
+        viewNotice(no)
+            .then( (data) => {
+                console.log(data);
+                if ( data.grbFilename == null ) {
+                    $('.svg-download').html('파일없음');
+                } else {
+                    $('.svg-download').html(`<a href="/download?menu=group&no=${data.grbNo}">${data.grbFilename}</a>`);
+                }
+                $('.svg-title').html( data.grbTitle );
+                $('.svg-content').html( data.grbContent );
+                document.querySelectorAll( 'oembed[url]' ).forEach( element => {
+                    const anchor = document.createElement( 'a' );
+                    anchor.setAttribute( 'href', element.getAttribute( 'url' ) );
+                    anchor.className = 'embedly-card';
+                    element.appendChild( anchor );
+                });
+
+
+            }).catch( (error) => {
+                errorAlert('잘못된 접근 입니다.');
+        });
+    });
+
+    $('.stg-noticeedit').on('click', ()=>{
+        let no = $('.stg-noticeedit').attr('data-no');
+        console.log(no);
+        $('#noticeModal').modal('hide');
+        setTimeout(()=>{
+            $('#groupModal').modal('show');
+            $('.stg-update').css('display','inline-block');
+            $('.stg-register').css('display','none');
+            viewNotice(no)
+                .then( (data) => {
+                    $('#stg-titleinput').val( data.grbTitle );
+                    groupContent.setData( data.grbContent );
+                    if ( data.grbFilename != null ) {
+                        $('.span-choose-file').html(`${data.grbUuid}_${data.grbFilename}`);
+                    } else {
+                        $('.span-choose-file').html('파일선택');
+                    }
+                    // $('.svg-download').val()
+                }).catch( (error) => {
+                errorAlert('잘못된 접근 입니다.');
+            });
+        },500);
+    });
+
+
+
+    // 공지사항 게시글 조회 처리
+    let viewNotice = (no) => {
+        return new Promise( (resolve, reject) => {
+            $.ajax({
+                type : 'GET',
+                url : `/group/notice/view/${no}`,
+                dataType : 'json',
+                contentType : 'application/json; charset=utf-8',
+                success : (data) =>{
+                    resolve(data);
+                },
+                error : (error) => {
+                    reject(error);
+                }
+            });
+        });
+    }
+
+    // 그룹 탈퇴
+    $('.group-out, .out-icon').on('click', function(){
+        let text = '';
+        if ( $(this).hasClass('group-out') ) {
+            text = '그룹을 탈퇴 하시겠습니까?'
+        } else {
+            text = '해당 팀원을 탈퇴 시키겠습니까?'
+        }
+        Swal.fire({
+            title: '그룹탈퇴',
+            text: text,
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#fbc02d',
+            cancelButtonColor: '#e4b67c ',
+            confirmButtonText: '네'
+            }).then((result) => {
+            if (result.value) {
+                let no = contentNo();
+                let id = $(this).attr('data-id');
+                let groupMap = new Map();
+                groupMap.set('grmGno', no);
+                groupMap.set('grmId', id);
+                let groupJson = mapToJson(groupMap);
+                outGroup(groupJson)
+                    .then( (data) => {
+                        timerAlert("그룹탈퇴","그룹 탈퇴 처리중입니다.", 1000);
+                        setTimeout(()=>{successAlert(stateCode.get(data.stateCode))},1000);
+                        setTimeout(()=>{
+                            if( !$(this).hasClass('group-out') ) { $(this).closest('.stv-user').remove() }
+                            else { location.href='/group/list';}
+                        },2500);
+                    }).catch( (error) => {
+                        errorAlert("잘못된 접근 입니다.");
+                })
+             }
+         })
+    });
+
+
+
+    // 회원 탈퇴 처리
+    let outGroup = (groupJson) => {
+        return new Promise( (resolve, reject ) => {
+            $.ajax({
+                type : 'DELETE',
+                url : `/group/out`,
+                data : groupJson,
+                dataType : 'json',
+                contentType : 'application/json; charset=utf-8',
+                success : (data) =>{
+                    resolve(data);
+                },
+                error : (error) => {
+                    reject(JSON.parse(error.responseText));
+                }
+            });
+        });
+    }
+
 
 
 

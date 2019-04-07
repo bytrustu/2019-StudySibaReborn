@@ -7,6 +7,7 @@ import com.studysiba.domain.common.StateVO;
 import com.studysiba.domain.group.GroupBoardVO;
 import com.studysiba.domain.group.GroupMemberVO;
 import com.studysiba.mapper.group.GroupMapper;
+import com.studysiba.mapper.study.StudyMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +25,9 @@ public class GroupServiceImpl implements GroupService {
 
     @Resource
     GroupMapper groupMapper;
+
+    @Resource
+    StudyMapper studyMapper;
 
     @Autowired
     HttpSession httpSession;
@@ -52,19 +56,21 @@ public class GroupServiceImpl implements GroupService {
         stateVO.setStateCode("NOTICE_WRITE_ERROR");
         // 접속중인 회원인지 확인
         if ( httpSession.getAttribute("id") == null ) return stateVO;
-        System.out.println("1");
         groupBoardVO.setGrbId((String) httpSession.getAttribute("id"));
         // 데이터에 NULL 혹은 빈공간이 없는지 확인
         if ( !DataValidation.findEmptyValue(groupBoardVO,new String[]{"grdId","grdTitle","grdContent"})
                 .equals("VALUES_STATE_GOOD") ) return stateVO;
-        System.out.println("2");
-        // 그룹의 리더가 맞는지 확인
-        if ( groupMapper.checkGroupLeader(groupBoardVO) != 1 ) return stateVO;
+        // 관리자가 아니라면
+        if ( !httpSession.getAttribute("auth").toString().toUpperCase().equals("ADMIN") ) {
+            // 그룹의 리더가 맞는지 확인
+            if ( groupMapper.checkGroupLeader(groupBoardVO) != 1 ) return stateVO;
+        } else {
+            // 관리자라면 아이디를 리더 아이디로 변경한다.
+            groupBoardVO.setGrbId(studyMapper.getLeaderId(groupBoardVO.getGrbGno()));
+        }
         // 공지사항 작성
-        System.out.println("3");
         int writeGroup = groupMapper.writeGroupPost(groupBoardVO);
         if ( writeGroup == 1 ) {
-            System.out.println("4");
             stateVO.setStateCode("NOTICE_WRITE_SUCCESS");
             stateVO.setNo(groupBoardVO.getGrbGno());
             // 첨부파일이 있다면 업로드
@@ -86,20 +92,41 @@ public class GroupServiceImpl implements GroupService {
      *  @Return 스터디 공지사항 업데이트 대한 상태코드 반환
      */
     @Override
-    public StateVO updateGroupPost(GroupBoardVO groupBoardVO) {
-//        StateVO stateVO = new StateVO();
-//        stateVO.setStateCode("GROUPNOTICE_WRITE_ERROR");
-//        if ( httpSession.getAttribute("id") == null ) return stateVO;
-//        groupBoardVO.setGrbId((String) httpSession.getAttribute("id"));
-//        if ( httpSession.getAttribute("auth").toString().toUpperCase().equals("ADMIN") ){
-//            groupBoardVO.setGrbId(groupMapper.getGroupLeaderId(groupBoardVO.getGrbNo()));
-//        }
-//        int updateGroup = groupMapper.updateGroupPost(groupBoardVO);
-//        if ( updateGroup == 1 ) {
-//            if ( groupBoardVO.getGrbFilename())
-//        }
+    public StateVO updateGroupPost(GroupBoardVO groupBoardVO) throws Exception {
+        StateVO stateVO = new StateVO();
+        stateVO.setStateCode("NOTICE_UPDATE_ERROR");
+        // 접속중인 회원인지 확인
+        if ( httpSession.getAttribute("id") == null ) return stateVO;
+        groupBoardVO.setGrbId((String) httpSession.getAttribute("id"));
+        // 데이터에 NULL 혹은 빈공간이 없는지 확인
+        if ( !DataValidation.findEmptyValue(groupBoardVO,new String[]{"grdId","grdTitle","grdContent"})
+                .equals("VALUES_STATE_GOOD") ) return stateVO;
 
-        return null;
+        // 관리자가 아니라면
+        if ( !httpSession.getAttribute("auth").toString().toUpperCase().equals("ADMIN") ) {
+            // 그룹의 리더가 맞는지 확인
+            if ( groupMapper.checkGroupLeader(groupBoardVO) != 1 ) return stateVO;
+        } else {
+            // 관리자라면 아이디를 리더 아이디로 변경한다.
+            groupBoardVO.setGrbId(studyMapper.getLeaderId(groupBoardVO.getGrbGno()));
+        }
+        // 공지사항 업데이트
+        int writeGroup = groupMapper.updateGroupPost(groupBoardVO);
+        if ( writeGroup == 1 ) {
+            stateVO.setStateCode("NOTICE_UPDATE_SUCCESS");
+            stateVO.setNo(groupBoardVO.getGrbGno());
+            // 첨부파일이 있다면 업로드
+            if ( groupBoardVO.getGrbFile() != null ) {
+                groupBoardVO.setGrbNo(groupMapper.getMaxNoticeNum(groupBoardVO));
+                // 이전 파일 삭제 플래그
+                groupBoardVO.setIsUpdateFile("true");
+                String uploadState = groupFileUpload(groupBoardVO);
+                if ( uploadState.equals("UPLOAD_STATE_GOOD") ) {
+                    stateVO.setStateCode("NOTICE_UPDATE_SUCCESS");
+                }
+            }
+        }
+        return stateVO;
     }
 
     /*
@@ -144,6 +171,44 @@ public class GroupServiceImpl implements GroupService {
         return noticeList;
     }
 
+    /*
+     *  그룹 공지사항 게시글 조회
+     *  @Param  no
+     *  @Return  그룹 공지사항 게시글 정보 반환
+     */
+    @Override
+    public GroupBoardVO getGroupPost(int no) {
+        GroupBoardVO groupBoardVO = groupMapper.getGroupPost(no);
+        return groupBoardVO;
+    }
+
+    /*
+     *  그룹 탈퇴
+     *  @Param  groupMemberVO
+     *  @Return 그룹탈퇴에 대한 상태코드 반환
+     */
+    @Override
+    public StateVO outGroup(GroupMemberVO groupMemberVO) {
+        StateVO stateVO = new StateVO();
+        stateVO.setStateCode("GROUP_OUT_ERROR");
+        stateVO.setNo(groupMemberVO.getGrmGno());
+        String leader = studyMapper.getLeaderId(groupMemberVO.getGrmGno());
+        // 탈퇴 신청한 사람이 리더 일경우 오류 발생
+        if ( leader.equals(groupMemberVO.getGrmId()) ) return stateVO;
+        if ( groupMemberVO.getGrmId() == null ) return stateVO;
+        // 탈퇴 신청한사람이 세션아이디와 동일하거나
+        if ( httpSession.getAttribute("id").equals(groupMemberVO.getGrmId()) ||
+                // 그룹의 리더 이거나
+                httpSession.getAttribute("id").equals(leader) ||
+                // 관리자 여야 가능합니다.
+                httpSession.getAttribute("auth").toString().toUpperCase().equals("ADMIN") ){
+            int outGroup = groupMapper.outGroup(groupMemberVO);
+            if ( outGroup == 1 ) {
+                stateVO.setStateCode("GROUP_OUT_SUCCESS");
+            }
+        }
+        return stateVO;
+    }
 
 
     public String groupFileUpload(GroupBoardVO groupBoardVO){

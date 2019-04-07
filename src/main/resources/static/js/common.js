@@ -329,6 +329,11 @@ stateCode.set("STUDY_LATEST_ERROR","스터디 최신화에 실패 했습니다..
 
 stateCode.set("NOTICE_WRITE_SUCCESS","공지사항이 등록 되었습니다.");
 stateCode.set("NOTICE_WRITE_ERROR","공지사항 등록에 실패 했습니다.");
+stateCode.set("NOTICE_UPDATE_SUCCESS","공지사항 수정에 성공 했습니다.");
+stateCode.set("NOTICE_UPDATE_ERROR","공지사항 수정에 실패 했습니다.");
+
+stateCode.set("GROUP_OUT_SUCCESS","그룹에서 탈퇴 되었습니다.");
+stateCode.set("GROUP_OUT_ERROR","그룹탈퇴에 실패 했습니다.");
 
 
 // KAKAO API

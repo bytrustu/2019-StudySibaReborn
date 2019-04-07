@@ -21,6 +21,10 @@ body {
     background-color: #f4f5f7;
 }
 
+.btn{
+    font-weight: bold;
+}
+
 /*
         상단 메뉴바
 */

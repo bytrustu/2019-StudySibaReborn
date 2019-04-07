@@ -17,7 +17,7 @@
 
     <div class="board-box group-box">
         <div class="board-top">
-            <div class="board-total">총 ${fn:length(group)} 스터디</div>
+            <div class="board-total">총 ${fn:length(group)} 스터디그룹</div>
         </div>
 
         <div class="board-table st-table">

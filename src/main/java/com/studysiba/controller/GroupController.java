@@ -112,7 +112,7 @@ public class GroupController {
      */
     @ResponseBody
     @PostMapping(value = "/notice/update")
-    public ResponseEntity<StateVO> updateGroupPost(@RequestBody GroupBoardVO groupBoardVO) throws Exception {
+    public ResponseEntity<StateVO> updateGroupPost(@ModelAttribute GroupBoardVO groupBoardVO) throws Exception {
         StateVO stateVO = groupService.updateGroupPost(groupBoardVO);
         return stateVO.getStateCode().equals("NOTICE_UPDATE_SUCCESS") ?
                 new ResponseEntity<>(stateVO, HttpStatus.OK) : new ResponseEntity<>(stateVO, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -127,11 +127,43 @@ public class GroupController {
      */
     @ResponseBody
     @DeleteMapping(value = "/notice/delete", consumes = "application/json", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
-    public ResponseEntity<StateVO> deleteGroupPost(Model model, @RequestBody GroupBoardVO groupBoardVO) throws Exception {
+    public ResponseEntity<StateVO> deleteGroupPost(@RequestBody GroupBoardVO groupBoardVO) throws Exception {
         StateVO stateVO = groupService.deleteGroupPost(groupBoardVO);
         return stateVO.getStateCode().equals("NOTICE_DELETE_SUCCESS") ?
-                new ResponseEntity<>(stateVO, HttpStatus.OK) : new ResponseEntity<>(stateVO, HttpStatus.INTERNAL_SERVER_ERROR);
+                new ResponseEntity<>(stateVO, HttpStatus.OK) :
+                new ResponseEntity<>(stateVO, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+
+    /*
+     *  그룹 공지사항 조회
+     *  @Param  no
+     *  @Return 스터디 공지사항 게시글 조회
+     */
+    @ResponseBody
+    @GetMapping(value = "/notice/view/{no}", consumes = "application/json", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    public ResponseEntity<GroupBoardVO> getGroupPost(@PathVariable("no") int no) throws Exception {
+        GroupBoardVO groupBoardVO = groupService.getGroupPost(no);
+        return groupBoardVO != null ? new ResponseEntity<>(groupBoardVO, HttpStatus.OK) :
+                new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+
+    /*
+     *  그룹 탈퇴
+     *  @Param  studyGroupVO
+     *  @Return 그룹탈퇴에 대한 상태코드 반환
+     */
+    @ResponseBody
+    @DeleteMapping(value = "/out", consumes = "application/json", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    public ResponseEntity<StateVO> outGroup(@RequestBody GroupMemberVO groupMemberVO) throws Exception {
+        StateVO stateVO = groupService.outGroup(groupMemberVO);
+        return stateVO.getStateCode().equals("GROUP_OUT_SUCCESS")? new ResponseEntity<>(stateVO, HttpStatus.OK) :
+                new ResponseEntity<>(stateVO,HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+
+
 
 
 

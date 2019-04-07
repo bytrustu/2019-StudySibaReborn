@@ -6,6 +6,7 @@ import com.studysiba.config.SocialKeys;
 import com.studysiba.domain.common.Criteria;
 import com.studysiba.domain.common.PageVO;
 import com.studysiba.domain.common.UploadVO;
+import com.studysiba.domain.group.GroupBoardVO;
 import com.studysiba.domain.member.PointVO;
 import com.studysiba.mapper.board.BoardMapper;
 import com.studysiba.mapper.common.CommonMapper;
@@ -14,6 +15,8 @@ import com.studysiba.mapper.member.MemberMapper;
 import com.studysiba.mapper.study.StudyMapper;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.social.google.connect.GoogleConnectionFactory;
 import org.springframework.social.oauth2.GrantType;
 import org.springframework.social.oauth2.OAuth2Operations;
@@ -289,6 +292,31 @@ public class CommonServiceImpl implements CommonService {
     public PageVO getGroupPageInfomation(Criteria criteria, int no) {
         PageVO pageVO = new PageVO(criteria, groupMapper.getNoticeCount(no), 5,3);
         return pageVO;
+    }
+
+    @Override
+    public HashMap<String, Object> downloadFile(String menu, int no) {
+        String path = "C:\\upload\\studysiba\\" + menu;
+        org.springframework.core.io.Resource resource = null;
+        HashMap<String, Object> downloadMap = new HashMap<>();
+        switch (menu) {
+            case "group" :
+                GroupBoardVO groupBoardVO = groupMapper.getGroupPost(no);
+                String fileName = groupBoardVO.getGrbUuid()+"_"+groupBoardVO.getGrbFilename();
+                resource = new FileSystemResource(path+"\\"+fileName);
+                log.info("resource : " + resource );
+                String resourceName = groupBoardVO.getGrbFilename();
+                HttpHeaders headers = new HttpHeaders();
+                try {
+                    headers.add("Content-Disposition", "attachment; filename=" + new String(resourceName.getBytes("UTF-8"), "ISO-8859-1"));
+                } catch ( UnsupportedEncodingException e ) {
+                    e.printStackTrace();
+                }
+                downloadMap.put("resource", resource);
+                downloadMap.put("headers", headers);
+                break;
+        }
+        return downloadMap;
     }
 
 }

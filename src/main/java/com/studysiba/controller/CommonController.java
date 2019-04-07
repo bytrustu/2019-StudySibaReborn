@@ -5,7 +5,10 @@ import com.studysiba.service.board.BoardService;
 import com.studysiba.service.common.CommonService;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -70,6 +73,15 @@ public class CommonController {
                 break;
         }
         return null;
+    }
+
+    @ResponseBody
+    @GetMapping(value="/download", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    public ResponseEntity<Resource> downloadFile(@RequestParam String menu, @RequestParam int no){
+        HashMap<String, Object> download = commonService.downloadFile(menu, no);
+        Resource resource = (Resource) download.get("resource");
+        HttpHeaders httpHeaders = (HttpHeaders) download.get("headers");
+        return new ResponseEntity<Resource>(resource,httpHeaders, HttpStatus.OK);
     }
 
 }

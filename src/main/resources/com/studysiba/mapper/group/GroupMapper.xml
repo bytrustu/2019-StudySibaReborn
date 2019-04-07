@@ -45,6 +45,13 @@
           VALUES(#{grbNo}, #{grbGno}, #{grbId}, #{grbTitle}, #{grbContent}, 1, NOW())
     </insert>
 
+    <!-- 그룹 공지사항 수정 -->
+    <update id="updateGroupPost" parameterType="GroupBoardVO">
+        UPDATE GROUPBOARD
+        SET GRB_TITLE = #{grbTitle}, GRB_CONTENT = #{grbContent}
+        WHERE GRB_NO = #{grbNo} AND GRB_ID = #{grbId}
+    </update>
+
     <!-- 그룹 공지사항 파일이름 조회 -->
     <select id="getPrevFileName" parameterType="GroupBoardVO" resultType="String">
           SELECT CONCAT(GRB_UUID,'_',GRB_FILENAME) AS FILENAME FROM GROUPBOARD
@@ -83,6 +90,19 @@
         SELECT COUNT(*) FROM GROUPBOARD
         WHERE GRB_GNO = #{no}
     </select>
+
+    <!-- 그룹 공지사항 게시글 조회 -->
+    <select id="getGroupPost" parameterType="int" resultType="GroupBoardVO">
+        SELECT GRB_NO, GRB_GNO, GRB_ID, GRB_TITLE, GRB_CONTENT, GRB_UUID, GRB_FILENAME, GRB_AVAILABLE, GRB_DATE
+        FROM GROUPBOARD
+        WHERE GRB_NO = #{no}
+    </select>
+
+    <!-- 그룹 탈퇴 -->
+    <delete id="outGroup" parameterType="GroupMemberVO">
+        DELETE FROM GROUPMEMBER
+        WHERE GRM_GNO = #{grmGno} AND GRM_ID = #{grmId}
+    </delete>
 
 
 

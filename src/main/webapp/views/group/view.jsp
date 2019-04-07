@@ -20,28 +20,32 @@
             <div class="board-total stg-groupname">
                 <img class="st-icon" src="/static/image/study/startup.png">
                 <span>${studyView.stdGroup}</span>
-                <img src="/static/image/common/edit.png" class="study-edit stg-edit">
-                <c:choose>
-                    <c:when test="${studyView.stdAvailable == 1}">
-                        <img src="/static/image/common/delete.png" class="study-delete stg-delete" data-delete="delete">
-                    </c:when>
-                    <c:otherwise>
-                        <img src="/static/image/common/open.png" class="study-delete stg-delete" data-delete="open">
-                    </c:otherwise>
-                </c:choose>
-
+                <c:if test="${sessionScope.id eq studyView.stdId}">
+                    <img src="/static/image/common/edit.png" class="study-edit stg-edit">
+                    <c:choose>
+                        <c:when test="${studyView.stdAvailable == 1}">
+                            <img src="/static/image/common/delete.png" class="study-delete stg-delete"
+                                 data-delete="delete">
+                        </c:when>
+                        <c:otherwise>
+                            <img src="/static/image/common/open.png" class="study-delete stg-delete" data-delete="open">
+                        </c:otherwise>
+                    </c:choose>
+                </c:if>
             </div>
-            <button class="btn btn-warning group-noticebtn">공지작성</button>
+
+            <c:choose>
+                <c:when test="${sessionScope.id eq studyView.stdId}">
+                    <button class="btn btn-warning group-noticebtn">공지작성</button>
+                </c:when>
+                <c:otherwise>
+                    <button class="btn btn-danger group-outbtn group-out" data-id="${sessionScope.id}">그룹탈퇴</button>
+                </c:otherwise>
+            </c:choose>
+
         </div>
 
         <div class="board-body stv-body">
-
-
-            <%--<div class="stg-top">--%>
-
-
-            <%--</div>--%>
-
 
             <div class="row stv-row">
                 <div class="col-md-12">
@@ -64,7 +68,7 @@
 
                                 <c:forEach items="${notice}" var="notice">
                                     <div class="row stg-notice">
-                                        <span>${notice.grbTitle}</span>
+                                        <span data-no="${notice.grbNo}">${notice.grbTitle}</span>
                                         <c:if test="${notice.grbFilename ne null}">
                                             <img src="/static/image/study/file.png" class="stg-icon">
                                         </c:if>
@@ -75,13 +79,13 @@
                             </div>
 
 
-
                             <nav>
                                 <ul class="pagination pg-amber board-pagination mb-0">
                                     <li class="page-item">
                                         <c:if test="${page.startPage ne 1 }">
                                             <a class="page-link"
-                                               href='/group/view?no=${param.no}&pageNum=${page.startPage-1}'  aria-label="Previous">
+                                               href='/group/view?no=${param.no}&pageNum=${page.startPage-1}'
+                                               aria-label="Previous">
                                                 <span aria-hidden="true"><i class="fas fa-angle-double-left"></i></span>
                                                 <span class="sr-only">Previous</span>
                                             </a>
@@ -95,8 +99,10 @@
                                     <li class="page-item">
                                         <c:if test="${page.endPage lt page.pageCount}">
                                             <a class="page-link"
-                                               href='/group/view?no=${param.no}&pageNum=${page.endPage+1}' aria-label="Next">
-                                                <span aria-hidden="true"><i class="fas fa-angle-double-right"></i></span>
+                                               href='/group/view?no=${param.no}&pageNum=${page.endPage+1}'
+                                               aria-label="Next">
+                                                <span aria-hidden="true"><i
+                                                        class="fas fa-angle-double-right"></i></span>
                                                 <span class="sr-only">Next</span>
                                             </a>
                                         </c:if>
@@ -111,8 +117,6 @@
             </div>
 
 
-
-
             <div class="row stv-row">
                 <div class="col-md-12">
                     <hr class="stv-hr">
@@ -123,8 +127,6 @@
                             <h4 class="stv-subtitle">그룹채팅</h4>
                         </div>
                         <div class="col-md-8">
-
-
 
 
                         </div>
@@ -156,7 +158,7 @@
                                 </path>
                             </svg>
 
-                            <c:forEach items="${groupMember}" var="group">
+                            <c:forEach items="${groupMember}" var="group" varStatus="status">
                                 <c:set var="imgStep"
                                        value='${fn:substring(group.mbrProfile, fn:indexOf(group.mbrProfile,"-")+1, fn:indexOf(group.mbrProfile,".png"))}'/>
                                 <div class="card stv-user">
@@ -168,6 +170,12 @@
                                     <c:when test="${imgStep >= 13 && imgStep <= 18}">user-bgfour</c:when>
                                 </c:choose>
                                 ">
+
+                                        <c:if test="${sessionScope.id eq studyView.stdId || sessionScope.auth eq 'ADMIN'}">
+                                            <c:if test="${status.count > 1}">
+                                                <img src="/static/image/study/x.png" class="out-icon" data-id="${group.grmId}">
+                                            </c:if>
+                                        </c:if>
                                         <img src="/static/image/profile/${group.mbrProfile}">
                                     </div>
                                     <div class="triangle
@@ -226,17 +234,10 @@
 </div>
 
 
-
-
-
-
-
-
-
-
-<div class="modal fade basic-modal" id="groupModal" tabindex="-1" role="dialog" aria-labelledby="groupModalLabel" aria-hidden="true">
+<div class="modal fade basic-modal" id="groupModal" tabindex="-1" role="dialog" aria-labelledby="groupModalLabel"
+     aria-hidden="true">
     <div class="modal-dialog basic-modal-dialog" role="document">
-        <div class="modal-content basic-modal-content">
+        <div class="modal-content basic-modal-content svg-modal-content">
             <div class="col-md-6 col-md-offset-2 m-auto">
                 <div class="stm-title">
                     <img src="/static/image/study/writer.png">
@@ -246,13 +247,15 @@
                 <div class="form-group">
                     <label class="col-sm-12 control-label">제목</label>
                     <div class="col-sm-12">
-                        <input type="text" class="form-control" id="stg-titleinput" maxlength="40" placeholder="제목을 입력 해주세요.">
+                        <input type="text" class="form-control" id="stg-titleinput" maxlength="40"
+                               placeholder="제목을 입력 해주세요.">
                     </div>
                 </div>
                 <div class="input-default-wrapper mt-3">
                     <span class="input-group-text mb-3" id="input1">업로드</span>
                     <input type="file" id="stg-fileinput" class="input-default-js">
-                    <label class="label-for-default-js rounded-right mb-3" for="stg-fileinput"><span class="span-choose-file">파일선택</span>
+                    <label class="label-for-default-js rounded-right mb-3" for="stg-fileinput"><span
+                            class="span-choose-file">파일선택</span>
                         <div class="float-right span-browse">지정</div>
                     </label>
                 </div>
@@ -265,11 +268,60 @@
                 </div>
                 <div class="form-group">
                     <div class="text-center mt-5">
-                        <button type="button" class="btn btn-warning col-xs-offset-1 stg-register">등록</button>
-                        <button type="button" class="btn btn-danger" data-dismiss="modal">취소</button>
+                        <button type="button" class="btn btn-warning col-xs-offset-1 stg-register studysiba-button">등록
+                        </button>
+                        <button type="button" class="btn btn-warning col-xs-offset-1 stg-update studysiba-button">수정
+                        </button>
+                        <button type="button" class="btn btn-danger studysiba-button" data-dismiss="modal">취소</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+
+<div class="modal fade basic-modal" id="noticeModal" tabindex="-1" role="dialog" aria-labelledby="noticeModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog basic-modal-dialog" role="document">
+        <div class="modal-content basic-modal-content svg-modal-content">
+            <div class="col-md-6 col-md-offset-2 m-auto">
+                <div class="stm-title">
+                    <img src="/static/image/study/writer.png">
+                    <p>공지사항</p>
+                </div>
+
+                <div class="form-group stg-row">
+                    <label class="col-sm-12 control-label">제목</label>
+                    <div class="col-sm-12 svg-title">
+
+                    </div>
+                </div>
+                <div class="form-group stg-row">
+                    <label class="col-sm-12 control-label">첨부파일</label>
+                    <div class="col-sm-12 svg-download">
+
+                    </div>
+                </div>
+                <div class="form-group stg-row">
+                    <label class="col-sm-12 control-label">내용</label>
+                    <div class="col-sm-12 svg-content">
+
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="text-center mt-5">
+                        <c:if test="${sessionScope.id eq studyView.stdId || sessionScope.auth eq 'ADMIN'}">
+                            <button type="button"
+                                    class="btn btn-warning col-xs-offset-1 stg-noticeedit studysiba-button">수정
+                            </button>
+                        </c:if>
+                        <button type="button" class="btn btn-danger studysiba-button" data-dismiss="modal">닫기</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
