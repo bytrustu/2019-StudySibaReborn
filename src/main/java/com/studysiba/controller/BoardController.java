@@ -89,7 +89,7 @@ public class BoardController {
                 case "notice":
                     location += "board/view";
                     boardVO = boardService.getPostOne(menu, no);
-                    if (boardVO == null) return "redirect:/community/list";
+                    if (boardVO == null) return "redirect:/board/community/list";
                     model.addAttribute("board", boardVO);
                     List<CommentVO> noticeCommentList = boardService.getCommentList(no);
                     if (noticeCommentList != null) model.addAttribute("comment", noticeCommentList);

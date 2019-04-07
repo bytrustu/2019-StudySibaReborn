@@ -33,6 +33,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.UUID;
 
 @Service
 @Log4j
@@ -527,7 +528,9 @@ public class MemberServiceImpl implements MemberService {
                     memberVO.setMbrNick("스터디" + Integer.toString(DataConversion.returnRanNum(99999)));
                 }
                 memberVO.setMbrAuth("NORMAL");
-                memberVO.setMbrPass(passwordEncoder.encode(memberVO.getMbrId()));
+                // 랜덤패스워드 발급
+                String randomPassword = UUID.randomUUID()+memberVO.getMbrId();
+                memberVO.setMbrPass(passwordEncoder.encode(randomPassword));
                 memberVO.setMbrProfile("profile-1.png");
                 memberVO.setMbrEmail(memberVO.getMbrId() + "@studysiba.com");
                 memberVO.setMbrCode(DataConversion.returnUUID());

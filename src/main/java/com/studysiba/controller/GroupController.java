@@ -46,7 +46,7 @@ public class GroupController {
     public String moveList(Model model) throws Exception {
 
         String menu = "group";
-        String location = "/"+menu+"/list";
+        String location = "/" + menu+"/list";
 
         // 게시판 별 안내 글귀
         Map<String, String> introComment = commonService.getIntroduceComment(menu);
@@ -68,7 +68,7 @@ public class GroupController {
     public String moveView(Model model, @RequestParam("no") int no, @ModelAttribute Criteria criteria) throws Exception {
 
         String menu = "group";
-        String location = "/"+menu+"/view";
+        String location = "/" + menu+"/view";
 
         // 게시판 별 안내 글귀
         Map<String, String> introComment = commonService.getIntroduceComment(menu);
@@ -76,6 +76,7 @@ public class GroupController {
 
         StudyVO studyVO = studyService.getStudyOne(no);
         model.addAttribute("studyView",studyVO);
+        if ( studyVO == null ) return "redirect:/group/list";
 
         PageVO pageVO = commonService.getGroupPageInfomation(criteria,no);
         model.addAttribute("page", pageVO);

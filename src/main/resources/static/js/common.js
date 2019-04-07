@@ -335,6 +335,8 @@ stateCode.set("NOTICE_UPDATE_ERROR","공지사항 수정에 실패 했습니다.
 stateCode.set("GROUP_OUT_SUCCESS","그룹에서 탈퇴 되었습니다.");
 stateCode.set("GROUP_OUT_ERROR","그룹탈퇴에 실패 했습니다.");
 
+stateCode.set("GROUP_LOCATION_ERROR","스터디그룹 접근권한이 없습니다.");
+
 
 // KAKAO API
 Kakao.init('672b34ad5f77dd65240951209b6cbd32');
@@ -817,8 +819,6 @@ let fileUpload = (formData, menu) => {
         });
     });
 }
-
-
 
 
 
