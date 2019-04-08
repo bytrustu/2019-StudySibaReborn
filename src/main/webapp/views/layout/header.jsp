@@ -27,8 +27,12 @@
                 <link type="text/css" rel="stylesheet" href="/static/css/animate.css">
                 <link type="text/css" rel="stylesheet" href="/static/css/main.css">
                 <link type="text/css" rel="stylesheet" href="/static/css/sub.css">
-                <c:if test="${fn:contains(requestScope['javax.servlet.forward.servlet_path'] , '/study' ) || fn:contains(requestScope['javax.servlet.forward.servlet_path'] , '/group' ) }">
+                <c:if test="${fn:contains(requestScope['javax.servlet.forward.servlet_path'] , '/study' ) || fn:contains(requestScope['javax.servlet.forward.servlet_path'] , '/group' )
+                                   || fn:contains(requestScope['javax.servlet.forward.servlet_path'] , '/admin' )}">
                         <link type="text/css" rel="stylesheet" href="/static/css/study.css">
+                </c:if>
+                <c:if test="${fn:contains(requestScope['javax.servlet.forward.servlet_path'] , '/admin' )}">
+                        <link type="text/css" rel="stylesheet" href="/static/css/admin.css">
                 </c:if>
                 <script type="text/javascript" src="/static/js/lib/jquery-3.3.1.min.js"></script>
                 <script type="text/javascript" src="/static/js/lib/jquery-ui.min.js"></script>
@@ -39,8 +43,14 @@
 
                 <!-- 하단 메세지 버튼 -->
                 <div class="messenger-btn">
-                <i class="fas fa-envelope"></i>
+                        <i class="fas fa-envelope"></i>
                 </div>
+
+                <%--<c:if test="${sessionScope.auth eq 'ADMIN'}">--%>
+                        <div class="admin-btn">
+                                <i class="fas fa-unlock-alt"></i>
+                        </div>
+                <%--</c:if>--%>
 
                 <!-- 상단 메뉴바 -->
                 <nav class="navbar navbar-expand-sm sticky-top shadow-sm p-2">

@@ -1,5 +1,10 @@
 $(document).ready(function () {
 
+    // 관리자페이지 이동
+    $(document).on('click','.admin-btn', ()=>{
+        location.href='/admin/main';
+    });
+
     // 소셜로그인
     $('.social-login-icon').on('click', function () {
         let socialName = $(this).attr('data-name');

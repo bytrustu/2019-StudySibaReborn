@@ -4,6 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.studysiba.mapper.common.CommonMapper">
 
+    <!-- 공통 업로드 등록 -->
     <insert id="contentUploadFile" parameterType="UploadVO">
       <selectKey keyProperty="uldNo" order="BEFORE" resultType="int">
           SELECT COALESCE(MAX(ULD_NO+1),1) AS ULD_NO FROM UPLOAD
@@ -12,12 +13,14 @@
       VALUES (#{uldNo}, #{uldFno}, #{uldId}, #{uldType}, #{uldText}, #{uldUuid}, #{uldFilename}, NOW() )
     </insert>
 
+    <!-- 공통 업로드 업데이트 -->
     <update id="contentUpdateFile" parameterType="UploadVO">
         UPDATE UPLOAD
         SET ULD_UUID = #{uldUuid}, ULD_FILENAME = #{uldFilename}, ULD_DATE = NOW()
         WHERE ULD_FNO = #{uldFno} AND ULD_ID = #{uldId}
     </update>
 
+    <!-- 이전파일이름 조회 -->
     <select id="getPrevFileName" parameterType="int" resultType="String">
         SELECT CONCAT(ULD_UUID,"_",ULD_FILENAME) AS ULD_PREVFILENAME FROM UPLOAD
         WHERE ULD_FNO = #{uldFno}

@@ -136,6 +136,11 @@ public class CommonServiceImpl implements CommonService {
                 introComment.put("bottomFirst","참여하고 있는 스터디를 이용할 수 있어요!");
                 introComment.put("bottomSecond","스터디그룹에서 참여중인 멤버들과 다양한 정보를 나누어 보세요.");
                 break;
+            case "admin" :
+                introComment.put("top","관리자페이지");
+                introComment.put("bottomFirst","스터디시바 사이트를 관리하는 페이지 입니다.");
+                introComment.put("bottomSecond","사이트 전체 자료를 분석하고 관리 할 수 있습니다.");
+                break;
         }
         return introComment;
     }

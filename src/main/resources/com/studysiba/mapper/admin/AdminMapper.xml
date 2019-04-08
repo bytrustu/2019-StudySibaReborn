@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.studysiba.mapper.admin.AdminMapper">
+
+    <!-- 게시판/스터디게시판/댓글/그룹공지/그룹메세지/개인메세지 카운트 조회 -->
+    <select id="getDataChart" resultType="HashMap">
+            SELECT
+                (SELECT IF(COUNT(*)=0,1,COUNT(*)) FROM BOARD
+                WHERE BRD_DATE > DATE_ADD(NOW(),INTERVAL -7 DAY) ) BCNT,
+                (SELECT IF(COUNT(*)=0,1,COUNT(*)) FROM STUDYBOARD
+                WHERE STD_REG > DATE_ADD(NOW(),INTERVAL -7 DAY) ) SCNT,
+                (SELECT IF(COUNT(*)=0,1,COUNT(*)) FROM COMMENT
+                WHERE CMT_DATE > DATE_ADD(NOW(),INTERVAL -7 DAY) ) CCNT,
+                (SELECT IF(COUNT(*)=0,1,COUNT(*)) FROM GROUPBOARD
+                WHERE GRB_DATE > DATE_ADD(NOW(),INTERVAL -7 DAY)  ) NCNT,
+                (SELECT IF(COUNT(*)=0,1,COUNT(*)) FROM GROUPMESSAGE
+                WHERE GRM_DATE > DATE_ADD(NOW(),INTERVAL -7 DAY)  ) GCNT,
+                (SELECT IF(COUNT(*)=0,1,COUNT(*)) FROM MESSAGE
+                WHERE MSG_DATE > DATE_ADD(NOW(),INTERVAL -7 DAY)  ) MCNT
+    </select>
+
+
+
+
+</mapper>

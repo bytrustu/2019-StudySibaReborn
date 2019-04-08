@@ -839,6 +839,11 @@
                 <c:if test="${fn:contains(requestScope['javax.servlet.forward.servlet_path'] , '/study' ) || fn:contains(requestScope['javax.servlet.forward.servlet_path'] , '/group' ) }">
                     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyByjX-fIiEVgNTofLuWWpxgGqQADaoNSWk&libraries=places&callback=initAutocomplete" async defer></script>
                 </c:if>
+                <c:if test="${fn:contains(requestScope['javax.servlet.forward.servlet_path'] , '/admin' )}">
+                    <script src="https://www.gstatic.com/charts/loader.js"></script>
+                    <script src="/static/js/admin.js" ></script>
+                </c:if>
+
                 <c:if test="${fn:contains(requestScope['javax.servlet.forward.servlet_path'] , '/group/view' ) }">
                     <script src="/static/js/groupmessage.js" ></script>
                 </c:if>
