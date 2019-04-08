@@ -49,19 +49,20 @@
                 </c:if>
             </div>
 
-            <c:choose>
-                <c:when test="${fn:contains(groupMember,sessionScope.id )}">
-                    <button class="btn btn-danger study-joinbtn" data-join="already">참여중</button>
-                </c:when>
-                <c:when test="${fn:length(groupMember) >= studyView.stdLimit || studyView.stdAvailable == 0 || now >= studyView.stdEnd}">
-                    <button class="btn btn-danger study-joinbtn" data-join="unable">참여불가</button>
-                </c:when>
-                <c:otherwise>
-                    <button class="btn btn-warning study-joinbtn" data-join="join">참여하기</button>
-                </c:otherwise>
-            </c:choose>
+            <c:if test="${sessionScope.id ne null }">
+                <c:choose>
+                    <c:when test="${fn:contains(groupMember,sessionScope.id )}">
+                        <button class="btn btn-danger study-joinbtn" data-join="already">참여중</button>
+                    </c:when>
+                    <c:when test="${fn:length(groupMember) >= studyView.stdLimit || studyView.stdAvailable == 0 || now >= studyView.stdEnd}">
+                        <button class="btn btn-danger study-joinbtn" data-join="unable">참여불가</button>
+                    </c:when>
+                    <c:otherwise>
+                        <button class="btn btn-warning study-joinbtn" data-join="join">참여하기</button>
+                    </c:otherwise>
+                </c:choose>
+            </c:if>
 
-            <%--<button class="btn btn-danger study-outbtn" data-out="member">탈퇴</button>--%>
         </div>
 
         <div class="board-body stv-body">

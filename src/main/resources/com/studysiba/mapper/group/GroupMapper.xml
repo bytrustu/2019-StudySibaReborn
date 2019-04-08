@@ -104,6 +104,28 @@
         WHERE GRM_GNO = #{grmGno} AND GRM_ID = #{grmId}
     </delete>
 
+    <!-- 그룹메세지 등록 -->
+    <insert id="sendGroupMessage" parameterType="GroupMessageVO">
+        <selectKey keyProperty="grmNo" order="BEFORE" resultType="int">
+            SELECT COALESCE(MAX(GRM_NO+1),1) AS GRM_NO FROM GROUPMESSAGE
+        </selectKey>
+        INSERT INTO GROUPMESSAGE(GRM_NO, GRM_GNO, GRM_ID, GRM_TEXT, GRM_DATE)
+        VALUES(#{grmNo}, #{grmGno}, #{grmId}, #{grmText}, NOW())
+    </insert>
+
+    <!-- 그룹 메세지 리스트 조회 -->
+    <select id="getGroupMessageList" parameterType="int" resultType="GroupMessageVO">
+        SELECT GRM_NO, GRM_GNO, GRM_ID, GRM_TEXT, GRM_DATE,
+                      MBR_NICK, MBR_PROFILE
+        FROM (
+                      SELECT * FROM GROUPMESSAGE
+                      WHERE GRM_GNO = #{no}
+                      ORDER BY GRM_DATE ASC
+        ) GROUPMESSAGE
+        JOIN MEMBER
+        ON MEMBER.MBR_ID = GROUPMESSAGE.GRM_ID
+    </select>
+
 
 
 

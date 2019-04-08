@@ -2,6 +2,7 @@ package com.studysiba.mapper.group;
 
 import com.studysiba.domain.group.GroupBoardVO;
 import com.studysiba.domain.group.GroupMemberVO;
+import com.studysiba.domain.group.GroupMessageVO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.lang.reflect.Array;
@@ -88,4 +89,18 @@ public interface GroupMapper {
      *  @Return 그룹탈퇴 여부 반환
      */
     int outGroup(GroupMemberVO groupMemberVO);
+
+    /*
+     *  그룹 메세지 전송
+     *  @Param  groupMessageVO
+     *  @Return 그룹메세지 등록여부 반환
+     */
+    int sendGroupMessage(GroupMessageVO groupMessageVO);
+
+    /*
+     *  그룹 메세지 리스트 조회
+     *  @Param  no
+     *  @Return 그룹 메세지 리스트 반환
+     */
+    ArrayList<GroupMessageVO> getGroupMessageList(int no);
 }

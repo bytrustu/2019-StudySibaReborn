@@ -1,6 +1,8 @@
 package com.studysiba.common;
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
 
@@ -34,6 +36,16 @@ public class DataConversion {
         else if ( ( diffTime /= day ) < month ) { message = diffTime + "달 전"; }
         else { message = diffTime + "년 전"; }
         return message;
+    }
+
+    // 현재날짜
+    public static Timestamp currentTimestamp(){
+        SimpleDateFormat formatter = new SimpleDateFormat ("yyyy-MM-dd hh:mm:ss");
+        Calendar cal = Calendar.getInstance();
+        String today = null;
+        today = formatter.format(cal.getTime());
+        Timestamp ts = Timestamp.valueOf(today);
+        return ts;
     }
 
 }

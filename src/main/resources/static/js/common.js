@@ -350,6 +350,7 @@ let initElement = (className) => {
     }
 }
 
+// 엔터키 적용
 let enterPressAction = (inputName, targetName) => {
     $(`.${inputName}`).keyup( function(e) {
         if ( e.keyCode == 13 )
@@ -376,6 +377,23 @@ const mapToObject = (map,isCheck) => {
 }
 
 
+// paremeter 주소줄 생성
+let makePath = (pathMap) => {
+    let path = '';
+    let i =0;
+    for ( let str of pathMap ) {
+        if ( str[1] != '' ) {
+            if ( i>0 ) path += '&';
+            path += `${str[0]}=${str[1]}`;
+            i++;
+        }
+    }
+    if ( i > 0 ) path = `?${path}`;
+    return path;
+};
+
+
+// 제목 자르기
 let trimTitleLength = (className, length) => {
     let elements = document.getElementsByClassName(className);
     for ( let element of elements ) {
@@ -400,6 +418,23 @@ let secondPath = () => {
     currentPath = currentPath.substring(currentPath.indexOf('/')+1);
     return currentPath;
 }
+
+
+// 페이지 글번호 값
+let contentNo = () => {
+    let path = location.search;
+    path = path.substring(path.indexOf('=')+1);
+    if ( path.includes('&') ) {
+        path = path.substring(0,path.indexOf('&'));
+    }
+    return path;
+}
+
+// url + parameter
+let currentUrl = () =>{
+    return `${location.pathname}${location.search}`;
+}
+
 
 
 // 글자 byte 계산, 자르기
@@ -440,6 +475,8 @@ let rendomNumber = (n) => {
     return result;
 }
 
+
+// 슬라이드
 let moveSlide;
 let slideFlag = true;
 let studySlider = (left) => {
@@ -819,6 +856,12 @@ let fileUpload = (formData, menu) => {
         });
     });
 }
+
+
+
+
+
+
 
 
 

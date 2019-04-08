@@ -4,8 +4,10 @@ import com.studysiba.domain.common.PageVO;
 import com.studysiba.domain.common.StateVO;
 import com.studysiba.domain.group.GroupBoardVO;
 import com.studysiba.domain.group.GroupMemberVO;
+import com.studysiba.domain.group.GroupMessageVO;
 import com.studysiba.domain.group.StudyGroupVO;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 public interface GroupService {
@@ -58,4 +60,18 @@ public interface GroupService {
      *  @Return 그룹탈퇴에 대한 상태코드 반환
      */
     StateVO outGroup(GroupMemberVO groupMemberVO);
+
+    /*
+     *  그룹 메세지 전송
+     *  @Param  no, message ,httpSession
+     *  @Return 그룹메세지 전송 정보 반환
+     */
+    GroupMessageVO sendGroupMessage(int no, String message, HttpSession httpSession);
+
+    /*
+     *  그룹 메세지 리스트 조회
+     *  @Param  no
+     *  @Return 그룹메세지 리스트 반환
+     */
+    List<GroupMessageVO> getGroupMessageList(int no);
 }

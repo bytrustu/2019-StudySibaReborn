@@ -4,71 +4,6 @@
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 
-
-<%--<%--%>
-<%--session.setAttribute("id","test2");--%>
-<%--session.setAttribute("nick","test4");--%>
-<%--session.setAttribute("auth","ADMIN");--%>
-<%--session.setAttribute("profile","profile-1.png");--%>
-<%--%>--%>
-
-<script>
-    let client1;
-    $(document).ready(function(){
-        let socket1 = new SockJS("/private");
-        client1 = Stomp.over(socket1);
-        client1.debug = null;
-        client1.connect({}, function(){
-            client1.subscribe('/topic/message/cho', function(msg) {
-                console.log('>>>>>>>>>'+msg.body);
-            });
-        });
-    });
-
-    //
-    // let socket2 = new SockJS("/group");
-    // let client2 = Stomp.over(socket);
-    // client2.debug = null;
-    // client2.connect({}, function(){
-    //     client2.subscribe('/topic/message/', function(msg) {
-    //         console.log('>>>>>>>>>'+msg.body);
-    //     });
-    // });
-
-
-
-
-
-
-    let contentNo = () => {
-        let path = location.search;
-        path = path.substring(path.indexOf('=')+1);
-        if ( path.includes('&') ) {
-            path = path.substring(0,path.indexOf('&'));
-        }
-        return path;
-    }
-
-
-
-
-
-
-</script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <div class="sub-page">
 
     <div class="sub-subject">
@@ -85,7 +20,7 @@
             <div class="board-total stg-groupname">
                 <img class="st-icon" src="/static/image/study/startup.png">
                 <span>${studyView.stdGroup}</span>
-                <c:if test="${sessionScope.id eq studyView.stdId}">
+                <c:if test="${sessionScope.id eq studyView.stdId || sessionScope.auth eq 'ADMIN'}">
                     <img src="/static/image/common/edit.png" class="study-edit stg-edit">
                     <c:choose>
                         <c:when test="${studyView.stdAvailable == 1}">
@@ -100,12 +35,12 @@
             </div>
 
             <c:choose>
-                <c:when test="${sessionScope.id eq studyView.stdId}">
+                <c:when test="${sessionScope.id eq studyView.stdId || sessionScope.auth eq 'ADMIN'}">
                     <button class="btn btn-warning group-noticebtn">공지작성</button>
                 </c:when>
-                <c:otherwise>
+                <c:when test="${sessionScope.id ne studyView.stdId}">
                     <button class="btn btn-danger group-outbtn group-out" data-id="${sessionScope.id}">그룹탈퇴</button>
-                </c:otherwise>
+                </c:when>
             </c:choose>
 
         </div>
@@ -142,8 +77,6 @@
                                 </c:forEach>
 
                             </div>
-
-
                             <nav>
                                 <ul class="pagination pg-amber board-pagination mb-0">
                                     <li class="page-item">
@@ -174,8 +107,6 @@
                                     </li>
                                 </ul>
                             </nav>
-
-
                         </div>
                     </div>
                 </div>
@@ -194,92 +125,30 @@
 
                         <div class="col-md-8">
 
-                            <div class="container groupmsg-container">
+                            <div class="container groupmsg-container scrollbar scrollbar-primary scrollbar scrollbar-warning force-overflow">
 
-
-
-                                <div class="groupmsg-box center-block">
-                                    <div class="row">
-                                        <div class="col-xs-8 col-md-8">
-                                            <img src="/static/image/profile/profile-2.png" class="groupmsg-photo">
-                                            <h4 class="groupmsg-name">캄캄1</h4>
+                                <c:if test="${fn:length(groupMessage) == 0}">
+                                    <div class="group-notfound">
+                                        <p>(⁎˃ᆺ˂)</p>
+                                        <p>등록 된 그룹채팅이 없습니다.</p>
+                                    </div>
+                                </c:if>
+                                <c:forEach items="${groupMessage}" var="message">
+                                    <div class="groupmsg-box center-block">
+                                        <div class="row">
+                                            <div class="col-xs-8 col-md-8">
+                                                <img src="/static/image/profile/${message.mbrProfile}" class="groupmsg-photo">
+                                                <h4 class="groupmsg-name">${message.mbrNick}</h4>
+                                            </div>
+                                            <div class="col-xs-4 col-md-4 text-right groupmsg-date"><fmt:formatDate value="${message.grmDate}" pattern="MM-dd HH:mm"/></div>
                                         </div>
-                                        <div class="col-xs-4 col-md-4 text-right groupmsg-date">02-01 12:12</div>
-                                    </div>
-                                    <div class="row groupmsg-text">
-                                        안뇽안뇽
-                                    </div>
-                                </div>
-
-
-                                <div class="groupmsg-box center-block">
-                                    <div class="row">
-                                        <div class="col-xs-8 col-md-8">
-                                            <img src="/static/image/profile/profile-3.png" class="groupmsg-photo">
-                                            <h4 class="groupmsg-name">캄캄2</h4>
+                                        <div class="row groupmsg-text">
+                                            ${message.grmText}
                                         </div>
-                                        <div class="col-xs-4 col-md-4 text-right groupmsg-date">02-01 12:12</div>
                                     </div>
-                                    <div class="row groupmsg-text">
-                                        ㅋㅋㅋㅋ
-                                    </div>
-                                </div>
-
-                                <div class="groupmsg-box center-block">
-                                    <div class="row">
-                                        <div class="col-xs-8 col-md-8">
-                                            <img src="/static/image/profile/profile-4.png" class="groupmsg-photo">
-                                            <h4 class="groupmsg-name">쟁쟁1</h4>
-                                        </div>
-                                        <div class="col-xs-4 col-md-4 text-right groupmsg-date">02-01 12:12</div>
-                                    </div>
-                                    <div class="row groupmsg-text">
-                                        ㅋㅋㅋㅋ
-                                    </div>
-                                </div>
-
-                                <div class="groupmsg-box center-block">
-                                    <div class="row">
-                                        <div class="col-xs-8 col-md-8">
-                                            <img src="/static/image/profile/profile-5.png" class="groupmsg-photo">
-                                            <h4 class="groupmsg-name">쟁쟁2</h4>
-                                        </div>
-                                        <div class="col-xs-4 col-md-4 text-right groupmsg-date">02-01 12:12</div>
-                                    </div>
-                                    <div class="row groupmsg-text">
-                                        ㅋㅋㅋㅋ
-                                    </div>
-                                </div>
-
-                                <div class="groupmsg-box center-block">
-                                    <div class="row">
-                                        <div class="col-xs-8 col-md-8">
-                                            <img src="/static/image/profile/profile-6.png" class="groupmsg-photo">
-                                            <h4 class="groupmsg-name">슺득3</h4>
-                                        </div>
-                                        <div class="col-xs-4 col-md-4 text-right groupmsg-date">02-01 12:12</div>
-                                    </div>
-                                    <div class="row groupmsg-text">
-                                        ㅋㅋㅋㅋ
-                                    </div>
-                                </div>
-                                <div class="groupmsg-box center-block">
-                                    <div class="row">
-                                        <div class="col-xs-8 col-md-8">
-                                            <img src="/static/image/profile/profile-7.png" class="groupmsg-photo">
-                                            <h4 class="groupmsg-name">슺득4</h4>
-                                        </div>
-                                        <div class="col-xs-4 col-md-4 text-right groupmsg-date">02-01 12:12</div>
-                                    </div>
-                                    <div class="row groupmsg-text">
-                                        ㅋㅋㅋㅋ
-                                    </div>
-                                </div>
-
+                                </c:forEach>
 
                             </div>
-
-
 
                             <div class="row groupmsg-bottom">
                                 <div class="col-md-12">
@@ -291,9 +160,6 @@
                                     </div>
                                 </div>
                             </div>
-
-
-
 
                         </div>
                     </div>
@@ -311,7 +177,6 @@
                             <h4 class="stv-subtitle">스터디 함께하고 있는 멤버</h4>
                         </div>
                         <div class="col-md-8">
-
 
                             <svg class="crown" viewbox="0 0 140 140">
                                 <path fill="gold">
@@ -336,7 +201,6 @@
                                     <c:when test="${imgStep >= 13 && imgStep <= 18}">user-bgfour</c:when>
                                 </c:choose>
                                 ">
-
                                         <c:if test="${sessionScope.id eq studyView.stdId || sessionScope.auth eq 'ADMIN'}">
                                             <c:if test="${status.count > 1}">
                                                 <img src="/static/image/study/x.png" class="out-icon" data-id="${group.grmId}">
@@ -366,7 +230,6 @@
                 </div>
             </div>
 
-
             <div class="row stv-row">
                 <div class="col-md-12">
                     <hr class="stv-hr">
@@ -391,9 +254,7 @@
                     </div>
                 </div>
             </div>
-
         </div>
-
     </div>
 
 

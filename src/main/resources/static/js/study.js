@@ -1058,22 +1058,11 @@ $(document).ready(function () {
 
 
 
-    // 페이지 글번호 값
-    let contentNo = () => {
-        let path = location.search;
-        path = path.substring(path.indexOf('=')+1);
-        if ( path.includes('&') ) {
-            path = path.substring(0,path.indexOf('&'));
-        }
-        return path;
-    }
 
-    // url + parameter
-    let currentUrl = () =>{
-        return `${location.pathname}${location.search}`;
-    }
 
 
 
 
 });
+
+

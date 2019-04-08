@@ -464,17 +464,3 @@ $('.board-postlink, .board-listbtn').on('click', function(e){
     location.href=path;
 });
 
-// paremeter 주소줄 생성
-let makePath = (pathMap) => {
-    let path = '';
-    let i =0;
-    for ( let str of pathMap ) {
-        if ( str[1] != '' ) {
-            if ( i>0 ) path += '&';
-            path += `${str[0]}=${str[1]}`;
-            i++;
-        }
-    }
-    if ( i > 0 ) path = `?${path}`;
-    return path;
-};

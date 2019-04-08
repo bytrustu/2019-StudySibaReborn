@@ -5,6 +5,7 @@ import com.studysiba.domain.common.PageVO;
 import com.studysiba.domain.common.StateVO;
 import com.studysiba.domain.group.GroupBoardVO;
 import com.studysiba.domain.group.GroupMemberVO;
+import com.studysiba.domain.group.GroupMessageVO;
 import com.studysiba.domain.study.StudyVO;
 import com.studysiba.service.common.CommonService;
 import com.studysiba.service.group.GroupService;
@@ -14,10 +15,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
+import org.springframework.messaging.simp.annotation.SendToUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -86,6 +94,9 @@ public class GroupController {
 
         List<GroupMemberVO> groupMemberList = studyService.getGroupMemberList(no);
         model.addAttribute("groupMember", groupMemberList);
+
+        List<GroupMessageVO> groupMessageList = groupService.getGroupMessageList(no);
+        model.addAttribute("groupMessage", groupMessageList);
 
         return location;
     }
@@ -161,6 +172,23 @@ public class GroupController {
         StateVO stateVO = groupService.outGroup(groupMemberVO);
         return stateVO.getStateCode().equals("GROUP_OUT_SUCCESS")? new ResponseEntity<>(stateVO, HttpStatus.OK) :
                 new ResponseEntity<>(stateVO,HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+
+
+    /*
+     *  그룹 메세지
+     *  @Return 그룹메세지 반환
+     */
+    @MessageMapping("/chat/{no}")
+    @SendTo("/topic/group/{no}")
+    @ResponseBody
+    public ResponseEntity<GroupMessageVO> groupMessage(@DestinationVariable int no, @RequestBody HashMap<String,String> params, SimpMessageHeaderAccessor messageHeaderAccessor) {
+        HttpSession httpSession = (HttpSession) messageHeaderAccessor.getSessionAttributes().get("session");
+        System.out.println(httpSession.getAttribute("id")+ " 가 입력함");
+        GroupMessageVO groupMessageVO = groupService.sendGroupMessage(no, params.get("message"),httpSession);
+        return groupMessageVO != null ? new ResponseEntity<>(groupMessageVO,HttpStatus.OK) :
+                new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 

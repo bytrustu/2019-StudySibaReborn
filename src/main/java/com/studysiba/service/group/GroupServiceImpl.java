@@ -6,7 +6,10 @@ import com.studysiba.domain.common.PageVO;
 import com.studysiba.domain.common.StateVO;
 import com.studysiba.domain.group.GroupBoardVO;
 import com.studysiba.domain.group.GroupMemberVO;
+import com.studysiba.domain.group.GroupMessageVO;
+import com.studysiba.domain.member.MemberVO;
 import com.studysiba.mapper.group.GroupMapper;
+import com.studysiba.mapper.member.MemberMapper;
 import com.studysiba.mapper.study.StudyMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +20,8 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
+import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -31,6 +36,7 @@ public class GroupServiceImpl implements GroupService {
 
     @Autowired
     HttpSession httpSession;
+
 
     /*
      *  그룹 리스트 이동
@@ -211,6 +217,48 @@ public class GroupServiceImpl implements GroupService {
     }
 
 
+
+
+    /*
+     *  그룹 메세지 전송
+     *  @Param  no, httpSession
+     *  @Return 그룹메세지 전송 정보 반환
+     */
+    @Override
+    public GroupMessageVO sendGroupMessage(int no, String message, HttpSession session) {
+
+        GroupMessageVO groupMessageVO = null;
+        boolean isGroupMember = isGroupMember(no, (String) session.getAttribute("id"));
+        if ( isGroupMember || session.getAttribute("auth").toString().toUpperCase().equals("ADMIN") ) {
+            groupMessageVO = new GroupMessageVO();
+            groupMessageVO.setGrmId((String) session.getAttribute("id"));
+            groupMessageVO.setMbrProfile((String) session.getAttribute("profile"));
+            groupMessageVO.setMbrNick((String) session.getAttribute("nick"));
+            groupMessageVO.setGrmGno(no);
+            groupMessageVO.setGrmText(message);
+            groupMessageVO.setGrmDate(DataConversion.currentTimestamp());
+            int groupMessageState = groupMapper.sendGroupMessage(groupMessageVO);
+            if ( groupMessageState == 0 ) return null;
+        }
+        return groupMessageVO;
+    }
+
+    /*
+     *  그룹 메세지 리스트 조회
+     *  @Param  no
+     *  @Return 그룹메세지 리스트 반환
+     */
+    @Override
+    public List<GroupMessageVO> getGroupMessageList(int no) {
+        List<GroupMessageVO> groupMessageList = null;
+        boolean isGroupMember = isGroupMember(no, (String) httpSession.getAttribute("id"));
+        if ( isGroupMember || httpSession.getAttribute("auth").toString().toUpperCase().equals("ADMIN") ) {
+            groupMessageList = groupMapper.getGroupMessageList(no);
+        }
+        return groupMessageList;
+    }
+
+
     public String groupFileUpload(GroupBoardVO groupBoardVO){
         String stateCode = null;
         if ( groupBoardVO.getGrbFile().isEmpty() ) return null;
@@ -246,4 +294,23 @@ public class GroupServiceImpl implements GroupService {
         }
         return stateCode;
     }
+
+
+    /*
+     *  그룹 멤버 확인 여부
+     *  @Param  no, id
+     *  @Return 그룹 멤버 확인 결과 반환
+     */
+    public boolean isGroupMember(int no, String id){
+        ArrayList<GroupMemberVO> groupMemberList = studyMapper.getGroupMemberList(no);
+        boolean isGroupMember = false;
+        for ( GroupMemberVO member : groupMemberList ) {
+            if ( member.getGrmId().equals(id) ) {
+                isGroupMember = true;
+                break;
+            }
+        }
+        return isGroupMember;
+    }
+
 }

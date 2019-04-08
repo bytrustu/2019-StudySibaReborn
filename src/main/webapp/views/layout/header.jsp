@@ -24,6 +24,7 @@
                 <link href="/static/css/mdb.min.css" rel="stylesheet">
                 <link href="/static/css/sweetalert2.min.css" rel="stylesheet">
                 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+                <link type="text/css" rel="stylesheet" href="/static/css/animate.css">
                 <link type="text/css" rel="stylesheet" href="/static/css/main.css">
                 <link type="text/css" rel="stylesheet" href="/static/css/sub.css">
                 <c:if test="${fn:contains(requestScope['javax.servlet.forward.servlet_path'] , '/study' ) || fn:contains(requestScope['javax.servlet.forward.servlet_path'] , '/group' ) }">
