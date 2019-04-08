@@ -86,7 +86,7 @@
     margin-top: 0;
     line-height: 1.4;
     font-weight: 700;
-    font-family: Roboto;
+    font-family: 'Roboto',sans-serif;
 }
 
 .st-status{
@@ -481,7 +481,7 @@
     margin-top: 30px;
     padding: 12px;
     font-weight: bold;
-    font-family: "roboto";
+    font-family: "Roboto",sans-serif;
     font-size: 12px;
     color: #606769;
 }
@@ -637,7 +637,7 @@
     font-size: 25px;
     vertical-align: super;
     color: #212529;
-    font-family: "Roboto";
+    font-family: "Roboto",sans-serif;
 }
 
 .stg-notice span{
@@ -1121,8 +1121,67 @@
 
 
 
+/*
+        그룹챗
+ */
 
+.groupmsg-container{
+    max-height: 500px;
+    max-width: 630px;
+    overflow: auto;
+    margin-left: 0;
+    font-family: 'NanumGothic', 'serif';
+}
 
+.groupmsg-box {
+    background-color: #f9f9f9;
+    box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.2);
+    padding: 10px 40px;
+    max-width: 630px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+}
+
+.groupmsg-text {
+    margin-top: 10px;
+}
+
+.groupmsg-photo {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center center;
+    display: inline-block;
+}
+
+.groupmsg-name {
+    margin-left: 10px;
+    display: inline-block;
+}
+
+.groupmsg-bottom{
+    padding: 20px 20px 30px 20px;
+    max-width: 620px;
+    background-color: #ffbb33b3;
+    margin-left: 10px;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+}
+
+.groupmsg-date{
+    font-size: 14px;
+    top: 10px;
+}
+
+.groupmsg-input{
+    height: 45px;
+}
+
+.groupmsg-send{
+    margin: 0;
+    background-color: #ffbb33 !important;
+}
 
 
 

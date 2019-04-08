@@ -18,6 +18,7 @@
                 <link rel="icon" type="image/x-icon" href="/static/image/main/sibacon.ico">
 
                 <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic" rel="stylesheet">
+                <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
                 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css">
                 <link href="/static/css/bootstrap.min.css" rel="stylesheet">
                 <link href="/static/css/mdb.min.css" rel="stylesheet">

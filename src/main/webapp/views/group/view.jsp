@@ -4,6 +4,71 @@
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 
+
+<%--<%--%>
+<%--session.setAttribute("id","test2");--%>
+<%--session.setAttribute("nick","test4");--%>
+<%--session.setAttribute("auth","ADMIN");--%>
+<%--session.setAttribute("profile","profile-1.png");--%>
+<%--%>--%>
+
+<script>
+    let client1;
+    $(document).ready(function(){
+        let socket1 = new SockJS("/private");
+        client1 = Stomp.over(socket1);
+        client1.debug = null;
+        client1.connect({}, function(){
+            client1.subscribe('/topic/message/cho', function(msg) {
+                console.log('>>>>>>>>>'+msg.body);
+            });
+        });
+    });
+
+    //
+    // let socket2 = new SockJS("/group");
+    // let client2 = Stomp.over(socket);
+    // client2.debug = null;
+    // client2.connect({}, function(){
+    //     client2.subscribe('/topic/message/', function(msg) {
+    //         console.log('>>>>>>>>>'+msg.body);
+    //     });
+    // });
+
+
+
+
+
+
+    let contentNo = () => {
+        let path = location.search;
+        path = path.substring(path.indexOf('=')+1);
+        if ( path.includes('&') ) {
+            path = path.substring(0,path.indexOf('&'));
+        }
+        return path;
+    }
+
+
+
+
+
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <div class="sub-page">
 
     <div class="sub-subject">
@@ -126,7 +191,108 @@
                             <h3 class="stv-title">Chatting</h3>
                             <h4 class="stv-subtitle">그룹채팅</h4>
                         </div>
+
                         <div class="col-md-8">
+
+                            <div class="container groupmsg-container">
+
+
+
+                                <div class="groupmsg-box center-block">
+                                    <div class="row">
+                                        <div class="col-xs-8 col-md-8">
+                                            <img src="/static/image/profile/profile-2.png" class="groupmsg-photo">
+                                            <h4 class="groupmsg-name">캄캄1</h4>
+                                        </div>
+                                        <div class="col-xs-4 col-md-4 text-right groupmsg-date">02-01 12:12</div>
+                                    </div>
+                                    <div class="row groupmsg-text">
+                                        안뇽안뇽
+                                    </div>
+                                </div>
+
+
+                                <div class="groupmsg-box center-block">
+                                    <div class="row">
+                                        <div class="col-xs-8 col-md-8">
+                                            <img src="/static/image/profile/profile-3.png" class="groupmsg-photo">
+                                            <h4 class="groupmsg-name">캄캄2</h4>
+                                        </div>
+                                        <div class="col-xs-4 col-md-4 text-right groupmsg-date">02-01 12:12</div>
+                                    </div>
+                                    <div class="row groupmsg-text">
+                                        ㅋㅋㅋㅋ
+                                    </div>
+                                </div>
+
+                                <div class="groupmsg-box center-block">
+                                    <div class="row">
+                                        <div class="col-xs-8 col-md-8">
+                                            <img src="/static/image/profile/profile-4.png" class="groupmsg-photo">
+                                            <h4 class="groupmsg-name">쟁쟁1</h4>
+                                        </div>
+                                        <div class="col-xs-4 col-md-4 text-right groupmsg-date">02-01 12:12</div>
+                                    </div>
+                                    <div class="row groupmsg-text">
+                                        ㅋㅋㅋㅋ
+                                    </div>
+                                </div>
+
+                                <div class="groupmsg-box center-block">
+                                    <div class="row">
+                                        <div class="col-xs-8 col-md-8">
+                                            <img src="/static/image/profile/profile-5.png" class="groupmsg-photo">
+                                            <h4 class="groupmsg-name">쟁쟁2</h4>
+                                        </div>
+                                        <div class="col-xs-4 col-md-4 text-right groupmsg-date">02-01 12:12</div>
+                                    </div>
+                                    <div class="row groupmsg-text">
+                                        ㅋㅋㅋㅋ
+                                    </div>
+                                </div>
+
+                                <div class="groupmsg-box center-block">
+                                    <div class="row">
+                                        <div class="col-xs-8 col-md-8">
+                                            <img src="/static/image/profile/profile-6.png" class="groupmsg-photo">
+                                            <h4 class="groupmsg-name">슺득3</h4>
+                                        </div>
+                                        <div class="col-xs-4 col-md-4 text-right groupmsg-date">02-01 12:12</div>
+                                    </div>
+                                    <div class="row groupmsg-text">
+                                        ㅋㅋㅋㅋ
+                                    </div>
+                                </div>
+                                <div class="groupmsg-box center-block">
+                                    <div class="row">
+                                        <div class="col-xs-8 col-md-8">
+                                            <img src="/static/image/profile/profile-7.png" class="groupmsg-photo">
+                                            <h4 class="groupmsg-name">슺득4</h4>
+                                        </div>
+                                        <div class="col-xs-4 col-md-4 text-right groupmsg-date">02-01 12:12</div>
+                                    </div>
+                                    <div class="row groupmsg-text">
+                                        ㅋㅋㅋㅋ
+                                    </div>
+                                </div>
+
+
+                            </div>
+
+
+
+                            <div class="row groupmsg-bottom">
+                                <div class="col-md-12">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control groupmsg-input">
+                                        <span class="input-group-btn">
+                                                    <button class="btn btn-default groupmsg-send" type="button">전송</button>
+                                                </span>
+                                    </div>
+                                </div>
+                            </div>
+
+
 
 
                         </div>

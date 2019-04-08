@@ -17,6 +17,21 @@
 
 
 
+    <script>
+        let client1;
+        $(document).ready(function(){
+            let socket1 = new SockJS("/private");
+            client1 = Stomp.over(socket1);
+            client1.debug = null;
+            client1.connect({}, function(){
+                client1.subscribe('/topic/message/jaeng', function(msg) {
+                    console.log('>>>>>>>>>'+msg.body);
+                });
+            });
+        });
+    </script>
+
+
 
     <div class="board-box">
         <div class="board-top">

@@ -60,7 +60,7 @@
 
                                                         <div class="md-form form-sm mb-4">
                                                                 <i class="fas fa-lock prefix"></i>
-                                                                <input type="password" id="input-loginpass" class="form-control form-control-sm modal-input login-input">
+                                                                <input type="password" id="input-loginpass" class="form-control form-control-sm modal-input login-input" >
                                                                 <label for="input-loginpass">비밀번호</label>
                                                         </div>
                                                         <div class="text-center mt-2">
@@ -826,6 +826,8 @@
         <script type="text/javascript" src="/static/js/lib/kakao.min.js"></script>
         <script async charset="utf-8" src="//cdn.embedly.com/widgets/platform.js"></script>
         <script type="text/javascript" src="/static/dist/ckeditor.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.3.0/sockjs.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
         <script type="text/javascript" src="/static/js/common.js"></script>
         <c:choose>
             <c:when test="${requestScope['javax.servlet.forward.servlet_path'] eq '/' }">
@@ -837,8 +839,12 @@
                 <c:if test="${fn:contains(requestScope['javax.servlet.forward.servlet_path'] , '/study' ) || fn:contains(requestScope['javax.servlet.forward.servlet_path'] , '/group' ) }">
                     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyByjX-fIiEVgNTofLuWWpxgGqQADaoNSWk&libraries=places&callback=initAutocomplete" async defer></script>
                 </c:if>
+                <c:if test="${fn:contains(requestScope['javax.servlet.forward.servlet_path'] , '/group/view' ) }">
+                    <script src="/static/js/groupmessage.js" ></script>
+                </c:if>
             </c:otherwise>
         </c:choose>
 
     </body>
     </html>
+

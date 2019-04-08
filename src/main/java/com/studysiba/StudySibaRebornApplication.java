@@ -21,34 +21,7 @@ import javax.sql.DataSource;
 @SpringBootApplication
 @MapperScan("classpath:com.studysiba.mapper")
 public class StudySibaRebornApplication {
-
     public static void main(String[] args) {
         SpringApplication.run(StudySibaRebornApplication.class, args);
     }
-
-    @Bean
-    public SqlSessionFactory sqlSessionFactory(DataSource dataSource) throws Exception {
-        SqlSessionFactoryBean sqlSessionFactory = new SqlSessionFactoryBean();
-        sqlSessionFactory.setDataSource(dataSource);
-        Resource confiigLocation = new PathMatchingResourcePatternResolver().getResource("classpath:mybatis-config.xml");
-        sqlSessionFactory.setConfigLocation(confiigLocation);
-        return sqlSessionFactory.getObject();
-    }
-
-    @Bean
-    public BCryptPasswordEncoder bCryptPasswordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    public HttpSessionListener httpSessionListener() {
-        return new SessionListener();
-    }
-
-    @Bean
-    public CommonsMultipartResolver multipartResolver() {
-        return new CommonsMultipartResolver();
-    }
-
-
 }
