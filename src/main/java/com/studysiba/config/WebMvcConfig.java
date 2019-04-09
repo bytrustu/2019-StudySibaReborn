@@ -1,6 +1,7 @@
 package com.studysiba.config;
 
 import com.studysiba.common.SessionListener;
+import com.studysiba.interceptor.AdminAuthInterceptor;
 import com.studysiba.interceptor.HttpHandshakeInterceptor;
 import com.studysiba.interceptor.SocialUrlInterceptor;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -53,9 +54,14 @@ public class WebMvcConfig implements WebMvcConfigurer {
         return new SocialUrlInterceptor();
     }
 
+    public AdminAuthInterceptor adminAuthInterceptor() {
+        return new AdminAuthInterceptor();
+    }
+
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(socialUrlInterceptor()).addPathPatterns("/");
+        registry.addInterceptor(adminAuthInterceptor()).addPathPatterns("/admin/**");
     }
 
     @Override

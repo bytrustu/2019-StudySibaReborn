@@ -35,11 +35,13 @@ public class CommonController {
      *  @Return 메인경로이동
      */
     @GetMapping("/")
-    public String moveMain(Model model, @RequestParam(value = "requireLogin", required = false, defaultValue = "false") boolean requireLogin) throws Exception {
+    public String moveMain(Model model, @RequestParam(value = "requireLogin", required = false, defaultValue = "false") boolean requireLogin,
+                                                                @RequestParam(value = "requireAdmin", required = false, defaultValue = "false") boolean requireAdmin) throws Exception {
         List<PointVO> userRankingList = commonService.viewUserTotalRanking();
+        commonService.isRequireAdmin(requireAdmin);
         model.addAttribute("rank", userRankingList);
-        log.info(userRankingList);
         model.addAttribute("requireLogin", requireLogin);
+        model.addAttribute("requireAdmin", requireAdmin);
         return "common/main";
     }
 

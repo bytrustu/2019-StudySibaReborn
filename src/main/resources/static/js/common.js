@@ -343,6 +343,8 @@ stateCode.set("GROUP_OUT_ERROR","그룹탈퇴에 실패 했습니다.");
 
 stateCode.set("GROUP_LOCATION_ERROR","스터디그룹 접근권한이 없습니다.");
 
+stateCode.set("ADMIN_LOCATION_ERROR","관리자 권한이 없습니다.");
+
 
 // KAKAO API
 Kakao.init('672b34ad5f77dd65240951209b6cbd32');

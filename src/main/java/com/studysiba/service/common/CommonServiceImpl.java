@@ -324,4 +324,13 @@ public class CommonServiceImpl implements CommonService {
         return downloadMap;
     }
 
+    /*
+     *  관리자 권한
+     *  @Param requireAdmin
+     */
+    @Override
+    public void isRequireAdmin(boolean requireAdmin) {
+        if ( requireAdmin == true ) httpSession.setAttribute("stateCode","ADMIN_LOCATION_ERROR");
+    }
+
 }

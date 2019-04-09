@@ -4,12 +4,12 @@
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 
-    <%
-        session.setAttribute("id","test2");
-        session.setAttribute("nick","test4");
-        session.setAttribute("auth","ADMIN");
-        session.setAttribute("profile","profile-1.png");
-    %>
+    <%--<%--%>
+        <%--session.setAttribute("id","test2");--%>
+        <%--session.setAttribute("nick","test4");--%>
+        <%--session.setAttribute("auth","ADMIN");--%>
+        <%--session.setAttribute("profile","profile-1.png");--%>
+    <%--%>--%>
 
     <div class="pageinfo-box">
         <input type="hidden" id="page-num" value="${cri.pageNum}">
@@ -789,6 +789,7 @@
                 }, 300);
             </script>
         </c:if>
+
 
         <!-- 상태코드 메세지에 따른 결과 처리 -->
         <c:if test="${sessionScope.stateCode ne null}">

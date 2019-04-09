@@ -75,4 +75,10 @@ public interface CommonService {
      *  @Return HashMap<String, Object>
      */
     HashMap<String, Object> downloadFile(String menu, int no);
+
+    /*
+     *  관리자 권한
+     *  @Param requireAdmin
+     */
+    void isRequireAdmin(boolean requireAdmin);
 }

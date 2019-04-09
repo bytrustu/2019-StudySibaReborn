@@ -64,7 +64,7 @@ public class AdminServiceImpl implements AdminService {
      */
     @Override
     public PointVO getMemberOne(String id) {
-        //if ( !httpSession.getAttribute("auth").toString().toUpperCase().equals("ADMIN") ) return null;
+        if ( !httpSession.getAttribute("auth").toString().toUpperCase().equals("ADMIN") ) return null;
         return adminMapper.getMemberOne(id);
     }
 
