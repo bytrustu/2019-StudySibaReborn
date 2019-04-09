@@ -923,7 +923,6 @@ $(document).ready(function () {
     });
 
     // 공지사항 조회
-
     $(document).on('click','.stg-notice span:nth-of-type(1)', function(){
         $('#noticeModal').modal('show');
         let no = $(this).attr('data-no');

@@ -1,6 +1,6 @@
 $(document).ready(function () {
 
-    // 관리자페이지 이동
+    // 관리자페이지
     $(document).on('click','.admin-btn', ()=>{
         location.href='/admin/main';
     });
@@ -238,6 +238,7 @@ var checkFacebookLoginStatus = (response) => {
 // 공통상태코드
 const stateCode = new Map();
 stateCode.set('MEMBER_STATE_SUCCESS', '회원정보가 등록되었습니다.');
+stateCode.set('MEMBER_UPDATE_SUCCESS', '회원정보가 수정되었습니다.');
 stateCode.set('ID_STATE_EMPTY', '아이디를 입력해주세요..');
 stateCode.set('PASS_STATE_EMPTY', '비밀번호를 입력해주세요.');
 stateCode.set('NICK_STATE_EMPTY', '닉네임이 입력해주세요.');

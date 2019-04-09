@@ -4,12 +4,12 @@
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 
-    <%--<%--%>
-        <%--session.setAttribute("id","test2");--%>
-        <%--session.setAttribute("nick","test4");--%>
-        <%--session.setAttribute("auth","ADMIN");--%>
-        <%--session.setAttribute("profile","profile-1.png");--%>
-    <%--%>--%>
+    <%
+        session.setAttribute("id","test2");
+        session.setAttribute("nick","test4");
+        session.setAttribute("auth","ADMIN");
+        session.setAttribute("profile","profile-1.png");
+    %>
 
     <div class="pageinfo-box">
         <input type="hidden" id="page-num" value="${cri.pageNum}">

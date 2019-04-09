@@ -9,7 +9,6 @@ $(document).ready(function(){
         menu.set("그룹관리","/group");
         menu.set("메세지관리","/message");
         let key = $(this).text().trim();
-        console.log(key);
         location.href = `/${firstPath()}${menu.get(key)}`;
     });
 
@@ -28,10 +27,172 @@ $(document).ready(function(){
         });
     });
 
+    let memberNo;
+    $('.admin-memberbtn').on('click', function(){
+        getMemberDate($(this).attr('data-id'))
+            .then( (data) => {
+                $('#memberModal').modal('show');
+                memberNo = data.mbrNo;
+                $('.sub-page').css('overflow-y','hidden');
+                $('.admin-memId').html(data.mbrId);
+                $('.admin-memPass').html('');
+                $('.admin-memNick').html(data.mbrNick);
+                $('.admin-memScore').html(data.pntScore);
+                $(`.admin-memAuth option[value=${data.mbrAuth}]`).attr('selected','selected');
+                $(`.admin-memType option[value=${data.mbrType}]`).attr('selected','selected');
+            }).catch( (error) => {
+                errorAlert("잘못된 접근 입니다.");
+        });
+    });
+
+
+    $("#memberModal").on('hide.bs.modal', function () {
+        $('.sub-page').css('overflow-y','auto');
+    });
+
+    $(document).on('click', '.svg-title', function(){
+        let element = $(this);
+        visibleInput(element);
+        return false;
+    });
+
+    $(document).on('click', '.admin-meminput', function() {
+        return false;
+    });
+
+    // input 에서 커서가 아웃될때 회원 데이터 수정
+    $('.admin-meminput').blur(function(){
+        let element = $(this);
+        let type = element.attr('data-type');
+        let data = element.val();
+        let id = $('.admin-memId').html();
+        let target = element.next('div');
+        target.html(data).css('display','block');
+        element.css('display','none');
+        if ( data == prevData) return false;
+
+        let memberMap = new Map();
+        memberMap.set('type',type);
+        memberMap.set('id',id);
+        memberMap.set('value',data);
+        if ( memberMap.get('type') == 'MBR_PASS' ){
+            if ( memberMap.get('value').trim() == '' ) return false;
+        }
+        let memberJson = mapToJson(memberMap);
+        executeMemberUpdate(memberJson,memberMap,memberNo);
+    });
+
+    // select가 변경될때 회원 데이터 수정
+    $('.admin-memselect').on('change', function(){
+        let id = $('.admin-memId').html();
+        let data = $(this).val();
+        let type = $(this).attr('data-type');
+        let memberMap = new Map();
+        memberMap.set('type',type);
+        memberMap.set('id',id);
+        memberMap.set('value',data);
+        let memberJson = mapToJson(memberMap);
+        executeMemberUpdate(memberJson);
+    });
+
+
+
+    /*
+            게시판관리
+     */
+
+    // 이동 버튼
+    $('.admin-movebtn').on('click',function(){
+        let path = location.pathname.substring(location.pathname.lastIndexOf('/')+1);
+        let no = $(this).attr('data-no');
+        switch (path) {
+            case 'board' :
+                path = `/${path}/community/view?no=${no}`;
+                break;
+            case 'study' :
+                path = `/${path}/view?no=${no}`;
+                break;
+            case 'group' :
+                path = `/${path}/view?no=${no}`;
+                break;
+        }
+        window.open(path,'_blank');
+    });
+
 
 
 });
 
+// 회원정보 업데이트 처리
+let executeMemberUpdate = (memberJson,memberMap,memberNo) => {
+    console.log('zzz');
+    updateMember(memberJson)
+        .then( (data) => {
+            successAlert('회원정보가 변경 되었습니다.');
+            let elements = $('th');
+            for ( let element of elements ) {
+                if ( element.innerHTML == memberNo ) {
+                    if (memberMap.get('type') == 'MBR_NICK' ) {
+                        element.nextElementSibling.nextElementSibling.innerHTML = memberMap.get('value');
+                    } else if ( memberMap.get('type') == 'PNT_SCORE' ) {
+                        element.nextElementSibling.nextElementSibling.nextElementSibling.innerHTML = memberMap.get('value');
+                    }
+                }
+            }
+        }).catch( (error) => {
+            errorAlert(stateCode.get(error.stateCode));
+    });
+}
+
+let updateMember = (memberJson) =>{
+    return new Promise( (resolve, reject) => {
+        $.ajax({
+            type : 'PUT',
+            url : '/admin/member/update',
+            data : memberJson,
+            dataType : 'json',
+            contentType : 'application/json; charset=utf-8',
+            success : (data) =>{
+                resolve(data);
+            },
+            error : (error) =>{
+                reject(JSON.parse(error.responseText));
+            }
+        })
+    });
+}
+
+let getMemberDate = (id) => {
+    return new Promise( (resolve, reject) => {
+        $.ajax({
+            type : 'GET',
+            url : `/admin/member/get/${id}`,
+            data : id,
+            dataType:'json',
+            contentType: 'application/json; charset=utf-8',
+            success : (data) =>{
+                resolve(data);
+            },
+            error : (error) =>{
+                reject(error);
+            }
+        });
+    });
+}
+
+let prevData;
+// div => input 으로
+let visibleInput = (element) => {
+    let data = element.html();
+    prevData = data;
+    let target = element.prev('input');
+    target.val(data).css('display','block');
+    target.focus();
+    element.html('').css('display','none');
+    return false;
+}
+
+// 커뮤니티/스터디/그룹/메세지 데이터 통계 조회
 let dataChart = () =>{
     return new Promise( (resolve, reject ) => {
         $.ajax({
@@ -48,7 +209,7 @@ let dataChart = () =>{
     });
 }
 
-
+// 데이터 통계 파이차트
 function viewDataChart(){
     google.charts.load('current', {'packages':['corechart']});
     google.charts.setOnLoadCallback(drawChart);
@@ -98,6 +259,7 @@ function viewDataChart(){
 }
 
 
+// 방문자수/가입수 데이터 통계 조회
 let infoChart = () =>{
     return new Promise( (resolve, reject ) => {
         $.ajax({
@@ -115,7 +277,7 @@ let infoChart = () =>{
 }
 
 
-
+// 정보통계 바차트
 function viewInfoChart(){
     google.charts.load('current', {'packages':['bar']});
     google.charts.setOnLoadCallback(drawChart);

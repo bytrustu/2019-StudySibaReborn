@@ -19,7 +19,7 @@
 }
 
 .admin-table{
-    margin: 10px 0 0 !important;
+    margin: 20px 0 40px 0 !important;
 }
 
 
@@ -105,7 +105,38 @@
 }
 
 
+#memberModal{
+    height: 101% !important;
+    overflow: hidden !important;
+}
 
+.admin-memrow{
+    padding: 30px 0 5px !important;
+    width: 80%;
+    margin: auto;
+}
+
+.admin-meminput{
+    display: none;
+    width: 95%;
+    margin: auto;
+}
+
+.admin-memselect{
+    width: 100%;
+}
+
+.svg-title{
+    height: 25px;
+}
+
+.admin-thead{
+    background-color: #dee2e645;
+}
+
+.admin-custombtn{
+    background-color: #ffce58 !important;
+}
 
 
 

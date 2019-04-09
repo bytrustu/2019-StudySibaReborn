@@ -1,5 +1,6 @@
 package com.studysiba.mapper.admin;
 
+import com.studysiba.domain.board.BoardVO;
 import com.studysiba.domain.member.PointVO;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -28,4 +29,24 @@ public interface AdminMapper {
      *  @Return 전체 회원 리스트 조회
      */
     ArrayList<PointVO> getMemberList();
+
+    /*
+     *  유저정보 변경
+     *  @Param  memberMap
+     *  @Return 유저정보 변경에 따른 결과 반환
+     */
+    int updateMember(HashMap<String,Object> memberMap);
+
+    /*
+     *  유저정보조회
+     *  @Param  id
+     *  @Return 유저정보 조회
+     */
+    PointVO getMemberOne(String id);
+
+    /*
+     *  게시판 리스트 조회
+     *  @Return 게시판 리스트 반환
+     */
+    ArrayList<BoardVO> getBoardList();
 }

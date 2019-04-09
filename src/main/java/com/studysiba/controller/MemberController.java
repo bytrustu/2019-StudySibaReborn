@@ -194,6 +194,11 @@ public class MemberController {
         }
     }
 
+    /*
+     *  회원로그아웃
+     *  @Param mbrId, currentUrl
+     *  @Return 현재 있었던 회원로그아웃 경로 반환
+     */
     @GetMapping(value = "/logout/{mbrId}")
     public String userLogout(@PathVariable("mbrId") String mbrId, @RequestParam(required = false) String currentUrl) {
         log.info(currentUrl);

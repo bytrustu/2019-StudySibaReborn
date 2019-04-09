@@ -1,10 +1,10 @@
 package com.studysiba.controller;
 
-import com.studysiba.domain.member.MemberVO;
+import com.studysiba.domain.board.BoardVO;
+import com.studysiba.domain.common.StateVO;
 import com.studysiba.domain.member.PointVO;
 import com.studysiba.service.admin.AdminService;
 import com.studysiba.service.common.CommonService;
-import com.studysiba.service.member.MemberService;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -52,6 +52,8 @@ public class AdminController {
                 model.addAttribute("member",memberList);
                 break;
             case "board" :
+                List<BoardVO> boardList = adminService.getBoardList();
+                model.addAttribute("board",boardList);
                 break;
             case "study" :
                 break;
@@ -86,4 +88,31 @@ public class AdminController {
                 return null;
         }
     }
+
+    /*
+     *  유저정보 조회
+     *  @Param  id
+     *  @Return 유저 정보 반환
+     */
+    @ResponseBody
+    @GetMapping(value="/member/get/{id}", produces={MediaType.APPLICATION_JSON_UTF8_VALUE})
+    public ResponseEntity<PointVO> getMemberOne(@PathVariable("id") String id){
+        PointVO pointVO = adminService.getMemberOne(id);
+        return pointVO != null ? new ResponseEntity<>(pointVO, HttpStatus.OK) :
+                new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    /*
+     *  유저정보 변경
+     *  @Param  memberMap
+     *  @Return 유저정보 변경에 따른 상태코드 반환
+     */
+    @ResponseBody
+    @PutMapping(value="/member/update", consumes = "application/json", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    public ResponseEntity<StateVO> updateMember(@RequestBody HashMap<String, Object> memberMap){
+        StateVO stateVO = adminService.updateMember(memberMap);
+        return stateVO.getStateCode().contains("SUCCESS")  ? new ResponseEntity<>(stateVO, HttpStatus.OK) :
+                new ResponseEntity<>(stateVO,HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
 }

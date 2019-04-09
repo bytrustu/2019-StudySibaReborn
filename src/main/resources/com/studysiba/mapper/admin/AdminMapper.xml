@@ -37,7 +37,7 @@
             ON VISIT.VDATE = MEMBER.MBR_JOIN
     </select>
 
-
+    <!-- 모든 회원정보 리스트 조회 -->
     <select id="getMemberList" resultType="PointVO">
         SELECT MBR_NO, MBR_TYPE, MBR_AUTH, MBR_CODE, MBR_ID, MBR_PASS, MBR_EMAIL, MBR_NICK, MBR_PROFILE, MBR_CONNECT, MBR_JOIN,
                       PNT_NO, PNT_ID, PNT_SCORE
@@ -45,6 +45,45 @@
         JOIN POINT
         ON POINT.PNT_ID = MEMBER.MBR_ID
         ORDER BY MBR_JOIN DESC
+    </select>
+
+    <!-- 회원정보 변경 -->
+    <update id="updateMember" parameterType="HashMap">
+        <choose>
+            <when test="type == 'PNT_SCORE'">
+                UPDATE POINT
+                SET ${type} = #{value}
+                WHERE PNT_ID = #{id}
+            </when>
+            <otherwise>
+                UPDATE MEMBER
+                SET ${type} = #{value}
+                WHERE MBR_ID = #{id}
+            </otherwise>
+        </choose>
+    </update>
+
+
+    <select id="getMemberOne" parameterType="String" resultType="PointVO">
+        SELECT MBR_NO, MBR_TYPE, MBR_AUTH, MBR_CODE, MBR_ID, MBR_PASS, MBR_EMAIL, MBR_NICK, MBR_PROFILE, MBR_CONNECT, MBR_JOIN,
+                      PNT_NO, PNT_ID, PNT_SCORE
+        FROM (
+                      SELECT * FROM MEMBER
+                      WHERE MBR_ID = #{id}
+        ) MEMBER
+        JOIN POINT
+        ON POINT.PNT_ID = MEMBER.MBR_ID
+    </select>
+
+    <select id="getBoardList" resultType="BoardVO">
+        SELECT BRD_NO, BRD_TYPE, BRD_DIVIDE, BRD_ID, BRD_TITLE, BRD_CONTENT, BRD_GNO, BRD_STEP, BRD_INDENT, BRD_COUNT, BRD_AVAILABLE, BRD_DATE,
+                          MEMBER.MBR_PROFILE, MEMBER.MBR_NICK
+        FROM (
+                      SELECT * FROM BOARD
+                      ORDER BY BRD_NO DESC
+                      ) BOARD
+        JOIN MEMBER
+        ON MEMBER.MBR_ID = BOARD.BRD_ID
     </select>
 
 
