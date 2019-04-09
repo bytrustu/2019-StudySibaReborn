@@ -3,6 +3,8 @@ package com.studysiba.controller;
 import com.studysiba.domain.board.BoardVO;
 import com.studysiba.domain.common.StateVO;
 import com.studysiba.domain.member.PointVO;
+import com.studysiba.domain.study.StudyVO;
+import com.studysiba.domain.messenger.MessageVO;
 import com.studysiba.service.admin.AdminService;
 import com.studysiba.service.board.BoardService;
 import com.studysiba.service.common.CommonService;
@@ -60,10 +62,16 @@ public class AdminController {
                 model.addAttribute("board",boardList);
                 break;
             case "study" :
+                List<StudyVO> studyList = adminService.getStudyList();
+                model.addAttribute("study",studyList);
                 break;
             case "group" :
+                List<StudyVO> groupList = adminService.groupList();
+                model.addAttribute("group",groupList);
                 break;
             case "message" :
+                List<MessageVO> messageList = adminService.messageList();
+                model.addAttribute("message",messageList);
                 break;
         }
 

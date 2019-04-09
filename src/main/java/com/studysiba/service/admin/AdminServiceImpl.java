@@ -4,7 +4,9 @@ import com.studysiba.common.DataValidation;
 import com.studysiba.domain.board.BoardVO;
 import com.studysiba.domain.common.StateVO;
 import com.studysiba.domain.member.PointVO;
+import com.studysiba.domain.study.StudyVO;
 import com.studysiba.mapper.admin.AdminMapper;
+import com.studysiba.domain.messenger.MessageVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -74,6 +76,36 @@ public class AdminServiceImpl implements AdminService {
     public List<BoardVO> getBoardList() {
 
         return adminMapper.getBoardList();
+    }
+
+    /*
+     *  스터디 리스트 조회
+     *  @Return 스터디 리스트 반환
+     */
+    @Override
+    public List<StudyVO> getStudyList() {
+
+        return adminMapper.getStudyList();
+    }
+
+    /*
+     *  그룹 리스트 조회
+     *  @Return 그룹 리스트 반환
+     */
+    @Override
+    public List<StudyVO> groupList() {
+
+        return adminMapper.getGroupList();
+    }
+
+    /*
+     *  메세지 리스트 조회
+     *  @Return 메세지 리스트 반환
+     */
+    @Override
+    public List<MessageVO> messageList() {
+
+        return adminMapper.getMessageList();
     }
 
 

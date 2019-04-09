@@ -33,6 +33,10 @@
         <typeAlias alias="GroupBoardVO" type="com.studysiba.domain.group.GroupBoardVO"/>
         <!-- 스터디그룹 메세지 -->
         <typeAlias alias="GroupMessageVO" type="com.studysiba.domain.group.GroupMessageVO"/>
+        <!-- 메세지방 -->
+        <typeAlias alias="RoomVO" type="com.studysiba.domain.messenger.RoomVO"/>
+        <!-- 메세지 -->
+        <typeAlias alias="MessageVO" type="com.studysiba.domain.messenger.MessageVO"/>
     </typeAliases>
 
 </configuration>

@@ -185,7 +185,6 @@ public class GroupController {
     @ResponseBody
     public ResponseEntity<GroupMessageVO> groupMessage(@DestinationVariable int no, @RequestBody HashMap<String,String> params, SimpMessageHeaderAccessor messageHeaderAccessor) {
         HttpSession httpSession = (HttpSession) messageHeaderAccessor.getSessionAttributes().get("session");
-        System.out.println(httpSession.getAttribute("id")+ " 가 입력함");
         GroupMessageVO groupMessageVO = groupService.sendGroupMessage(no, params.get("message"),httpSession);
         return groupMessageVO != null ? new ResponseEntity<>(groupMessageVO,HttpStatus.OK) :
                 new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

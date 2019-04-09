@@ -21,7 +21,6 @@ $(document).ready(function(){
             sendGroupMessage(msgInfo.body);
         });
     });
-ㅈㅈㅈㅈㅈㅈㅈㅈㅈㅈㅈㅈㅈㅈㅈㅈㅈㅈㅈㅈ
 
 
     let sendGroupMessage = (messageInfo) => {

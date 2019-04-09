@@ -3,6 +3,8 @@ package com.studysiba.service.admin;
 import com.studysiba.domain.board.BoardVO;
 import com.studysiba.domain.common.StateVO;
 import com.studysiba.domain.member.PointVO;
+import com.studysiba.domain.study.StudyVO;
+import com.studysiba.domain.messenger.MessageVO;
 
 import java.util.HashMap;
 import java.util.List;
@@ -46,4 +48,22 @@ public interface AdminService {
      *  @Return 게시판 리스트 반환
      */
     List<BoardVO> getBoardList();
+
+    /*
+     *  스터디 리스트 조회
+     *  @Return 스터디 리스트 반환
+     */
+    List<StudyVO> getStudyList();
+
+    /*
+     *  그룹 리스트 조회
+     *  @Return 그룹 리스트 반환
+     */
+    List<StudyVO> groupList();
+
+    /*
+     *  메세지 리스트 조회
+     *  @Return 메세지 리스트 반환
+     */
+    List<MessageVO> messageList();
 }

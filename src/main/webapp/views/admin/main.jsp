@@ -103,8 +103,9 @@
                                 <thead class="admin-thead">
                                     <tr class="text-center">
                                         <th class="font-weight-bold">순번</th>
-                                        <th class="font-weight-bold">아이디</th>
+                                        <th class="font-weight-bold">닉네임</th>
                                         <th class="font-weight-bold">제목</th>
+                                        <th class="font-weight-bold">일자</th>
                                         <th class="font-weight-bold">기능</th>
                                     </tr>
                                 </thead>
@@ -114,6 +115,7 @@
                                         <th scope="row">${board.brdNo}</th>
                                         <td>${board.mbrNick}</td>
                                         <td>${board.brdTitle}</td>
+                                        <td><fmt:formatDate value="${board.brdDate}" pattern="YY-MM-dd HH:mm"/></td>
                                         <td>
                                             <button type="button" class="btn btn-warning admin-custombtn btn-sm m-0 admin-movebtn" data-no="${board.brdNo}">이동</button>
                                         </td>
@@ -122,9 +124,85 @@
                                 </tbody>
                             </c:when>
 
-                            <c:when test="${fn:contains(requestScope['javax.servlet.forward.servlet_path'] , '/admin/study' ) }"></c:when>
-                            <c:when test="${fn:contains(requestScope['javax.servlet.forward.servlet_path'] , '/admin/group' ) }"></c:when>
-                            <c:when test="${fn:contains(requestScope['javax.servlet.forward.servlet_path'] , '/admin/message' ) }"></c:when>
+                            <c:when test="${fn:contains(requestScope['javax.servlet.forward.servlet_path'] , '/admin/study' ) }">
+                                <thead class="admin-thead">
+                                <tr class="text-center">
+                                    <th class="font-weight-bold">순번</th>
+                                    <th class="font-weight-bold">스터디이름</th>
+                                    <th class="font-weight-bold">리더</th>
+                                    <th class="font-weight-bold">제목</th>
+                                    <th class="font-weight-bold">기능</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <c:forEach items="${study}" var="study">
+                                    <tr class="text-center">
+                                        <th scope="row">${study.stdNo}</th>
+                                        <td>${study.stdGroup}</td>
+                                        <td>${study.mbrNick}</td>
+                                        <td>${study.stdTitle}</td>
+                                        <td>
+                                            <button type="button" class="btn btn-warning admin-custombtn btn-sm m-0 admin-movebtn" data-no="${study.stdNo}">이동</button>
+                                        </td>
+                                    </tr>
+                                </c:forEach>
+                                </tbody>
+                            </c:when>
+                            <c:when test="${fn:contains(requestScope['javax.servlet.forward.servlet_path'] , '/admin/group' ) }">
+                                <thead class="admin-thead">
+                                <tr class="text-center">
+                                    <th class="font-weight-bold">순번</th>
+                                    <th class="font-weight-bold">스터디이름</th>
+                                    <th class="font-weight-bold">리더</th>
+                                    <th class="font-weight-bold">참여인원</th>
+                                    <th class="font-weight-bold">기능</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <c:forEach items="${group}" var="group">
+                                    <tr class="text-center">
+                                        <th scope="row">${group.grmGno}</th>
+                                        <td>${group.stdGroup}</td>
+                                        <td>${group.mbrNick}</td>
+                                        <td>${group.stdPersonCount}</td>
+                                        <td>
+                                            <button type="button" class="btn btn-warning admin-custombtn btn-sm m-0 admin-movebtn" data-no="${group.grmGno}">이동</button>
+                                        </td>
+                                    </tr>
+                                </c:forEach>
+                                </tbody>
+                            </c:when>
+                            <c:when test="${fn:contains(requestScope['javax.servlet.forward.servlet_path'] , '/admin/message' ) }">
+                                <thead class="admin-thead">
+                                <tr class="text-center">
+                                    <th class="font-weight-bold">순번</th>
+                                    <th class="font-weight-bold">보낸회원</th>
+                                    <th class="font-weight-bold">받는회원</th>
+                                    <th class="font-weight-bold">내용</th>
+                                    <th class="font-weight-bold">수신여부</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <c:forEach items="${message}" var="message">
+                                    <tr class="text-center">
+                                        <th scope="row">${message.msgNo}</th>
+                                        <td>${message.msgFrom}</td>
+                                        <td>${message.msgTo}</td>
+                                        <td>${message.msgText}</td>
+                                        <td>
+                                            <c:choose>
+                                                <c:when test="${message.msgReceive == 1}">
+                                                    N
+                                                </c:when>
+                                                <c:otherwise>
+                                                    Y
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </td>
+                                    </tr>
+                                </c:forEach>
+                                </tbody>
+                            </c:when>
                         </c:choose>
 
 
