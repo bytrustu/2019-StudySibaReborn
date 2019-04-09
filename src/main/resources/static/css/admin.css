@@ -22,35 +22,87 @@
     margin: 10px 0 0 !important;
 }
 
-.admin-divide{
-    border-radius: 5px;
-    border: 1px solid white !important;
-    font-weight: bold;
-    font-size: 13px;
-    padding: 8px 20px !important;
-    margin: 10px 1px !important;
-    display: inline-block;
-    background-color: #ffce58 !important;
-    color: #454546 !important;
-    cursor: pointer;
+
+
+
+
+.admin-row{
+    padding: 35px 20px;
 }
 
-.admin-divide:hover {
-    transform: scale(1.05) !important;
-    transition: all 0.5s ease-in-out;
-    box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.2);
-    background-color: #ffce58 !important;
-    color: #454546 !important;
-    border: 1px solid #e7e8e9 !important;
+.admin-title{
+    font-size: 24px;
+    color: rgb(96, 103, 105);
+    font-weight: bold;
+    font-family: "Roboto", Arial, sans-serif;
+}
+
+.admin-subtitle{
+    font-weight: bold;
+    color: #1d1d1d;
+    font-size: 14px;
+}
+
+.admin-hr{
+    margin-top: -90px;
+    margin-bottom: 40px;
+    border-color: rgb(234, 234, 234);
+    z-index: 999;
+    width: 100%;
+}
+
+.admin-top{
+    height: auto;
 }
 
 #dataChart{
-    width: 700px;
-    height: 500px;
+    width: auto;
+    height: auto;
+    padding-bottom: 50px;
+}
+
+#infoChart{
+    width: auto;
+    height: auto;
+    padding-top: 30px;
+}
+
+.admin-divide {
+    font-weight: bold;
+    margin: 5px 1px !important;
+    display: inline-block;
+}
+
+@media(min-width: 892px){
+    .admin-top{
+        height: 50px;
+    }
+    #dataChart{
+        width: 700px;
+        height: 500px;
+        padding-bottom: 50px;
+    }
+
+    #infoChart{
+        width: 90%;
+        height: 500px;
+    }
+
+    .admin-divide{
+        font-weight: bold;
+        font-size: 13px;
+        margin: 10px 1px !important;
+        display: inline-block;
+        cursor: pointer;
+    }
+
 }
 
 
-
+.admin-searchform{
+    width: 80%;
+    margin-left: 10%;
+}
 
 
 

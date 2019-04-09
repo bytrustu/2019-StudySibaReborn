@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.studysiba.mapper.admin.AdminMapper">
 
-    <!-- 게시판/스터디게시판/댓글/그룹공지/그룹메세지/개인메세지 카운트 조회 -->
+    <!-- 최근 1주일 게시판/스터디게시판/댓글/그룹공지/그룹메세지/개인메세지 통계 -->
     <select id="getDataChart" resultType="HashMap">
             SELECT
                 (SELECT IF(COUNT(*)=0,1,COUNT(*)) FROM BOARD
@@ -19,6 +19,32 @@
                 WHERE GRM_DATE > DATE_ADD(NOW(),INTERVAL -7 DAY)  ) GCNT,
                 (SELECT IF(COUNT(*)=0,1,COUNT(*)) FROM MESSAGE
                 WHERE MSG_DATE > DATE_ADD(NOW(),INTERVAL -7 DAY)  ) MCNT
+    </select>
+
+    <!-- 최근 1주일 방문자수/가입자수 시간별 통계 -->
+    <select id="getInfoChart" resultType="HashMap">
+        SELECT VDATE, COALESCE(VCNT,0) AS VCNT ,COALESCE(MCNT,0) AS MCNT FROM
+            (
+				SELECT DATE_FORMAT(VIS_DATE, '%H') AS VDATE, COUNT(*) AS VCNT FROM VISIT
+                WHERE VIS_DATE > DATE_ADD(NOW(),INTERVAL -6 DAY)
+				GROUP BY DATE_FORMAT(VIS_DATE, '%H')
+             ) VISIT
+			LEFT JOIN (
+			                        SELECT DATE_FORMAT(MBR_JOIN, '%H') AS MBR_JOIN, COUNT(*) AS MCNT FROM MEMBER
+                                    WHERE MBR_JOIN > DATE_ADD(NOW(),INTERVAL - 6 DAY)
+                                    GROUP BY DATE_FORMAT(MBR_JOIN, '%H')
+								) MEMBER
+            ON VISIT.VDATE = MEMBER.MBR_JOIN
+    </select>
+
+
+    <select id="getMemberList" resultType="PointVO">
+        SELECT MBR_NO, MBR_TYPE, MBR_AUTH, MBR_CODE, MBR_ID, MBR_PASS, MBR_EMAIL, MBR_NICK, MBR_PROFILE, MBR_CONNECT, MBR_JOIN,
+                      PNT_NO, PNT_ID, PNT_SCORE
+        FROM MEMBER
+        JOIN POINT
+        ON POINT.PNT_ID = MEMBER.MBR_ID
+        ORDER BY MBR_JOIN DESC
     </select>
 
 
