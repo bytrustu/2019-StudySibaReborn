@@ -101,12 +101,12 @@
 
                             <c:when test="${fn:contains(requestScope['javax.servlet.forward.servlet_path'] , '/admin/board' ) }">
                                 <thead class="admin-thead">
-                                <tr class="text-center">
-                                    <th class="font-weight-bold">순번</th>
-                                    <th class="font-weight-bold">아이디</th>
-                                    <th class="font-weight-bold">제목</th>
-                                    <th class="font-weight-bold">기능</th>
-                                </tr>
+                                    <tr class="text-center">
+                                        <th class="font-weight-bold">순번</th>
+                                        <th class="font-weight-bold">아이디</th>
+                                        <th class="font-weight-bold">제목</th>
+                                        <th class="font-weight-bold">기능</th>
+                                    </tr>
                                 </thead>
                                 <tbody>
                                 <c:forEach items="${board}" var="board">
@@ -116,7 +116,6 @@
                                         <td>${board.brdTitle}</td>
                                         <td>
                                             <button type="button" class="btn btn-warning admin-custombtn btn-sm m-0 admin-movebtn" data-no="${board.brdNo}">이동</button>
-                                            <button type="button" class="btn btn-warning admin-custombtn btn-sm m-0 admin-boardbtn" data-no="${board.brdNo}">수정</button>
                                         </td>
                                     </tr>
                                 </c:forEach>

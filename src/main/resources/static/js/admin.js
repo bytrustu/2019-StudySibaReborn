@@ -120,7 +120,6 @@ $(document).ready(function(){
     });
 
 
-
 });
 
 // 회원정보 업데이트 처리

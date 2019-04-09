@@ -825,7 +825,7 @@ let updateBoard = (boardJson) => {
 
 
 
-// 댓글 게시글 조회
+// 댓글,게시글 조회
 let getBoard = (type,no) => {
     return new Promise( (resolve, reject) => {
         $.ajax({

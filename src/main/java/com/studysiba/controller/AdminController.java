@@ -4,6 +4,7 @@ import com.studysiba.domain.board.BoardVO;
 import com.studysiba.domain.common.StateVO;
 import com.studysiba.domain.member.PointVO;
 import com.studysiba.service.admin.AdminService;
+import com.studysiba.service.board.BoardService;
 import com.studysiba.service.common.CommonService;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,9 @@ public class AdminController {
 
     @Autowired
     AdminService adminService;
+
+    @Autowired
+    BoardService boardService;
 
     /*
      *  관리자 메뉴이동
