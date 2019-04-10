@@ -657,6 +657,18 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
     <!-- 스터디모달 이미지 -->
         <script type="text/javascript">
             $('.remove-image').on('click', function(){
@@ -830,6 +842,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.3.0/sockjs.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
         <script type="text/javascript" src="/static/js/common.js"></script>
+        <script type="text/javascript" src="/static/js/messenger.js"></script>
         <c:choose>
             <c:when test="${requestScope['javax.servlet.forward.servlet_path'] eq '/' }">
                 <script type="text/javascript" src="/static/js/main.js"></script>

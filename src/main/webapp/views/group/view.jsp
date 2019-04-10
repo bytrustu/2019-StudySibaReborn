@@ -125,7 +125,7 @@
 
                         <div class="col-md-8">
 
-                            <div class="container groupmsg-container scrollbar scrollbar-primary scrollbar scrollbar-warning force-overflow">
+                            <div class="container groupmsg-container scrollbar  scrollbar scrollbar-warning force-overflow">
 
                                 <c:if test="${fn:length(groupMessage) == 0}">
                                     <div class="group-notfound">

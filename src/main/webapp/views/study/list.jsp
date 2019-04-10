@@ -136,54 +136,9 @@
                         </li>
                     </c:forEach>
 
-
-                    <%--<li class="st-item">--%>
-                        <%--<a class="st-link">--%>
-                            <%--<div class="st-thumb">--%>
-                                <%--<img src="/static/image/common/4.png">--%>
-                            <%--</div>--%>
-                            <%--<div class="st-body">--%>
-                                <%--<h3 class="st-title">슺득이랑 공부할사람~</h3>--%>
-                                <%--<h6 class="st-status">--%>
-                                    <%--<img class="st-icon" src="/static/image/study/startup.png"><span class="st-group">슺득이바보</span>--%>
-                                <%--</h6>--%>
-                                <%--<h6 class="st-status">--%>
-                                    <%--<img class="st-icon" src="/static/image/study/circular-clock.png"><span--%>
-                                        <%--class="st-time">17.04.01 - 17.05.1</span>--%>
-                                <%--</h6>--%>
-                                <%--<h6 class="st-status">--%>
-                                    <%--<img class="st-icon" src="/static/image/study/global.png"><span class="st-locate">서울시 서울역 1번벤치</span>--%>
-                                <%--</h6>--%>
-                                <%--<h6 class="st-taglist">--%>
-                                    <%--<span class="st-tag">자바스크립트</span><span class="st-tag">ES6</span><span--%>
-                                        <%--class="st-tag">리액트</span>--%>
-                                <%--</h6>--%>
-                            <%--</div>--%>
-                            <%--<div class="st-person">--%>
-                                <%--<div class="st-now">--%>
-                                    <%--진행중--%>
-                                <%--</div>--%>
-                                <%--<h5 class="st-per">--%>
-                                <%--<span class="st-pericon">--%>
-                                    <%--<img src="/static/image/study/networking.png">--%>
-                                <%--</span>--%>
-                                    <%--<span class="st-percount">--%>
-                                    <%--10 / 10--%>
-                                <%--</span>--%>
-                                <%--</h5>--%>
-                            <%--</div>--%>
-                        <%--</a>--%>
-                    <%--</li>--%>
-
-
                 </div>
 
-
             </ul>
-
-            <%--<input type="text" class="form-control" id="pac-input" name="address" placeholder="스터디 장소를 검색하세요.">--%>
-            <%--<div id="map" style="width: 500px;height: 300px"></div>--%>
-
 
         </div>
 
@@ -227,15 +182,305 @@
 
 
 
-
-
-
-
-
-
-
     </div>
 
 
 </div>
 
+
+
+
+
+
+
+
+
+<div class="chat-window animated fast d-none">
+
+    <div class="chat-top">
+        <div class="chat-prev">
+            <img src="/static/image/common/prev.png">
+        </div>
+        <div class="top-button">
+            <div class="top-btn top-listbtn"></div>
+            <div class="top-btn top-invitebtn"></div>
+            <div class="top-btn top-closebtn"></div>
+        </div>
+        <div class="top-title">전체</div>
+    </div>
+
+    <ul class="chat-message scrollbar scrollbar-warning force-overflow">
+        <li class="chat-content chat-left">
+            <div class="chat-info">
+                <div class="chat-nick">캄캄</div>
+                <div class="chat-date">04-15 02:15</div>
+            </div>
+            <div class="chat-profile">
+                <img src="/static/image/profile/profile-3.png">
+            </div>
+            <div class="chat-textbox">
+                <div class="chat-text">
+                    ㅋㅋㅋㅋㅋㅋㅋㅋ
+                </div>
+            </div>
+        </li>
+
+        <li class="chat-content chat-left">
+            <div class="chat-info">
+                <div class="chat-nick">캄캄</div>
+                <div class="chat-date">04-15 02:15</div>
+            </div>
+            <div class="chat-profile">
+                <img src="/static/image/profile/profile-3.png">
+            </div>
+            <div class="chat-textbox">
+                <div class="chat-text">
+                    ㅋㅁㅋㄴㅁㄹ
+                </div>
+            </div>
+        </li>
+
+        <li class="chat-content chat-right">
+            <div class="chat-info">
+                <div class="chat-nick">나</div>
+                <div class="chat-date">04-15 02:15</div>
+            </div>
+            <div class="chat-profile">
+                <img src="/static/image/profile/profile-5.png">
+            </div>
+            <div class="chat-textbox">
+                <div class="chat-text">
+                    ㅋㅋㅋㅋㅋㅋㅋㅋ
+                </div>
+            </div>
+            <div class="clear"></div>
+        </li>
+
+
+        <li class="chat-content chat-left">
+            <div class="chat-info">
+                <div class="chat-nick">캄캄</div>
+                <div class="chat-date">04-15 02:15</div>
+            </div>
+            <div class="chat-profile">
+                <img src="/static/image/profile/profile-3.png">
+            </div>
+            <div class="chat-textbox">
+                <div class="chat-text">
+                    ㅋㅁㅋㄴㅁㄹ
+                </div>
+            </div>
+        </li>
+
+
+
+        <li class="chat-content chat-left">
+            <div class="chat-info">
+                <div class="chat-nick">쟁</div>
+                <div class="chat-date">04-15 02:15</div>
+            </div>
+            <div class="chat-profile">
+                <img src="/static/image/profile/profile-5.png">
+            </div>
+            <div class="chat-textbox">
+                <div class="chat-text">
+                    ㅋㅁㅋㄴㅁㄹ
+                </div>
+            </div>
+        </li>
+
+
+        <li class="chat-content chat-right">
+            <div class="chat-info">
+                <div class="chat-nick">나</div>
+                <div class="chat-date">04-15 02:15</div>
+            </div>
+            <div class="chat-profile">
+                <img src="/static/image/profile/profile-5.png">
+            </div>
+            <div class="chat-textbox">
+                <div class="chat-text">
+                    ㅋㅋㅋㅋㅋㅋㅋㅋ
+                </div>
+            </div>
+            <div class="clear"></div>
+        </li>
+
+
+        <li class="chat-content chat-right">
+            <div class="chat-info">
+                <div class="chat-nick">나</div>
+                <div class="chat-date">04-15 02:15</div>
+            </div>
+            <div class="chat-profile">
+                <img src="/static/image/profile/profile-5.png">
+            </div>
+            <div class="chat-textbox">
+                <div class="chat-text">
+                    ㅋㅋㅋㅋㅋㅋㅋㅋ
+                </div>
+            </div>
+            <div class="clear"></div>
+        </li>
+
+
+    </ul>
+
+    <div class="chat-bottom">
+        <div class="chat-inputbox">
+            <input class="chat-input" type="text">
+        </div>
+        <div class="chat-sendbox">
+            <div class="chat-btntext">
+                전송
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+
+
+
+<div class="chat-list animated faster d-none">
+
+    <div class="chat-top">
+        <div class="top-button">
+            <div class="top-btn top-listbtn"></div>
+            <div class="top-btn top-invitebtn"></div>
+            <div class="top-btn top-closebtn"></div>
+        </div>
+        <div class="top-title">리스트</div>
+    </div>
+
+    <ul class="chat-message scrollbar scrollbar-warning force-overflow">
+        <li class="chat-content chat-left">
+            <div class="chat-info">
+                <div class="chat-nick">캄캄</div>
+                <div class="chat-date">04-15 02:15</div>
+            </div>
+            <div class="chat-profile">
+                <img src="/static/image/profile/profile-3.png">
+            </div>
+            <div class="chat-textbox">
+                <div class="chat-text">
+                    ㅋㅋㅋㅋㅋㅋㅋㅋ
+                </div>
+            </div>
+        </li>
+
+        <li class="chat-content chat-left">
+            <div class="chat-info">
+                <div class="chat-nick">캄캄</div>
+                <div class="chat-date">04-15 02:15</div>
+            </div>
+            <div class="chat-profile">
+                <img src="/static/image/profile/profile-3.png">
+            </div>
+            <div class="chat-textbox">
+                <div class="chat-text">
+                    ㅋㅁㅋㄴㅁㄹ
+                </div>
+            </div>
+        </li>
+
+        <li class="chat-content chat-right">
+            <div class="chat-info">
+                <div class="chat-nick">나</div>
+                <div class="chat-date">04-15 02:15</div>
+            </div>
+            <div class="chat-profile">
+                <img src="/static/image/profile/profile-5.png">
+            </div>
+            <div class="chat-textbox">
+                <div class="chat-text">
+                    ㅋㅋㅋㅋㅋㅋㅋㅋ
+                </div>
+            </div>
+            <div class="clear"></div>
+        </li>
+
+
+        <li class="chat-content chat-left">
+            <div class="chat-info">
+                <div class="chat-nick">캄캄</div>
+                <div class="chat-date">04-15 02:15</div>
+            </div>
+            <div class="chat-profile">
+                <img src="/static/image/profile/profile-3.png">
+            </div>
+            <div class="chat-textbox">
+                <div class="chat-text">
+                    ㅋㅁㅋㄴㅁㄹ
+                </div>
+            </div>
+        </li>
+
+
+
+        <li class="chat-content chat-left">
+            <div class="chat-info">
+                <div class="chat-nick">쟁</div>
+                <div class="chat-date">04-15 02:15</div>
+            </div>
+            <div class="chat-profile">
+                <img src="/static/image/profile/profile-5.png">
+            </div>
+            <div class="chat-textbox">
+                <div class="chat-text">
+                    ㅋㅁㅋㄴㅁㄹ
+                </div>
+            </div>
+        </li>
+
+
+        <li class="chat-content chat-right">
+            <div class="chat-info">
+                <div class="chat-nick">나</div>
+                <div class="chat-date">04-15 02:15</div>
+            </div>
+            <div class="chat-profile">
+                <img src="/static/image/profile/profile-5.png">
+            </div>
+            <div class="chat-textbox">
+                <div class="chat-text">
+                    ㅋㅋㅋㅋㅋㅋㅋㅋ
+                </div>
+            </div>
+            <div class="clear"></div>
+        </li>
+
+
+        <li class="chat-content chat-right">
+            <div class="chat-info">
+                <div class="chat-nick">나</div>
+                <div class="chat-date">04-15 02:15</div>
+            </div>
+            <div class="chat-profile">
+                <img src="/static/image/profile/profile-5.png">
+            </div>
+            <div class="chat-textbox">
+                <div class="chat-text">
+                    ㅋㅋㅋㅋㅋㅋㅋㅋ
+                </div>
+            </div>
+            <div class="clear"></div>
+        </li>
+
+
+    </ul>
+
+    <div class="chat-bottom">
+        <div class="chat-inputbox">
+            <input class="chat-input" type="text">
+        </div>
+        <div class="chat-sendbox">
+            <div class="chat-btntext">
+                전송
+            </div>
+        </div>
+    </div>
+
+</div>

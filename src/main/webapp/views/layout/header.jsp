@@ -27,6 +27,7 @@
                 <link type="text/css" rel="stylesheet" href="/static/css/animate.css">
                 <link type="text/css" rel="stylesheet" href="/static/css/main.css">
                 <link type="text/css" rel="stylesheet" href="/static/css/sub.css">
+                <link type="text/css" rel="stylesheet" href="/static/css/messenger.css">
                 <c:if test="${fn:contains(requestScope['javax.servlet.forward.servlet_path'] , '/study' ) || fn:contains(requestScope['javax.servlet.forward.servlet_path'] , '/group' )
                                    || fn:contains(requestScope['javax.servlet.forward.servlet_path'] , '/admin' )}">
                         <link type="text/css" rel="stylesheet" href="/static/css/study.css">
