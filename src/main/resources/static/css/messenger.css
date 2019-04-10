@@ -151,7 +151,7 @@
 
 
 .chat-left .chat-profile {
-    background-color: #f5886e;
+    background-color: #fff2cc;
     float: left;
 }
 
@@ -179,7 +179,7 @@
 }
 
 .chat-textbox{
-    width: calc(100% - 125px);
+    width: calc(100% - 80px);
     display: inline-block;
     padding: 20px;
     border-radius: 6px;
@@ -298,4 +298,118 @@
     font-weight: 300;
     display: inline-block;
     line-height: 48px;
+}
+
+
+
+
+
+
+
+
+/*
+        메신저 리스트
+ */
+
+.messenger-box{
+    height: 636px;
+}
+
+.messenger-list{
+    position: relative;
+    padding: 10px 10px 10px 10px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    height: 82px;
+    cursor: pointer;
+}
+.messenger-list:hover{
+    transform: scale(1.005);
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.2);
+}
+
+.messenger-infobox{
+    display: inline-block;
+    margin-left: 20px;
+    width: 63%;
+}
+
+.messenger-nick{
+    font-weight: 400;
+    color: #bcbdc0;
+}
+
+.messenger-commentbox{
+    vertical-align: inherit;
+}
+
+.messenger-comment{
+    color: #8f9091;
+    width: 86%;
+    border-radius: 5px;
+    background-color: #e7e8e9;
+    padding: 5px 3px 3px 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: inline-block;
+    height: 35px;
+}
+
+.messenger-public .messenger-comment{
+    width: 100%;
+}
+
+.messenger-count{
+    position: absolute;
+    top: 29px;
+    right: 8px;
+    display: inline-block;
+    width: 33px;
+    height: 33px;
+    border-radius: 33px;
+    background-color: #f5886ed4;
+    vertical-align: 13px;
+    text-align: center;
+    font-weight: bold;
+    color: #f8f8f8;
+    padding: 4px;
+}
+
+.messenger-public{
+    margin-bottom: 30px;
+    background-color: transparent;
+}
+
+.messenger-public .messenger-comment{
+    background-color: #ffffff;
+}
+
+.messenger-hr{
+
+}
+
+.messenger-bg{
+    background-color: #ffcf70bd;
+    position: absolute;
+    width: 118%;
+    height: 136px;
+    top: -24px;
+    left: -56px;
+    z-index: -1;
+}
+
+.messenger-pnick{
+    font-weight: 400;
+    color: #ffffff;
+}
+
+
+@media(min-width: 415px){
+    .messenger-infobox{
+        display: inline-block;
+        margin-left: 20px;
+        width: 77%
+    }
 }

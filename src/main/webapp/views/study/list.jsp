@@ -355,132 +355,168 @@
         <div class="top-title">리스트</div>
     </div>
 
-    <ul class="chat-message scrollbar scrollbar-warning force-overflow">
-        <li class="chat-content chat-left">
-            <div class="chat-info">
-                <div class="chat-nick">캄캄</div>
-                <div class="chat-date">04-15 02:15</div>
+    <ul class="chat-message messenger-box scrollbar scrollbar-warning force-overflow">
+
+
+        <li class="chat-content chat-left messenger-list messenger-public">
+            <div class="messenger-bg"></div>
+            <div class="chat-profile">
+                <img src="/static/image/profile/public.png" class="animated bounce slow infinite">
             </div>
+            <div class="messenger-infobox">
+                <div class="messenger-pnick">
+                    전체채팅
+                </div>
+                <div class="messenger-commentbox">
+                    <div class="messenger-comment">
+                        ㅎㅎㅎㅎㅎ
+                    </div>
+                </div>
+            </div>
+        </li>
+
+        <hr class="messenger-hr">
+
+        <li class="chat-content chat-left messenger-list">
+            <div class="chat-profile">
+                <img src="/static/image/profile/profile-1.png">
+            </div>
+            <div class="messenger-infobox">
+                <div class="messenger-nick">
+                    캄캄1
+                </div>
+                <div class="messenger-commentbox">
+                    <div class="messenger-comment">
+                        ㅎㅎㅎㅎㅎ
+                    </div>
+                    <div class="messenger-count">
+                        0
+                    </div>
+                </div>
+            </div>
+        </li>
+
+        <li class="chat-content chat-left messenger-list">
+            <div class="chat-profile">
+                <img src="/static/image/profile/profile-2.png">
+            </div>
+            <div class="messenger-infobox">
+                <div class="messenger-nick">
+                    캄캄2
+                </div>
+                <div class="messenger-commentbox">
+                    <div class="messenger-comment">
+                        asdasdsaasdasddawdawdawlkhdlawkdhlkawdlkhjawlkdhlkad;ajd;l
+                    </div>
+                    <div class="messenger-count">
+                        0
+                    </div>
+                </div>
+            </div>
+        </li>
+
+        <li class="chat-content chat-left messenger-list">
             <div class="chat-profile">
                 <img src="/static/image/profile/profile-3.png">
             </div>
-            <div class="chat-textbox">
-                <div class="chat-text">
-                    ㅋㅋㅋㅋㅋㅋㅋㅋ
+            <div class="messenger-infobox">
+                <div class="messenger-nick">
+                    캄캄3
+                </div>
+                <div class="messenger-commentbox">
+                    <div class="messenger-comment">
+                        ㅂㅈㄱㅂㅈㄱㅈㅂㄱㅂ;ajd;l
+                    </div>
+                    <div class="messenger-count">
+                        0
+                    </div>
                 </div>
             </div>
         </li>
 
-        <li class="chat-content chat-left">
-            <div class="chat-info">
-                <div class="chat-nick">캄캄</div>
-                <div class="chat-date">04-15 02:15</div>
-            </div>
+        <li class="chat-content chat-left messenger-list">
             <div class="chat-profile">
-                <img src="/static/image/profile/profile-3.png">
+                <img src="/static/image/profile/profile-4.png">
             </div>
-            <div class="chat-textbox">
-                <div class="chat-text">
-                    ㅋㅁㅋㄴㅁㄹ
+            <div class="messenger-infobox">
+                <div class="messenger-nick">
+                    쟁1
+                </div>
+                <div class="messenger-commentbox">
+                    <div class="messenger-comment">
+                        asdasdsaasdasddawdawdawlkhdlawkdhlkawdlkhjawlkdhlkad;ajd;l
+                    </div>
+                    <div class="messenger-count">
+                        1
+                    </div>
                 </div>
             </div>
         </li>
 
-        <li class="chat-content chat-right">
-            <div class="chat-info">
-                <div class="chat-nick">나</div>
-                <div class="chat-date">04-15 02:15</div>
-            </div>
-            <div class="chat-profile">
-                <img src="/static/image/profile/profile-5.png">
-            </div>
-            <div class="chat-textbox">
-                <div class="chat-text">
-                    ㅋㅋㅋㅋㅋㅋㅋㅋ
-                </div>
-            </div>
-            <div class="clear"></div>
-        </li>
-
-
-        <li class="chat-content chat-left">
-            <div class="chat-info">
-                <div class="chat-nick">캄캄</div>
-                <div class="chat-date">04-15 02:15</div>
-            </div>
-            <div class="chat-profile">
-                <img src="/static/image/profile/profile-3.png">
-            </div>
-            <div class="chat-textbox">
-                <div class="chat-text">
-                    ㅋㅁㅋㄴㅁㄹ
-                </div>
-            </div>
-        </li>
-
-
-
-        <li class="chat-content chat-left">
-            <div class="chat-info">
-                <div class="chat-nick">쟁</div>
-                <div class="chat-date">04-15 02:15</div>
-            </div>
+        <li class="chat-content chat-left messenger-list">
             <div class="chat-profile">
                 <img src="/static/image/profile/profile-5.png">
             </div>
-            <div class="chat-textbox">
-                <div class="chat-text">
-                    ㅋㅁㅋㄴㅁㄹ
+            <div class="messenger-infobox">
+                <div class="messenger-nick">
+                    쟁2
+                </div>
+                <div class="messenger-commentbox">
+                    <div class="messenger-comment">
+                        asdasdsaasdasddawdawdawlkhdlawkdhlkawdlkhjawlkdhlkad;ajd;l
+                    </div>
+                    <div class="messenger-count">
+                        1
+                    </div>
                 </div>
             </div>
         </li>
 
-
-        <li class="chat-content chat-right">
-            <div class="chat-info">
-                <div class="chat-nick">나</div>
-                <div class="chat-date">04-15 02:15</div>
-            </div>
+        <li class="chat-content chat-left messenger-list">
             <div class="chat-profile">
-                <img src="/static/image/profile/profile-5.png">
+                <img src="/static/image/profile/profile-6.png">
             </div>
-            <div class="chat-textbox">
-                <div class="chat-text">
-                    ㅋㅋㅋㅋㅋㅋㅋㅋ
+            <div class="messenger-infobox">
+                <div class="messenger-nick">
+                    슺득1
+                </div>
+                <div class="messenger-commentbox">
+                    <div class="messenger-comment">
+                        ㅂㅈㅇㅈㅂㅇㅂㅈ;ajd;l
+                    </div>
+                    <div class="messenger-count">
+                        0
+                    </div>
                 </div>
             </div>
-            <div class="clear"></div>
         </li>
 
-
-        <li class="chat-content chat-right">
-            <div class="chat-info">
-                <div class="chat-nick">나</div>
-                <div class="chat-date">04-15 02:15</div>
-            </div>
+        <li class="chat-content chat-left messenger-list">
             <div class="chat-profile">
-                <img src="/static/image/profile/profile-5.png">
+                <img src="/static/image/profile/profile-7.png">
             </div>
-            <div class="chat-textbox">
-                <div class="chat-text">
-                    ㅋㅋㅋㅋㅋㅋㅋㅋ
+            <div class="messenger-infobox">
+                <div class="messenger-nick">
+                    슺득2
+                </div>
+                <div class="messenger-commentbox">
+                    <div class="messenger-comment">
+                        asdasdsaasdasddawdawdawlkhdlawkdhlkawdlkhjawlkdhlkad;ajd;l
+                    </div>
+                    <div class="messenger-count">
+                        0
+                    </div>
                 </div>
             </div>
-            <div class="clear"></div>
         </li>
+
+
+
+
 
 
     </ul>
 
-    <div class="chat-bottom">
-        <div class="chat-inputbox">
-            <input class="chat-input" type="text">
-        </div>
-        <div class="chat-sendbox">
-            <div class="chat-btntext">
-                전송
-            </div>
-        </div>
-    </div>
+
 
 </div>
