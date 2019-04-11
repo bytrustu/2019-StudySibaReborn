@@ -27,4 +27,25 @@ public interface MessengerService {
      *  @Return 개인채팅 메세지 정보 반환
      */
     MessageVO sendPrivateMessage(String id, String message, HttpSession httpSession);
+
+    /*
+     *  개인채팅 메세지 리스트 조회
+     *  @Param id
+     *  @Return 개인채팅 리스트 정보 반환
+     */
+    List<MessageVO> getPrivateMessageList(String id);
+
+    /*
+     *  자신이 보낸 메세지 정보
+     *  @Param id
+     *  @Return 자신이 보낸 메세지 정보 조회
+     */
+    MessageVO getSendMessageInfo(String id);
+
+    /*
+     *  자신의 멤버 리스트 조회
+     *  @Param id
+     *  @Return 자신의 멤버 리스트 반환
+     */
+    List<MessageVO> getPrivateMemberList(String id);
 }

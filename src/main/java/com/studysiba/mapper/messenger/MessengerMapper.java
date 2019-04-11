@@ -58,13 +58,43 @@ public interface MessengerMapper {
 
     /*
      *  개인채팅방 방번호가 있는지 확인여부 조회
+     *  @Param  messageVO
      *  @Return  개인채팅방 방번호가 있는지 확인여부 조회
      */
     int checkPrivateRoomId(MessageVO messageVO);
 
     /*
      *  개인채팅 읽지 않은 메세지 수 조회
+     *  @Param  messageVO
      *  @Return  읽지않은 메세지 반환
      */
     int getUnReadCount(MessageVO messageVO);
+
+    /*
+     *  개인채팅 메세지 리스트 조회
+     *  @Param  messageVO
+     *  @Return  개인채팅 메세지 리스트 반환
+     */
+    ArrayList<MessageVO> getPrivateMessageList(MessageVO messageVO);
+
+    /*
+     *  자신이 보낸 메세지 정보
+     *  @Param messageVO
+     *  @Return 자신이 보낸 메세지 정보 반환
+     */
+    MessageVO getMessageInfo(MessageVO messageVO);
+
+    /*
+     *  자신의 멤버 리스트 조회
+     *  @Param id
+     *  @Return 자신의 멤버 리스트 반환
+     */
+    ArrayList<MessageVO> getPrivateMemberList(String id);
+
+    /*
+     *  메세지 읽음처리
+     *  @Param messageVO
+     *  @Return 메세지 읽음처리 여부 반환
+     */
+    int updateReadMessage(MessageVO messageVO);
 }

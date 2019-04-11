@@ -7,6 +7,10 @@ let chatWindow = $('.chat-window');
 let chatList = $('.chat-list');
 let connectId = $('#data-id').val();
 let chatTitle = $('.chat-window .top-title');
+let connectFromId='';
+let sendButton = $('.chat-sendbox');
+let messengerListTitle = $('.messenger-chattitle');
+let messengerList = $('.messenger-chatlist');
 
 $(document).ready(function(){
     /*
@@ -46,12 +50,13 @@ $(document).ready(function(){
                 if ( msgInfo.statusCodeValue == '500' ){
                     return false;
                 }
+
                 let isScroll = false;
                 if ( messageContainer.scrollTop() + messageContainer.innerHeight() >= messageContainer[0].scrollHeight || msgInfo.body.msgFrom == $('#data-id').val() ) {
                     isScroll = true;
                 }
 
-                if ( !chatWindow.hasClass('d-none') && chatWindow.find('.chat-message').hasClass('private') ) {
+                if ( !chatWindow.hasClass('d-none') && chatWindow.find('.chat-message').hasClass('private') && msgInfo.body.msgFrom == connectFromId ) {
                     console.log('private');
                     appendMessage(msgInfo.body,isScroll);
                 } else if ( !chatList.hasClass('d-none') ) {
@@ -78,6 +83,7 @@ $(document).ready(function(){
         initClass();
         let element = $(this);
         let target = '';
+        let lastText = '';
         let targetClass = new Set()
             .add('messenger-btn').add('messenger-list').add('top-listbtn').add('top-invitebtn').add('top-closebtn').add('chat-prev').add('chat-sendbox').add('chat-input');
         for ( const className of targetClass ) {
@@ -92,6 +98,7 @@ $(document).ready(function(){
                 chatWindow.addClass('d-none');
                 chatList.addClass('d-none');
                 chatList.toggleClass('d-none').addClass('flipInY');
+                appendMemberListModule();
                 break;
                 
                 // 메신저 리스트 클릭시
@@ -112,16 +119,25 @@ $(document).ready(function(){
                         }).catch( (error) => {
                         return false;
                     })
+                    // 개인채팅 일 경우
                 } else {
                     messageContainer.addClass('private');
                     let targetId = $(this).attr('data-id');
                     let targetNick = $(this).find('.messenger-nick').html();
-                    console.log(targetId);
-                    console.log(targetNick);
+                    connectFromId = targetId;
                     chatTitle.html(targetNick);
-                    return false;
+                    sendButton.attr('data-id',targetId);
+                    privateMessageList(targetId)
+                        .then( (data) => {
+                            $.each(data, (index,item) => {
+                                appendMessage(item,true);
+                            });
+                        }).catch( (error) =>{
+                            console.log(error);
+                    });
+
                 }
-                messageContainer.scrollTop(messageContainer[0].scrollHeight);
+                // messageContainer.scrollTop(messageContainer[0].scrollHeight);
 
                 break;
                 // 이전 버튼 클릭시
@@ -129,7 +145,14 @@ $(document).ready(function(){
                 chatWindow.toggleClass('d-none');
                 chatList.toggleClass('d-none').addClass('fadeIn');
                 messageContainer.removeClass('public').removeClass('private');
+                // 가장 마지막 메세지를 남긴말로 설정
+                lastText = $('.chat-window .chat-text').last().html();
+                $('.messenger-public .messenger-comment').html(lastText);
                 chatTitle.html('');
+                messageContainer.html('');
+                connectFromId = '';
+                sendButton.attr('data-id','');
+                appendMemberListModule();
                 break;
                 // 상단 리스트 버튼 클릭시
             case 'top-listbtn' :
@@ -138,7 +161,16 @@ $(document).ready(function(){
                 chatWindow.toggleClass('d-none');
                 chatList.toggleClass('d-none').addClass('fadeIn');
                 messageContainer.removeClass('public').removeClass('private');
+                // 가장 마지막 메세지를 남긴말로 설정
+                if ( messageContainer.attr('class').includes('public') ) {
+                    lastText = $('.chat-window .chat-text').last().html();
+                    $('.messenger-public .messenger-comment').html(lastText);
+                }
                 chatTitle.html('');
+                messageContainer.html('');
+                connectFromId = '';
+                sendButton.attr('data-id','');
+                appendMemberListModule();
                 break
             // 상단 초대 버튼 클릭시
             case 'top-invitebtn' :
@@ -160,7 +192,17 @@ $(document).ready(function(){
                 if ( messageContainer.attr('class').includes('public') ) {
                     publicClient.send(`/public`, {}, JSON.stringify({"message":message}));
                 } else {
-
+                    let targetId = $(this).attr('data-id');
+                    privateClient.send(`/private/${targetId}`, {}, JSON.stringify({"message":message}));
+                    setTimeout(()=>{
+                        sendMessageInfo(targetId)
+                            .then( (data) => {
+                                data.msgText = message;
+                                console.log(data);
+                                appendMessage(data,true)
+                            }).catch( (error) => {
+                        });
+                    },100);
                 }
                 break;
             case 'chat-input' :
@@ -169,6 +211,20 @@ $(document).ready(function(){
         }
 
     });
+
+    // 메신저 멤버리스트 초기화 및 갱신
+    let appendMemberListModule = () =>{
+        messengerListTitle.nextAll().remove();
+        if ( connectId != '' ) {
+            privateMemberList(connectId)
+                .then( (data) => {
+                    $.each(data, (index,item) => {
+                        appendMemberList(item);
+                    }) ;
+                }).catch( (error) => {
+            });
+        }
+    }
 
 
     $(document).keyup(function(e) {
@@ -212,6 +268,7 @@ let updateIncludeTarget = (messageInfo) => {
     }
 }
 
+// 유저 목록 추가 상단 업데이트
 let addIncludeTarget = (messageInfo) => {
     let appendList = `
                                 <li class="messenger-common chat-content chat-left messenger-list animated pulse fast" data-id="${messageInfo.msgFrom}">
@@ -233,11 +290,88 @@ let addIncludeTarget = (messageInfo) => {
                                     </div>
                                 </li>
                                 `;
-    $('.messenger-chattitle').after(appendList);
+    messengerListTitle.after(appendList);
+}
+
+// 유저 목록 추가 하단
+let appendMemberList = (messageInfo) => {
+    let appendList = `
+                                <li class="messenger-common chat-content chat-left messenger-list animated pulse fast" data-id="${messageInfo.msgFrom}">
+                                    <div class="chat-profile">
+                                        <img src="/static/image/profile/${messageInfo.mbrProfile}">
+                                    </div>
+                                    <div class="messenger-infobox">
+                                        <div class="messenger-nick">
+                                            ${messageInfo.mbrNick}
+                                        </div>
+                                        <div class="messenger-commentbox">
+                                            <div class="messenger-comment">
+                                                ${messageInfo.msgText}
+                                            </div>
+                                            <div class="messenger-count">
+                                                ${messageInfo.msgCount}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                `;
+    messengerList.append(appendList);
+}
+
+// 자신의 채팅 멤버리스트 조회
+let privateMemberList = (id) => {
+    return new Promise( (resolve, reject) => {
+        $.ajax({
+            type : 'GET',
+            url : `/messenger/get/memberlist?id=${id}`,
+            dataType : 'json',
+            contentType : 'application/json; charset=utf-8',
+            success : (data) => {
+                resolve(data);
+            },
+            error : (error) => {
+                reject(error);
+            }
+        });
+    })
+}
+
+// 자신이 보낸 메세지 정보 확인
+let sendMessageInfo = (id) => {
+    return new Promise( (resolve, reject) => {
+        $.ajax({
+            type : 'GET',
+            url : `/messenger/get/sendinfo?id=${id}`,
+            dataType : 'json',
+            contentType : 'application/json; charset=utf-8',
+            success : (data) => {
+                resolve(data);
+            },
+            error : (error) => {
+                reject(error);
+            }
+        });
+    })
 }
 
 
-
+// 개인채팅 리스트 조회
+let privateMessageList = (id) => {
+    return new Promise( (resolve, reject) => {
+        $.ajax({
+            type : 'GET',
+            url : `/messenger/get/private?id=${id}`,
+            dataType : 'json',
+            contentType : 'application/json; charset=utf-8',
+            success : (data) => {
+                resolve(data);
+            },
+            error : (error) => {
+                reject(error);
+            }
+        });
+    })
+}
 
 
 // 전체채팅 리스트 조회
@@ -277,7 +411,7 @@ let appendMessage = (messageInfo, isScroll) => {
                             </li>
                         `;
     let msgRight = `
-                            <li class="chat-content chat-right animated bounce fast">
+                            <li class="chat-content chat-right animated fadeIn fast">
                                 <div class="chat-info">
                                     <div class="chat-nick">나</div>
                                     <div class="chat-date">${messageInfo.msgDate}</div>

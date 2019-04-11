@@ -64,16 +64,30 @@ public class MessengerController {
 
 
     @GetMapping(value="/get/{type}", consumes = "application/json", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
-    public ResponseEntity<List<MessageVO>> getMessage(@PathVariable("type") String type){
+    public ResponseEntity<Object> getMessage(@PathVariable("type") String type, @RequestParam(value="id", required = false) String id){
         List<MessageVO> messageList = null;
+        MessageVO messageVO = null;
+        log.info("대상 >>>>>>>" + id);
         switch (type) {
             case "public" :
                 messageList = messengerService.getPublicMessageList(type);
                 break;
             case "private" :
+                messageList = messengerService.getPrivateMessageList(id);
+                break;
+            case "sendinfo" :
+                messageVO = messengerService.getSendMessageInfo(id);
+                break;
+            case "memberlist" :
+                messageList = messengerService.getPrivateMemberList(id);
                 break;
         }
-        return messageList != null ? new ResponseEntity<>(messageList,HttpStatus.OK) : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+
+        if ( type.equals("public") || type.equals("private") || type.equals("memberlist") ) {
+            return messageList != null ? new ResponseEntity<>(messageList,HttpStatus.OK) : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        } else {
+            return messageVO != null ? new ResponseEntity<>(messageVO,HttpStatus.OK) : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
 

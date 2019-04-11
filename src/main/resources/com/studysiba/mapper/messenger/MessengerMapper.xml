@@ -79,10 +79,76 @@
                       OR ( ROOM_SEUSER = #{msgFrom} AND ROOM_FRUSER = #{msgTo} )
     </select>
 
+    <!-- 읽지않은 메세지 합계 조회 -->
     <select id="getUnReadCount" parameterType="MessageVO" resultType="int">
         SELECT COUNT(*) FROM MESSAGE
         WHERE MSG_FROM = #{msgFrom} AND MSG_TO = #{msgTo} AND MSG_RECEIVE = 1
     </select>
+
+    <!-- 개인채팅 메세지 리스트 조회 -->
+    <select id="getPrivateMessageList" parameterType="MessageVO" resultType="MessageVO">
+        SELECT MSG_NO, MSG_ROOM, MSG_TYPE, MSG_FROM, MSG_TO, MSG_TEXT, MSG_RECEIVE, MSG_DELETE, MSG_DATE,
+			          MBR_NICK, MBR_PROFILE
+		FROM (
+                    SELECT * FROM MESSAGE
+                    WHERE MSG_TYPE = #{msgType}
+                    AND ( ( MSG_FROM = #{msgFrom} AND MSG_TO = #{msgTo} ) OR ( MSG_TO = #{msgFrom} AND MSG_FROM = #{msgTo} ) )
+                    ORDER BY MSG_NO ASC
+			        ) MESSAGE
+		JOIN MEMBER
+        ON MEMBER.MBR_ID = MESSAGE.MSG_FROM
+    </select>
+
+    <!-- 자신이 보낸 메세지 정보 조회 -->
+    <select id="getMessageInfo" parameterType="MessageVO" resultType="MessageVO">
+      SELECT MSG_NO, MSG_ROOM, MSG_TYPE, MSG_FROM, MSG_TO, MSG_TEXT, MSG_RECEIVE, MSG_DELETE, MSG_DATE,
+			          MBR_NICK, MBR_PROFILE
+	  FROM (
+                    SELECT * FROM MESSAGE
+                    WHERE MSG_NO = (
+                                                      SELECT MSG_NO FROM MESSAGE
+                                                      WHERE MSG_FROM = #{msgFrom} AND MSG_TO = #{msgTo}
+                                                      ORDER BY MSG_NO DESC
+                                                      LIMIT 0,1
+                    )
+      ) MESSAGE
+      JOIN MEMBER
+      ON MEMBER.MBR_ID = MESSAGE.MSG_FROM
+    </select>
+
+    <!-- 자신의 유저 채팅 리스트 조회 -->
+    <select id="getPrivateMemberList" parameterType="String" resultType="MessageVO">
+        SELECT MSG_NO, MSG_FROM, MSG_TEXT, MSG_DATE, COALESCE(MSG_COUNT,0) AS MSG_COUNT,
+	                  MBR_NICK, MBR_PROFILE
+	                  FROM (
+						            SELECT * FROM ROOM
+						            WHERE ( ROOM_FRUSER = 'TEST1' AND ROOM_FRSTATE = 1 ) OR ( ROOM_SEUSER = 'TEST1' AND ROOM_SESTATE = 1 )
+      ) ROOM
+      JOIN (
+                  SELECT * FROM (
+                                                SELECT MSG_NO, MSG_ROOM, MSG_TEXT, MSG_DATE ,
+												CONCAT( IF(MSG_FROM=#{id},'',MSG_FROM), IF(MSG_TO=#{id}, '', MSG_TO) ) AS MSG_FROM
+                                                FROM MESSAGE ORDER BY MSG_NO DESC
+                    ) MSG
+                    GROUP BY MSG_ROOM
+      ) MESSAGE
+	  ON MESSAGE.MSG_ROOM = ROOM_NO
+      LEFT JOIN ( SELECT MSG_ROOM, COUNT(*) AS MSG_COUNT FROM MESSAGE
+                          WHERE MSG_FROM = #{id} AND MSG_RECEIVE = 1
+                          GROUP BY MSG_ROOM
+      ) MSGCOUNT
+	  ON ROOM.ROOM_NO = MSGCOUNT.MSG_ROOM
+      JOIN MEMBER
+      ON MEMBER.MBR_ID = MESSAGE.MSG_FROM
+      ORDER BY MSG_DATE DESC
+    </select>
+
+    <!-- 메세지 읽음 처리 -->
+    <update id="updateReadMessage" parameterType="MessageVO">
+        UPDATE MESSAGE
+        SET MSG_RECEIVE = 0
+        WHERE MSG_FROM = #{msgTo} AND MSG_TO = #{msgFrom} AND MSG_RECEIVE = 1
+    </update>
 
 
 

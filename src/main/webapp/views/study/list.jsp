@@ -233,104 +233,6 @@
             <%--</div>--%>
         <%--</li>--%>
 
-        <%--<li class="chat-content chat-left">--%>
-            <%--<div class="chat-info">--%>
-                <%--<div class="chat-nick">캄캄</div>--%>
-                <%--<div class="chat-date">04-15 02:15</div>--%>
-            <%--</div>--%>
-            <%--<div class="chat-profile">--%>
-                <%--<img src="/static/image/profile/profile-3.png">--%>
-            <%--</div>--%>
-            <%--<div class="chat-textbox">--%>
-                <%--<div class="chat-text">--%>
-                    <%--ㅋㅁㅋㄴㅁㄹ--%>
-                <%--</div>--%>
-            <%--</div>--%>
-        <%--</li>--%>
-
-        <%--<li class="chat-content chat-right">--%>
-            <%--<div class="chat-info">--%>
-                <%--<div class="chat-nick">나</div>--%>
-                <%--<div class="chat-date">04-15 02:15</div>--%>
-            <%--</div>--%>
-            <%--<div class="chat-profile">--%>
-                <%--<img src="/static/image/profile/profile-5.png">--%>
-            <%--</div>--%>
-            <%--<div class="chat-textbox">--%>
-                <%--<div class="chat-text">--%>
-                    <%--ㅋㅋㅋㅋㅋㅋㅋㅋ--%>
-                <%--</div>--%>
-            <%--</div>--%>
-            <%--<div class="clear"></div>--%>
-        <%--</li>--%>
-
-
-        <%--<li class="chat-content chat-left">--%>
-            <%--<div class="chat-info">--%>
-                <%--<div class="chat-nick">캄캄</div>--%>
-                <%--<div class="chat-date">04-15 02:15</div>--%>
-            <%--</div>--%>
-            <%--<div class="chat-profile">--%>
-                <%--<img src="/static/image/profile/profile-3.png">--%>
-            <%--</div>--%>
-            <%--<div class="chat-textbox">--%>
-                <%--<div class="chat-text">--%>
-                    <%--ㅋㅁㅋㄴㅁㄹ--%>
-                <%--</div>--%>
-            <%--</div>--%>
-        <%--</li>--%>
-
-
-
-        <%--<li class="chat-content chat-left">--%>
-            <%--<div class="chat-info">--%>
-                <%--<div class="chat-nick">쟁</div>--%>
-                <%--<div class="chat-date">04-15 02:15</div>--%>
-            <%--</div>--%>
-            <%--<div class="chat-profile">--%>
-                <%--<img src="/static/image/profile/profile-5.png">--%>
-            <%--</div>--%>
-            <%--<div class="chat-textbox">--%>
-                <%--<div class="chat-text">--%>
-                    <%--ㅋㅁㅋㄴㅁㄹ--%>
-                <%--</div>--%>
-            <%--</div>--%>
-        <%--</li>--%>
-
-
-        <%--<li class="chat-content chat-right">--%>
-            <%--<div class="chat-info">--%>
-                <%--<div class="chat-nick">나</div>--%>
-                <%--<div class="chat-date">04-15 02:15</div>--%>
-            <%--</div>--%>
-            <%--<div class="chat-profile">--%>
-                <%--<img src="/static/image/profile/profile-5.png">--%>
-            <%--</div>--%>
-            <%--<div class="chat-textbox">--%>
-                <%--<div class="chat-text">--%>
-                    <%--ㅋㅋㅋㅋㅋㅋㅋㅋ--%>
-                <%--</div>--%>
-            <%--</div>--%>
-            <%--<div class="clear"></div>--%>
-        <%--</li>--%>
-
-
-        <%--<li class="chat-content chat-right">--%>
-            <%--<div class="chat-info">--%>
-                <%--<div class="chat-nick">나</div>--%>
-                <%--<div class="chat-date">04-15 02:15</div>--%>
-            <%--</div>--%>
-            <%--<div class="chat-profile">--%>
-                <%--<img src="/static/image/profile/profile-5.png">--%>
-            <%--</div>--%>
-            <%--<div class="chat-textbox">--%>
-                <%--<div class="chat-text">--%>
-                    <%--ㅋㅋㅋㅋㅋㅋㅋㅋ--%>
-                <%--</div>--%>
-            <%--</div>--%>
-            <%--<div class="clear"></div>--%>
-        <%--</li>--%>
-
 
     </ul>
 
@@ -392,36 +294,17 @@
             <p>대화중인 리스트가 없습니다 !</p>
         </li>--%>
 
-        <li class="messenger-common chat-content chat-left messenger-list" data-id="test1">
-            <div class="chat-profile">
-                <img src="/static/image/profile/profile-1.png">
-            </div>
-            <div class="messenger-infobox">
-                <div class="messenger-nick">
-                    캄캄1
-                </div>
-                <div class="messenger-commentbox">
-                    <div class="messenger-comment">
-                        ㅎㅎㅎㅎㅎ
-                    </div>
-                    <div class="messenger-count">
-                        0
-                    </div>
-                </div>
-            </div>
-        </li>
-
-        <%--<li class="messenger-common chat-content chat-left messenger-list">--%>
+        <%--<li class="messenger-common chat-content chat-left messenger-list" data-id="test1">--%>
             <%--<div class="chat-profile">--%>
-                <%--<img src="/static/image/profile/profile-2.png">--%>
+                <%--<img src="/static/image/profile/profile-1.png">--%>
             <%--</div>--%>
             <%--<div class="messenger-infobox">--%>
                 <%--<div class="messenger-nick">--%>
-                    <%--캄캄2--%>
+                    <%--캄캄1--%>
                 <%--</div>--%>
                 <%--<div class="messenger-commentbox">--%>
                     <%--<div class="messenger-comment">--%>
-                        <%--asdasdsaasdasddawdawdawlkhdlawkdhlkawdlkhjawlkdhlkad;ajd;l--%>
+                        <%--ㅎㅎㅎㅎㅎ--%>
                     <%--</div>--%>
                     <%--<div class="messenger-count">--%>
                         <%--0--%>
@@ -429,104 +312,6 @@
                 <%--</div>--%>
             <%--</div>--%>
         <%--</li>--%>
-
-        <%--<li class="messenger-common chat-content chat-left messenger-list">--%>
-            <%--<div class="chat-profile">--%>
-                <%--<img src="/static/image/profile/profile-3.png">--%>
-            <%--</div>--%>
-            <%--<div class="messenger-infobox">--%>
-                <%--<div class="messenger-nick">--%>
-                    <%--캄캄3--%>
-                <%--</div>--%>
-                <%--<div class="messenger-commentbox">--%>
-                    <%--<div class="messenger-comment">--%>
-                        <%--ㅂㅈㄱㅂㅈㄱㅈㅂㄱㅂ;ajd;l--%>
-                    <%--</div>--%>
-                    <%--<div class="messenger-count">--%>
-                        <%--0--%>
-                    <%--</div>--%>
-                <%--</div>--%>
-            <%--</div>--%>
-        <%--</li>--%>
-
-        <%--<li class="messenger-common chat-content chat-left messenger-list">--%>
-            <%--<div class="chat-profile">--%>
-                <%--<img src="/static/image/profile/profile-4.png">--%>
-            <%--</div>--%>
-            <%--<div class="messenger-infobox">--%>
-                <%--<div class="messenger-nick">--%>
-                    <%--쟁1--%>
-                <%--</div>--%>
-                <%--<div class="messenger-commentbox">--%>
-                    <%--<div class="messenger-comment">--%>
-                        <%--asdasdsaasdasddawdawdawlkhdlawkdhlkawdlkhjawlkdhlkad;ajd;l--%>
-                    <%--</div>--%>
-                    <%--<div class="messenger-count">--%>
-                        <%--1--%>
-                    <%--</div>--%>
-                <%--</div>--%>
-            <%--</div>--%>
-        <%--</li>--%>
-
-        <%--<li class="messenger-common chat-content chat-left messenger-list">--%>
-            <%--<div class="chat-profile">--%>
-                <%--<img src="/static/image/profile/profile-5.png">--%>
-            <%--</div>--%>
-            <%--<div class="messenger-infobox">--%>
-                <%--<div class="messenger-nick">--%>
-                    <%--쟁2--%>
-                <%--</div>--%>
-                <%--<div class="messenger-commentbox">--%>
-                    <%--<div class="messenger-comment">--%>
-                        <%--asdasdsaasdasddawdawdawlkhdlawkdhlkawdlkhjawlkdhlkad;ajd;l--%>
-                    <%--</div>--%>
-                    <%--<div class="messenger-count">--%>
-                        <%--1--%>
-                    <%--</div>--%>
-                <%--</div>--%>
-            <%--</div>--%>
-        <%--</li>--%>
-
-        <%--<li class="messenger-common chat-content chat-left messenger-list">--%>
-            <%--<div class="chat-profile">--%>
-                <%--<img src="/static/image/profile/profile-6.png">--%>
-            <%--</div>--%>
-            <%--<div class="messenger-infobox">--%>
-                <%--<div class="messenger-nick">--%>
-                    <%--슺득1--%>
-                <%--</div>--%>
-                <%--<div class="messenger-commentbox">--%>
-                    <%--<div class="messenger-comment">--%>
-                        <%--ㅂㅈㅇㅈㅂㅇㅂㅈ;ajd;l--%>
-                    <%--</div>--%>
-                    <%--<div class="messenger-count">--%>
-                        <%--0--%>
-                    <%--</div>--%>
-                <%--</div>--%>
-            <%--</div>--%>
-        <%--</li>--%>
-
-        <%--<li class="messenger-common chat-content chat-left messenger-list">--%>
-            <%--<div class="chat-profile">--%>
-                <%--<img src="/static/image/profile/profile-7.png">--%>
-            <%--</div>--%>
-            <%--<div class="messenger-infobox">--%>
-                <%--<div class="messenger-nick">--%>
-                    <%--슺득2--%>
-                <%--</div>--%>
-                <%--<div class="messenger-commentbox">--%>
-                    <%--<div class="messenger-comment">--%>
-                        <%--asdasdsaasdasddawdawdawlkhdlawkdhlkawdlkhjawlkdhlkad;ajd;l--%>
-                    <%--</div>--%>
-                    <%--<div class="messenger-count">--%>
-                        <%--0--%>
-                    <%--</div>--%>
-                <%--</div>--%>
-            <%--</div>--%>
-        <%--</li>--%>
-
-
-
 
 
 
