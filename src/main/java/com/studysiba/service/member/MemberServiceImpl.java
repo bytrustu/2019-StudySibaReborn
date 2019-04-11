@@ -646,8 +646,9 @@ public class MemberServiceImpl implements MemberService {
         String stateCode = "INFORMATION_CHANGE_ERROR";
         int resultState = 0;
         // 동일한 아이디와 관리자만 변경 가능
-        if ( !httpSession.getAttribute("id").equals(mbrId)
-                || httpSession.getAttribute("auth").toString().toUpperCase().equals("ADMIN") ) return stateCode;
+        if ( !httpSession.getAttribute("id").equals(mbrId) ){
+            if ( !httpSession.getAttribute("auth").toString().toUpperCase().equals("ADMIN") ) return stateCode;
+        }
         MemberVO memberVO = new MemberVO();
         memberVO.setMbrId(mbrId);
         switch (changeType) {

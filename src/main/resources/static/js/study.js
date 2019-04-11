@@ -50,9 +50,12 @@ $(document).ready(function () {
         });
 
 
-
     // 스터디 등록 모달 버튼
     $('.content-studybtn').on('click', function () {
+        if ( !$(this).attr('data-write') ) {
+            confirmAlert('로그인이 필요합니다', '로그인화면으로 이동하시겠습니까?', '/?requireLogin=true');
+            return false;
+        }
         $('#studyModal').modal('show');
         $('.stm-update').css('display', 'none');
         $('.stm-step4').css('display', 'inline-block');
