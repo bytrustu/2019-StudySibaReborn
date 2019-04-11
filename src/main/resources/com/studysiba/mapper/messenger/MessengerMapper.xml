@@ -25,14 +25,28 @@
     <!-- 방번호 조회 -->
     <select id="getRoomId" parameterType="MessageVO" resultType="int">
         SELECT ROOM_NO FROM ROOM
-        WHERE ( ROOM_FRUSER = #{msgFrom} AND ROOM_SEUSER = #{msgTo} )
-                      OR ( ROOM_SEUSER = #{msgFrom} AND ROOM_FRUSER = #{msgTo} )
+        <choose>
+            <when test="msgType == 'public'">
+                WHERE ROOM_FRUSER = 'public' AND ROOM_SEUSER = 'public'
+            </when>
+            <otherwise>
+                WHERE ( ROOM_FRUSER = #{msgFrom} AND ROOM_SEUSER = #{msgTo} )
+                              OR ( ROOM_SEUSER = #{msgFrom} AND ROOM_FRUSER = #{msgTo} )
+            </otherwise>
+        </choose>
     </select>
 
     <!-- 채팅방 개설 -->
     <insert id="makeMessageRoom" parameterType="MessageVO">
         INSERT INTO ROOM(ROOM_NO, ROOM_FRUSER, ROOM_FRSTATE, ROOM_SEUSER, ROOM_SESTATE)
-        VALUES(#{msgRoom}, #{msgFrom}, 1, #{msgTo}, 1)
+        <choose>
+            <when test="msgType == 'public'">
+                VALUES(#{msgRoom}, 'public', 1, 'public', 1)
+            </when>
+            <otherwise>
+                VALUES(#{msgRoom}, #{msgFrom}, 1, #{msgTo}, 1)
+            </otherwise>
+        </choose>
     </insert>
 
     <!-- 메세지 전송 -->
@@ -57,6 +71,20 @@
 		JOIN MEMBER
         ON MEMBER.MBR_ID = MESSAGE.MSG_FROM
     </select>
+
+    <!-- 개인채팅 방번호 확인 여부 -->
+    <select id="checkPrivateRoomId" parameterType="MessageVO" resultType="int">
+         SELECT COUNT(*) FROM ROOM
+        WHERE ( ROOM_FRUSER = #{msgFrom} AND ROOM_SEUSER = #{msgTo} )
+                      OR ( ROOM_SEUSER = #{msgFrom} AND ROOM_FRUSER = #{msgTo} )
+    </select>
+
+    <select id="getUnReadCount" parameterType="MessageVO" resultType="int">
+        SELECT COUNT(*) FROM MESSAGE
+        WHERE MSG_FROM = #{msgFrom} AND MSG_TO = #{msgTo} AND MSG_RECEIVE = 1
+    </select>
+
+
 
 
 </mapper>

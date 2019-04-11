@@ -3,11 +3,12 @@ let privateClient;
 let messageContainer = $('.chat-message');
 let messageInput = $('.chat-input');
 let messengerPublicBox = $('.messenger-public .messenger-comment');
-
-
+let chatWindow = $('.chat-window');
+let chatList = $('.chat-list');
+let connectId = $('#data-id').val();
+let chatTitle = $('.chat-window .top-title');
 
 $(document).ready(function(){
-
     /*
             전체채팅
      */
@@ -24,10 +25,50 @@ $(document).ready(function(){
             if ( messageContainer.scrollTop() + messageContainer.innerHeight() >= messageContainer[0].scrollHeight || msgInfo.body.msgFrom == $('#data-id').val() ) {
                 isScroll = true;
             }
-            viewPublicMessage(msgInfo.body,isScroll);
-            messengerPublicBox.html(msgInfo.body.msgText);
+
+            if ( !chatWindow.hasClass('d-none') && chatWindow.find('.chat-message').hasClass('public') ) {
+                console.log('public');
+                appendMessage(msgInfo.body,isScroll);
+            } else if ( !chatList.hasClass('d-none') ) {
+                messengerPublicBox.html(msgInfo.body.msgText);
+            }
+
         });
     });
+
+    let sockPrivate = new SockJS("/private");
+    if ( connectId != '' ) {
+        privateClient = Stomp.over(sockPrivate);
+        // privateClient.debug = null;
+        privateClient.connect({}, function(){
+            privateClient.subscribe(`/topic/private/${connectId}`, function(msg){
+                let msgInfo = JSON.parse(msg.body);
+                if ( msgInfo.statusCodeValue == '500' ){
+                    return false;
+                }
+                let isScroll = false;
+                if ( messageContainer.scrollTop() + messageContainer.innerHeight() >= messageContainer[0].scrollHeight || msgInfo.body.msgFrom == $('#data-id').val() ) {
+                    isScroll = true;
+                }
+
+                if ( !chatWindow.hasClass('d-none') && chatWindow.find('.chat-message').hasClass('private') ) {
+                    console.log('private');
+                    appendMessage(msgInfo.body,isScroll);
+                } else if ( !chatList.hasClass('d-none') ) {
+                    // 연락온 대상의 아이디가 리스트에 있는지 확인
+                    let isInclude = isIncludeTarget(msgInfo.body.msgFrom);
+                    if ( isInclude ) {
+                        // 있다면 해당 목록에 내용 갱신
+                        updateIncludeTarget(msgInfo.body);
+                    } else {
+                        // 없다면 해당 목록 리스트에 추가
+                        addIncludeTarget(msgInfo.body);
+                    }
+                }
+            });
+        });
+    }
+
 
     // 채팅 input EnterKey 적용
     enterPressAction('chat-input','chat-sendbox');
@@ -59,33 +100,45 @@ $(document).ready(function(){
                 chatWindow.toggleClass('d-none').addClass('fadeIn');
                 // 전체채팅 일 경우
                 if ( $(this).attr('class').includes('messenger-public') ) {
-                    messageContainer.removeClass('private').removeClass('public').addClass('public');
+                    messageContainer.addClass('public');
                     publicMessageList()
                         .then( (data) => {
                             messageContainer.html('');
+                            let targetNick = $(this).find('.messenger-pnick').html();
+                            chatTitle.html(targetNick);
                             $.each(data, (index,item) => {
-                                viewPublicMessage(item,true);
+                                appendMessage(item,true);
                             });
                         }).catch( (error) => {
                         return false;
                     })
                 } else {
-                    messageContainer.removeClass('private').removeClass('public').addClass('private');
+                    messageContainer.addClass('private');
+                    let targetId = $(this).attr('data-id');
+                    let targetNick = $(this).find('.messenger-nick').html();
+                    console.log(targetId);
+                    console.log(targetNick);
+                    chatTitle.html(targetNick);
+                    return false;
                 }
-                chatMessage.scrollTop(chatMessage[0].scrollHeight);
+                messageContainer.scrollTop(messageContainer[0].scrollHeight);
 
                 break;
                 // 이전 버튼 클릭시
             case 'chat-prev' :
                 chatWindow.toggleClass('d-none');
                 chatList.toggleClass('d-none').addClass('fadeIn');
+                messageContainer.removeClass('public').removeClass('private');
+                chatTitle.html('');
                 break;
                 // 상단 리스트 버튼 클릭시
             case 'top-listbtn' :
                 let isChatList = $(this).parent().parent().parent().attr('class').includes('chat-list');
                 if ( isChatList ) return false;
-                chatList.toggleClass('d-none').addClass('fadeIn');
                 chatWindow.toggleClass('d-none');
+                chatList.toggleClass('d-none').addClass('fadeIn');
+                messageContainer.removeClass('public').removeClass('private');
+                chatTitle.html('');
                 break
             // 상단 초대 버튼 클릭시
             case 'top-invitebtn' :
@@ -105,7 +158,7 @@ $(document).ready(function(){
                 let message = messageInput.val();
                 messageInput.val('');
                 if ( messageContainer.attr('class').includes('public') ) {
-                    publicClient.send(`/chat`, {}, JSON.stringify({"message":message}));
+                    publicClient.send(`/public`, {}, JSON.stringify({"message":message}));
                 } else {
 
                 }
@@ -131,6 +184,62 @@ $(document).ready(function(){
 
 });
 
+
+// 채팅목록에 해당 아이디가 포함 되어 있는지 확인
+let isIncludeTarget = (id) =>{
+    let isInclude = false;
+    let elements = $('.messenger-list');
+    for ( let element of elements ) {
+        if (element.getAttribute('data-id') == id) {
+            isInclude = true;
+        }
+    }
+    console.log(`${id} 의 값 ${isInclude}`);
+    return isInclude;
+}
+
+// 채팅목록에 해당 아이디 리스트에 내용 변경
+let updateIncludeTarget = (messageInfo) => {
+    let elements = $('.messenger-list');
+    for ( let element of elements ) {
+        if (element.getAttribute('data-id') == messageInfo.msgFrom) {
+            $(element).find('.messenger-comment').html(messageInfo.msgText);
+            $(element).find('.messenger-count').html(messageInfo.msgCount);
+            let target = thisElement($(element));
+            $(element).remove();
+            $('.messenger-chattitle').after(target);
+        }
+    }
+}
+
+let addIncludeTarget = (messageInfo) => {
+    let appendList = `
+                                <li class="messenger-common chat-content chat-left messenger-list animated pulse fast" data-id="${messageInfo.msgFrom}">
+                                    <div class="chat-profile">
+                                        <img src="/static/image/profile/${messageInfo.mbrProfile}">
+                                    </div>
+                                    <div class="messenger-infobox">
+                                        <div class="messenger-nick">
+                                            ${messageInfo.mbrNick}
+                                        </div>
+                                        <div class="messenger-commentbox">
+                                            <div class="messenger-comment">
+                                                ${messageInfo.msgText}
+                                            </div>
+                                            <div class="messenger-count">
+                                                ${messageInfo.msgCount}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                `;
+    $('.messenger-chattitle').after(appendList);
+}
+
+
+
+
+
 // 전체채팅 리스트 조회
 let publicMessageList = () => {
     return new Promise( (resolve, reject) => {
@@ -150,9 +259,9 @@ let publicMessageList = () => {
 }
 
 // 전체채팅 메세지 추가
-let viewPublicMessage = (messageInfo, isScroll) => {
+let appendMessage = (messageInfo, isScroll) => {
     let msgLeft = `
-                            <li class="chat-content chat-left animated bounce fast">
+                            <li class="chat-content chat-left animated fadeIn fast">
                                 <div class="chat-info">
                                     <div class="chat-nick">${messageInfo.mbrNick}</div>
                                     <div class="chat-date">${messageInfo.msgDate}</div>
@@ -190,15 +299,14 @@ let viewPublicMessage = (messageInfo, isScroll) => {
     }
 }
 
+
 // 해당 element에 클래스 이름이 있는지 조회
 let checkIncludes = (element,className) => {
     return element.attr('class').includes(className);
 }
 
 
-let chatWindow = $('.chat-window');
-let chatList = $('.chat-list');
-let chatMessage = $('.chat-message');
+
 
 // animate 효과 초기화
 let initClass = () =>{

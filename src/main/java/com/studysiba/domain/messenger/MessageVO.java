@@ -30,4 +30,6 @@ public class MessageVO extends RoomVO {
     // 메세지 보낸시각
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "MM-dd HH:mm", timezone = "Asia/Seoul")
     private Timestamp msgDate;
+    // 읽지 않은 메세지 카운트
+    private int msgCount;
 }

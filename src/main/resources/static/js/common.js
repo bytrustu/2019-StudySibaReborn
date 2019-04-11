@@ -411,6 +411,12 @@ let trimTitleLength = (className, length) => {
     }
 }
 
+// 해당 요소 html 태그 반환
+let thisElement = (target) => {
+    return target.clone().wrapAll("<div/>").parent().html();
+}
+
+
 
 // 첫번째 루트 경로 반환
 let firstPath = () => {

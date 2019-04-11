@@ -392,7 +392,7 @@
             <p>대화중인 리스트가 없습니다 !</p>
         </li>--%>
 
-        <li class="messenger-common chat-content chat-left messenger-list">
+        <li class="messenger-common chat-content chat-left messenger-list" data-id="test1">
             <div class="chat-profile">
                 <img src="/static/image/profile/profile-1.png">
             </div>

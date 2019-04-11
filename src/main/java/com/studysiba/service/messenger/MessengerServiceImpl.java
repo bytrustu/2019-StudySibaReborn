@@ -26,18 +26,19 @@ public class MessengerServiceImpl implements MessengerService {
         messageVO.setMsgType("public");
         messageVO.setMsgText(message);
         int isRoomId = messengerMapper.checkPublicRoomId();
+        messageVO.setMsgFrom((String) httpSession.getAttribute("id"));
         if ( isRoomId == 0 ) {
             messageVO.setMsgRoom(messengerMapper.getMaxRoomId());
+            isRoomId = messengerMapper.makeMessageRoom(messageVO);
+            if ( isRoomId == 0 ) return null;
         } else {
             messageVO.setMsgRoom(messengerMapper.getRoomId(messageVO));
         }
-        messageVO.setMsgFrom((String) httpSession.getAttribute("id"));
-        isRoomId = messengerMapper.makeMessageRoom(messageVO);
-        if ( isRoomId == 1 ) {
-            messengerMapper.sendMessage(messageVO);
-            messageVO.setMbrNick((String) httpSession.getAttribute("nick"));
-            messageVO.setMbrProfile((String) httpSession.getAttribute("profile"));
-            messageVO.setMsgDate(DataConversion.currentTimestamp());
+        int messageState = messengerMapper.sendMessage(messageVO);
+        if ( messageState == 1 ) {
+        messageVO.setMbrNick((String) httpSession.getAttribute("nick"));
+        messageVO.setMbrProfile((String) httpSession.getAttribute("profile"));
+        messageVO.setMsgDate(DataConversion.currentTimestamp());
         } else { return null; }
         return messageVO;
     }
@@ -50,5 +51,36 @@ public class MessengerServiceImpl implements MessengerService {
     @Override
     public List<MessageVO> getPublicMessageList(String type) {
         return messengerMapper.getPublicMessageList(type);
+    }
+
+    /*
+     *  개인채팅 메세지 메세지 전송
+     *  @Param type
+     *  @Return 개인채팅 메세지 정보 반환
+     */
+    @Override
+    public MessageVO sendPrivateMessage(String id, String message, HttpSession httpSession) {
+        if ( httpSession.getAttribute("id") == null ) return null;
+        MessageVO messageVO = new MessageVO();
+        messageVO.setMsgType("private");
+        messageVO.setMsgFrom((String) httpSession.getAttribute("id"));
+        messageVO.setMsgTo(id);
+        messageVO.setMsgText(message);
+        int isRoomId = messengerMapper.checkPrivateRoomId(messageVO);
+        if ( isRoomId == 0 ) {
+            messageVO.setMsgRoom(messengerMapper.getMaxRoomId());
+            isRoomId = messengerMapper.makeMessageRoom(messageVO);
+            if ( isRoomId == 0 ) return null;
+        } else {
+            messageVO.setMsgRoom(messengerMapper.getRoomId(messageVO));
+        }
+        int messageState = messengerMapper.sendMessage(messageVO);
+        if ( messageState == 1 ) {
+            messageVO.setMsgCount(messengerMapper.getUnReadCount(messageVO));
+            messageVO.setMbrNick((String) httpSession.getAttribute("nick"));
+            messageVO.setMbrProfile((String) httpSession.getAttribute("profile"));
+            messageVO.setMsgDate(DataConversion.currentTimestamp());
+        }
+        return messageVO;
     }
 }

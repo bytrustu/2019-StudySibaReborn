@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
@@ -38,12 +39,25 @@ public class MessengerController {
      *  그룹 메세지
      *  @Return 그룹메세지 반환
      */
-    @MessageMapping("/chat")
+    @MessageMapping("/public")
     @SendTo("/topic/public")
     @ResponseBody
     public ResponseEntity<MessageVO> sendPublicMessage(@RequestBody HashMap<String,String> params, SimpMessageHeaderAccessor messageHeaderAccessor) {
         HttpSession httpSession = (HttpSession) messageHeaderAccessor.getSessionAttributes().get("session");
         MessageVO messageVO = messengerService.sendPublicMessage(params.get("message"), httpSession);
+        return messageVO != null ? new ResponseEntity<>(messageVO,HttpStatus.OK) :
+                new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @MessageMapping("/private/{id}")
+    @SendTo("/topic/private/{id}")
+    @ResponseBody
+    public ResponseEntity<MessageVO> sendPrivateMessage(@DestinationVariable("id") String id, @RequestBody HashMap<String, String> params, SimpMessageHeaderAccessor messageHeaderAccessor){
+        log.info(id);
+        log.info(params);
+        HttpSession httpSession = (HttpSession) messageHeaderAccessor.getSessionAttributes().get("session");
+        log.info(httpSession.getAttribute("id"));
+        MessageVO messageVO = messengerService.sendPrivateMessage(id, params.get("message"), httpSession);
         return messageVO != null ? new ResponseEntity<>(messageVO,HttpStatus.OK) :
                 new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }

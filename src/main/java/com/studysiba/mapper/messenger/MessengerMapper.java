@@ -55,4 +55,16 @@ public interface MessengerMapper {
      *  @Return 전체채팅 리스트 정보 반환
      */
     ArrayList<MessageVO> getPublicMessageList(String type);
+
+    /*
+     *  개인채팅방 방번호가 있는지 확인여부 조회
+     *  @Return  개인채팅방 방번호가 있는지 확인여부 조회
+     */
+    int checkPrivateRoomId(MessageVO messageVO);
+
+    /*
+     *  개인채팅 읽지 않은 메세지 수 조회
+     *  @Return  읽지않은 메세지 반환
+     */
+    int getUnReadCount(MessageVO messageVO);
 }

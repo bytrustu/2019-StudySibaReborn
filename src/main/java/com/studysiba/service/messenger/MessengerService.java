@@ -20,4 +20,11 @@ public interface MessengerService {
      *  @Return 전체채팅 리스트 정보 반환
      */
     List<MessageVO> getPublicMessageList(String type);
+
+    /*
+     *  개인채팅 메세지 메세지 전송
+     *  @Param type
+     *  @Return 개인채팅 메세지 정보 반환
+     */
+    MessageVO sendPrivateMessage(String id, String message, HttpSession httpSession);
 }
