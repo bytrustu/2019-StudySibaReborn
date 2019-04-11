@@ -15,6 +15,7 @@
         <input type="hidden" id="page-num" value="${cri.pageNum}">
         <input type="hidden" id="page-keyword" value="${cri.keyword}">
         <input type="hidden" id="page-type" value="${cri.type}">
+        <input type="hidden" id="data-id" value="${sessionScope.id}">
     </div>
 
 
@@ -827,8 +828,8 @@
 
 
 
-    <div class="alert alert-danger" id="dangerMessage" style="display: none; z-index: 9999;">
-    </div>
+    <div class="alert alert-danger" id="dangerMessage" style="display: none; z-index: 9999;"></div>
+    <div class="alert alert-danger" id="messengerMessage"></div>
 
 
         <script type="text/javascript" src="/static/js/lib/popper.min.js"></script>

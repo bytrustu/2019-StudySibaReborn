@@ -40,9 +40,9 @@
     <!-- 모든 회원정보 리스트 조회 -->
     <select id="getMemberList" resultType="PointVO">
         SELECT MBR_NO, MBR_TYPE, MBR_AUTH, MBR_CODE, MBR_ID, MBR_PASS, MBR_EMAIL, MBR_NICK, MBR_PROFILE, MBR_CONNECT, MBR_JOIN,
-                      PNT_NO, PNT_ID, PNT_SCORE
+                      COALESCE(PNT_NO,0), COALESCE(PNT_SCORE,0)
         FROM MEMBER
-        JOIN POINT
+        LEFT JOIN POINT
         ON POINT.PNT_ID = MEMBER.MBR_ID
         ORDER BY MBR_JOIN DESC
     </select>
@@ -66,12 +66,12 @@
     <!-- 유저 정보 조회 -->
     <select id="getMemberOne" parameterType="String" resultType="PointVO">
         SELECT MBR_NO, MBR_TYPE, MBR_AUTH, MBR_CODE, MBR_ID, MBR_PASS, MBR_EMAIL, MBR_NICK, MBR_PROFILE, MBR_CONNECT, MBR_JOIN,
-                      PNT_NO, PNT_ID, PNT_SCORE
+                      COALESCE(PNT_NO,0), COALESCE(PNT_SCORE,0)
         FROM (
                       SELECT * FROM MEMBER
                       WHERE MBR_ID = #{id}
         ) MEMBER
-        JOIN POINT
+        LEFT JOIN POINT
         ON POINT.PNT_ID = MEMBER.MBR_ID
     </select>
 

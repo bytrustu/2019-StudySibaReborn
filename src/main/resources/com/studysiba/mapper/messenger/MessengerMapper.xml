@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.studysiba.mapper.messenger.MessengerMapper">
+
+    <!-- 채팅방 방번호 확인 여부 -->
+    <select id="checkRoomId" parameterType="MessageVO" resultType="int">
+        SELECT COUNT(*) FROM ROOM
+        WHERE ( ROOM_FRUSER = #{msgFrom} AND ROOM_SEUSER = #{msgTo} )
+                      OR ( ROOM_SEUSER = #{msgFrom} AND ROOM_FRUSER = #{msgTo} )
+    </select>
+
+    <!-- 전체채팅방 방번호 확인 여부 -->
+    <select id="checkPublicRoomId" parameterType="MessageVO" resultType="int">
+        SELECT COUNT(*) FROM ROOM
+        WHERE ROOM_FRUSER = 'public' AND ROOM_SEUSER = 'public'
+    </select>
+
+    <!-- 가장 높은 방번호 반환 -->
+    <select id="getMaxRoomId" resultType="int">
+        SELECT COALESCE(MAX(ROOM_NO),0)+1 AS ROOM_NO FROM ROOM
+    </select>
+
+    <!-- 방번호 조회 -->
+    <select id="getRoomId" parameterType="MessageVO" resultType="int">
+        SELECT ROOM_NO FROM ROOM
+        WHERE ( ROOM_FRUSER = #{msgFrom} AND ROOM_SEUSER = #{msgTo} )
+                      OR ( ROOM_SEUSER = #{msgFrom} AND ROOM_FRUSER = #{msgTo} )
+    </select>
+
+    <!-- 채팅방 개설 -->
+    <insert id="makeMessageRoom" parameterType="MessageVO">
+        INSERT INTO ROOM(ROOM_NO, ROOM_FRUSER, ROOM_FRSTATE, ROOM_SEUSER, ROOM_SESTATE)
+        VALUES(#{msgRoom}, #{msgFrom}, 1, #{msgTo}, 1)
+    </insert>
+
+    <!-- 메세지 전송 -->
+    <insert id="sendMessage" parameterType="MessageVO">
+        <selectKey keyProperty="msgNo" order="BEFORE" resultType="int">
+            SELECT COALESCE(MAX(MSG_NO+1),1) AS MSG_NO FROM MESSAGE
+        </selectKey>
+        INSERT INTO MESSAGE(MSG_NO, MSG_ROOM, MSG_TYPE, MSG_FROM, MSG_TO, MSG_TEXT, MSG_RECEIVE, MSG_DELETE, MSG_DATE)
+        VALUES(#{msgNo}, #{msgRoom}, #{msgType}, #{msgFrom}, #{msgTo}, #{msgText}, 1, 1, NOW())
+    </insert>
+
+    <!-- 전체채팅 리스트 조회 -->
+    <select id="getPublicMessageList" parameterType="String" resultType="MessageVO">
+        SELECT MSG_NO, MSG_ROOM, MSG_TYPE, MSG_FROM, MSG_TO, MSG_TEXT, MSG_RECEIVE, MSG_DELETE, MSG_DATE,
+			          MBR_NICK, MBR_PROFILE
+		FROM (
+                    SELECT * FROM MESSAGE
+                    WHERE MSG_TYPE = #{type}
+                    AND MSG_DATE > DATE_ADD(NOW(),INTERVAL -1 DAY)
+                    ORDER BY MSG_NO ASC
+			        ) MESSAGE
+		JOIN MEMBER
+        ON MEMBER.MBR_ID = MESSAGE.MSG_FROM
+    </select>
+
+
+</mapper>

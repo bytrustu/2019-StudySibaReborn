@@ -1,5 +1,4 @@
 .chat-window, .chat-list{
-    position: absolute;
     width: calc(100% - 20px);
     max-width: 400px;
     height: 700px;
@@ -83,7 +82,7 @@
         채팅 중간 메세지
 */
 
-.chat-message{
+.chat-message, .messenger-chatlist{
     position: relative;
     list-style: none;
     padding: 20px 10px 0 10px;
@@ -300,6 +299,14 @@
     line-height: 48px;
 }
 
+#messengerMessage{
+    z-index: 10002;
+    position: fixed;
+    bottom: 459px;
+    right: 119px;
+    display: none;
+}
+
 
 
 
@@ -313,6 +320,7 @@
 
 .messenger-box{
     height: 636px;
+    overflow-x: hidden;
 }
 
 .messenger-list{
@@ -403,6 +411,13 @@
 .messenger-pnick{
     font-weight: 400;
     color: #ffffff;
+}
+
+.messenger-chattitle{
+    padding-left: 8px;
+    font-weight: 400;
+    color: #f5886e;
+    padding-top: 20px;
 }
 
 

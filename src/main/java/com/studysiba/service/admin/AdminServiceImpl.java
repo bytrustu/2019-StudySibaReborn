@@ -74,7 +74,6 @@ public class AdminServiceImpl implements AdminService {
      */
     @Override
     public List<BoardVO> getBoardList() {
-
         return adminMapper.getBoardList();
     }
 
@@ -84,7 +83,6 @@ public class AdminServiceImpl implements AdminService {
      */
     @Override
     public List<StudyVO> getStudyList() {
-
         return adminMapper.getStudyList();
     }
 
@@ -94,7 +92,6 @@ public class AdminServiceImpl implements AdminService {
      */
     @Override
     public List<StudyVO> groupList() {
-
         return adminMapper.getGroupList();
     }
 
@@ -104,7 +101,6 @@ public class AdminServiceImpl implements AdminService {
      */
     @Override
     public List<MessageVO> messageList() {
-
         return adminMapper.getMessageList();
     }
 

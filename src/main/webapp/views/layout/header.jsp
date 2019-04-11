@@ -43,7 +43,7 @@
         <body class="sub-page">
 
                 <!-- 하단 메세지 버튼 -->
-                <div class="messenger-btn">
+                <div class="messenger-common messenger-btn">
                         <i class="fas fa-envelope"></i>
                 </div>
 

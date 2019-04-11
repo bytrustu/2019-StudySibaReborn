@@ -1,5 +1,6 @@
 package com.studysiba.domain.messenger;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -27,5 +28,6 @@ public class MessageVO extends RoomVO {
     // 메세지 삭제여부
     private int msgDelete;
     // 메세지 보낸시각
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "MM-dd HH:mm", timezone = "Asia/Seoul")
     private Timestamp msgDate;
 }

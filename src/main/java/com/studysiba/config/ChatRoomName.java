@@ -11,6 +11,7 @@ public enum ChatRoomName {
 
     GROUP("/group"),
     PRIVATE("/private"),
+    PUBLIC("/public"),
     ALARM("/alarm");
 
     private String roomName;
