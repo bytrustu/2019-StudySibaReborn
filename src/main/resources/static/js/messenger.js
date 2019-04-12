@@ -150,7 +150,7 @@ $(document).ready(function(){
                 }
 
                 if ( connectId != '' ) {
-                    setTimeout(()=>{messageInput.focus();},1000);
+                    setTimeout(()=>{messageInput.focus();},500);
                 }
 
                 break;
@@ -239,11 +239,13 @@ $(document).ready(function(){
                 checkLogined();
                 let message = messageInput.val();
                 messageInput.val('');
+                if ( message == '' ) return false;
                 if ( messageContainer.attr('class').includes('public') ) {
                     publicClient.send(`/public`, {}, JSON.stringify({"message":message}));
                 } else {
                     let targetId = $(this).attr('data-id');
                     privateClient.send(`/private/${targetId}`, {}, JSON.stringify({"message":message}));
+                    console.log(targetId);
                     setTimeout(()=>{
                         sendMessageInfo(targetId)
                             .then( (data) => {
@@ -304,9 +306,29 @@ $(document).ready(function(){
         return false;
     });
 
+
+
+    $(document).on('click', '.messenger-connector', function(){
+        console.log('??');
+        if ( connectId == '' ) {
+            checkLogined();
+            return false;
+        }
+        if( $(this).parents('.chat-message').hasClass('private') ){
+            return false;
+        }
+
+        let targetId = $(this).attr('data-id');
+        let targetNick = $(this).attr('data-nick');
+        connectTarget(targetId,targetNick);
+    });
+
     
     // end ready
 });
+
+
+
 
 // 회원 비활성화
 let disableMember = (id) => {
@@ -392,7 +414,7 @@ let connectTarget = (id,nick) => {
         setTimeout(()=>{
             chatList.removeClass('fadeOut').addClass('d-none');
             chatWindow.removeClass('fadeOut').removeClass('d-none').addClass('fadeIn');
-            messageContainer.addClass('private').html('');
+            messageContainer.removeClass('private').removeClass('public').addClass('private').html('');
             connectFromId = id;
             chatTitle.html(nick);
             sendButton.attr('data-id',id);
@@ -403,7 +425,7 @@ let connectTarget = (id,nick) => {
                     });
                 }).catch( (error) =>{
             });
-        },500);
+        },250);
 
     });
 
@@ -604,7 +626,7 @@ let appendMessage = (messageInfo, isScroll) => {
                                     <div class="chat-nick">${messageInfo.mbrNick}</div>
                                     <div class="chat-date">${messageInfo.msgDate}</div>
                                 </div>
-                                <div class="chat-profile">
+                                <div class="chat-profile messenger-connector" data-nick="${messageInfo.mbrNick}" data-id="${messageInfo.msgFrom}">
                                     <img src="/static/image/profile/${messageInfo.mbrProfile}">
                                 </div>
                                 <div class="chat-textbox">

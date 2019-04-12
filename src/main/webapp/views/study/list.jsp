@@ -289,18 +289,6 @@
         <%--<div class="top-title">--%>
             <%--회원검색--%>
         <%--</div>--%>
-    <%--</div>--%>
-    <%--<div class="search-body">--%>
-        <%--<div class="search-inputbox">--%>
-            <%--<input type="text" id="search-input" class="search-input">--%>
-            <%--<label class="search-inputlable" for="search-input">닉네임</label>--%>
-        <%--</div>--%>
-    <%--</div>--%>
-    <%--<div class="search-footer">--%>
-        <%--<div class="messenger-common search-btnbox">--%>
-            <%--<div class="search-btntext">--%>
-                <%--검색--%>
-            <%--</div>--%>
         <%--</div>--%>
     <%--</div>--%>
 <%--</div>--%>
