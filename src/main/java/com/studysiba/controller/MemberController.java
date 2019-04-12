@@ -209,12 +209,19 @@ public class MemberController {
         return "redirect:"+currentUrl;
     }
 
-
-
-
-
-
-
+    /*
+     *  회원접속정보갱신
+     *  @Param mbrId
+     *  @Return 회원접속정보갱신여부반환
+     */
+    @ResponseBody
+    @PutMapping(value="/connect/{mbrId}")
+    public ResponseEntity<Void> isConnectUpdate(@PathVariable("mbrId") String mbrId){
+        log.info(mbrId);
+        boolean isConnectUpdate = memberService.isConnectUpdate(mbrId);
+        log.info(isConnectUpdate);
+        return isConnectUpdate ? new ResponseEntity<>(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 
 
 

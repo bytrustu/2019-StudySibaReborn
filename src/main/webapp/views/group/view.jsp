@@ -216,7 +216,7 @@
                                     <c:when test="${imgStep >= 13 && imgStep <= 18}">triangle-four</c:when>
                                 </c:choose>
                                 ">
-                                        <div class="stv-msgbtn">
+                                        <div class="stv-msgbtn messenger-connector" data-id="${group.grmId}" data-nick="${group.mbrNick}">
                                             <img class="stv-msgimg" src="/static/image/main/like.png">
                                         </div>
                                     </div>

@@ -27,7 +27,7 @@
 
                     <c:if test="${fn:length(group) == 0}">
                         <div class="group-notfound">
-                            <p>(⁎˃ᆺ˂)</p>
+                            <p>(｡◕‿◕｡)</p>
                             <p>참여중인 스터디가 없습니다!</p>
                         </div>
                     </c:if>

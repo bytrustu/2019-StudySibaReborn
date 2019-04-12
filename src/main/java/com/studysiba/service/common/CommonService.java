@@ -2,6 +2,7 @@ package com.studysiba.service.common;
 
 import com.studysiba.domain.common.Criteria;
 import com.studysiba.domain.common.PageVO;
+import com.studysiba.domain.member.MemberVO;
 import com.studysiba.domain.member.PointVO;
 import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
@@ -81,4 +82,10 @@ public interface CommonService {
      *  @Param requireAdmin
      */
     void isRequireAdmin(boolean requireAdmin);
+
+    /*
+     *  접속중인 멤버 리스트 조회
+     *  @Return 접속중인 멤버 리스트 반환
+     */
+    List<MemberVO> connectedMemberList();
 }

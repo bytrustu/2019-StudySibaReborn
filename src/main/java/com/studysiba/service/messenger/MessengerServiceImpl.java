@@ -8,6 +8,7 @@ import com.studysiba.mapper.messenger.MessengerMapper;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
@@ -73,6 +74,7 @@ public class MessengerServiceImpl implements MessengerService {
      *  @Param type
      *  @Return 개인채팅 메세지 정보 반환
      */
+    @Transactional
     @Override
     public MessageVO sendPrivateMessage(String id, String message, HttpSession session) {
         if ( session.getAttribute("id") == null ) return null;

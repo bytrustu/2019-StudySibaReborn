@@ -7,9 +7,7 @@ import com.studysiba.domain.common.StateVO;
 import com.studysiba.domain.group.GroupBoardVO;
 import com.studysiba.domain.group.GroupMemberVO;
 import com.studysiba.domain.group.GroupMessageVO;
-import com.studysiba.domain.member.MemberVO;
 import com.studysiba.mapper.group.GroupMapper;
-import com.studysiba.mapper.member.MemberMapper;
 import com.studysiba.mapper.study.StudyMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,7 +18,6 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -97,6 +94,7 @@ public class GroupServiceImpl implements GroupService {
      *  @Param  groupBoardVO
      *  @Return 스터디 공지사항 업데이트 대한 상태코드 반환
      */
+    @Transactional
     @Override
     public StateVO updateGroupPost(GroupBoardVO groupBoardVO) throws Exception {
         StateVO stateVO = new StateVO();

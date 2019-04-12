@@ -61,8 +61,8 @@
                     <span>${board.mbrNick}</span>
                 </div>
                 <div class="member-right">
-                    <div><img src="/static/image/common/friendship.png"><span>글보기</span></div>
-                    <div><img src="/static/image/common/mail.png"><span>메세지</span></div>
+                    <%--<div><img src="/static/image/common/friendship.png"><span>글보기</span></div>--%>
+                    <div class="messenger-connector" data-id="${board.brdId}" data-nick="${board.mbrNick}"><img src="/static/image/common/mail.png"><span>메세지</span></div>
                 </div>
             </div>
 

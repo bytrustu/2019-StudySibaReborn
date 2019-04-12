@@ -221,7 +221,24 @@
         UPDATE MEMBER SET MBR_PROFILE = #{mbrProfile} WHERE MBR_ID = #{mbrId}
     </update>
 
+    <!-- 유저 접속로그 갱신 -->
+    <update id="isConnectUpdate" parameterType="String">
+        UPDATE MEMBER SET MBR_CONNECT = NOW() WHERE MBR_ID = #{mbrId}
+    </update>
 
+    <!-- 로그아웃 접속로그 갱신 -->
+    <update id="changeLogoutLog" parameterType="String">
+        UPDATE MEMBER
+        SET MBR_CONNECT = DATE_ADD(NOW(),INTERVAL -5 MINUTE)
+        WHERE MBR_ID = #{mbrId}
+    </update>
+
+    <!-- 접속중인 유저 리스트 조회 -->
+    <select id="connectedMemberList" resultType="MemberVO">
+        SELECT MBR_NO, MBR_ID, MBR_NICK,MBR_PROFILE FROM MEMBER
+        WHERE MBR_CONNECT BETWEEN NOW()-INTERVAL 3 MINUTE AND NOW()
+        ORDER BY MBR_CONNECT DESC
+    </select>
 
 
 </mapper>

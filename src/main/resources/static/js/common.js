@@ -123,6 +123,12 @@ $(document).ready(function () {
         });
     });
 
+    // 접속시간 갱신
+    connectUpdate();
+    setInterval(()=>{connectUpdate();},170000);
+
+
+
 });
 
 
@@ -231,6 +237,8 @@ var checkFacebookLoginStatus = (response) => {
     } else {
         errorAlert("로그인 실패 했습니다.")
     }
+
+
 
 }
 
@@ -877,10 +885,21 @@ let fileUpload = (formData, menu) => {
 }
 
 
-
-
-
-
+// 접속로그 갱신
+let connectUpdate = () =>{
+    let connectId = $('#data-id').val();
+    if ( connectId == '' ) return false;
+    $.ajax({
+        type : 'PUT',
+        url : `/member/connect/${connectId}`,
+        success : (data) => {
+            console.log(data);
+            },
+        error : (error) => {
+            console.log(error);
+        }
+    });
+}
 
 
 
@@ -995,6 +1014,8 @@ const ajaxAlert = (title, url, successText, errorText) => {
         }, 300);
     })
 }
+
+
 
 
 

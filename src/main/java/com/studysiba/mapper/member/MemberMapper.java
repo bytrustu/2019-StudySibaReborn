@@ -230,4 +230,23 @@ public interface MemberMapper {
      *  @Return 프로필사진변경결과값
      */
     int updateProfile(MemberVO memberVO);
+
+    /*
+     *  회원접속정보갱신
+     *  @Param mbrId
+     *  @Return 회원접속정보갱신여부반환
+     */
+    int isConnectUpdate(String mbrId);
+
+    /*
+     *  접속중인 멤버 리스트 조회
+     *  @Return 접속중인 멤버 리스트 반환
+     */
+    List<MemberVO> connectedMemberList();
+
+    /*
+     *  로그아웃시 접속로그 변경
+     *  @Return 로그아웃 접속로그 변경 여부 반환
+     */
+    int changeLogoutLog(String mbrId);
 }

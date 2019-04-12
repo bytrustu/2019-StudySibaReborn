@@ -7,6 +7,7 @@ import com.studysiba.domain.common.Criteria;
 import com.studysiba.domain.common.PageVO;
 import com.studysiba.domain.common.UploadVO;
 import com.studysiba.domain.group.GroupBoardVO;
+import com.studysiba.domain.member.MemberVO;
 import com.studysiba.domain.member.PointVO;
 import com.studysiba.mapper.board.BoardMapper;
 import com.studysiba.mapper.common.CommonMapper;
@@ -331,6 +332,15 @@ public class CommonServiceImpl implements CommonService {
     @Override
     public void isRequireAdmin(boolean requireAdmin) {
         if ( requireAdmin == true ) httpSession.setAttribute("stateCode","ADMIN_LOCATION_ERROR");
+    }
+
+    /*
+     *  접속중인 멤버 리스트 조회
+     *  @Return 접속중인 멤버 리스트 반환
+     */
+    @Override
+    public List<MemberVO> connectedMemberList() {
+        return memberMapper.connectedMemberList();
     }
 
 }

@@ -850,7 +850,7 @@
 
         <div class="chat-bottom">
             <div class="chat-inputbox">
-                <input class="messenger-common chat-input" type="text">
+                <input class="messenger-common chat-input" type="text" maxlength="40">
             </div>
             <div class="messenger-common chat-sendbox">
                 <div class="chat-btntext">
@@ -910,7 +910,7 @@
         </div>
         <div class="search-body">
             <div class="search-inputbox">
-                <input type="text" id="search-input" class="search-input">
+                <input type="text" id="search-input" class="search-input" maxlength="20">
                 <label class="search-inputlable" for="search-input">닉네임</label>
             </div>
         </div>
@@ -959,8 +959,6 @@
                 <c:remove var="stateCode" scope="session"/>
             </script>
         </c:if>
-
-
 
 
 

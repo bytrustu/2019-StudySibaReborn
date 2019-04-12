@@ -26,9 +26,6 @@ public class StudyServiceImpl implements StudyService {
     CommonService commonService;
 
     @Resource
-    CommonMapper commonMapper;
-
-    @Resource
     StudyMapper studyMapper;
 
     @Autowired
@@ -181,6 +178,7 @@ public class StudyServiceImpl implements StudyService {
      *  @Return 스터디 삭제에 대한 상태코드 반환
      */
     @Override
+    @Transactional
     public StateVO deleteStudy(int no, String type) {
         StateVO stateVO = new StateVO();
         stateVO.setNo(no);

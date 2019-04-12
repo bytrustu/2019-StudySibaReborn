@@ -14,7 +14,7 @@
         <div class="col-lg-4 info-box">
             <div class="info-leftbox">
                 <div class="info-header">
-                    <img src="/static/image/main/like.png">
+                    <img class="animated rubberBand infinite slow" src="/static/image/main/like.png">
                     <p>시바랭킹</p>
                 </div>
                 <div class="info-body">
@@ -37,87 +37,24 @@
         <div class="col-lg-4 info-box">
             <div class="info-centerbox">
                 <div class="info-header">
-                    <img src="/static/image/main/like.png">
-                    <p>접속중 ~</p>
+                    <img class="animated rubberBand infinite slow" src="/static/image/main/like.png">
+                    <p>접속중</p>
                 </div>
                 <div class="info-body login-box scrollbar scrollbar-warning force-overflow">
                     <div class="member-loginstate mt-3">
-
-                        <!-- 유저 목록 시작 -->
-                        <div class="member-output">
-                            <img src="/static/image/profile/profile-1.png">
-                            <div class="member-infobox">
-                                <div class="row">
-                                    하하호호후후
-                                </div>
-                                <div class="row">
-                                    <i class="far fa-comment-dots"></i>
-                                    <i class="far fa-grin-wink"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- 1명 끝 -->
-
-
-                        <!-- 유저 목록 시작 -->
-                        <div class="member-output">
-                            <img src="/static/image/profile/profile-1.png">
-                            <div>
-                                <div class="row">
-                                    abcdefasd231
-                                </div>
-                                <div class="row">
-                                    <i class="far fa-comment-dots"></i>
-                                    <i class="far fa-grin-wink"></i>
+                        <c:forEach items="${connect}" var="connect">
+                            <div class="member-output">
+                                <img src="/static/image/profile/${connect.mbrProfile}">
+                                <div class="member-infobox">
+                                    <div class="row">
+                                        ${connect.mbrNick}
+                                    </div>
+                                    <div class="row">
+                                        <i class="far fa-comment-dots messenger-connector" data-id="${connect.mbrId}" data-nick="${connect.mbrNick}"></i>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <!-- 1명 끝 -->
-
-                        <!-- 유저 목록 시작 -->
-                        <div class="member-output">
-                            <img src="/static/image/profile/profile-1.png">
-                            <div>
-                                <div class="row">
-                                    가나다라마바사아
-                                </div>
-                                <div class="row">
-                                    <i class="far fa-comment-dots"></i>
-                                    <i class="far fa-grin-wink"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- 1명 끝 -->
-
-                        <!-- 유저 목록 시작 -->
-                        <div class="member-output">
-                            <img src="/static/image/profile/profile-1.png">
-                            <div>
-                                <div class="row">
-                                    가나다라마바사
-                                </div>
-                                <div class="row">
-                                    <i class="far fa-comment-dots"></i>
-                                    <i class="far fa-grin-wink"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- 1명 끝 -->
-
-                        <!-- 유저 목록 시작 -->
-                        <div class="member-output">
-                            <img src="/static/image/profile/profile-1.png">
-                            <div>
-                                <div class="row">
-                                    가나다라마바사
-                                </div>
-                                <div class="row">
-                                    <i class="far fa-comment-dots"></i>
-                                    <i class="far fa-grin-wink"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- 1명 끝 -->
+                        </c:forEach>
                     </div>
                 </div>
             </div>

@@ -1,5 +1,6 @@
 package com.studysiba.controller;
 
+import com.studysiba.domain.member.MemberVO;
 import com.studysiba.domain.member.PointVO;
 import com.studysiba.service.board.BoardService;
 import com.studysiba.service.common.CommonService;
@@ -42,6 +43,9 @@ public class CommonController {
         model.addAttribute("rank", userRankingList);
         model.addAttribute("requireLogin", requireLogin);
         model.addAttribute("requireAdmin", requireAdmin);
+
+        List<MemberVO> connectMemberList = commonService.connectedMemberList();
+        model.addAttribute("connect",connectMemberList);
         return "common/main";
     }
 
@@ -77,6 +81,11 @@ public class CommonController {
         return null;
     }
 
+    /*
+     *  파일 다운로드
+     *  @Param menu, no
+     *  @Return resource
+     */
     @ResponseBody
     @GetMapping(value="/download", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     public ResponseEntity<Resource> downloadFile(@RequestParam String menu, @RequestParam int no){

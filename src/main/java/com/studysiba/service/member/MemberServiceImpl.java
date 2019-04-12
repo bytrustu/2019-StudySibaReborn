@@ -696,12 +696,32 @@ public class MemberServiceImpl implements MemberService {
         return stateCode;
     }
 
+    /*
+     *  회원로그아웃
+     *  @Param memberVO
+     *  @Return 회원로그아웃 상태코드 반환
+     */
     @Override
     public String userLogout(MemberVO memberVO) {
         if ( !httpSession.getAttribute("id").equals(memberVO.getMbrId()) ) return "LOGOUT_STATE_ERROR";
+        memberMapper.changeLogoutLog((String) httpSession.getAttribute("id"));
         httpSession.invalidate();
         httpSession.setAttribute("stateCode", "LOGOUT_STATE_SUCCESS");
         return "LOGOUT_STATE_SUCCESS";
+    }
+
+    /*
+     *  회원접속정보갱신
+     *  @Param mbrId
+     *  @Return 회원접속정보갱신여부반환
+     */
+    @Override
+    public boolean isConnectUpdate(String mbrId) {
+        if ( !httpSession.getAttribute("id").toString().equals(mbrId) ) return false;
+        int isConnectUpdate= memberMapper.isConnectUpdate(mbrId);
+        log.info(isConnectUpdate+"과연?");
+        if ( isConnectUpdate == 1 ) return true;
+        else return false;
     }
 
 

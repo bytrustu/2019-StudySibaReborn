@@ -427,6 +427,10 @@
     z-index: 9999;
 }
 
+.messenger-connector{
+    cursor: pointer;
+}
+
 
 
 .chat-window, .chat-list{

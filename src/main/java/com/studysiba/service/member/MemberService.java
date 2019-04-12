@@ -108,4 +108,11 @@ public interface MemberService {
      *  @Return 로그아웃여부에 따른 상태코드반환
      */
     String userLogout(MemberVO memberVO);
+
+    /*
+     *  회원접속정보갱신
+     *  @Param mbrId
+     *  @Return 회원접속정보갱신여부반환
+     */
+    boolean isConnectUpdate(String mbrId);
 }
