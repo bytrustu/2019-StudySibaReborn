@@ -124,4 +124,5 @@ public interface StudyMapper {
      */
     int latestStudy(StudyVO studyVO);
 
+    ArrayList<StudyVO> getAllStudyList();
 }

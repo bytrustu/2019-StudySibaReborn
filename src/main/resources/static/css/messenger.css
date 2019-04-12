@@ -275,21 +275,52 @@
     line-height: 48px;
 }
 
-#messengerMessage{
+
+#messengerMessage {
     z-index: 10010;
     position: fixed;
-    bottom: 459px;
-    right: 119px;
+    bottom: 61%;
+    right: 23%;
     display: none;
 }
 
 #findUserMessage{
     z-index: 10010;
     position: fixed;
-    bottom: 459px;
-    right: 119px;
+    bottom: 60%;
+    right: 5%;
+    width: 90%;
+    text-align: center;
+    font-weight: bold;
     display: none;
 }
+
+
+@media(min-width: 430px){
+    #messengerMessage{
+        z-index: 10010;
+        position: fixed;
+        bottom: 459px;
+        right: 119px;
+        display: none;
+    }
+
+    #findUserMessage{
+        z-index: 10010;
+        position: fixed;
+        bottom: 60%;
+        right: 37%;
+        width: 26%;
+        text-align: center;
+        font-weight: bold;
+        display: none;
+    }
+}
+
+
+
+
+
 
 
 

@@ -309,7 +309,6 @@ $(document).ready(function(){
 
 
     $(document).on('click', '.messenger-connector', function(){
-        console.log('??');
         if ( connectId == '' ) {
             checkLogined();
             return false;
@@ -394,7 +393,11 @@ let connectTarget = (id,nick) => {
                     searchBox.addClass('d-none');
                 }
             } else {
-                messengerAlert(text,1500);
+                if ( chatList.hasClass('d-none') && chatWindow.hasClass('d-none') ) {
+                    findUserAlert(text,1500);
+                } else {
+                    messengerAlert(text,1500);
+                }
                 isError = true;
             }
         }).catch( (error) => {
@@ -678,7 +681,13 @@ let initClass = () =>{
 // 로그인 체크
 let checkLogined = () =>{
     if( $('#data-id').val() == '' ) {
-        messengerAlert('로그인이 필요 합니다.', 1500);
+
+        if ( chatList.hasClass('d-none') && chatWindow.hasClass('d-none') ) {
+            findUserAlert("로그인이 필요합니다",1500);
+        } else {
+            messengerAlert('로그인이 필요 합니다.', 1500);
+        }
+        
         $(':focus').blur();
         return false;
     }

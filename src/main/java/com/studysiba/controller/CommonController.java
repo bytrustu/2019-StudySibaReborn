@@ -2,6 +2,7 @@ package com.studysiba.controller;
 
 import com.studysiba.domain.member.MemberVO;
 import com.studysiba.domain.member.PointVO;
+import com.studysiba.domain.study.StudyVO;
 import com.studysiba.service.board.BoardService;
 import com.studysiba.service.common.CommonService;
 import lombok.extern.log4j.Log4j;
@@ -46,6 +47,10 @@ public class CommonController {
 
         List<MemberVO> connectMemberList = commonService.connectedMemberList();
         model.addAttribute("connect",connectMemberList);
+
+        List<StudyVO> studyList = commonService.studyList();
+        model.addAttribute("study",studyList);
+
         return "common/main";
     }
 

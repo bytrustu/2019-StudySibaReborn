@@ -18,9 +18,15 @@ $(document).ready(function () {
     // 회원수 방문자 카운팅
     catchElement('.middle-text', '.middle-box', 3, true);
 
+    // 슬라이더 클릭시 스터디 글로 이동
+    $(document).on('click','.study-item', function(){
+        let no = $(this).attr('data-no');
+        location.href = `/study/view?no=${no}`;
+    });
+
     // 슬라이더
     let randomSlideCount = $('.study-item').length - 7;
-    let randomSlideWidth = rendomNumber(randomSlideCount * 300);
+    let randomSlideWidth = rendomNumber(randomSlideCount * 300)+20;
     studySlider(randomSlideWidth);
 
     // 슬라이드 시작/정지 버튼

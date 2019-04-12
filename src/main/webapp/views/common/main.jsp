@@ -42,6 +42,10 @@
                 </div>
                 <div class="info-body login-box scrollbar scrollbar-warning force-overflow">
                     <div class="member-loginstate mt-3">
+                        <c:if test="${fn:length(connect) == 0}">
+                            <p class="text-center mt-5 member-nologined">(｡◕‿◕｡)</p>
+                            <p class="text-center member-nologined">로그인 된 회원이 없습니다.</p>
+                        </c:if>
                         <c:forEach items="${connect}" var="connect">
                             <div class="member-output">
                                 <img src="/static/image/profile/${connect.mbrProfile}">
@@ -188,290 +192,81 @@
     <div class="study-slider">
         <div class="study-box row">
 
-            <!-- -->
-            <div class="study-item">
-                <div class="content">
-                    1
-                </div>
-                <div class="details">
-                    <div class="image">
-                        <img src="/static/image/profile/profile-1.png">
+
+
+            <c:forEach items="${study}" var="study">
+                <div class="study-item" data-no="${study.stdNo}">
+                    <div class="content">
+                        <img class="content-image" src="/file/view/study/${study.uldFilename}">
+                        <div class="content-body">
+                            <c:choose>
+                                <c:when test="${study.stdAvailable == 1}">
+                                    <div class="st-now d-block mt-3">진행중</div>
+                                </c:when>
+                                <c:otherwise>
+                                    <div class="st-ended d-block mt-3">마감</div>
+                                </c:otherwise>
+                            </c:choose>
+                            <div class="st-per mt-3 font-small">
+                                <img class="st-icon" src="/static/image/study/networking.png">
+                                <span class="slide-text">${study.stdPersonCount}명 / ${study.stdLimit}명</span>
+                            </div>
+                            <div>
+                                <img class="st-icon" src="/static/image/study/circular-clock.png">
+                                <span class="st-time font-small slide-text">
+                                    ${study.stdStart} ~ ${study.stdEnd}
+                                </span>
+                            </div>
+                            <div><img class="st-icon" src="/static/image/study/global.png"><span class="font-small slide-text">${study.stdAddress}</span></div>
+                            <div class="st-taglist mt-3">
+                                <c:set var="stdSuject" value="${fn:split(study.stdDivide, ',')}"/>
+                                <c:forEach items="${stdSuject}" var="subject">
+                                    <span class="st-tag">${subject}</span>
+                                </c:forEach>
+                            </div>
+                        </div>
                     </div>
-                    <h3>쟁비서1<br><span>마라톤걸</span></h3>
-                </div>
-            </div>
-            <!-- -->
 
-            <!-- -->
-            <div class="study-item">
-                <div class="content">
-                    2
-                </div>
-                <div class="details">
-                    <div class="image">
-                        <img src="/static/image/profile/profile-2.png">
+                    <div class="details">
+                        <div class="image">
+                            <img src="/static/image/profile/${study.mbrProfile}">
+                        </div>
+                        <h3>${study.stdGroup}<br><span>${study.stdTitle}</span></h3>
                     </div>
-                    <h3>쟁비서2<br><span>마라톤걸</span></h3>
                 </div>
-            </div>
-            <!-- -->
+            </c:forEach>
 
-            <!-- -->
-            <div class="study-item">
-                <div class="content">
-                    3
-                </div>
-                <div class="details">
-                    <div class="image">
-                        <img src="/static/image/profile/profile-3.png">
-                    </div>
-                    <h3>쟁비서3<br><span>마라톤걸</span></h3>
-                </div>
-            </div>
-            <!-- -->
 
 
             <!-- -->
-            <div class="study-item">
-                <div class="content">
-                    4
-                </div>
-                <div class="details">
-                    <div class="image">
-                        <img src="/static/image/profile/profile-4.png">
-                    </div>
-                    <h3>쟁비서4<br><span>마라톤걸</span></h3>
-                </div>
-            </div>
+            <%--<div class="study-item">--%>
+                <%--<div class="content">--%>
+                    <%--<img class="content-image" src="/file/view/study/32b59469-c6ed-4220-b714-013603340a83_moon.png">--%>
+                    <%--<div class="st-now d-block mt-3">진행중</div>--%>
+                    <%--<div class="st-per mt-3 font-small">--%>
+                        <%--<img class="st-icon" src="/static/image/study/networking.png">--%>
+                        <%--<span class="slide-text">2 / 6</span>--%>
+                    <%--</div>--%>
+                    <%--<div><img class="st-icon" src="/static/image/study/circular-clock.png"><span class="st-time font-small slide-text">04-06 ~ 04-14</span></div>--%>
+                    <%--<div><img class="st-icon" src="/static/image/study/global.png"><span class="font-small slide-text">서울특별시 맥도날드 명동점</span></div>--%>
+                    <%--<div class="st-taglist mt-3">--%>
+                        <%--<span class="st-tag">프로그래밍</span>--%>
+                        <%--<span class="st-tag">외국어</span>--%>
+                        <%--<span class="st-tag">취업</span>--%>
+                        <%--<span class="st-tag">창업</span>--%>
+                        <%--<span class="st-tag">대학</span>--%>
+                    <%--</div>--%>
+                <%--</div>--%>
+
+                <%--<div class="details">--%>
+                    <%--<div class="image">--%>
+                        <%--<img src="/static/image/profile/profile-2.png">--%>
+                    <%--</div>--%>
+                    <%--<h3>스프링마스터<br><span>스프링 함께하실분 모집합니다. 서울이예요ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ</span></h3>--%>
+                <%--</div>--%>
+            <%--</div>--%>
             <!-- -->
 
-            <!-- -->
-            <div class="study-item">
-                <div class="content">
-                    5
-                </div>
-                <div class="details">
-                    <div class="image">
-                        <img src="/static/image/profile/profile-5.png">
-                    </div>
-                    <h3>쟁비서5<br><span>마라톤걸</span></h3>
-                </div>
-            </div>
-            <!-- -->
-
-
-            <!-- -->
-            <div class="study-item">
-                <div class="content">
-                    6
-                </div>
-                <div class="details">
-                    <div class="image">
-                        <img src="/static/image/profile/profile-6.png">
-                    </div>
-                    <h3>쟁비서6<br><span>마라톤걸</span></h3>
-                </div>
-            </div>
-            <!-- -->
-
-            <!-- -->
-            <div class="study-item">
-                <div class="content">
-                    7
-                </div>
-                <div class="details">
-                    <div class="image">
-                        <img src="/static/image/profile/profile-7.png">
-                    </div>
-                    <h3>쟁비서7<br><span>마라톤걸</span></h3>
-                </div>
-            </div>
-            <!-- -->
-
-            <!-- -->
-            <div class="study-item">
-                <div class="content">
-                    8
-                </div>
-                <div class="details">
-                    <div class="image">
-                        <img src="/static/image/profile/profile-8.png">
-                    </div>
-                    <h3>쟁비서8<br><span>마라톤걸</span></h3>
-                </div>
-            </div>
-            <!-- -->
-
-            <!-- -->
-            <div class="study-item">
-                <div class="content">
-                    9
-                </div>
-                <div class="details">
-                    <div class="image">
-                        <img src="/static/image/profile/profile-9.png">
-                    </div>
-                    <h3>쟁비서9<br><span>마라톤걸</span></h3>
-                </div>
-            </div>
-            <!-- -->
-
-            <!-- -->
-            <div class="study-item">
-                <div class="content">
-                    10
-                </div>
-                <div class="details">
-                    <div class="image">
-                        <img src="/static/image/profile/profile-10.png">
-                    </div>
-                    <h3>쟁비서10<br><span>마라톤걸</span></h3>
-                </div>
-            </div>
-            <!-- -->
-
-
-            <!-- -->
-            <div class="study-item">
-                <div class="content">
-                    1
-                </div>
-                <div class="details">
-                    <div class="image">
-                        <img src="/static/image/profile/profile-11.png">
-                    </div>
-                    <h3>쟁비서11<br><span>마라톤걸</span></h3>
-                </div>
-            </div>
-            <!-- -->
-
-            <!-- -->
-            <div class="study-item">
-                <div class="content">
-                    2
-                </div>
-                <div class="details">
-                    <div class="image">
-                        <img src="/static/image/profile/profile-12.png">
-                    </div>
-                    <h3>쟁비서12<br><span>마라톤걸</span></h3>
-                </div>
-            </div>
-            <!-- -->
-
-            <!-- -->
-            <div class="study-item">
-                <div class="content">
-                    3
-                </div>
-                <div class="details">
-                    <div class="image">
-                        <img src="/static/image/profile/profile-13.png">
-                    </div>
-                    <h3>쟁비서13<br><span>마라톤걸</span></h3>
-                </div>
-            </div>
-            <!-- -->
-
-
-            <!-- -->
-            <div class="study-item">
-                <div class="content">
-                    4
-                </div>
-                <div class="details">
-                    <div class="image">
-                        <img src="/static/image/profile/profile-14.png">
-                    </div>
-                    <h3>쟁비서14<br><span>마라톤걸</span></h3>
-                </div>
-            </div>
-            <!-- -->
-
-            <!-- -->
-            <div class="study-item">
-                <div class="content">
-                    5
-                </div>
-                <div class="details">
-                    <div class="image">
-                        <img src="/static/image/profile/profile-15.png">
-                    </div>
-                    <h3>쟁비서15<br><span>마라톤걸</span></h3>
-                </div>
-            </div>
-            <!-- -->
-
-
-            <!-- -->
-            <div class="study-item">
-                <div class="content">
-                    6
-                </div>
-                <div class="details">
-                    <div class="image">
-                        <img src="/static/image/profile/profile-16.png">
-                    </div>
-                    <h3>쟁비서16<br><span>마라톤걸</span></h3>
-                </div>
-            </div>
-            <!-- -->
-
-            <!-- -->
-            <div class="study-item">
-                <div class="content">
-                    6
-                </div>
-                <div class="details">
-                    <div class="image">
-                        <img src="/static/image/profile/profile-17.png">
-                    </div>
-                    <h3>쟁비서17<br><span>마라톤걸</span></h3>
-                </div>
-            </div>
-            <!-- -->
-
-            <!-- -->
-            <div class="study-item">
-                <div class="content">
-                    6
-                </div>
-                <div class="details">
-                    <div class="image">
-                        <img src="/static/image/profile/profile-18.png">
-                    </div>
-                    <h3>쟁비서18<br><span>마라톤걸</span></h3>
-                </div>
-            </div>
-            <!-- -->
-
-            <!-- -->
-            <div class="study-item">
-                <div class="content">
-                    6
-                </div>
-                <div class="details">
-                    <div class="image">
-                        <img src="/static/image/profile/profile-1.png">
-                    </div>
-                    <h3>쟁비서19<br><span>마라톤걸</span></h3>
-                </div>
-            </div>
-            <!-- -->
-
-            <!-- -->
-            <div class="study-item">
-                <div class="content">
-                    6
-                </div>
-                <div class="details">
-                    <div class="image">
-                        <img src="/static/image/profile/profile-1.png">
-                    </div>
-                    <h3>쟁비서20<br><span>마라톤걸</span></h3>
-                </div>
-            </div>
-            <!-- -->
 
 
         </div>

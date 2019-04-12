@@ -9,6 +9,7 @@ import com.studysiba.domain.common.UploadVO;
 import com.studysiba.domain.group.GroupBoardVO;
 import com.studysiba.domain.member.MemberVO;
 import com.studysiba.domain.member.PointVO;
+import com.studysiba.domain.study.StudyVO;
 import com.studysiba.mapper.board.BoardMapper;
 import com.studysiba.mapper.common.CommonMapper;
 import com.studysiba.mapper.group.GroupMapper;
@@ -341,6 +342,20 @@ public class CommonServiceImpl implements CommonService {
     @Override
     public List<MemberVO> connectedMemberList() {
         return memberMapper.connectedMemberList();
+    }
+
+    /*
+     *  스터디 리스트 조회
+     *  @Return 스터디 리스트 반환
+     */
+    @Override
+    public List<StudyVO> studyList() {
+        List<StudyVO> studyList = studyMapper.getAllStudyList();
+        for (int i = 0; i < studyList.size(); i++) {
+            String[] address = studyList.get(i).getStdAddress().split(" ");
+            studyList.get(i).setStdAddress(address[0] + " " + studyList.get(i).getStdPlace());
+        }
+        return studyList;
     }
 
 }

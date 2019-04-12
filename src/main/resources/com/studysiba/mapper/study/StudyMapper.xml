@@ -167,4 +167,28 @@
         WHERE STD_NO = #{stdNo} AND STD_ID = #{stdId}
     </update>
 
+    <!-- 모든 스터디 리스트 조회 -->
+    <select id="getAllStudyList" resultType="StudyVO">
+        SELECT STD_NO, STD_ID, STD_GROUP, STD_DIVIDE, STD_ADDRESS, STD_PLACE, STD_TITLE, STD_CONTENT,
+        STD_START, STD_END, STD_LIMIT, STD_LAT, STD_LNG, STD_AVAILABLE, STD_UPDATE, STD_REG,
+        CONCAT(ULD_UUID,'_',ULD_FILENAME) AS ULD_FILENAME,
+        STD_PERSONCOUNT,
+        MBR_NICK, MBR_PROFILE
+        FROM (
+                        SELECT * FROM STUDYBOARD
+                        ORDER BY STD_UPDATE DESC
+        ) AS STUDYBOARD
+        JOIN UPLOAD
+        ON ULD_FNO = STD_NO
+        JOIN (
+                    SELECT GRM_GNO, COUNT(*) AS STD_PERSONCOUNT
+                    FROM GROUPMEMBER
+                    GROUP BY GRM_GNO
+        ) GROUPMEMBER
+        ON GRM_GNO = STD_NO
+        JOIN MEMBER
+        ON MEMBER.MBR_ID = STD_ID
+        ORDER BY STD_UPDATE DESC
+    </select>
+
 </mapper>

@@ -4,6 +4,7 @@ import com.studysiba.domain.common.Criteria;
 import com.studysiba.domain.common.PageVO;
 import com.studysiba.domain.member.MemberVO;
 import com.studysiba.domain.member.PointVO;
+import com.studysiba.domain.study.StudyVO;
 import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -88,4 +89,10 @@ public interface CommonService {
      *  @Return 접속중인 멤버 리스트 반환
      */
     List<MemberVO> connectedMemberList();
+
+    /*
+     *  스터디 리스트 조회
+     *  @Return 스터디 리스트 반환
+     */
+    List<StudyVO> studyList();
 }
