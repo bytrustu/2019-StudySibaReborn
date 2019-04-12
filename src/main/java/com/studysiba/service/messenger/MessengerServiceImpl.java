@@ -1,6 +1,7 @@
 package com.studysiba.service.messenger;
 
 import com.studysiba.common.DataConversion;
+import com.studysiba.domain.common.StateVO;
 import com.studysiba.domain.messenger.MessageVO;
 import com.studysiba.mapper.messenger.MessengerMapper;
 import lombok.extern.log4j.Log4j;
@@ -21,6 +22,11 @@ public class MessengerServiceImpl implements MessengerService {
     @Autowired
     HttpSession httpSession;
 
+    /*
+     *  전체채팅 메세지 전송
+     *  @Param message, httpSession
+     *  @Return 전체채팅 메세지 정보 반환
+     */
     @Override
     public MessageVO sendPublicMessage(String message, HttpSession session) {
         if ( session.getAttribute("id") == null ) return null;
@@ -40,6 +46,15 @@ public class MessengerServiceImpl implements MessengerService {
         messageVO.setMsgDate(DataConversion.currentTimestamp());
         } else { return null; }
         return messageVO;
+    }
+
+    /*
+     *  전체채팅 마지막 메세지 조회
+     *  @return 전체채팅 마지막 메세지 반환
+     */
+    @Override
+    public MessageVO publicLastMessage() {
+        return messengerMapper.publicLastMessage();
     }
 
     /*
@@ -140,5 +155,49 @@ public class MessengerServiceImpl implements MessengerService {
         if ( !httpSession.getAttribute("id").toString().equals(id) ) return null;
         List<MessageVO> messageList = messengerMapper.getPrivateMemberList(id);
         return messageList;
+    }
+
+    /*
+     *  메세지 읽음 처리
+     *  @Param messageVO
+     */
+    @Override
+    public void updateReadMessage(MessageVO messageVO) {
+        messengerMapper.updateReadMessage(messageVO);
+    }
+
+    /*
+     *  회원확인조회
+     *  @Param id
+     *  @Return 회원확인조회에 대한 상태코드 반환
+     */
+    @Override
+    public StateVO isMember(String id) {
+        StateVO stateVO = new StateVO();
+        if ( httpSession.getAttribute("id") == null ){
+            stateVO.setStateCode("MESSENGER_AUTH_ERROR");
+            return stateVO;
+        }
+        if ( httpSession.getAttribute("id").toString().equals(id) ){
+            stateVO.setStateCode("MESSENGER_ME_ERROR");
+            return stateVO;
+        }
+        int isMember = messengerMapper.isMember(id);
+        if ( isMember == 1 ) {
+            stateVO.setStateCode("MESSENGER_FIND_SUCCESS");
+        } else {
+            stateVO.setStateCode("MESSENGER_FIND_ERROR");
+        }
+        return stateVO;
+    }
+
+    /*
+     *  닉네임으로 아이디 조회
+     *  @Param nick
+     *  @Return 닉네임으로 통한 아이디 반환
+     */
+    @Override
+    public String convertNickId(String nick) {
+        return messengerMapper.convertNickId(nick);
     }
 }

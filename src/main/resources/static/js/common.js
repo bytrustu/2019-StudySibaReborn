@@ -342,8 +342,12 @@ stateCode.set("GROUP_OUT_SUCCESS","그룹에서 탈퇴 되었습니다.");
 stateCode.set("GROUP_OUT_ERROR","그룹탈퇴에 실패 했습니다.");
 
 stateCode.set("GROUP_LOCATION_ERROR","스터디그룹 접근권한이 없습니다.");
-
 stateCode.set("ADMIN_LOCATION_ERROR","관리자 권한이 없습니다.");
+
+stateCode.set("MESSENGER_FIND_SUCCESS","님과 연결중 입니다.");
+stateCode.set("MESSENGER_ME_ERROR","자신과 연결 할 수 없습니다.");
+stateCode.set("MESSENGER_FIND_ERROR","존재하지 않는 회원 입니다.");
+stateCode.set("MESSENGER_AUTH_ERROR", "권한이 없습니다.");
 
 
 // KAKAO API

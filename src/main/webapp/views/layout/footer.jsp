@@ -657,19 +657,6 @@
         </div>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
     <!-- 스터디모달 이미지 -->
         <script type="text/javascript">
             $('.remove-image').on('click', function(){
@@ -794,6 +781,153 @@
     </c:if>
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- 메신저 -->
+
+    <!-- 채팅 리스트 -->
+    <div class="chat-window animated faster d-none">
+
+        <div class="chat-top">
+            <div class="messenger-common chat-prev">
+                    <img src="/static/image/common/prev.png">
+            </div>
+            <div class="top-button">
+                <div class="messenger-common top-btn top-listbtn"></div>
+                <div class="messenger-common top-btn top-invitebtn"></div>
+                <div class="messenger-common top-btn top-closebtn"></div>
+            </div>
+            <div class="top-title">전체</div>
+        </div>
+
+        <ul class="chat-message scrollbar scrollbar-warning force-overflow">
+
+        </ul>
+
+        <div class="chat-bottom">
+            <div class="chat-inputbox">
+                <input class="messenger-common chat-input" type="text">
+            </div>
+            <div class="messenger-common chat-sendbox">
+                <div class="chat-btntext">
+                    전송
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- 회원 리스트 -->
+    <div class="chat-list animated faster d-none">
+        <div class="chat-top">
+            <div class="top-button">
+                <div class="messenger-common top-btn top-listbtn"></div>
+                <div class="messenger-common top-btn top-invitebtn"></div>
+                <div class="messenger-common top-btn top-closebtn"></div>
+            </div>
+            <div class="top-title">시바톡</div>
+        </div>
+
+        <ul class="messenger-chatlist messenger-box scrollbar scrollbar-warning force-overflow">
+
+            <li class="messenger-common chat-content chat-left messenger-list messenger-public">
+                <div class="messenger-bg"></div>
+                    <div class="chat-profile">
+                        <img src="/static/image/profile/public.png" class="animated bounce slow infinite">
+                    </div>
+                <div class="messenger-infobox">
+                    <div class="messenger-pnick">
+                        전체채팅
+                    </div>
+                    <div class="messenger-commentbox">
+                        <div class="messenger-comment">
+
+                        </div>
+                    </div>
+                </div>
+            </li>
+
+            <div class="messenger-chattitle">
+                채팅 목록
+            </div>
+        </ul>
+    </div>
+
+    <!-- 검색창 -->
+    <div class="search-member animated faster d-none">
+        <div class="search-header chat-top">
+            <div class="top-button">
+                <div class="messenger-common search-closebtn"></div>
+            </div>
+            <div class="top-title">
+                회원검색
+            </div>
+        </div>
+        <div class="search-body">
+            <div class="search-inputbox">
+                <input type="text" id="search-input" class="search-input">
+                <label class="search-inputlable" for="search-input">닉네임</label>
+            </div>
+        </div>
+        <div class="search-footer">
+            <div class="messenger-common search-btnbox">
+                <div class="search-btntext">
+                검색
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- 메신져 끝 -->
+
+
+
+
         <!-- / 경로가 아닌경우 로그인/회원가입 모달 클릭시 -->
         <c:if test="${requireLogin eq true }">
             <script type="text/javascript">
@@ -828,8 +962,13 @@
 
 
 
+
+
+
+
     <div class="alert alert-danger" id="dangerMessage" style="display: none; z-index: 9999;"></div>
     <div class="alert alert-danger" id="messengerMessage"></div>
+    <div class="alert alert-primary" id="findUserMessage"></div>
 
 
         <script type="text/javascript" src="/static/js/lib/popper.min.js"></script>

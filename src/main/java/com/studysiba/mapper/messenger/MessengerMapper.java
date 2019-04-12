@@ -97,4 +97,24 @@ public interface MessengerMapper {
      *  @Return 메세지 읽음처리 여부 반환
      */
     int updateReadMessage(MessageVO messageVO);
+
+    /*
+     *  전체채팅 마지막 메세지 조회
+     *  @return 전체채팅 마지막 메세지 반환
+     */
+    MessageVO publicLastMessage();
+
+    /*
+     *  회원확인조회
+     *  @Param id
+     *  @Return 회원확인조회에 대한 상태코드 반환
+     */
+    int isMember(String id);
+
+    /*
+     *  닉네임으로 아이디 조회
+     *  @Param nick
+     *  @Return 닉네임으로 통한 아이디 반환
+     */
+    String convertNickId(String nick);
 }

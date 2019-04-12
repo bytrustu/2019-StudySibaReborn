@@ -40,7 +40,7 @@
                     <img src="/static/image/main/like.png">
                     <p>접속중 ~</p>
                 </div>
-                <div class="info-body login-box">
+                <div class="info-body login-box scrollbar scrollbar-warning force-overflow">
                     <div class="member-loginstate mt-3">
 
                         <!-- 유저 목록 시작 -->

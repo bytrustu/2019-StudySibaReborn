@@ -300,7 +300,15 @@
 }
 
 #messengerMessage{
-    z-index: 10002;
+    z-index: 10010;
+    position: fixed;
+    bottom: 459px;
+    right: 119px;
+    display: none;
+}
+
+#findUserMessage{
+    z-index: 10010;
     position: fixed;
     bottom: 459px;
     right: 119px;
@@ -428,3 +436,99 @@
         width: 77%
     }
 }
+
+
+
+
+/*
+        검색창
+ */
+
+.search-member{
+    height: auto;
+    width: 350px;
+    position: fixed;
+    bottom: 350px;
+    right: 47px;
+    z-index: 10003;
+    border-radius: 10px;
+    box-shadow: 0px 0px 100px 50px rgba(0, 0, 0, 0.15);
+}
+
+.search-header{
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.search-closebtn{
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 10px;
+    position: relative;
+    cursor: pointer;
+    background-color: #f5886e;
+}
+
+.search-body{
+    box-shadow: 0 1px 30px 3px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+    height: 130px;
+    padding: 55px 45px 0 45px;
+}
+
+.search-inputbox{
+    display: block;
+    height: 50px;
+    border-radius: 25px;
+    border: 1px solid #e7e8e9;
+    position: relative;
+    padding: 0 20px;
+    width: 100%;
+}
+
+.search-input{
+    border: none;
+    height: 100%;
+    box-sizing: border-box;
+    width: calc(100% - 40px);
+    position: absolute;
+    outline-width: 0;
+    color: gray;
+}
+
+.search-inputlable{
+    position: absolute;
+    top: -28px;
+    color: #bcbdc0;
+}
+
+.search-footer{
+    background-color: #ffffff;
+    height: 75px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    text-align: center;
+}
+
+.search-btnbox{
+    width: 100px;
+    height: 50px;
+    display: inline-block;
+    border-radius: 50px;
+    background-color: #ffce56;
+    border: 2px solid #ffce56;
+    color: #fff;
+    cursor: pointer;
+    transition: all 0.2s linear;
+    text-align: center;
+}
+
+.search-btntext{
+    font-size: 18px;
+    font-weight: 300;
+    display: inline-block;
+    line-height: 48px;
+}
+

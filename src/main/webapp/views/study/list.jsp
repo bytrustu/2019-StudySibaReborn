@@ -202,121 +202,105 @@
 
 
 
+<%--/*--%>
+ <%--*  메신저 기능--%>
+ <%--*  전체채팅, 개인채팅, 회원검색--%>
+ <%--*/--%>
+<%--<div class="chat-window animated faster d-none">--%>
 
-<div class="chat-window animated faster d-none">
+    <%--<div class="chat-top">--%>
+        <%--<div class="messenger-common chat-prev">--%>
+            <%--<img src="/static/image/common/prev.png">--%>
+        <%--</div>--%>
+        <%--<div class="top-button">--%>
+            <%--<div class="messenger-common top-btn top-listbtn"></div>--%>
+            <%--<div class="messenger-common top-btn top-invitebtn"></div>--%>
+            <%--<div class="messenger-common top-btn top-closebtn"></div>--%>
+        <%--</div>--%>
+        <%--<div class="top-title">전체</div>--%>
+    <%--</div>--%>
 
-    <div class="chat-top">
-        <div class="messenger-common chat-prev">
-            <img src="/static/image/common/prev.png">
-        </div>
-        <div class="top-button">
-            <div class="messenger-common top-btn top-listbtn"></div>
-            <div class="messenger-common top-btn top-invitebtn"></div>
-            <div class="messenger-common top-btn top-closebtn"></div>
-        </div>
-        <div class="top-title">전체</div>
-    </div>
+    <%--<ul class="chat-message scrollbar scrollbar-warning force-overflow">--%>
 
-    <ul class="chat-message scrollbar scrollbar-warning force-overflow">
-        <%--<li class="chat-content chat-left">--%>
-            <%--<div class="chat-info">--%>
-                <%--<div class="chat-nick">캄캄</div>--%>
-                <%--<div class="chat-date">04-15 02:15</div>--%>
+    <%--</ul>--%>
+
+    <%--<div class="chat-bottom">--%>
+        <%--<div class="chat-inputbox">--%>
+            <%--<input class="messenger-common chat-input" type="text">--%>
+        <%--</div>--%>
+        <%--<div class="messenger-common chat-sendbox">--%>
+            <%--<div class="chat-btntext">--%>
+                <%--전송--%>
             <%--</div>--%>
+        <%--</div>--%>
+    <%--</div>--%>
+
+<%--</div>--%>
+
+
+
+
+
+
+<%--<div class="chat-list animated faster d-none">--%>
+    <%--<div class="chat-top">--%>
+        <%--<div class="top-button">--%>
+            <%--<div class="messenger-common top-btn top-listbtn"></div>--%>
+            <%--<div class="messenger-common top-btn top-invitebtn"></div>--%>
+            <%--<div class="messenger-common top-btn top-closebtn"></div>--%>
+        <%--</div>--%>
+        <%--<div class="top-title">시바톡</div>--%>
+    <%--</div>--%>
+
+    <%--<ul class="messenger-chatlist messenger-box scrollbar scrollbar-warning force-overflow">--%>
+
+        <%--<li class="messenger-common chat-content chat-left messenger-list messenger-public">--%>
+            <%--<div class="messenger-bg"></div>--%>
             <%--<div class="chat-profile">--%>
-                <%--<img src="/static/image/profile/profile-3.png">--%>
-            <%--</div>--%>
-            <%--<div class="chat-textbox">--%>
-                <%--<div class="chat-text">--%>
-                    <%--ㅋㅋㅋㅋㅋㅋㅋㅋ--%>
-                <%--</div>--%>
-            <%--</div>--%>
-        <%--</li>--%>
-
-
-    </ul>
-
-    <div class="chat-bottom">
-        <div class="chat-inputbox">
-            <input class="messenger-common chat-input" type="text">
-        </div>
-        <div class="messenger-common chat-sendbox">
-            <div class="chat-btntext">
-                전송
-            </div>
-        </div>
-    </div>
-
-</div>
-
-
-
-
-
-
-<div class="chat-list animated faster d-none">
-
-    <div class="chat-top">
-        <div class="top-button">
-            <div class="messenger-common top-btn top-listbtn"></div>
-            <div class="messenger-common top-btn top-invitebtn"></div>
-            <div class="messenger-common top-btn top-closebtn"></div>
-        </div>
-        <div class="top-title">시바톡</div>
-    </div>
-
-    <ul class="messenger-chatlist messenger-box scrollbar scrollbar-warning force-overflow">
-
-
-        <li class="messenger-common chat-content chat-left messenger-list messenger-public">
-            <div class="messenger-bg"></div>
-            <div class="chat-profile">
-                <img src="/static/image/profile/public.png" class="animated bounce slow infinite">
-            </div>
-            <div class="messenger-infobox">
-                <div class="messenger-pnick">
-                    전체채팅
-                </div>
-                <div class="messenger-commentbox">
-                    <div class="messenger-comment">
-                        ㅎㅎㅎㅎㅎ
-                    </div>
-                </div>
-            </div>
-        </li>
-
-        <div class="messenger-chattitle">
-            채팅 목록
-        </div>
-
-       <%-- <li class="text-center mt-3 ">
-            <p>(⁎˃ᆺ˂)</p>
-            <p>대화중인 리스트가 없습니다 !</p>
-        </li>--%>
-
-        <%--<li class="messenger-common chat-content chat-left messenger-list" data-id="test1">--%>
-            <%--<div class="chat-profile">--%>
-                <%--<img src="/static/image/profile/profile-1.png">--%>
+                <%--<img src="/static/image/profile/public.png" class="animated bounce slow infinite">--%>
             <%--</div>--%>
             <%--<div class="messenger-infobox">--%>
-                <%--<div class="messenger-nick">--%>
-                    <%--캄캄1--%>
+                <%--<div class="messenger-pnick">--%>
+                    <%--전체채팅--%>
                 <%--</div>--%>
                 <%--<div class="messenger-commentbox">--%>
                     <%--<div class="messenger-comment">--%>
-                        <%--ㅎㅎㅎㅎㅎ--%>
-                    <%--</div>--%>
-                    <%--<div class="messenger-count">--%>
-                        <%--0--%>
+
                     <%--</div>--%>
                 <%--</div>--%>
             <%--</div>--%>
         <%--</li>--%>
 
+        <%--<div class="messenger-chattitle">--%>
+            <%--채팅 목록--%>
+        <%--</div>--%>
+
+    <%--</ul>--%>
 
 
-    </ul>
+<%--</div>--%>
 
 
-
-</div>
+<%--<div class="search-member animated faster d-none">--%>
+    <%--<div class="search-header chat-top">--%>
+        <%--<div class="top-button">--%>
+            <%--<div class="messenger-common search-closebtn"></div>--%>
+        <%--</div>--%>
+        <%--<div class="top-title">--%>
+            <%--회원검색--%>
+        <%--</div>--%>
+    <%--</div>--%>
+    <%--<div class="search-body">--%>
+        <%--<div class="search-inputbox">--%>
+            <%--<input type="text" id="search-input" class="search-input">--%>
+            <%--<label class="search-inputlable" for="search-input">닉네임</label>--%>
+        <%--</div>--%>
+    <%--</div>--%>
+    <%--<div class="search-footer">--%>
+        <%--<div class="messenger-common search-btnbox">--%>
+            <%--<div class="search-btntext">--%>
+                <%--검색--%>
+            <%--</div>--%>
+        <%--</div>--%>
+    <%--</div>--%>
+<%--</div>--%>

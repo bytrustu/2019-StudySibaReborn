@@ -11,6 +11,10 @@ let connectFromId='';
 let sendButton = $('.chat-sendbox');
 let messengerListTitle = $('.messenger-chattitle');
 let messengerList = $('.messenger-chatlist');
+let searchBox = $('.search-member');
+let searchClose = $('.search-closebtn');
+let searchInput = $('.search-input');
+
 
 $(document).ready(function(){
     /*
@@ -31,7 +35,6 @@ $(document).ready(function(){
             }
 
             if ( !chatWindow.hasClass('d-none') && chatWindow.find('.chat-message').hasClass('public') ) {
-                console.log('public');
                 appendMessage(msgInfo.body,isScroll);
             } else if ( !chatList.hasClass('d-none') ) {
                 messengerPublicBox.html(msgInfo.body.msgText);
@@ -43,7 +46,7 @@ $(document).ready(function(){
     let sockPrivate = new SockJS("/private");
     if ( connectId != '' ) {
         privateClient = Stomp.over(sockPrivate);
-        // privateClient.debug = null;
+        privateClient.debug = null;
         privateClient.connect({}, function(){
             privateClient.subscribe(`/topic/private/${connectId}`, function(msg){
                 let msgInfo = JSON.parse(msg.body);
@@ -57,8 +60,8 @@ $(document).ready(function(){
                 }
 
                 if ( !chatWindow.hasClass('d-none') && chatWindow.find('.chat-message').hasClass('private') && msgInfo.body.msgFrom == connectFromId ) {
-                    console.log('private');
                     appendMessage(msgInfo.body,isScroll);
+                    updateReadMessage(msgInfo.body);
                 } else if ( !chatList.hasClass('d-none') ) {
                     // 연락온 대상의 아이디가 리스트에 있는지 확인
                     let isInclude = isIncludeTarget(msgInfo.body.msgFrom);
@@ -85,7 +88,8 @@ $(document).ready(function(){
         let target = '';
         let lastText = '';
         let targetClass = new Set()
-            .add('messenger-btn').add('messenger-list').add('top-listbtn').add('top-invitebtn').add('top-closebtn').add('chat-prev').add('chat-sendbox').add('chat-input');
+            .add('messenger-btn').add('messenger-list').add('top-listbtn').add('top-invitebtn').add('search-closebtn')
+            .add('top-closebtn').add('chat-prev').add('chat-sendbox').add('chat-input').add('search-btnbox');
         for ( const className of targetClass ) {
             if ( checkIncludes(element,className) ){
                 target = className;
@@ -99,6 +103,12 @@ $(document).ready(function(){
                 chatList.addClass('d-none');
                 chatList.toggleClass('d-none').addClass('flipInY');
                 appendMemberListModule();
+                // 전채채팅 마지막 메세지
+                publicLastMessage()
+                    .then( (data) => {
+                        messengerPublicBox.html(data.msgText);
+                    }).catch( (error) => {
+                });
                 break;
                 
                 // 메신저 리스트 클릭시
@@ -108,6 +118,7 @@ $(document).ready(function(){
                 // 전체채팅 일 경우
                 if ( $(this).attr('class').includes('messenger-public') ) {
                     messageContainer.addClass('public');
+                    // 전체 메세지 리스트 조회
                     publicMessageList()
                         .then( (data) => {
                             messageContainer.html('');
@@ -127,27 +138,31 @@ $(document).ready(function(){
                     connectFromId = targetId;
                     chatTitle.html(targetNick);
                     sendButton.attr('data-id',targetId);
+                    // 개인 메세지 리스트 조회
                     privateMessageList(targetId)
                         .then( (data) => {
                             $.each(data, (index,item) => {
                                 appendMessage(item,true);
                             });
                         }).catch( (error) =>{
-                            console.log(error);
                     });
-
                 }
-                // messageContainer.scrollTop(messageContainer[0].scrollHeight);
+
+                if ( connectId != '' ) {
+                    setTimeout(()=>{messageInput.focus();},1000);
+                }
 
                 break;
                 // 이전 버튼 클릭시
             case 'chat-prev' :
+                // 가장 마지막 메세지를 남긴말로 설정
+                if ( messageContainer.hasClass('public') ) {
+                    lastText = $('.chat-window .chat-text').last().html();
+                    $('.messenger-public .messenger-comment').html(lastText);
+                }
                 chatWindow.toggleClass('d-none');
                 chatList.toggleClass('d-none').addClass('fadeIn');
                 messageContainer.removeClass('public').removeClass('private');
-                // 가장 마지막 메세지를 남긴말로 설정
-                lastText = $('.chat-window .chat-text').last().html();
-                $('.messenger-public .messenger-comment').html(lastText);
                 chatTitle.html('');
                 messageContainer.html('');
                 connectFromId = '';
@@ -158,14 +173,14 @@ $(document).ready(function(){
             case 'top-listbtn' :
                 let isChatList = $(this).parent().parent().parent().attr('class').includes('chat-list');
                 if ( isChatList ) return false;
-                chatWindow.toggleClass('d-none');
-                chatList.toggleClass('d-none').addClass('fadeIn');
-                messageContainer.removeClass('public').removeClass('private');
                 // 가장 마지막 메세지를 남긴말로 설정
-                if ( messageContainer.attr('class').includes('public') ) {
+                if ( messageContainer.hasClass('public') ) {
                     lastText = $('.chat-window .chat-text').last().html();
                     $('.messenger-public .messenger-comment').html(lastText);
                 }
+                chatWindow.toggleClass('d-none');
+                chatList.toggleClass('d-none').addClass('fadeIn');
+                messageContainer.removeClass('public').removeClass('private');
                 chatTitle.html('');
                 messageContainer.html('');
                 connectFromId = '';
@@ -174,11 +189,46 @@ $(document).ready(function(){
                 break
             // 상단 초대 버튼 클릭시
             case 'top-invitebtn' :
+                if ( connectId == '' ){
+                    checkLogined();
+                    return false;
+                }
+                searchBox.toggleClass('d-none');
+                searchBox.removeClass('fadeOutDown').addClass('fadeInUp');
+                searchInput.focus();
+                enterPressAction('search-input','search-btnbox');
+                break;
+                // 검색창 검색시
+            case 'search-btnbox' :
+                let nick = searchInput.val();
+                if ( nick == '' ) {
+                    messengerAlert('닉네임을 입력해주세요.',1500);
+                    return false;
+                }
+                searchInput.val('');
+                convertNickId(nick)
+                    .then( (data) => {
+                        console.log(`아이디 조회 : `+data);
+                        connectTarget(data,nick);
+                    }).catch( (error) => {
+                    messengerAlert('존재하지 않는 회원 입니다.',1500);
+                });
+                break;
+                // 회원 검색 닫기 클릭시
+            case 'search-closebtn' :
+                searchBox.removeClass('fadeInUp').addClass('fadeOutDown');
+                setTimeout(()=>{
+                    searchBox.toggleClass('d-none');
+                    messageInput.focus();
+                    },500);
                 break;
                 // 상단 닫기 버튼 클릭시
             case 'top-closebtn' :
                 chatWindow.addClass('flipOutY');
                 chatList.addClass('flipOutY');
+                if ( !searchBox.hasClass('d-none') ){
+                    searchBox.toggleClass('d-none').removeClass('fadeInUp').removeClass('fadeOutDown');
+                }
                 setTimeout(()=>{
                     chatWindow.addClass('d-none');
                     chatList.addClass('d-none');
@@ -198,7 +248,6 @@ $(document).ready(function(){
                         sendMessageInfo(targetId)
                             .then( (data) => {
                                 data.msgText = message;
-                                console.log(data);
                                 appendMessage(data,true)
                             }).catch( (error) => {
                         });
@@ -227,9 +276,14 @@ $(document).ready(function(){
     }
 
 
+    // ESC 버튼 메신저 닫기
     $(document).keyup(function(e) {
-        // esc 버튼 클릭시
+        // 회원검색이 열려있을경우 먼저 회원검색부터 닫기
         if (e.keyCode == 27) {
+            if ( !searchBox.hasClass('d-none') ){
+                searchClose.click();
+                return false;
+            }
             // 메신저가 열려 있는 경우에만 이벤트 실행
             if ( !checkIncludes($('.chat-list'),'d-none') || !checkIncludes($('.chat-window'),'d-none') ) {
                 $('.top-closebtn').click();
@@ -237,8 +291,106 @@ $(document).ready(function(){
         }
     });
 
-
+    
+    // end ready
 });
+
+
+// 닉네임으로 아이디 조회
+let convertNickId = (nick) => {
+    return new Promise( (resolve, reject) => {
+        $.ajax({
+            type : 'GET',
+            url : `/messenger/convert/${nick}`,
+            contentType : 'application/json; charset=utf-8',
+            success : (data) => {
+                console.log(data);
+                resolve(data);
+            },
+            error : (error) => {
+                reject(error);
+            }
+        });
+    })
+}
+
+// 회원이 있는지 여부 조회
+let existingMember = (id) => {
+    return new Promise( (resolve, reject) => {
+        $.ajax({
+            type : 'GET',
+            url : `/messenger/get/ismember?id=${id}`,
+            dataType : 'json',
+            contentType : 'application/json; charset=utf-8',
+            success : (data) => {
+                resolve(data);
+            },
+            error : (error) => {
+                reject(error);
+            }
+        });
+    })
+}
+
+
+let connectTarget = (id,nick) => {
+    let isError = false;
+    existingMember(id)
+        .then( (data) => {
+            let text = stateCode.get(data.stateCode);
+            if ( data.stateCode == 'MESSENGER_FIND_SUCCESS') {
+                if ( !searchBox.hasClass('d-none') ) {
+                    searchBox.addClass('d-none');
+                }
+            } else {
+                messengerAlert(text,1500);
+                isError = true;
+            }
+        }).catch( (error) => {
+            isError = true;
+    }).finally(()=>{
+        if ( isError ) return false;
+        initClass();
+        if ( !chatWindow.hasClass('d-none') ) {
+            chatWindow.addClass('fadeOut');
+        }
+        if ( !chatList.hasClass('d-none') ) {
+            chatList.addClass('fadeOut');
+        }
+        setTimeout(()=>{
+            chatList.removeClass('fadeOut').addClass('d-none');
+            chatWindow.removeClass('fadeOut').removeClass('d-none').addClass('fadeIn');
+            messageContainer.addClass('private').html('');
+            connectFromId = id;
+            chatTitle.html(nick);
+            sendButton.attr('data-id',id);
+            privateMessageList(id)
+                .then( (data) => {
+                    $.each(data, (index,item) => {
+                        appendMessage(item,true);
+                    });
+                }).catch( (error) =>{
+            });
+        },500);
+
+    });
+
+
+}
+
+// 메세지 읽음 처리
+let updateReadMessage = (memberInfo) => {
+    $.ajax({
+        type : 'PUT',
+        url : '/messenger/update/read',
+        data : JSON.stringify(memberInfo),
+        contentType : 'application/json; charset=utf-8',
+        success : (data) => {
+        },
+        error : (error) => {
+        }
+    })
+}
 
 
 // 채팅목록에 해당 아이디가 포함 되어 있는지 확인
@@ -250,7 +402,6 @@ let isIncludeTarget = (id) =>{
             isInclude = true;
         }
     }
-    console.log(`${id} 의 값 ${isInclude}`);
     return isInclude;
 }
 
@@ -308,6 +459,9 @@ let appendMemberList = (messageInfo) => {
                                             <div class="messenger-comment">
                                                 ${messageInfo.msgText}
                                             </div>
+                                            <div class="messenger-delete">
+                                                <img src="/static/image/common/information.png">
+                                            </div>
                                             <div class="messenger-count">
                                                 ${messageInfo.msgCount}
                                             </div>
@@ -316,6 +470,24 @@ let appendMemberList = (messageInfo) => {
                                 </li>
                                 `;
     messengerList.append(appendList);
+}
+
+// 전체채팅 마지막 정보 조회
+let publicLastMessage = () =>{
+    return new Promise( (resolve, reject) => {
+        $.ajax({
+            type : 'GET',
+            url : `/messenger/get/publiclast`,
+            dataType : 'json',
+            contentType : 'application/json; charset=utf-8',
+            success : (data) => {
+                resolve(data);
+            },
+            error : (error) => {
+                reject(error);
+            }
+        });
+    })
 }
 
 // 자신의 채팅 멤버리스트 조회
@@ -446,6 +618,7 @@ let checkIncludes = (element,className) => {
 let initClass = () =>{
     chatWindow.removeClass('flipInY').removeClass('flipOutY').removeClass('fadeIn');
     chatList.removeClass('flipInY').removeClass('flipOutY').removeClass('fadeIn');
+    searchBox.removeClass('fadeInUp').removeClass('fadeOutDown');
 }
 
 // 로그인 체크
@@ -461,6 +634,16 @@ let checkLogined = () =>{
 let messengerAlert= (message, delay) => {
     var alert = $('#messengerMessage').alert();
     $('#messengerMessage').html('<strong>' + message + '</strong>');
+    alert.show();
+    window.setTimeout(function () {
+        alert.hide()
+    }, delay);
+}
+
+// 회원검색 alert
+let findUserAlert= (message, delay) => {
+    var alert = $('#findUserMessage').alert();
+    $('#findUserMessage').html('<strong>' + message + '</strong>');
     alert.show();
     window.setTimeout(function () {
         alert.hide()

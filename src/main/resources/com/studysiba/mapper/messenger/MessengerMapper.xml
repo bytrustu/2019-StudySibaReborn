@@ -72,6 +72,15 @@
         ON MEMBER.MBR_ID = MESSAGE.MSG_FROM
     </select>
 
+    <!-- 전체채팅 마지막 메세지 조회 -->
+    <select id="publicLastMessage" resultType="MessageVO">
+      SELECT MSG_NO, MSG_ROOM, MSG_TYPE, MSG_FROM, MSG_TO, MSG_TEXT, MSG_RECEIVE, MSG_DELETE, MSG_DATE
+      FROM MESSAGE
+      WHERE MSG_TYPE='public'
+      ORDER BY MSG_NO DESC
+      LIMIT 0,1
+    </select>
+
     <!-- 개인채팅 방번호 확인 여부 -->
     <select id="checkPrivateRoomId" parameterType="MessageVO" resultType="int">
          SELECT COUNT(*) FROM ROOM
@@ -122,7 +131,7 @@
 	                  MBR_NICK, MBR_PROFILE
 	                  FROM (
 						            SELECT * FROM ROOM
-						            WHERE ( ROOM_FRUSER = 'TEST1' AND ROOM_FRSTATE = 1 ) OR ( ROOM_SEUSER = 'TEST1' AND ROOM_SESTATE = 1 )
+						            WHERE ( ROOM_FRUSER = #{id} AND ROOM_FRSTATE = 1 ) OR ( ROOM_SEUSER = #{id} AND ROOM_SESTATE = 1 )
       ) ROOM
       JOIN (
                   SELECT * FROM (
@@ -134,7 +143,7 @@
       ) MESSAGE
 	  ON MESSAGE.MSG_ROOM = ROOM_NO
       LEFT JOIN ( SELECT MSG_ROOM, COUNT(*) AS MSG_COUNT FROM MESSAGE
-                          WHERE MSG_FROM = #{id} AND MSG_RECEIVE = 1
+                          WHERE MSG_TO = #{id} AND MSG_RECEIVE = 1
                           GROUP BY MSG_ROOM
       ) MSGCOUNT
 	  ON ROOM.ROOM_NO = MSGCOUNT.MSG_ROOM
@@ -147,8 +156,20 @@
     <update id="updateReadMessage" parameterType="MessageVO">
         UPDATE MESSAGE
         SET MSG_RECEIVE = 0
-        WHERE MSG_FROM = #{msgTo} AND MSG_TO = #{msgFrom} AND MSG_RECEIVE = 1
+        WHERE MSG_FROM = #{msgFrom} AND MSG_TO = #{msgTo} AND MSG_RECEIVE = 1
     </update>
+
+    <!-- 회원확인조회 -->
+    <select id="isMember" parameterType="String" resultType="int">
+        SELECT COUNT(*) FROM MEMBER
+        WHERE NOT MBR_TYPE IN('NONE') AND MBR_ID = #{id}
+    </select>
+
+    <!-- 아이디로 닉네임 조회 -->
+    <select id="convertNickId" parameterType="String" resultType="String">
+        SELECT MBR_ID FROM MEMBER
+        WHERE MBR_NICK = #{nick}
+    </select>
 
 
 
