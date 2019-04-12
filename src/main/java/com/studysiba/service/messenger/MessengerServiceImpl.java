@@ -3,6 +3,7 @@ package com.studysiba.service.messenger;
 import com.studysiba.common.DataConversion;
 import com.studysiba.domain.common.StateVO;
 import com.studysiba.domain.messenger.MessageVO;
+import com.studysiba.domain.messenger.RoomVO;
 import com.studysiba.mapper.messenger.MessengerMapper;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,6 +86,8 @@ public class MessengerServiceImpl implements MessengerService {
 
         int messageState = messengerMapper.sendMessage(messageVO);
         if ( messageState == 1 ) {
+            // 활성화 여부
+            isEnable(messageVO.getMsgFrom(), messageVO.getMsgTo());
             messageVO.setMsgCount(messengerMapper.getUnReadCount(messageVO));
             messageVO.setMbrNick((String) session.getAttribute("nick"));
             messageVO.setMbrProfile((String) session.getAttribute("profile"));
@@ -199,5 +202,51 @@ public class MessengerServiceImpl implements MessengerService {
     @Override
     public String convertNickId(String nick) {
         return messengerMapper.convertNickId(nick);
+    }
+
+    /*
+     *  개인채팅 비활성화
+     *  @Param id
+     *  @Return 개인채팅 비활성화 여부 반환
+     */
+    @Override
+    public StateVO disableMember(String id) {
+        StateVO stateVO = new StateVO();
+        stateVO.setStateCode("MESSENGER_DISABLE_ERROR");
+        if ( httpSession.getAttribute("id") == null ) return stateVO;
+        String myId = (String) httpSession.getAttribute("id");
+        RoomVO roomVO = new RoomVO();
+        roomVO.setRoomFrUser(myId);
+        roomVO.setRoomSeUser(id);
+        roomVO = messengerMapper.getRoomInfo(roomVO);
+        if ( roomVO.getRoomFrUser().equals(myId) ) {
+            roomVO.setIsChecked(1);
+        } else {
+            roomVO.setIsChecked(2);
+        }
+        int isDisable = messengerMapper.disableMember(roomVO);
+        if ( isDisable == 1 ) {
+            stateVO.setStateCode("MESSENGER_DISABLE_SUCCESS");
+        }
+        return stateVO;
+    }
+
+
+    /*
+     *  개인채팅 활성화 여부 체크후 비활성화 일경우 활성화 전환
+     *  @Param myId, otherId
+     *  @Return 활성화 여부 반환
+     */
+    private boolean isEnable(String myId, String otherId){
+        RoomVO roomVO = new RoomVO();
+        roomVO.setRoomFrUser(myId);
+        roomVO.setRoomSeUser(otherId);
+        roomVO = messengerMapper.getRoomInfo(roomVO);
+        if ( roomVO.getRoomFrState() == 1 && roomVO.getRoomSeState() == 1 ) {
+            return true;
+        }
+        int isEnable = messengerMapper.enableMember(roomVO);
+        if ( isEnable == 1 ) return true;
+        else return false;
     }
 }

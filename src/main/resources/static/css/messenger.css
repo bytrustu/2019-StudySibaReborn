@@ -428,6 +428,24 @@
     padding-top: 20px;
 }
 
+.messenger-list:hover .messenger-delete{
+    display: block;
+    transform: scale(1.005);
+    transition: all 0.3s ease-in-out;
+}
+
+.messenger-delete{
+    position: fixed;
+    right: 288px;
+    bottom: 54px;
+    z-index: 10020;
+    display: none;
+}
+
+.messenger-delete img {
+    width: 20px;
+    height: 20px;
+}
 
 @media(min-width: 415px){
     .messenger-infobox{
@@ -435,6 +453,10 @@
         margin-left: 20px;
         width: 77%
     }
+}
+
+@media(min-width: 430px) {
+
 }
 
 
@@ -531,4 +553,5 @@
     display: inline-block;
     line-height: 48px;
 }
+
 

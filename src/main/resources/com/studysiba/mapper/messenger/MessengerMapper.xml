@@ -171,6 +171,36 @@
         WHERE MBR_NICK = #{nick}
     </select>
 
+    <!-- 채팅방 정보 조회 -->
+    <select id="getRoomInfo" parameterType="RoomVO" resultType="RoomVO">
+        SELECT ROOM_NO, ROOM_FRUSER, ROOM_FRSTATE, ROOM_SEUSER, ROOM_SESTATE
+        FROM ROOM
+        WHERE ( ROOM_FRUSER = #{roomFrUser} AND ROOM_SEUSER = #{roomSeUser} ) OR ( ROOM_SEUSER = #{roomFrUser} AND ROOM_FRUSER = #{roomSeUser} )
+    </select>
+
+    <!-- 개인채팅 비활성화 -->
+    <update id="disableMember" parameterType="RoomVO">
+        UPDATE ROOM
+        <choose>
+            <when test="isChecked == 1">
+                SET ROOM_FRSTATE = 0
+                WHERE ROOM_NO = #{roomNo}
+            </when>
+            <when test="isChecked == 2">
+                SET ROOM_SESTATE = 0
+                WHERE ROOM_NO = #{roomNo}
+            </when>
+        </choose>
+    </update>
+
+
+    <!-- 개인채팅 활성화 -->
+    <update id="enableMember" parameterType="RoomVO">
+        UPDATE ROOM
+        SET ROOM_FRSTATE = 1, ROOM_SESTATE = 1
+        WHERE ROOM_NO = #{roomNo}
+    </update>
+
 
 
 

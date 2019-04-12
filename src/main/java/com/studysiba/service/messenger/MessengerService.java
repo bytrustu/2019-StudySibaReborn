@@ -75,4 +75,11 @@ public interface MessengerService {
      *  @Return 닉네임으로 통한 아이디 반환
      */
     String convertNickId(String nick);
+
+    /*
+     *  개인채팅 비활성화
+     *  @Param id
+     *  @Return 개인채팅 비활성화 여부 반환
+     */
+    StateVO disableMember(String id);
 }

@@ -1,7 +1,6 @@
 package com.studysiba.controller;
 
 import com.studysiba.domain.common.StateVO;
-import com.studysiba.domain.group.GroupMessageVO;
 import com.studysiba.domain.messenger.MessageVO;
 import com.studysiba.service.messenger.MessengerService;
 import lombok.extern.log4j.Log4j;
@@ -115,6 +114,13 @@ public class MessengerController {
         messengerService.updateReadMessage(messageVO);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @PutMapping(value="/disable/{id}", consumes = "application/json", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    public ResponseEntity<Void> disableMember(@PathVariable("id") String id){
+        StateVO stateVO = messengerService.disableMember(id);
+        return stateVO.getStateCode().contains("SUCCESS") ? new ResponseEntity<>(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
 
     /*
      *  닉네임으로 아이디 조회

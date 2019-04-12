@@ -19,4 +19,6 @@ public class RoomVO extends MemberVO {
     private String roomSeUser;
     // 방 등록 유저2 상태
     private int roomSeState;
+    // 체크
+    private int isChecked;
 }

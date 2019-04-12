@@ -82,7 +82,8 @@ $(document).ready(function(){
     enterPressAction('chat-input','chat-sendbox');
 
     // 메신저 공통 버튼 클릭시
-    $(document).on('click','.messenger-common', function(){
+    $(document).on('click','.messenger-common', function(e){
+        e.stopPropagation();
         initClass();
         let element = $(this);
         let target = '';
@@ -202,14 +203,13 @@ $(document).ready(function(){
             case 'search-btnbox' :
                 let nick = searchInput.val();
                 if ( nick == '' ) {
-                    messengerAlert('닉네임을 입력해주세요.',1500);
                     return false;
                 }
                 searchInput.val('');
                 convertNickId(nick)
                     .then( (data) => {
-                        console.log(`아이디 조회 : `+data);
                         connectTarget(data,nick);
+                        messageInput.focus();
                     }).catch( (error) => {
                     messengerAlert('존재하지 않는 회원 입니다.',1500);
                 });
@@ -291,9 +291,39 @@ $(document).ready(function(){
         }
     });
 
+
+    $(document).on('click', '.messenger-delete', function(){
+        let memberId = $('.messenger-delete').parents('.messenger-list').attr('data-id');
+        if ( memberId == '') return false;
+        disableMember(memberId)
+            .then( (data) => {
+                $(this).parents('.messenger-list').remove();
+            }).catch( (error) => {
+        });
+
+        return false;
+    });
+
     
     // end ready
 });
+
+// 회원 비활성화
+let disableMember = (id) => {
+    return new Promise( (resolve, reject) => {
+        $.ajax({
+            type : 'PUT',
+            url : `/messenger/disable/${id}`,
+            contentType : 'application/json; charset=utf-8',
+            success : (data) => {
+                resolve(data);
+            },
+            error : (error) => {
+                reject(error);
+            }
+        });
+    })
+}
 
 
 // 닉네임으로 아이디 조회
@@ -304,7 +334,6 @@ let convertNickId = (nick) => {
             url : `/messenger/convert/${nick}`,
             contentType : 'application/json; charset=utf-8',
             success : (data) => {
-                console.log(data);
                 resolve(data);
             },
             error : (error) => {
@@ -349,7 +378,10 @@ let connectTarget = (id,nick) => {
         }).catch( (error) => {
             isError = true;
     }).finally(()=>{
-        if ( isError ) return false;
+        if ( isError ) {
+            searchInput.focus();
+            return false;
+        }
         initClass();
         if ( !chatWindow.hasClass('d-none') ) {
             chatWindow.addClass('fadeOut');
@@ -460,7 +492,7 @@ let appendMemberList = (messageInfo) => {
                                                 ${messageInfo.msgText}
                                             </div>
                                             <div class="messenger-delete">
-                                                <img src="/static/image/common/information.png">
+                                                <img src="/static/image/common/member-delete.png">
                                             </div>
                                             <div class="messenger-count">
                                                 ${messageInfo.msgCount}

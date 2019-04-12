@@ -1,6 +1,7 @@
 package com.studysiba.mapper.messenger;
 
 import com.studysiba.domain.messenger.MessageVO;
+import com.studysiba.domain.messenger.RoomVO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.ArrayList;
@@ -117,4 +118,25 @@ public interface MessengerMapper {
      *  @Return 닉네임으로 통한 아이디 반환
      */
     String convertNickId(String nick);
+
+    /*
+     *  개인채팅 비활성화
+     *  @Param roomVO
+     *  @Return 개인채팅 비활성화 여부 반환
+     */
+    int disableMember(RoomVO roomVO);
+
+    /*
+     *  개인채팅 활성화
+     *  @Param roomVO
+     *  @Return 개인채팅 활성화 여부 반환
+     */
+    int enableMember(RoomVO roomVO);
+
+    /*
+     *  채팅방 정보 조회
+     *  @Param roomVO
+     *  @Return 채팅방 정보 반환
+     */
+    RoomVO getRoomInfo(RoomVO roomVO);
 }

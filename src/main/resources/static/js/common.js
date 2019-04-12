@@ -365,8 +365,9 @@ let initElement = (className) => {
 // 엔터키 적용
 let enterPressAction = (inputName, targetName) => {
     $(`.${inputName}`).keyup( function(e) {
-        if ( e.keyCode == 13 )
+        if ( e.keyCode == 13 ) {
             $(`.${targetName}`).click();
+        }
     });
 }
 
