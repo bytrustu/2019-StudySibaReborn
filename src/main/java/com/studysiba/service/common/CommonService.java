@@ -95,4 +95,10 @@ public interface CommonService {
      *  @Return 스터디 리스트 반환
      */
     List<StudyVO> studyList();
+
+    /*
+     *  스터디시바 회원수 및 방문수 조회
+     *  @Return 회원수 방문수 반환
+     */
+    HashMap<String,Integer> memberCount();
 }

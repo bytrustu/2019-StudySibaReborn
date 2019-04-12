@@ -885,7 +885,7 @@
                     </div>
                     <div class="messenger-commentbox">
                         <div class="messenger-comment">
-
+                            ...
                         </div>
                     </div>
                 </div>

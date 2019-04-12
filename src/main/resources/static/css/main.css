@@ -756,7 +756,7 @@ body {
 }
 
 @media(min-width : 380px) {
-    middleline > .row > .middleline-logo {
+    .middleline > .row > .middleline-logo {
         height: 80px;
         margin: auto 0;
         width: 150px;
@@ -765,9 +765,10 @@ body {
     .middleline > .row > span {
         display: inline-block;
         color: white;
-        font-size: 25px;
+        font-size: 15px;
         line-height: 80px;
     }
+
 
     .middleline > .row > span:nth-of-type(2) {
         font-size: 20px;
@@ -777,7 +778,7 @@ body {
 }
 
 @media(min-width: 586px) {
-    middleline > .row > .middleline-logo {
+    .middleline > .row > .middleline-logo {
         height: 80px;
         margin: auto 0;
         width: 200px;
@@ -786,7 +787,7 @@ body {
     .middleline > .row > span {
         display: inline-block;
         color: white;
-        font-size: 15px;
+        font-size: 25px;
         line-height: 80px;
     }
 

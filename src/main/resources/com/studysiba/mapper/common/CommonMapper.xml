@@ -26,4 +26,11 @@
         WHERE ULD_FNO = #{uldFno}
     </select>
 
+    <!-- 회원수, 방문자수 카운트 -->
+    <select id="memberCount" resultType="HashMap">
+        SELECT
+          ( SELECT COUNT(*) FROM MEMBER ) MCNT,
+          ( SELECT COUNT(*) FROM VISIT ) VCNT
+    </select>
+
 </mapper>

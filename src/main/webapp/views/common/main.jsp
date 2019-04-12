@@ -164,11 +164,10 @@
     <div class="middleline">
         <div class="row middle-box">
             <img src="/static/image/main/middletop-text.png" class="middleline-logo">
-            <span>는 </span> <span class="middle-text">333</span> <span>명의 회원분들이</span>
+            <span>는 </span> <span class="middle-text">${count.MCNT}</span> <span>명의 회원분들이</span>
         </div>
         <div class="row">
-            <span>총</span> <span class="middle-text">2019</span> <span>회 방문하셨습니다. <i
-                class="fas fa-grin-tears"></i></span>
+            <span>총</span> <span class="middle-text">${count.VCNT}</span> <span>회 방문하셨습니다. <i class="fas fa-grin-tears"></i></span>
         </div>
     </div>
 </div>

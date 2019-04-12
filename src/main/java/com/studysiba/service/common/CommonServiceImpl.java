@@ -358,4 +358,13 @@ public class CommonServiceImpl implements CommonService {
         return studyList;
     }
 
+    /*
+     *  스터디시바 회원수 및 방문수 조회
+     *  @Return 회원수 방문수 반환
+     */
+    @Override
+    public HashMap<String, Integer> memberCount() {
+        return  commonMapper.memberCount();
+    }
+
 }

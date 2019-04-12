@@ -39,17 +39,25 @@ public class CommonController {
     @GetMapping("/")
     public String moveMain(Model model, @RequestParam(value = "requireLogin", required = false, defaultValue = "false") boolean requireLogin,
                                                                 @RequestParam(value = "requireAdmin", required = false, defaultValue = "false") boolean requireAdmin) throws Exception {
+        // 랭킹 리스트
         List<PointVO> userRankingList = commonService.viewUserTotalRanking();
         commonService.isRequireAdmin(requireAdmin);
         model.addAttribute("rank", userRankingList);
-        model.addAttribute("requireLogin", requireLogin);
-        model.addAttribute("requireAdmin", requireAdmin);
 
+        // 접속자 현황
         List<MemberVO> connectMemberList = commonService.connectedMemberList();
         model.addAttribute("connect",connectMemberList);
 
+        // 슬라이드 스터디 리스트
         List<StudyVO> studyList = commonService.studyList();
         model.addAttribute("study",studyList);
+
+        // 회원수, 방문수 카운트
+        HashMap<String, Integer> memberCount = commonService.memberCount();
+        model.addAttribute("count", memberCount);
+
+        model.addAttribute("requireLogin", requireLogin);
+        model.addAttribute("requireAdmin", requireAdmin);
 
         return "common/main";
     }
