@@ -94,6 +94,8 @@ public class BoardServiceImpl implements BoardService {
         boardVO.setBrdType(menu);
         boardVO.setBrdNo(no);
         BoardVO postVO = boardMapper.getPostOne(boardVO);
+        postVO.setBrdTitle(DataConversion.changeOriginTag(postVO.getBrdTitle()));
+        postVO.setBrdContent(DataConversion.changeOriginTag(postVO.getBrdContent()));
         // 해당 글이 삭제 된 글인 경우
         try {
             if (postVO.getBrdAvailable() == 0) {

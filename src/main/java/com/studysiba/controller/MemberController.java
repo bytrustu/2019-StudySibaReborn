@@ -217,9 +217,7 @@ public class MemberController {
     @ResponseBody
     @PutMapping(value="/connect/{mbrId}")
     public ResponseEntity<Void> isConnectUpdate(@PathVariable("mbrId") String mbrId){
-        log.info(mbrId);
         boolean isConnectUpdate = memberService.isConnectUpdate(mbrId);
-        log.info(isConnectUpdate);
         return isConnectUpdate ? new ResponseEntity<>(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 

@@ -226,6 +226,8 @@ public class GroupServiceImpl implements GroupService {
     public GroupMessageVO sendGroupMessage(int no, String message, HttpSession session) {
 
         GroupMessageVO groupMessageVO = null;
+        if ( message.equals("") ) return null;
+        message = DataConversion.changeSpChar(message);
         boolean isGroupMember = isGroupMember(no, (String) session.getAttribute("id"));
         if ( isGroupMember || session.getAttribute("auth").toString().toUpperCase().equals("ADMIN") ) {
             groupMessageVO = new GroupMessageVO();
@@ -279,9 +281,11 @@ public class GroupServiceImpl implements GroupService {
             if ( groupBoardVO.getIsUpdateFile().equals("true") ) {
                 // 이전 파일 삭제
                 String prevFileName = groupMapper.getPrevFileName(groupBoardVO);
-                File prevFile = new File(path, prevFileName);
-                if (prevFile.exists()) {
-                    prevFile.delete();
+                if ( prevFileName != null ) {
+                    File prevFile = new File(path, prevFileName);
+                    if (prevFile.exists()) {
+                        prevFile.delete();
+                    }
                 }
             }
             int uploadState = groupMapper.updateGroupFilename(groupBoardVO);

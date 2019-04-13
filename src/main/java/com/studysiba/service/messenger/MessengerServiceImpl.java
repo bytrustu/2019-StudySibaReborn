@@ -32,6 +32,8 @@ public class MessengerServiceImpl implements MessengerService {
     @Override
     public MessageVO sendPublicMessage(String message, HttpSession session) {
         if ( session.getAttribute("id") == null ) return null;
+        if ( message == "" ) return null;
+        message = DataConversion.changeSpChar(message);
         MessageVO messageVO = new MessageVO();
         messageVO.setMsgTo("public");
         messageVO.setMsgFrom("public");
@@ -78,6 +80,8 @@ public class MessengerServiceImpl implements MessengerService {
     @Override
     public MessageVO sendPrivateMessage(String id, String message, HttpSession session) {
         if ( session.getAttribute("id") == null ) return null;
+        if ( message == "" ) return null;
+        message = DataConversion.changeSpChar(message);
         MessageVO messageVO = new MessageVO();
         messageVO.setMsgType("private");
         messageVO.setMsgFrom((String) session.getAttribute("id"));

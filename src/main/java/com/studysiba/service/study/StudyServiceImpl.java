@@ -1,5 +1,6 @@
 package com.studysiba.service.study;
 
+import com.studysiba.common.DataConversion;
 import com.studysiba.common.DataValidation;
 import com.studysiba.domain.common.PageVO;
 import com.studysiba.domain.common.StateVO;
@@ -84,6 +85,7 @@ public class StudyServiceImpl implements StudyService {
     @Override
     public StudyVO getStudyOne(int no) {
         StudyVO studyVO = studyMapper.getStudyOne(no);
+        studyVO.setStdContent(DataConversion.changeOriginTag(studyVO.getStdContent()));
         UrlPathHelper urlPathHelper = new UrlPathHelper();
         String currentUrl = urlPathHelper.getOriginatingRequestUri(request);
         if (currentUrl.equals("/group/view")) {

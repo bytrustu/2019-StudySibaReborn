@@ -1,19 +1,18 @@
 package com.studysiba.config;
 
+import com.navercorp.lucy.security.xss.servletfilter.XssEscapeServletFilter;
 import com.studysiba.common.SessionListener;
 import com.studysiba.interceptor.AdminAuthInterceptor;
-import com.studysiba.interceptor.HttpHandshakeInterceptor;
 import com.studysiba.interceptor.SocialUrlInterceptor;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
-import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -54,8 +53,26 @@ public class WebMvcConfig implements WebMvcConfigurer {
         return new SocialUrlInterceptor();
     }
 
+    @Bean
     public AdminAuthInterceptor adminAuthInterceptor() {
         return new AdminAuthInterceptor();
+    }
+
+    @Bean
+    public FilterRegistrationBean getXssEscapeServletFilterRegistrationBean() {
+        FilterRegistrationBean registrationBean = new FilterRegistrationBean();
+        registrationBean.setFilter(new XssEscapeServletFilter());
+        registrationBean.setOrder(1);
+        registrationBean.addUrlPatterns("/board/*","/study/*");
+        return registrationBean;
+    }
+
+    @Bean
+    public FilterRegistrationBean getRequestBodyXSSFileterRegistrationBean() {
+        FilterRegistrationBean registrationBean = new FilterRegistrationBean();
+        registrationBean.setFilter(new RequestBodyXSSFilter());
+        registrationBean.addUrlPatterns("/board/*","/study/*");
+        return registrationBean;
     }
 
     @Override

@@ -82,16 +82,10 @@ public class CommonController {
             return null;
         }
 
-        switch (menu) {
-            case "community":
-                HashMap<String, String> uploadInfo = new HashMap<>();
-                uploadInfo.put("uploaded", "true");
-                uploadInfo.put("url", "/file/view/" + menu + "/" + fileName);
-                return new ResponseEntity<>(uploadInfo, HttpStatus.OK);
-            case "notice":
-                break;
-        }
-        return null;
+        HashMap<String, String> uploadInfo = new HashMap<>();
+        uploadInfo.put("uploaded", "true");
+        uploadInfo.put("url", "/file/view/" + menu + "/" + fileName);
+        return new ResponseEntity<>(uploadInfo, HttpStatus.OK);
     }
 
     /*

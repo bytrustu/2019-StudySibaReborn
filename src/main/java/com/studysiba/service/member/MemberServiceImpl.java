@@ -719,7 +719,6 @@ public class MemberServiceImpl implements MemberService {
     public boolean isConnectUpdate(String mbrId) {
         if ( !httpSession.getAttribute("id").toString().equals(mbrId) ) return false;
         int isConnectUpdate= memberMapper.isConnectUpdate(mbrId);
-        log.info(isConnectUpdate+"과연?");
         if ( isConnectUpdate == 1 ) return true;
         else return false;
     }

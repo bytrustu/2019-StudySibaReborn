@@ -299,7 +299,7 @@ $(document).ready(function () {
         getBoard(currentPath,no)
             .then( (data) => {
                 $('.basic-modal-select').val(data.brdDivide).prop('selected', true);
-                $('.board-input-title').val(data.brdTitle);
+                $('.board-input-title').val(data.brdTitle.replace(/&lt;/gi, "<").replace(/&gt;/gi,">"));
                 $('#board-input-title').next().addClass('active');
                 ckContent.setData(data.brdContent);
                 $('.update-btn').css('display','inline-block');
@@ -345,7 +345,7 @@ $(document).ready(function () {
                         case '5' : divide = '요청'; break;
                     }
                     $('.post-divide > span').html(divide);
-                    $('.post-title').html(boardInfo.get('brdTitle'));
+                    $('.post-title').html(boardInfo.get('brdTitle').replace(/</gi, "&lt;").replace(/>/,"&gt;"));
                     $('.post-body').html(boardInfo.get('brdContent'));
                 },2500);
             }).catch((error) => {

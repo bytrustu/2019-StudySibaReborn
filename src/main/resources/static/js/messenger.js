@@ -240,8 +240,11 @@ $(document).ready(function(){
                 let message = messageInput.val();
                 messageInput.val('');
                 if ( message == '' ) return false;
+                // 전체채팅 일 경우
                 if ( messageContainer.attr('class').includes('public') ) {
                     publicClient.send(`/public`, {}, JSON.stringify({"message":message}));
+                    
+                    // 개인채팅 일 경우
                 } else {
                     let targetId = $(this).attr('data-id');
                     privateClient.send(`/private/${targetId}`, {}, JSON.stringify({"message":message}));
@@ -249,7 +252,7 @@ $(document).ready(function(){
                     setTimeout(()=>{
                         sendMessageInfo(targetId)
                             .then( (data) => {
-                                data.msgText = message;
+                                data.msgText = message.replace(/</gi, "&lt;").replace(/>/,"&gt;");
                                 appendMessage(data,true)
                             }).catch( (error) => {
                         });

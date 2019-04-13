@@ -559,7 +559,7 @@ $(document).ready(function () {
                     $('.file-upload-content').css('display', 'block');
                     $('.image-upload-wrap').css('display', 'none');
                     //Step4 상세
-                    $('#stm-detailtitle').val(data.stdTitle);
+                    $('#stm-detailtitle').val(data.stdTitle.replace(/&lt;/gi, "<").replace(/&gt;/gi,">"));
                     detailContent.setData(data.stdContent);
                 }, 500);
             }).catch((error) => {

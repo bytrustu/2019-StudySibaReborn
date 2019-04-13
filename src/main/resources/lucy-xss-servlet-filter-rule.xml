@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns="http://www.navercorp.com/lucy-xss-servlet">
+    <!-- XssPreventer 등록 -->
+    <defenders>
+        <!-- XssPreventer 등록 -->
+        <defender>
+            <name>xssPreventerDefender</name>
+            <class>com.navercorp.lucy.security.xss.servletfilter.defender.XssPreventerDefender</class>
+        </defender>
+
+        <!-- XssSaxFilter 등록 -->
+        <defender>
+            <name>xssSaxFilterDefender</name>
+            <class>com.navercorp.lucy.security.xss.servletfilter.defender.XssSaxFilterDefender</class>
+            <init-param>
+                <param-value>lucy-xss-sax.xml</param-value>   <!-- lucy-xss-filter의 sax용 설정파일 -->
+                <param-value>false</param-value>        <!-- 필터링된 코멘트를 남길지 여부 -->
+            </init-param>
+        </defender>
+
+        <!-- XssFilter 등록 -->
+        <defender>
+            <name>xssFilterDefender</name>
+            <class>com.navercorp.lucy.security.xss.servletfilter.defender.XssFilterDefender</class>
+            <init-param>
+                <param-value>lucy-xss.xml</param-value>    <!-- lucy-xss-filter의 dom용 설정파일 -->
+                <param-value>false</param-value>         <!-- 필터링된 코멘트를 남길지 여부 -->
+            </init-param>
+        </defender>
+    </defenders>
+
+    <!-- default defender 선언, 별다른 defender 선언이 없으면 default defender를 사용해 필터링 한다. -->
+    <default>
+        <defender>xssPreventerDefender</defender>
+    </default>
+
+
+    <!-- url 별 필터링 룰 선언 -->
+    <url-rule-set>
+        <url-rule>
+            <url>/board/comment/write</url>
+            <params>
+                <param name="brdTitle" useDefender="true"/>
+                <param name="cmtContent" useDefender="true"/>
+            </params>
+        </url-rule>
+
+        <url-rule>
+            <url>/board/update</url>
+            <params>
+                <param name="brdTitle" useDefender="true"/>
+            </params>
+        </url-rule>
+
+        <url-rule>
+            <url>/study/register</url>
+            <params>
+                <param name="stdGroup" useDefender="true"/>
+                <param name="stdAddress" useDefender="true"/>
+                <param name="stdTitle" useDefender="true"/>
+                <param name="stdContent" useDefender="false"/>
+            </params>
+        </url-rule>
+
+        <url-rule>
+            <url>/study/update</url>
+            <params>
+                <param name="stdGroup" useDefender="true"/>
+                <param name="stdAddress" useDefender="true"/>
+                <param name="stdTitle" useDefender="true"/>
+                <param name="stdContent" useDefender="false"/>
+            </params>
+        </url-rule>
+
+    </url-rule-set>
+</config>
