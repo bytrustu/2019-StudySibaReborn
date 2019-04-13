@@ -7,6 +7,7 @@ import com.studysiba.service.board.BoardService;
 import com.studysiba.service.common.CommonService;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -17,13 +18,15 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.RequestDispatcher;
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 
 
 @Controller
 @Log4j
-public class CommonController {
+public class CommonController implements ErrorController {
 
     @Autowired
     CommonService commonService;
@@ -60,6 +63,22 @@ public class CommonController {
         model.addAttribute("requireAdmin", requireAdmin);
 
         return "common/main";
+    }
+
+
+    /*
+     *  에러상태코드에 따른 처리
+     *  @Param request
+     */
+    @RequestMapping("/error")
+    public String handleError(HttpServletRequest request) {
+        commonService.handleError(request);
+        return "redirect:/";
+    }
+
+    @Override
+    public String getErrorPath() {
+        return "/error";
     }
 
 
@@ -101,5 +120,6 @@ public class CommonController {
         HttpHeaders httpHeaders = (HttpHeaders) download.get("headers");
         return new ResponseEntity<Resource>(resource,httpHeaders, HttpStatus.OK);
     }
+
 
 }

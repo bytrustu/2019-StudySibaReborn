@@ -56,6 +56,10 @@ public class StudyServiceImpl implements StudyService {
         if (studyVO.getStdAddress().contains("대한민국 ")) {
             studyVO.setStdAddress(studyVO.getStdAddress().replaceFirst("대한민국 ", ""));
         }
+        // 태그 변환
+        studyVO.setStdTitle(DataConversion.changeSpChar(studyVO.getStdTitle()));
+        studyVO.setStdContent(DataConversion.changeSpChar(studyVO.getStdContent()));
+        studyVO.setStdGroup(DataConversion.changeSpChar(studyVO.getStdGroup()));
         // 스터디 등록
         int registerState = studyMapper.registerStudy(studyVO);
         if (registerState == 1) {
@@ -86,6 +90,9 @@ public class StudyServiceImpl implements StudyService {
     public StudyVO getStudyOne(int no) {
         StudyVO studyVO = studyMapper.getStudyOne(no);
         studyVO.setStdContent(DataConversion.changeOriginTag(studyVO.getStdContent()));
+        studyVO.setStdTitle(DataConversion.changeOriginTag(studyVO.getStdTitle()));
+        studyVO.setStdGroup(DataConversion.changeOriginTag(studyVO.getStdGroup()));
+
         UrlPathHelper urlPathHelper = new UrlPathHelper();
         String currentUrl = urlPathHelper.getOriginatingRequestUri(request);
         if (currentUrl.equals("/group/view")) {
@@ -129,9 +136,9 @@ public class StudyServiceImpl implements StudyService {
 
 
     /*
-     *  스터디 등록
+     *  스터디 수정
      *  @Param studyVO
-     *  @Return 스터디 등록에 대한 상태코드 반환
+     *  @Return 스터디 수정에 대한 상태코드 반환
      */
     @Override
     @Transactional
@@ -148,6 +155,10 @@ public class StudyServiceImpl implements StudyService {
         if (studyVO.getStdAddress().contains("대한민국 ")) {
             studyVO.setStdAddress(studyVO.getStdAddress().replaceFirst("대한민국 ", ""));
         }
+        // 태그 변환
+        studyVO.setStdTitle(DataConversion.changeSpChar(studyVO.getStdTitle()));
+        studyVO.setStdContent(DataConversion.changeSpChar(studyVO.getStdContent()));
+        studyVO.setStdGroup(DataConversion.changeSpChar(studyVO.getStdGroup()));
 
         // 관리자 일 경우 리더 아이디로 변경
         if (httpSession.getAttribute("auth").toString().toUpperCase().equals("ADMIN")) {

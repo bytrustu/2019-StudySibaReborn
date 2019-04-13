@@ -19,6 +19,7 @@ import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.social.google.connect.GoogleConnectionFactory;
 import org.springframework.social.oauth2.GrantType;
 import org.springframework.social.oauth2.OAuth2Operations;
@@ -29,6 +30,8 @@ import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
@@ -158,6 +161,8 @@ public class CommonServiceImpl implements CommonService {
     public String uploadFile(MultipartFile multipartFile, String menu) throws Exception {
 
         if ( multipartFile.isEmpty() ) return null;
+        int maxSize = 1024*1024*3;
+        if ( multipartFile.getSize() > maxSize ) return null;
         if ( httpSession.getAttribute("id") == null ) return null;
 
         String path = "C:\\upload\\studysiba\\" + menu;
@@ -365,6 +370,27 @@ public class CommonServiceImpl implements CommonService {
     @Override
     public HashMap<String, Integer> memberCount() {
         return  commonMapper.memberCount();
+    }
+
+    /*
+     *  에러에 따른 처리
+     *  @Param request
+     */
+    @Override
+    public void handleError(HttpServletRequest request) {
+        Object status = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
+        if ( status != null ) {
+            Integer statusCode = Integer.valueOf(status.toString());
+            if ( statusCode == HttpStatus.NOT_FOUND.value() ) {
+                httpSession.setAttribute("stateCode","ERROR_404");
+            } else if ( statusCode == HttpStatus.INTERNAL_SERVER_ERROR.value() ) {
+                httpSession.setAttribute("stateCode","ERROR_500");
+            } else if ( statusCode == HttpStatus.BAD_REQUEST.value() ) {
+                httpSession.setAttribute("stateCode","ERROR_400");
+            } else {
+                httpSession.setAttribute("stateCode","ERROR_OTHERS");
+            }
+        }
     }
 
 }

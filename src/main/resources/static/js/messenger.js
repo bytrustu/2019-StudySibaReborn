@@ -14,6 +14,7 @@ let messengerList = $('.messenger-chatlist');
 let searchBox = $('.search-member');
 let searchClose = $('.search-closebtn');
 let searchInput = $('.search-input');
+let msgOpenIcon = $('.msg-openicon');
 
 
 $(document).ready(function(){
@@ -100,6 +101,7 @@ $(document).ready(function(){
         switch (target) {
             // 우측아래 메신저 버튼 클릭시
             case 'messenger-btn' :
+                $('.msg-openicon').removeClass('swing');
                 chatWindow.addClass('d-none');
                 chatList.addClass('d-none');
                 chatList.toggleClass('d-none').addClass('flipInY');
@@ -556,6 +558,24 @@ let privateMemberList = (id) => {
         $.ajax({
             type : 'GET',
             url : `/messenger/get/memberlist?id=${id}`,
+            dataType : 'json',
+            contentType : 'application/json; charset=utf-8',
+            success : (data) => {
+                resolve(data);
+            },
+            error : (error) => {
+                reject(error);
+            }
+        });
+    })
+}
+
+// 자신의 읽지 않은 채팅 카운트 조회
+let privateUnReadCount = (id) => {
+    return new Promise( (resolve, reject) => {
+        $.ajax({
+            type : 'GET',
+            url : `/messenger/get/unread?id=${id}`,
             dataType : 'json',
             contentType : 'application/json; charset=utf-8',
             success : (data) => {

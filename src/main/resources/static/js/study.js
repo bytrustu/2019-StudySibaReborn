@@ -13,13 +13,14 @@ $(document).ready(function () {
                 overflow: scroll
             },
             ckfinder: {
-                uploadUrl: '/upload/community'
+                uploadUrl: '/upload/community',
             }
         })
         .then(editor => {
             detailContent = editor;
         })
         .catch(error => {
+            console.log('error');
         });
 
     // 스터디그룹 공지사항 CkEditor 설정
@@ -205,6 +206,7 @@ $(document).ready(function () {
         let step3 = step3map();
         let step4 = step4map();
         let idx = 0;
+
         if (step1.constructor == Map) {
             idx = checkStep(step1, 'one');
         }
@@ -216,6 +218,20 @@ $(document).ready(function () {
         if (idx > 0) return false;
         idx = checkStep(step4, 'four');
         if (idx > 0) return false;
+
+        // 파일 확장자, 크기 체크
+        let isImage = logoImageCheck(step3.get('stdFile'));
+        if ( !isImage ) return false;
+        let isFileSize = checkFileSize($('#studyFile')[0].files[0],3);
+        if ( !isFileSize ) {
+            setTimeout(() => {
+                $(`.res-step-three`).trigger('click');
+            }, 500)
+            setTimeout(() => {
+                autoClosingAlert('이미지는 3메가 제한 입니다.', 2500);
+            }, 1000);
+            return false;
+        }
 
 
         let stepMap = new Map();
@@ -338,6 +354,37 @@ $(document).ready(function () {
             }
         }
         return idx;
+    }
+
+    // step3 그룹 이미지로고 확장자 확인
+    let logoImageCheck = (fileName) => {
+        if ( !(typeof fileName == "undefined") ) {
+            let fileExtension = fileName.substring(fileName.lastIndexOf('.')+1);
+            let isImage = false;
+            const imageExtension =  new Set(["bmp","jpg","jpeg","png","gif"]);
+            for ( let ext of imageExtension ) {
+                if ( ext == fileExtension ) isImage = true;
+            }
+            if ( !isImage ) {
+                setTimeout(() => {
+                    $(`.res-step-three`).trigger('click');
+                }, 500)
+                setTimeout(() => {
+                    autoClosingAlert('잘못된 대표이미지 입니다.', 2500);
+                }, 1000);
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // 파일크기 체크
+    let checkFileSize = (file, size) => {
+        const maxSize = size * 1024 * 1024;
+        if ( !(typeof file == "undefined") ) {
+            if ( file.size > maxSize ) return false;
+        }
+        return true;
     }
 
     // 에러 Alert 출력
@@ -681,7 +728,6 @@ $(document).ready(function () {
 // 스터디 참여
     $('.study-joinbtn').on('click', function () {
         let btnState = $(this).attr('data-join');
-        console.log(btnState);
         switch (btnState) {
             case 'already' :
                 errorAlert('이미 참여중인 스터디 입니다.');
@@ -703,6 +749,7 @@ $(document).ready(function () {
                 break;
         }
     });
+    
 
 // 스터디 탈퇴
     $('.study-outbtn').on('click', function () {
@@ -803,7 +850,7 @@ $(document).ready(function () {
     }
 
 
-
+    // 대표이미지 변경시
     $('.fileInput').change(function() {
         var numfiles = $(this)[0].files.length;
         var parent = $(this).closest('.input-file');
@@ -845,6 +892,14 @@ $(document).ready(function () {
                 return false;
             }
         }
+
+        // 파일 크기 확인
+        let isFileSize = checkFileSize($('#stg-fileinput')[0].files[0],3);
+        if ( !isFileSize ) {
+            errorAlert('첨부파일은 3메가 제한 입니다.');
+            return false;
+        }
+
         let formData = mapToFormData(groupMap);
         if ( $('#stg-fileinput').val() != '' ) {
             formData.append('grbFile', $('#stg-fileinput')[0].files[0]);
@@ -932,7 +987,6 @@ $(document).ready(function () {
         $('.stg-noticeedit').attr('data-no',no);
         viewNotice(no)
             .then( (data) => {
-                console.log(data);
                 if ( data.grbFilename == null ) {
                     $('.svg-download').html('파일없음');
                 } else {
@@ -955,7 +1009,6 @@ $(document).ready(function () {
 
     $('.stg-noticeedit').on('click', ()=>{
         let no = $('.stg-noticeedit').attr('data-no');
-        console.log(no);
         $('#noticeModal').modal('hide');
         setTimeout(()=>{
             $('#groupModal').modal('show');

@@ -44,7 +44,7 @@
                     <div class="member-loginstate mt-3">
                         <c:if test="${fn:length(connect) == 0}">
                             <p class="text-center mt-5 member-nologined">(｡◕‿◕｡)</p>
-                            <p class="text-center member-nologined">로그인 된 회원이 없습니다.</p>
+                            <p class="text-center member-nologined">로그인 중인 회원이 없습니다.</p>
                         </c:if>
                         <c:forEach items="${connect}" var="connect">
                             <div class="member-output">
@@ -213,7 +213,7 @@
                             <div>
                                 <img class="st-icon" src="/static/image/study/circular-clock.png">
                                 <span class="st-time font-small slide-text">
-                                    ${study.stdStart} ~ ${study.stdEnd}
+                                    ${fn:substring(study.stdStart,5,10 )} ~ ${fn:substring(study.stdEnd,5,10 )}
                                 </span>
                             </div>
                             <div><img class="st-icon" src="/static/image/study/global.png"><span class="font-small slide-text">${study.stdAddress}</span></div>

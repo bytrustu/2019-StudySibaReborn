@@ -357,6 +357,11 @@ stateCode.set("MESSENGER_ME_ERROR","자신과 연결 할 수 없습니다.");
 stateCode.set("MESSENGER_FIND_ERROR","존재하지 않는 회원 입니다.");
 stateCode.set("MESSENGER_AUTH_ERROR", "권한이 없습니다.");
 
+stateCode.set("ERROR_404", "잘못된 접근 입니다.");
+stateCode.set("ERROR_500", "잘못된 요청 입니다.");
+stateCode.set("ERROR_400", "잘못된 요청 입니다.");
+stateCode.set("ERROR_OTHERS", "잘못된 요청 입니다.");
+
 
 // KAKAO API
 Kakao.init('672b34ad5f77dd65240951209b6cbd32');

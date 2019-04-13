@@ -44,7 +44,7 @@
 
                 <!-- 하단 메세지 버튼 -->
                 <div class="messenger-common messenger-btn">
-                        <i class="fas fa-envelope"></i>
+                        <i class="fas fa-envelope msg-openicon animated swing slow infinite"></i>
                 </div>
 
                 <%--<c:if test="${sessionScope.auth eq 'ADMIN'}">--%>

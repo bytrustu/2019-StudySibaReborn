@@ -8,6 +8,7 @@ import com.studysiba.domain.study.StudyVO;
 import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 
@@ -101,4 +102,10 @@ public interface CommonService {
      *  @Return 회원수 방문수 반환
      */
     HashMap<String,Integer> memberCount();
+
+    /*
+     *  에러에 따른 처리
+     *  @Param request
+     */
+    void handleError(HttpServletRequest request);
 }

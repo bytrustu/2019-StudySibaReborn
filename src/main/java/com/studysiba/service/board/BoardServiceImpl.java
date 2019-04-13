@@ -52,6 +52,9 @@ public class BoardServiceImpl implements BoardService {
             return postState;
 
         boardVO.setBrdId((String) httpSession.getAttribute("id"));
+        // 태그 변환
+        boardVO.setBrdTitle(DataConversion.changeSpChar(boardVO.getBrdTitle()));
+        boardVO.setBrdContent(DataConversion.changeSpChar(boardVO.getBrdContent()));
 
         if (boardVO.getIsReply() == null || boardVO.getIsReply().equals("false")) {
             stateCode = boardMapper.writePost(boardVO) == 1 ? "BOARD_WRITE_SUCCESS" : "BOARD_WRITE_ERROR";
@@ -79,7 +82,10 @@ public class BoardServiceImpl implements BoardService {
         if ( pageVO.getCount() == 0 ) return null;
         ArrayList<BoardVO> postList = boardMapper.getPostList(pageVO);
         // 지난기간 [ 몇분전, 몇일전 ] 변환
-        for (BoardVO vo : postList) vo.setLastTime(DataConversion.DurationFromNow(vo.getBrdDate()));
+        for (BoardVO vo : postList) {
+            vo.setLastTime(DataConversion.DurationFromNow(vo.getBrdDate()));
+            vo.setBrdTitle(DataConversion.changeOriginTag(vo.getBrdTitle()));
+        }
         return postList;
     }
 
@@ -249,6 +255,9 @@ public class BoardServiceImpl implements BoardService {
         if (httpSession.getAttribute("id") != null || httpSession.getAttribute("auth").toString().toUpperCase().equals("ADMIN")) {
             int updateState = 0;
             if (httpSession.getAttribute("id").equals(boardMapper.getPostOne(boardVO).getBrdId()) || httpSession.getAttribute("auth").toString().toUpperCase().equals("ADMIN")) {
+                // 태그변환
+                boardVO.setBrdTitle(DataConversion.changeSpChar(boardVO.getBrdTitle()));
+                boardVO.setBrdContent(DataConversion.changeSpChar(boardVO.getBrdContent()));
                 updateState = boardMapper.updatePost(boardVO);
                 stateVO.setStateCode("BOARD_UPDATE_SUCCESS");
                 if (updateState == 1) {
