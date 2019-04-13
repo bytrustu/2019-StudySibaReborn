@@ -82,4 +82,18 @@ public interface MessengerService {
      *  @Return 개인채팅 비활성화 여부 반환
      */
     StateVO disableMember(String id);
+
+    /*
+     *  개인채팅 읽지 않은 메세지 카운트 조회
+     *  @Param id
+     *  @Return 개인채팅 읽지 않은 메세지 카운트 반환
+     */
+    MessageVO getPrivateUnReadCount(String id);
+
+    /*
+     *  알람 설정 변경
+     *  @Param id, state
+     *  @Return 알람설정변경 여부
+     */
+    String changeAlarmState(String id, String state);
 }

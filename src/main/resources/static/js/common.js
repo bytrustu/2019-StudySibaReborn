@@ -47,7 +47,6 @@ $(document).ready(function () {
                 let currentUrl = $(location).attr('pathname');
                 let searchUrl = $(location).attr('search');
                 let moveUrl = `/member/logout/${logginedId}?currentUrl=${currentUrl}${searchUrl}`;
-                console.log(moveUrl);
                 location.href = moveUrl;
                 break;
         }
@@ -898,10 +897,8 @@ let connectUpdate = () =>{
         type : 'PUT',
         url : `/member/connect/${connectId}`,
         success : (data) => {
-            console.log(data);
             },
         error : (error) => {
-            console.log(error);
         }
     });
 }

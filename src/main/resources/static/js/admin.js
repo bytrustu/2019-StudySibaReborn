@@ -124,7 +124,6 @@ $(document).ready(function(){
 
 // 회원정보 업데이트 처리
 let executeMemberUpdate = (memberJson,memberMap,memberNo) => {
-    console.log('zzz');
     updateMember(memberJson)
         .then( (data) => {
             successAlert('회원정보가 변경 되었습니다.');

@@ -325,6 +325,7 @@ public class MemberServiceImpl implements MemberService {
                 httpSession.setAttribute("stateCode", stateCode);
                 httpSession.setAttribute("score", pointVO.getPntScore());
                 httpSession.setAttribute("rank", pointVO.getPntRank());
+                httpSession.setAttribute("alarm", "on");
             }
         }
         return stateCode;
@@ -490,7 +491,6 @@ public class MemberServiceImpl implements MemberService {
             response.append(inputLine);
         }
         br.close();
-        System.out.println(response.toString());
         JSONParser parser = new JSONParser();
         JSONObject obj = (JSONObject) parser.parse(response.toString());
         obj = (JSONObject) parser.parse(obj.get("response").toString());
@@ -576,6 +576,7 @@ public class MemberServiceImpl implements MemberService {
         httpSession.setAttribute("stateCode", stateCode);
         httpSession.setAttribute("score", pointVO.getPntScore());
         httpSession.setAttribute("rank", pointVO.getPntRank());
+        httpSession.setAttribute("alarm", "on");
         return stateCode;
     }
 

@@ -28,7 +28,7 @@ $(document).ready(function(){
                             <div class="groupmsg-box center-block animated bounce fast">
                                     <div class="row">
                                         <div class="col-xs-8 col-md-8">
-                                            <img src="/static/image/profile/${messageInfo.mbrProfile}" class="groupmsg-photo">
+                                            <img src="/static/image/profile/${messageInfo.mbrProfile}" class="groupmsg-photo messenger-connector"  data-id="${messageInfo.grmId}" data-nick="${messageInfo.mbrNick}" data-container="body" data-placement="top" data-toggle="popover" data-trigger="hover" data-content="${messageInfo.mbrNick}와 채팅">
                                             <h4 class="groupmsg-name">${messageInfo.mbrNick}</h4>
                                         </div>
                                         <div class="col-xs-4 col-md-4 text-right groupmsg-date">${messageInfo.grmDate}</div>
@@ -40,6 +40,7 @@ $(document).ready(function(){
                         `;
         $('.groupmsg-container').append(msg);
         $('.groupmsg-container').scrollTop($('.groupmsg-container')[0].scrollHeight);
+        $('.groupmsg-box').last().find('.groupmsg-photo').popover();
     }
 
     $(document).on('click', '.groupmsg-send', function(){

@@ -21,14 +21,13 @@
                 <img class="st-icon" src="/static/image/study/startup.png">
                 <span>${studyView.stdGroup}</span>
                 <c:if test="${sessionScope.id eq studyView.stdId || sessionScope.auth eq 'ADMIN'}">
-                    <img src="/static/image/common/edit.png" class="study-edit stg-edit">
+                    <img src="/static/image/common/edit.png" class="study-edit stg-edit" data-container="body" data-placement="top" data-toggle="popover" data-trigger="hover" data-content="수정">
                     <c:choose>
                         <c:when test="${studyView.stdAvailable == 1}">
-                            <img src="/static/image/common/delete.png" class="study-delete stg-delete"
-                                 data-delete="delete">
+                            <img src="/static/image/common/delete.png" class="study-delete stg-delete" data-delete="delete" data-container="body" data-placement="top" data-toggle="popover" data-trigger="hover" data-content="비활성">
                         </c:when>
                         <c:otherwise>
-                            <img src="/static/image/common/open.png" class="study-delete stg-delete" data-delete="open">
+                            <img src="/static/image/common/open.png" class="study-delete stg-delete" data-delete="open" data-container="body" data-placement="top" data-toggle="popover" data-trigger="hover" data-content="활성">
                         </c:otherwise>
                     </c:choose>
                 </c:if>
@@ -137,7 +136,7 @@
                                     <div class="groupmsg-box center-block">
                                         <div class="row">
                                             <div class="col-xs-8 col-md-8">
-                                                <img src="/static/image/profile/${message.mbrProfile}" class="groupmsg-photo">
+                                                <img src="/static/image/profile/${message.mbrProfile}" class="groupmsg-photo messenger-connector"  data-id="${message.grmId}" data-nick="${message.mbrNick}"  data-container="body" data-placement="top" data-toggle="popover" data-trigger="hover" data-content="${message.mbrNick}와 채팅">
                                                 <h4 class="groupmsg-name">${message.mbrNick}</h4>
                                             </div>
                                             <div class="col-xs-4 col-md-4 text-right groupmsg-date"><fmt:formatDate value="${message.grmDate}" pattern="MM-dd HH:mm"/></div>
@@ -203,7 +202,7 @@
                                 ">
                                         <c:if test="${sessionScope.id eq studyView.stdId || sessionScope.auth eq 'ADMIN'}">
                                             <c:if test="${status.count > 1}">
-                                                <img src="/static/image/study/x.png" class="out-icon" data-id="${group.grmId}">
+                                                <img src="/static/image/study/x.png" class="out-icon" data-id="${group.grmId}" data-container="body" data-placement="top" data-toggle="popover" data-trigger="hover" data-content="내보내기">
                                             </c:if>
                                         </c:if>
                                         <img src="/static/image/profile/${group.mbrProfile}">

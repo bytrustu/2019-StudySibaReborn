@@ -15,35 +15,18 @@
         </span>
     </div>
 
-
-
-    <script>
-        let client1;
-        $(document).ready(function(){
-            let socket1 = new SockJS("/private");
-            client1 = Stomp.over(socket1);
-            client1.debug = null;
-            client1.connect({}, function(){
-                client1.subscribe('/topic/message/jaeng', function(msg) {
-                    console.log('>>>>>>>>>'+msg.body);
-                });
-            });
-        });
-    </script>
-
-
-
     <div class="board-box">
         <div class="board-top">
             <div class="board-total">
                 <c:if test="${sessionScope.id eq studyView.stdId || sessionScope.auth eq 'ADMIN'}">
-                    <img src="/static/image/common/edit.png" class="study-edit"><img src="/static/image/common/rollback.png" class="study-latest">
+                    <img src="/static/image/common/edit.png" class="study-edit" data-container="body" data-placement="top" data-toggle="popover" data-trigger="hover" data-content="수정">
+                    <img src="/static/image/common/rollback.png" class="study-latest" data-container="body" data-placement="top" data-toggle="popover" data-trigger="hover" data-content="갱신">
                     <c:choose>
                         <c:when test="${studyView.stdAvailable == 1}">
-                            <img src="/static/image/common/delete.png" class="study-delete" data-delete="delete">
+                            <img src="/static/image/common/delete.png" class="study-delete" data-delete="delete" data-container="body" data-placement="top" data-toggle="popover" data-trigger="hover" data-content="비활성">
                         </c:when>
                         <c:otherwise>
-                            <img src="/static/image/common/open.png" class="study-delete" data-delete="open">
+                            <img src="/static/image/common/open.png" class="study-delete" data-delete="open" data-container="body" data-placement="top" data-toggle="popover" data-trigger="hover" data-content="활성">
                         </c:otherwise>
                     </c:choose>
                 </c:if>

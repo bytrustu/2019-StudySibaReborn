@@ -33,6 +33,14 @@
     background-color: #fdbf68;
 }
 
+.alarm-on{
+    background-color: #fdbf68;
+}
+
+.alarm-off{
+    background-color: #c1c1c1;
+}
+
 .top-invitebtn{
     background-color: #a3d063;
 }
@@ -634,3 +642,85 @@
 }
 
 
+
+
+/*
+        메신저 알림창
+ */
+
+.popover{
+    z-index: 10011;
+}
+
+.messenger-alert{
+    position: fixed;
+    right:0px;
+    top: 60px;
+    z-index: 9999;
+    height: auto;
+    width: 100%;
+}
+
+.message-alarm{
+    padding: 10px 20px 10px 10px;
+    background-color: #f4ab92;
+    box-shadow: 0 1px 30px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    display: block;
+}
+
+.alarm-image{
+    height: 50px;
+    width: 50px;
+    border-radius: 10px;
+    margin-right: 5px;
+}
+
+.alarm-nick {
+    margin-right: 2px;
+    font-weight: bold;
+    color: white;
+}
+
+.alarm-text{
+    font-size: 14px;
+    color: #f3f4f6;
+}
+
+.alarm-close{
+    display: inline-block;
+    cursor: pointer;
+}
+
+.alarm-close > img {
+    width: 15px;
+    height: 15px;
+    margin-left: 10px;
+}
+
+@media (min-width: 430px) {
+    .messenger-alert{
+        position: fixed;
+        right: 55px;
+        top: 80px;
+        z-index: 9999;
+        height: auto;
+        width: auto;
+    }
+}
+
+.bg-one{
+    background-color: #f7ad94 !important;
+}
+
+.bg-two{
+    background-color: #ffce56 !important;
+}
+
+.bg-three{
+    background-color: #f8b7c4 !important;
+}
+
+.bg-four{
+    background-color: #7acdc7 !important;
+}

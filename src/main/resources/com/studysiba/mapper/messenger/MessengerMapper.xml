@@ -201,6 +201,12 @@
         WHERE ROOM_NO = #{roomNo}
     </update>
 
+    <!-- 개인채팅 읽지 않은 메세지 카운트 조회 -->
+    <select id="getPrivateUnReadCount" parameterType="String" resultType="MessageVO">
+        SELECT COUNT(*) as msgCount FROM MESSAGE
+        WHERE MSG_TO = #{id} AND MSG_TYPE = 'private' AND MSG_RECEIVE = 1
+    </select>
+
 
 
 

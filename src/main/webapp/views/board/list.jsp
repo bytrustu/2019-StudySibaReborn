@@ -87,16 +87,18 @@
 
 
                                                 <fmt:formatDate value="${boardList.brdDate}" var="brdDate" pattern="yyyyMMdd"/>
-                                                <c:if test="${brdDate eq now}"><img class="board-containimg" src="/static/image/common/new.png"></c:if>
+                                                <c:if test="${brdDate eq now}">
+                                                    <img class="board-containimg" src="/static/image/common/new.png">
+                                                </c:if>
                                                 <c:choose>
                                                     <c:when test="${fn:containsIgnoreCase(boardList.brdContent,'image' ) && fn:containsIgnoreCase(boardList.brdContent,'media'  )}">
-                                                        <img class="board-containimg" src="/static/image/common/picture.png">
+                                                        <img class="board-containimg" src="/static/image/common/picture.png" data-container="body" data-placement="top" data-toggle="popover" data-trigger="hover" data-content="이미지+동영상">
                                                     </c:when>
                                                     <c:when test="${fn:containsIgnoreCase(boardList.brdContent,'image' )}">
-                                                        <img class="board-containimg" src="/static/image/common/landscape.png">
+                                                        <img class="board-containimg" src="/static/image/common/landscape.png" data-container="body" data-placement="top" data-toggle="popover" data-trigger="hover" data-content="이미지">
                                                     </c:when>
                                                     <c:when test="${fn:containsIgnoreCase(boardList.brdContent,'media' )}">
-                                                        <img class="board-containimg" src="/static/image/common/youtube.png">
+                                                        <img class="board-containimg" src="/static/image/common/youtube.png" data-container="body" data-placement="top" data-toggle="popover" data-trigger="hover" data-content="동영상">
                                                     </c:when>
                                                 </c:choose>
                                             </p>

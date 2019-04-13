@@ -42,16 +42,21 @@
 
         <body class="sub-page">
 
-                <!-- 하단 메세지 버튼 -->
+                <!-- 메신저 버튼 -->
                 <div class="messenger-common messenger-btn">
-                        <i class="fas fa-envelope msg-openicon animated swing slow infinite"></i>
+                        <i class="fas fa-envelope msg-openicon animated slow infinite"></i>
                 </div>
 
-                <%--<c:if test="${sessionScope.auth eq 'ADMIN'}">--%>
+                <!-- 관리자 버튼 -->
+                <c:if test="${sessionScope.auth eq 'ADMIN'}">
                         <div class="admin-btn">
                                 <i class="fas fa-unlock-alt"></i>
                         </div>
-                <%--</c:if>--%>
+                </c:if>
+
+                <!-- 알림창 -->
+                <div class="messenger-alert">
+                </div>
 
                 <!-- 상단 메뉴바 -->
                 <nav class="navbar navbar-expand-sm sticky-top shadow-sm p-2">

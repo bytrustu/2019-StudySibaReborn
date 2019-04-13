@@ -110,7 +110,6 @@ $(document).ready(function () {
                     $('.modal').modal('hide');
                     successAlert(stateCode.get(data));
                 }).catch( (error) => {
-                    //console.log(error);
                     errorAlert(stateCode.get(error.responseText));
             });
         initElement('modal-input');

@@ -3,19 +3,12 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-
-    <%--<%--%>
-        <%--session.setAttribute("id","test2");--%>
-        <%--session.setAttribute("nick","test4");--%>
-        <%--session.setAttribute("auth","ADMIN");--%>
-        <%--session.setAttribute("profile","profile-1.png");--%>
-    <%--%>--%>
-
     <div class="pageinfo-box">
         <input type="hidden" id="page-num" value="${cri.pageNum}">
         <input type="hidden" id="page-keyword" value="${cri.keyword}">
         <input type="hidden" id="page-type" value="${cri.type}">
         <input type="hidden" id="data-id" value="${sessionScope.id}">
+        <input type="hidden" id="data-alarm" value="${sessionScope.alarm}">
     </div>
 
 
@@ -25,7 +18,7 @@
             <ul class="list-unstyled list-inline text-center"></ul>
         </div>
 
-        <div class="footer-copyright text-center py-3">© 2019 Copyright:<a href="https://www.studysiba.com"> studysiba.com</a></div>
+        <div class="footer-copyright text-center py-3">© 2019 Copyright:<a href="https://github.com/bytrustu"> bytrustu</a></div>
     </footer>
 
 
@@ -37,12 +30,12 @@
                                 <div class="modal-c-tabs">
 
                                 <ul class="nav nav-tabs md-tabs tabs-2" role="tablist">
-                                        <li class="nav-item waves-effect">
+                                        <li class="nav-item waves-effect modal-loginli">
                                             <a class="nav-link active" data-toggle="tab" href="#panel7" role="tab"><i class="fas fa-user mr-1"></i>
                                                     로그인
                                             </a>
                                         </li>
-                                        <li class="nav-item waves-effect">
+                                        <li class="nav-item waves-effect modal-loginli">
                                             <a class="nav-link" data-toggle="tab" href="#panel8" role="tab"><i class="fas fa-user-plus mr-1"></i>
                                                     가입
                                             </a>
@@ -755,7 +748,6 @@
                     $('#stm-lng').val(lng);
                     $('#stm-place').val(placeName);
                     $('#pac-input').val(places[0].formatted_address);
-                    console.log(places[0].name);
 
                     places.forEach(function(place) {
                         if (!place.geometry) {
@@ -786,60 +778,19 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     <!-- 메신저 -->
 
     <!-- 채팅 리스트 -->
     <div class="chat-window animated faster d-none">
 
         <div class="chat-top">
-            <div class="messenger-common chat-prev">
+            <div class="messenger-common chat-prev"data-container="body" data-placement="top" data-toggle="popover" data-trigger="hover" data-content="뒤로">
                     <img src="/static/image/common/prev.png">
             </div>
             <div class="top-button">
-                <div class="messenger-common top-btn top-listbtn"></div>
-                <div class="messenger-common top-btn top-invitebtn"></div>
-                <div class="messenger-common top-btn top-closebtn"></div>
+                <div class="messenger-common top-btn top-alarm" data-container="body" data-placement="top" data-toggle="popover" data-trigger="hover" data-content="알림"></div>
+                <div class="messenger-common top-btn top-invitebtn" data-container="body" data-placement="top" data-toggle="popover" data-trigger="hover" data-content="검색"></div>
+                <div class="messenger-common top-btn top-closebtn" data-container="body" data-placement="top" data-toggle="popover" data-trigger="hover" data-content="종료"></div>
             </div>
             <div class="top-title">전체</div>
         </div>
@@ -865,9 +816,9 @@
     <div class="chat-list animated faster d-none">
         <div class="chat-top">
             <div class="top-button">
-                <div class="messenger-common top-btn top-listbtn"></div>
-                <div class="messenger-common top-btn top-invitebtn"></div>
-                <div class="messenger-common top-btn top-closebtn"></div>
+                <div class="messenger-common top-btn top-alarm" data-container="body" data-placement="top" data-toggle="popover" data-trigger="hover" data-content="알림"></div>
+                <div class="messenger-common top-btn top-invitebtn" data-container="body" data-placement="top" data-toggle="popover" data-trigger="hover" data-content="검색"></div>
+                <div class="messenger-common top-btn top-closebtn" data-container="body" data-placement="top" data-toggle="popover" data-trigger="hover" data-content="종료"></div>
             </div>
             <div class="top-title">시바톡</div>
         </div>
@@ -902,7 +853,7 @@
     <div class="search-member animated faster d-none">
         <div class="search-header chat-top">
             <div class="top-button">
-                <div class="messenger-common search-closebtn"></div>
+                <div class="messenger-common search-closebtn" data-container="body" data-placement="top" data-toggle="popover" data-trigger="hover" data-content="닫기"></div>
             </div>
             <div class="top-title">
                 회원검색

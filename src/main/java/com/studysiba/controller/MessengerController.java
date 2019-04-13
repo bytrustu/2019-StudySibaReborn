@@ -93,12 +93,13 @@ public class MessengerController {
                 break;
             case "ismember" :
                 stateVO = messengerService.isMember(id);
-                log.info("가즈아 : " + stateVO);
                 break;
+            case "unread" :
+                messageVO = messengerService.getPrivateUnReadCount(id);
         }
         if ( type.equals("public") || type.equals("private") || type.equals("memberlist") ) {
             return new ResponseEntity<>(messageList,HttpStatus.OK);
-        } else if ( type.equals("sendinfo") || type.equals("publiclast") ){
+        } else if ( type.equals("sendinfo") || type.equals("publiclast") || type.equals("unread") ){
             return messageVO != null ? new ResponseEntity<>(messageVO,HttpStatus.OK) : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         } else {
             return stateVO != null ? new ResponseEntity<>(stateVO,HttpStatus.OK) : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -115,10 +116,24 @@ public class MessengerController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    /*
+     *  개인 채팅 비활성화
+     *  @Param id
+     */
     @PutMapping(value="/disable/{id}", consumes = "application/json", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
     public ResponseEntity<Void> disableMember(@PathVariable("id") String id){
         StateVO stateVO = messengerService.disableMember(id);
         return stateVO.getStateCode().contains("SUCCESS") ? new ResponseEntity<>(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    /*
+     *  알람 설정 변경
+     *  @Param id, state
+     */
+    @PutMapping(value="/alarm/{id}/{state}", consumes = "application/json", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    public ResponseEntity<Void> changeAlarmState(@PathVariable("id") String id, @PathVariable("state") String state){
+        String stateCode = messengerService.changeAlarmState(id,state);
+        return stateCode != null ? new ResponseEntity<>(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 

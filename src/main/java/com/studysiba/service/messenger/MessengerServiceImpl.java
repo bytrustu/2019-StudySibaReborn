@@ -237,6 +237,30 @@ public class MessengerServiceImpl implements MessengerService {
         return stateVO;
     }
 
+    /*
+     *  개인채팅 읽지 않은 메세지 카운트 조회
+     *  @Param id
+     *  @Return 개인채팅 읽지 않은 메세지 카운트 반환
+     */
+    @Override
+    public MessageVO getPrivateUnReadCount(String id) {
+        if ( httpSession.getAttribute("id") == null || id == null ) return null;
+        return messengerMapper.getPrivateUnReadCount(id);
+    }
+
+    /*
+     *  알람 설정 변경
+     *  @Param id, state
+     *  @Return 알람설정변경 여부
+     */
+    @Override
+    public String changeAlarmState(String id, String state) {
+        if ( httpSession.getAttribute("id") == null ) return null;
+        if ( !httpSession.getAttribute("id").toString().equals(id) ) return null;
+        httpSession.setAttribute("alarm",state);
+        return "OK";
+    }
+
 
     /*
      *  개인채팅 활성화 여부 체크후 비활성화 일경우 활성화 전환

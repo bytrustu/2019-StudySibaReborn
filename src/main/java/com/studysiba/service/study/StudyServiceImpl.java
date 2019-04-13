@@ -143,7 +143,6 @@ public class StudyServiceImpl implements StudyService {
     @Override
     @Transactional
     public StateVO updateStudy(StudyVO studyVO) throws Exception {
-        System.out.println(studyVO);
         StateVO stateVO = new StateVO();
         stateVO.setStateCode("STUDY_UPDATE_ERROR");
         // 접속중인 회원인지 확인

@@ -20,7 +20,6 @@ $(document).ready(function () {
             detailContent = editor;
         })
         .catch(error => {
-            console.log('error');
         });
 
     // 스터디그룹 공지사항 CkEditor 설정

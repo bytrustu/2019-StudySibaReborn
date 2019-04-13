@@ -1230,6 +1230,7 @@ body {
 
 #modalLRForm > .modal-dialog > .modal-content > .modal-c-tabs > .nav {
     background-color: white;
+    border-radius: 10px;
 }
 
 #modalLRForm > .modal-dialog > .modal-content > .modal-c-tabs > .nav > .nav-item > a {
@@ -1240,6 +1241,10 @@ body {
 #modalLRForm > .modal-dialog > .modal-content > .modal-c-tabs > .nav > .nav-item > .active {
     color: white;
     background-color: #ffce58;
+}
+
+.modal-loginli{
+    border-radius: 10px;
 }
 
 .login-modal-bottom {
@@ -1306,6 +1311,7 @@ body {
     #modalLRForm > .modal-dialog > .modal-content {
         padding-left: 70px;
         padding-right: 70px;
+        border-radius: 10px;
     }
 }
 

@@ -16,7 +16,8 @@
         <div class="board-top">
             <div class="board-total">
                 <c:if test="${sessionScope.id eq board.brdId || sessionScope.auth eq 'ADMIN'}">
-                    <img src="/static/image/common/edit.png" class="board-edit"><img src="/static/image/common/delete.png" class="board-delete">
+                    <img src="/static/image/common/edit.png" class="board-edit" data-container="body" data-placement="top" data-toggle="popover" data-trigger="hover" data-content="수정">
+                    <img src="/static/image/common/delete.png" class="board-delete" data-container="body" data-placement="top" data-toggle="popover" data-trigger="hover" data-content="삭제">
                 </c:if>
             </div>
             <c:choose>
@@ -89,7 +90,7 @@
                                 <div class="comment-info">
                                     <p>[ ${comment.mbrNick} ]
                                         <c:if test="${sessionScope.id eq comment.cmtId || sessionScope.auth eq 'ADMIN'}">
-                                            <img class="comment-delete" src="/static/image/common/delete2.png">
+                                            <img class="comment-delete" src="/static/image/common/delete2.png" data-container="body" data-placement="top" data-toggle="popover" data-trigger="hover" data-content="삭제">
                                         </c:if>
                                     </p>
                                     <%--<p><fmt:formatDate value="${board.brdDate}" pattern="yy-MM-dd HH:mm:ss"/></p>--%>

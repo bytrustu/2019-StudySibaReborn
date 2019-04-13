@@ -139,4 +139,11 @@ public interface MessengerMapper {
      *  @Return 채팅방 정보 반환
      */
     RoomVO getRoomInfo(RoomVO roomVO);
+
+    /*
+     *  개인채팅 읽지 않은 메세지 카운트 조회
+     *  @Param id
+     *  @Return 개인채팅 읽지 않은 메세지 카운트 반환
+     */
+    MessageVO getPrivateUnReadCount(String id);
 }
