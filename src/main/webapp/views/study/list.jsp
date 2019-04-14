@@ -2,6 +2,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<jsp:useBean id="toDay" class="java.util.Date" />
+<fmt:formatDate value="${toDay}" pattern="yyyy-MM-dd" var="now"/>
 
 <div class="sub-page">
 
@@ -124,7 +126,8 @@
                                 </div>
                                 <div class="st-person">
                                     <c:choose>
-                                        <c:when test="${now >= study.stdEnd || study.stdAvailable == '0'}">
+
+                                        <c:when test="${study.stdPersonCount >= study.stdLimit || study.stdAvailable == 0 || now >= study.stdEnd}">
                                             <div class="st-ended">마감</div>
                                         </c:when>
                                         <c:otherwise>

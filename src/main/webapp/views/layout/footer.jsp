@@ -18,7 +18,7 @@
             <ul class="list-unstyled list-inline text-center"></ul>
         </div>
 
-        <div class="footer-copyright text-center py-3">© 2019 Copyright:<a href="https://github.com/bytrustu"> bytrustu</a></div>
+        <div class="footer-copyright text-center py-3">© 2019 Copyright :<a href="https://github.com/bytrustu" target="_blank"> bytrustu</a></div>
     </footer>
 
 

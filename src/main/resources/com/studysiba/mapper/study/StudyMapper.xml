@@ -49,6 +49,7 @@
         </if>
     </select>
 
+    <!-- 스터디 리스트 조회 -->
     <select id="getStudyList" parameterType="PageVO" resultType="StudyVO">
          SELECT STD_NO, STD_ID, STD_GROUP, STD_DIVIDE, STD_ADDRESS, STD_PLACE, STD_TITLE, STD_CONTENT,
                        STD_START, STD_END, STD_LIMIT, STD_LAT, STD_LNG, STD_AVAILABLE, STD_UPDATE, STD_REG,

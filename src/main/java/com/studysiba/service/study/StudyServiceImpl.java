@@ -9,6 +9,7 @@ import com.studysiba.mapper.common.CommonMapper;
 import com.studysiba.mapper.study.StudyMapper;
 import com.studysiba.service.common.CommonService;
 import com.studysiba.domain.group.GroupMemberVO;
+import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Log4j
 public class StudyServiceImpl implements StudyService {
 
     @Resource
@@ -87,7 +89,7 @@ public class StudyServiceImpl implements StudyService {
      *  @Return 스터디번호에 대한 스터디정보 조회
      */
     @Override
-    public StudyVO getStudyOne(int no) {
+    public StudyVO getStudyOne(int no) throws Exception {
         StudyVO studyVO = studyMapper.getStudyOne(no);
         studyVO.setStdContent(DataConversion.changeOriginTag(studyVO.getStdContent()));
         studyVO.setStdTitle(DataConversion.changeOriginTag(studyVO.getStdTitle()));
@@ -124,7 +126,7 @@ public class StudyServiceImpl implements StudyService {
      *  @Return page정보에 대한 스터디리스트 반환
      */
     @Override
-    public List<StudyVO> getStudyList(PageVO pageVO) {
+    public List<StudyVO> getStudyList(PageVO pageVO) throws Exception {
         if (pageVO.getCount() <= 0) return null;
         List<StudyVO> studyList = studyMapper.getStudyList(pageVO);
         for (int i = 0; i < studyList.size(); i++) {
@@ -191,7 +193,7 @@ public class StudyServiceImpl implements StudyService {
      */
     @Override
     @Transactional
-    public StateVO deleteStudy(int no, String type) {
+    public StateVO deleteStudy(int no, String type) throws Exception {
         StateVO stateVO = new StateVO();
         stateVO.setNo(no);
         if (type.equals("delete")) {
@@ -203,6 +205,15 @@ public class StudyServiceImpl implements StudyService {
         StudyVO studyVO = new StudyVO();
         studyVO.setStdNo(no);
         studyVO.setStdId((String) httpSession.getAttribute("id"));
+        String leaderId = studyMapper.getLeaderId(no);
+        // 리더 확인 및 관리자 권한 체크
+        if ( !leaderId.equals(studyVO.getStdId()) ) {
+            if ( httpSession.getAttribute("auth").toString().toUpperCase().equals("ADMIN") ) {
+                studyVO.setStdId(leaderId);
+            } else {
+                return stateVO;
+            }
+        }
         if (type.equals("delete")) {
             int deleteState = studyMapper.deleteStudy(studyVO);
             if (deleteState == 1) stateVO.setStateCode("STUDY_DELETE_SUCCESS");
@@ -210,7 +221,6 @@ public class StudyServiceImpl implements StudyService {
             int deleteState = studyMapper.activeStudy(studyVO);
             if (deleteState == 1) stateVO.setStateCode("STUDY_ACTIVE_SUCCESS");
         }
-
         return stateVO;
     }
 
@@ -220,7 +230,7 @@ public class StudyServiceImpl implements StudyService {
      *  @Return 스터디 참여에 대한 상태코드 반환
      */
     @Override
-    public StateVO joinStudy(int no) {
+    public StateVO joinStudy(int no) throws Exception {
         StateVO stateVO = new StateVO();
         stateVO.setNo(no);
         stateVO.setStateCode("STUDY_JOIN_ERROR");
@@ -247,7 +257,7 @@ public class StudyServiceImpl implements StudyService {
      *  @Return 스터디 탈퇴에 대한 상태코드 반환
      */
     @Override
-    public StateVO outStudy(int no) {
+    public StateVO outStudy(int no) throws Exception {
         StateVO stateVO = new StateVO();
         stateVO.setNo(no);
         stateVO.setStateCode("STUDY_OUT_ERROR");
@@ -269,17 +279,17 @@ public class StudyServiceImpl implements StudyService {
      *  @Return 스터디에 참여중인 멤버 리스트 반환
      */
     @Override
-    public List<GroupMemberVO> getGroupMemberList(int no) {
+    public List<GroupMemberVO> getGroupMemberList(int no) throws Exception {
         return studyMapper.getGroupMemberList(no);
     }
 
     /*
-     *  스터디 탈퇴
+     *  스터디 최신화
      *  @Param no
-     *  @Return 스터디 탈퇴 상태코드 반환
+     *  @Return 스터디 최신화 결과 상태코드 반환
      */
     @Override
-    public StateVO latestStudy(int no) {
+    public StateVO latestStudy(int no) throws Exception {
         StateVO stateVO = new StateVO();
         stateVO.setNo(no);
         stateVO.setStateCode("STUDY_LATEST_ERROR");

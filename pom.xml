@@ -87,6 +87,13 @@
             <version>1.6</version>
         </dependency>
 
+        <!--devtools-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
         <!--fileupload-->
         <dependency>
             <groupId>commons-fileupload</groupId>

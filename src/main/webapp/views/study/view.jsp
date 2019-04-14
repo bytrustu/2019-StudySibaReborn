@@ -32,6 +32,7 @@
                 </c:if>
             </div>
 
+
             <c:if test="${sessionScope.id ne null }">
                 <c:choose>
                     <c:when test="${fn:contains(groupMember,sessionScope.id )}">
@@ -51,6 +52,8 @@
         <div class="board-body stv-body">
 
 
+
+
             <div class="row stv-row">
                 <div class="col-md-12">
                     <div class="row">
@@ -63,7 +66,7 @@
 
 
                             <c:choose>
-                                <c:when test="${now >= studyView.stdEnd || studyView.stdAvailable == '0'}">
+                                <c:when test="${fn:length(groupMember) >= studyView.stdLimit || studyView.stdAvailable == 0 || now >= studyView.stdEnd}">
                                     <div class="st-ended">마감</div>
                                 </c:when>
                                 <c:otherwise>
@@ -73,7 +76,6 @@
                             <span class="stv-group">${studyView.stdGroup}</span>
 
                             <img src="/file/view/study/${studyView.uldFilename}" class="stv-logo">
-
                         </div>
                     </div>
                 </div>

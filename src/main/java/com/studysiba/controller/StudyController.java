@@ -102,7 +102,7 @@ public class StudyController {
      */
     @ResponseBody
     @GetMapping(value="/get/{no}",  consumes = "application/json", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
-    public ResponseEntity<StudyVO> getStudy(@PathVariable("no") int no) {
+    public ResponseEntity<StudyVO> getStudy(@PathVariable("no") int no) throws Exception {
         StudyVO studyVO = studyService.getStudyOne(no);
         return studyVO != null ? new ResponseEntity<>(studyVO,HttpStatus.OK) : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -167,9 +167,9 @@ public class StudyController {
 
 
     /*
-     *  스터디 탈퇴
+     *  스터디 최신화
      *  @Param no
-     *  @Return 스터디 탈퇴 상태코드 반환
+     *  @Return 스터디 최신화 상태코드 반환
      */
     @ResponseBody
     @PutMapping(value="/latest/{no}", consumes = "application/json", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})

@@ -22,14 +22,14 @@ public interface StudyService {
      *  @Param no
      *  @Return 스터디번호에 대한 스터디정보 조회
      */
-    StudyVO getStudyOne(int no);
+    StudyVO getStudyOne(int no) throws Exception;
 
     /*
      *  스터디 리스트 조회
      *  @Param pageVO
      *  @Return page정보에 대한 스터디리스트 반환
      */
-    List<StudyVO> getStudyList(PageVO pageVO);
+    List<StudyVO> getStudyList(PageVO pageVO) throws Exception;
 
     /*
      *  스터디 수정
@@ -43,33 +43,33 @@ public interface StudyService {
      *  @Param no
      *  @Return 스터디 삭제에 대한 상태코드 반환
      */
-    StateVO deleteStudy(int no, String type);
+    StateVO deleteStudy(int no, String type) throws Exception;
 
     /*
      *  스터디 참여
      *  @Param no
      *  @Return 스터디 참여에 대한 상태코드 반환
      */
-    StateVO joinStudy(int no);
+    StateVO joinStudy(int no) throws Exception;
 
     /*
      *  스터디 탈퇴
      *  @Param no
      *  @Return 스터디 탈퇴에 대한 상태코드 반환
      */
-    StateVO outStudy(int no);
+    StateVO outStudy(int no) throws Exception;
 
     /*
      *  스터디에 참여중인 멤버 리스트 조회
      *  @Param no
      *  @Return 스터디에 참여중인 멤버 리스트 반환
      */
-    List<GroupMemberVO> getGroupMemberList(int no);
+    List<GroupMemberVO> getGroupMemberList(int no) throws Exception;
 
     /*
      *  스터디 탈퇴
      *  @Param no
      *  @Return 스터디 탈퇴 상태코드 반환
      */
-    StateVO latestStudy(int no);
+    StateVO latestStudy(int no) throws Exception;
 }
