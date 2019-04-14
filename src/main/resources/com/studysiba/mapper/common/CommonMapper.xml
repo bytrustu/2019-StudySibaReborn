@@ -33,4 +33,23 @@
           ( SELECT COUNT(*) FROM VISIT ) VCNT
     </select>
 
+    <!-- 회원 포인트 정보 조회 -->
+    <select id="getMemberPointInfo" resultType="PointVO">
+        SELECT PNT_NO, PNT_ID, PNT_SCORE FROM POINT
+        WHERE PNT_ID = #{id}
+    </select>
+
+    <!-- 회원 포인트 업데이트 -->
+    <update id="setMemberPoint" parameterType="PointVO">
+        UPDATE POINT
+        SET PNT_SCORE =
+        <choose>
+            <when test="pntScore == -9991">0</when>
+            <otherwise>PNT_SCORE + #{pntScore}</otherwise>
+        </choose>
+        WHERE PNT_ID = #{pntId}
+    </update>
+
+
+
 </mapper>

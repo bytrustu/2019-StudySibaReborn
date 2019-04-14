@@ -9,6 +9,7 @@ import com.studysiba.domain.common.PageVO;
 import com.studysiba.mapper.board.BoardMapper;
 import com.studysiba.mapper.common.CommonMapper;
 import com.studysiba.domain.common.StateVO;
+import com.studysiba.service.common.CommonService;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,7 +27,7 @@ public class BoardServiceImpl implements BoardService {
     BoardMapper boardMapper;
 
     @Resource
-    CommonMapper commonMapper;
+    CommonService commonService;
 
     @Autowired
     HttpSession httpSession;
@@ -55,6 +56,8 @@ public class BoardServiceImpl implements BoardService {
         // 태그 변환
         boardVO.setBrdTitle(DataConversion.changeSpChar(boardVO.getBrdTitle()));
         boardVO.setBrdContent(DataConversion.changeSpChar(boardVO.getBrdContent()));
+        StateVO scoreState = commonService.setPoint(boardVO.getBrdId(), 1000);
+        if ( scoreState.getStateCode().contains("ERROR") ) log.info("포인트 설정에 에러가 발생했습니다.");
 
         if (boardVO.getIsReply() == null || boardVO.getIsReply().equals("false")) {
             stateCode = boardMapper.writePost(boardVO) == 1 ? "BOARD_WRITE_SUCCESS" : "BOARD_WRITE_ERROR";
@@ -147,6 +150,10 @@ public class BoardServiceImpl implements BoardService {
             // 좋아요 추가
             int likeState = boardMapper.addLike(likeVO);
             if (likeState == 1) stateVO.setStateCode("LIKE_STATE_SUCCESS");
+
+            StateVO scoreState = commonService.setPoint((String) httpSession.getAttribute("id"), 200);
+            if ( scoreState.getStateCode().contains("ERROR") ) log.info("포인트 설정에 에러가 발생했습니다.");
+
         }
         return stateVO;
     }
@@ -163,7 +170,6 @@ public class BoardServiceImpl implements BoardService {
             String lastTime = DataConversion.DurationFromNow(commentList.get(i).getCmtDate());
             commentList.get(i).setLastTime(lastTime);
         }
-
         return commentList;
     }
 
@@ -184,6 +190,8 @@ public class BoardServiceImpl implements BoardService {
             if (commentState == 1) {
                 stateVO.setStateCode("COMMENT_WRITE_SUCCESS");
                 stateVO.setNo(boardMapper.getCommentMaxNum(commentVO));
+                StateVO scoreState = commonService.setPoint((String) httpSession.getAttribute("id"), 500);
+                if ( scoreState.getStateCode().contains("ERROR") ) log.info("포인트 설정에 에러가 발생했습니다.");
             }
 
         }

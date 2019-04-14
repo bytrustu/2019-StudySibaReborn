@@ -71,4 +71,5 @@ public interface BoardService {
      *  @Return 게시글수정 상태코드 반환
      */
     StateVO updatePost(BoardVO boardVO);
+
 }

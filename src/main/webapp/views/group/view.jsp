@@ -34,7 +34,7 @@
             </div>
 
             <c:choose>
-                <c:when test="${sessionScope.id eq studyView.stdId || sessionScope.auth eq 'ADMIN'}">
+                <c:when test="${sessionScope.id eq studyView.stdId}">
                     <button class="btn btn-warning group-noticebtn">공지작성</button>
                 </c:when>
                 <c:when test="${sessionScope.id ne studyView.stdId}">

@@ -9,6 +9,8 @@ import com.studysiba.domain.group.GroupMemberVO;
 import com.studysiba.domain.group.GroupMessageVO;
 import com.studysiba.mapper.group.GroupMapper;
 import com.studysiba.mapper.study.StudyMapper;
+import com.studysiba.service.common.CommonService;
+import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +25,7 @@ import java.util.HashMap;
 import java.util.List;
 
 @Service
+@Log4j
 public class GroupServiceImpl implements GroupService {
 
     @Resource
@@ -30,6 +33,9 @@ public class GroupServiceImpl implements GroupService {
 
     @Resource
     StudyMapper studyMapper;
+
+    @Resource
+    CommonService commonService;
 
     @Autowired
     HttpSession httpSession;
@@ -85,6 +91,9 @@ public class GroupServiceImpl implements GroupService {
                     stateVO.setStateCode("NOTICE_WRITE_SUCCESS");
                 }
             }
+
+            StateVO scoreState = commonService.setPoint((String) httpSession.getAttribute("id"), 1000);
+            if ( scoreState.getStateCode().contains("ERROR") ) log.info("포인트 설정에 에러가 발생했습니다.");
         }
         return stateVO;
     }

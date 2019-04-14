@@ -5,6 +5,7 @@ import com.studysiba.common.DataValidation;
 import com.studysiba.config.SocialKeys;
 import com.studysiba.domain.common.Criteria;
 import com.studysiba.domain.common.PageVO;
+import com.studysiba.domain.common.StateVO;
 import com.studysiba.domain.common.UploadVO;
 import com.studysiba.domain.group.GroupBoardVO;
 import com.studysiba.domain.member.MemberVO;
@@ -359,6 +360,8 @@ public class CommonServiceImpl implements CommonService {
         for (int i = 0; i < studyList.size(); i++) {
             String[] address = studyList.get(i).getStdAddress().split(" ");
             studyList.get(i).setStdAddress(address[0] + " " + studyList.get(i).getStdPlace());
+            String start = studyList.get(i).getStdStart();
+            String end = studyList.get(i).getStdEnd();
         }
         return studyList;
     }
@@ -392,5 +395,32 @@ public class CommonServiceImpl implements CommonService {
             }
         }
     }
+
+    /*
+     *  포인트 업데이트
+     *  @Param id, point
+     *  @Return 포인트 업데이트에 따른 상태코드 반환
+     */
+    public StateVO setPoint(String id, int score){
+        StateVO stateVO = new StateVO();
+        stateVO.setStateCode("POINT_UPDATE_ERROR");
+        if ( httpSession.getAttribute("id") == null ) return stateVO;
+            PointVO pointVO = commonMapper.getMemberPointInfo(id);
+            // 현재가지고 있는 포인트와 적용될 포인트의 합이 0이하 일경우
+            if ( pointVO.getPntScore() + score <= 0 ) score = -9991;
+            pointVO.setPntId(id);
+            pointVO.setPntScore(score);
+            int pointState = commonMapper.setMemberPoint(pointVO);
+            if ( pointState == 1 ) {
+                if ( score == -9991 ) {
+                    httpSession.setAttribute("score",0);
+                } else {
+                    httpSession.setAttribute("score",(Integer)httpSession.getAttribute("score")+score);
+                }
+                stateVO.setStateCode("POINT_UPDATE_SUCCESS");
+            }
+            return stateVO;
+    }
+
 
 }

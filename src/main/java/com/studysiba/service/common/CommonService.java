@@ -2,6 +2,7 @@ package com.studysiba.service.common;
 
 import com.studysiba.domain.common.Criteria;
 import com.studysiba.domain.common.PageVO;
+import com.studysiba.domain.common.StateVO;
 import com.studysiba.domain.member.MemberVO;
 import com.studysiba.domain.member.PointVO;
 import com.studysiba.domain.study.StudyVO;
@@ -108,4 +109,11 @@ public interface CommonService {
      *  @Param request
      */
     void handleError(HttpServletRequest request);
+
+    /*
+     *  포인트 업데이트
+     *  @Param id, point
+     *  @Return 포인트 업데이트에 따른 상태코드 반환
+     */
+    StateVO setPoint(String id, int score);
 }

@@ -1,6 +1,7 @@
 package com.studysiba.mapper.common;
 
 import com.studysiba.domain.common.UploadVO;
+import com.studysiba.domain.member.PointVO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.HashMap;
@@ -34,4 +35,18 @@ public interface CommonMapper {
      *  @Return 회원수 방문수 반환
      */
     HashMap<String,Integer> memberCount();
+
+    /*
+     *  회원 포인트 정보 조회
+     *  @Param id
+     *  @Return 회원 포인트 정보 반환
+     */
+    PointVO getMemberPointInfo(String id);
+
+    /*
+     *  회원 포인트 업데이트
+     *  @Param pointVO
+     *  @Return 포인트 업데이트 여부 반환
+     */
+    int setMemberPoint(PointVO pointVO);
 }
