@@ -1,8 +1,12 @@
 let groupClient;
 $(document).ready(function(){
-    $('.groupmsg-container').scrollTop($('.groupmsg-container')[0].scrollHeight);
-    enterPressAction('groupmsg-input','groupmsg-send');
 
+    // 그룹메세지창 스크롤 최하단으로
+    $('.groupmsg-container').scrollTop($('.groupmsg-container')[0].scrollHeight);
+    // 메세지전송 엔터키 적용
+    enterPressAction('groupmsg-input','groupmsg-send');
+    
+    // 그룹채팅 연결
     let no = contentNo();
     let sockGroup = new SockJS("/group");
     groupClient = Stomp.over(sockGroup);
@@ -22,13 +26,15 @@ $(document).ready(function(){
         });
     });
 
-
+    // 그룹메세지
     let sendGroupMessage = (messageInfo) => {
         let msg = `
                             <div class="groupmsg-box center-block animated bounce fast">
                                     <div class="row">
                                         <div class="col-xs-8 col-md-8">
-                                            <img src="/static/image/profile/${messageInfo.mbrProfile}" class="groupmsg-photo messenger-connector"  data-id="${messageInfo.grmId}" data-nick="${messageInfo.mbrNick}" data-container="body" data-placement="top" data-toggle="popover" data-trigger="hover" data-content="${messageInfo.mbrNick}와 채팅">
+                                            <img src="/static/image/profile/${messageInfo.mbrProfile}" class="groupmsg-photo messenger-connector"  
+                                                    data-id="${messageInfo.grmId}" data-nick="${messageInfo.mbrNick}" data-container="body" data-placement="top" 
+                                                    data-toggle="popover" data-trigger="hover" data-content="${messageInfo.mbrNick}와 채팅">
                                             <h4 class="groupmsg-name">${messageInfo.mbrNick}</h4>
                                         </div>
                                         <div class="col-xs-4 col-md-4 text-right groupmsg-date">${messageInfo.grmDate}</div>
@@ -43,16 +49,13 @@ $(document).ready(function(){
         $('.groupmsg-box').last().find('.groupmsg-photo').popover();
     }
 
+    // 그룹메세지 전송버튼
     $(document).on('click', '.groupmsg-send', function(){
         let message = $('.groupmsg-input').val();
         $('.groupmsg-input').val('');
         if ( message.trim() == '' ) { errorAlert("메세지를 입력해주세요."); return false;}
         groupClient.send(`/chat/${contentNo()}`, {}, JSON.stringify({"message":message}));
     });
-
-
-
-
 
 });
 

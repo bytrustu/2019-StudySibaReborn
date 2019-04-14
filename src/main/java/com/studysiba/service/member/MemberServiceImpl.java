@@ -132,27 +132,29 @@ public class MemberServiceImpl implements MemberService {
         // 초대장 보내질 양식
         switch (type) {
             case "invite":
+                htmlStr.append("<div style='width:100%; text-align:center; margin-top:50px;'>");
                 htmlStr.append("<a href='https://" + siteUrl + "/member/mail/invite");
                 htmlStr.append("/" + memberVO.getMbrId());
                 htmlStr.append("/" + memberVO.getMbrCode());
                 htmlStr.append("'>");
-                htmlStr.append("<img src='https://i.imgur.com/yr5w0qi.jpg' style='width:100%'></a><br/>");
-                htmlStr.append("상단 초대장 클릭하시면 인증이 됩니다. 감사합니다^^");
+                htmlStr.append("<img src='https://i.imgur.com/3Vt5UPz.png' style='width:80%;max-width=500px'></a>");
+                htmlStr.append("</div>");
                 log.info("초대장 양식 : " + htmlStr.toString());
                 // 초대장 제목
-                mail.setSubject("[ 초대장발급 - " + memberVO.getMbrId() + "님 ] 스터디시바");
+                mail.setSubject("[스터디시바] 초대장발급 - " + memberVO.getMbrId() + "님에게");
                 break;
 
             case "password":
+                htmlStr.append("<div style='width:100%; text-align:center; margin-top:50px;'>");
                 htmlStr.append("<a href='https://" + siteUrl + "/member/mail/changepass");
                 htmlStr.append("/" + memberVO.getMbrId());
                 htmlStr.append("/" + memberVO.getMbrCode());
                 htmlStr.append("'>");
-                htmlStr.append("<img src='https://i.imgur.com/yr5w0qi.jpg' style='width:100%'></a><br/>");
-                htmlStr.append("상단 이미지를 클릭하시면 이동 됩니다. 감사합니다^^");
+                htmlStr.append("<img src='https://i.imgur.com/aNQ7TX3.png' style='width:80%;max-width=500px'></a>");
+                htmlStr.append("</div>");
                 log.info("초대장 양식 : " + htmlStr.toString());
                 // 초대장 제목
-                mail.setSubject("[ 비밀번호변경 - " + memberVO.getMbrId() + "님 ] 스터디시바");
+                mail.setSubject("[스터디시바] 비밀번호재설정 - " + memberVO.getMbrId() + "님에게");
                 break;
         }
 

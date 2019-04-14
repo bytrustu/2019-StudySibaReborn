@@ -541,6 +541,7 @@
         margin: 0;
         height: 532px;
         overflow-y: scroll;
+        overflow-x: hidden;
     }
 
     .search-member {

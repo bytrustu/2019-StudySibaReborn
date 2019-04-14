@@ -65,7 +65,7 @@
             SELECT COALESCE(MAX(MBR_NO+1),1) AS MBR_NO FROM MEMBER
         </selectKey>
             INSERT INTO MEMBER(MBR_NO, MBR_TYPE, MBR_AUTH, MBR_CODE, MBR_ID, MBR_PASS, MBR_NICK,MBR_EMAIL, MBR_PROFILE, MBR_CONNECT, MBR_JOIN)
-            VALUES(#{mbrNo}, 'NONE', 'NONE', #{mbrCode}, #{mbrId}, #{mbrPass}, #{mbrNick}, #{mbrEmail}, #{mbrProfile}, NOW(), NOW())
+            VALUES(#{mbrNo}, 'NONE', 'NONE', #{mbrCode}, #{mbrId}, #{mbrPass}, #{mbrNick}, #{mbrEmail}, #{mbrProfile}, NOW()-INTERVAL 5 MINUTE, NOW())
     </insert>
 
     <!-- 회원이메일중복조회 -->
@@ -106,6 +106,7 @@
         WHERE MBR_EMAIL = 'BYTRUSTU@GMAIL.COM' AND MBR_TYPE = 'NONE';
     </update>
 
+    <!-- 아이디 미승인 처리 -->
     <update id="deleteInformation" parameterType="MemberVO">
         DELETE FROM MEMBER
         WHERE MBR_ID = #{mbrId} AND MBR_TYPE = 'NONE'
@@ -236,7 +237,7 @@
     <!-- 접속중인 유저 리스트 조회 -->
     <select id="connectedMemberList" resultType="MemberVO">
         SELECT MBR_NO, MBR_ID, MBR_NICK,MBR_PROFILE FROM MEMBER
-        WHERE MBR_CONNECT BETWEEN NOW()-INTERVAL 3 MINUTE AND NOW()
+        WHERE MBR_CONNECT BETWEEN NOW()-INTERVAL 3 MINUTE AND NOW() AND NOT MBR_TYPE = 'NONE'
         ORDER BY MBR_CONNECT DESC
     </select>
 

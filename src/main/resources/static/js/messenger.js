@@ -1,75 +1,109 @@
+// 전체채팅 Client
 let publicClient;
+// 개인채팅 Client
 let privateClient;
-let messageContainer = $('.chat-message');
-let messageInput = $('.chat-input');
-let messengerPublicBox = $('.messenger-public .messenger-comment');
-let chatWindow = $('.chat-window');
-let chatList = $('.chat-list');
+// 접속아이디
 let connectId = $('#data-id').val();
-let chatTitle = $('.chat-window .top-title');
+// 채팅 연결 대상
 let connectFromId='';
-let sendButton = $('.chat-sendbox');
-let messengerListTitle = $('.messenger-chattitle');
+
+// 메신저 리스트창
+let chatList = $('.chat-list');
+// 메신저 리스트 전체/유저리스트 창
 let messengerList = $('.messenger-chatlist');
+// 메신저 리스트 채팅목록 제목
+let messengerListTitle = $('.messenger-chattitle');
+
+
+// 메신저 채팅창
+let chatWindow = $('.chat-window');
+// 채팅창 상단 제목
+let chatTitle = $('.chat-window .top-title');
+// 채팅 메세지 표시창
+let messageContainer = $('.chat-message');
+// 메세지 입력칸
+let messageInput = $('.chat-input');
+// 전체채팅 메세지 창
+let messengerPublicBox = $('.messenger-public .messenger-comment');
+// 메세지 전송 버튼
+let sendButton = $('.chat-sendbox');
+
+// 회원검색창
 let searchBox = $('.search-member');
+// 회원검색창 닫기버튼
 let searchClose = $('.search-closebtn');
+// 회원검색창 검색 입력칸
 let searchInput = $('.search-input');
-let msgOpenIcon = $('.msg-openicon');
+// 알림 ON/OFF 값
 let isAlarm = $('#data-alarm');
+// 알림버튼
 let alarmButton = $('.top-alarm');
-let publicMessageContainer = $('.chat-message.public');
+// 하단 메신저 버튼안 이모티콘(편지모양)
+let msgOpenIcon = $('.msg-openicon');
 
 
 $(document).ready(function(){
-    /*
-            전체채팅
-     */
+
+    // 알림값 on/off 여부에 따라 class 변경
+    if ( isAlarm.val() == 'on' || isAlarm.val() == '' ) {
+        alarmButton.addClass('alarm-on');
+    } else {
+        alarmButton.addClass('alarm-off');
+    }
+    // popover 설정
+    $('[data-toggle="popover"]').popover();
+    $("[data-toggle='popover']").on('show.bs.popover', function(){
+
+    });
+
+    
+    // 전체채팅
     let sockPublic = new SockJS("/public");
     publicClient = Stomp.over(sockPublic);
     publicClient.debug = null;
     publicClient.connect({}, function(){
+
         publicClient.subscribe('/topic/public', function(msg){
             let msgInfo = JSON.parse(msg.body);
             if ( msgInfo.statusCodeValue == '500' ){
                 return false;
             }
             let isScroll = false;
+            // 채팅창이 최하단에 있을경우, 메세지 보낸사람이 본인인 경우에만 채팅창 하단으로 스크롤 갱신
             if ( messageContainer.scrollTop() + messageContainer.innerHeight() >= messageContainer[0].scrollHeight || msgInfo.body.msgFrom == $('#data-id').val() ) {
                 isScroll = true;
             }
+            // 채팅창이 열려있으면서 전채치팅인 경우에만 메세지,스크롤여부 갱신
             if ( !chatWindow.hasClass('d-none') && chatWindow.find('.chat-message').hasClass('public') ) {
                 appendMessage(msgInfo.body,isScroll);
+                
+                // 채팅리스트창이 열려있을경우 전체채팅 메세지칸 메세지 갱신
             } else if ( !chatList.hasClass('d-none') ) {
                 messengerPublicBox.html(msgInfo.body.msgText);
             }
         });
     });
+    
 
-    if ( isAlarm.val() == 'on' || isAlarm.val() == '' ) {
-        alarmButton.addClass('alarm-on');
-    } else {
-        alarmButton.addClass('alarm-off');
-    }
-
-    $('[data-toggle="popover"]').popover();
-
-
+    // 개인채팅
     let sockPrivate = new SockJS("/private");
+    // 접속중인 경우에만 해당
     if ( connectId != '' ) {
         privateClient = Stomp.over(sockPrivate);
         privateClient.debug = null;
         privateClient.connect({}, function(){
+
             privateClient.subscribe(`/topic/private/${connectId}`, function(msg){
                 let msgInfo = JSON.parse(msg.body);
                 if ( msgInfo.statusCodeValue == '500' ){
                     return false;
                 }
-
                 let isScroll = false;
                 if ( messageContainer.scrollTop() + messageContainer.innerHeight() >= messageContainer[0].scrollHeight || msgInfo.body.msgFrom == $('#data-id').val() ) {
                     isScroll = true;
                 }
 
+                // 채팅창이 열려있으면서 개인채팅인 경우에만 그리고 나와 현재 연결중인 대상만 채팅창에 갱신
                 if ( !chatWindow.hasClass('d-none') && chatWindow.find('.chat-message').hasClass('private') && msgInfo.body.msgFrom == connectFromId ) {
                     appendMessage(msgInfo.body,isScroll);
                     updateReadMessage(msgInfo.body);
@@ -97,6 +131,7 @@ $(document).ready(function(){
             });
         });
 
+        // 개인채팅 읽지 않은 메세지가 있을경우 하단 메세지창 이모티콘 동적 swing
         privateUnReadCount(connectId)
             .then((data) => {
                 if ( data.msgCount > 0 ) {
@@ -110,13 +145,17 @@ $(document).ready(function(){
     // 채팅 input EnterKey 적용
     enterPressAction('chat-input','chat-sendbox');
 
+    
     // 메신저 공통 버튼 클릭시
     $(document).on('click','.messenger-common', function(e){
         e.stopPropagation();
+        // 공통 클래스 초기화
         initClass();
         let element = $(this);
         let target = '';
         let lastText = '';
+        
+        // 공통버튼 클래스이름 지정
         let targetClass = new Set()
             .add('messenger-btn').add('messenger-list').add('top-alarm').add('top-invitebtn').add('search-closebtn')
             .add('top-closebtn').add('chat-prev').add('chat-sendbox').add('chat-input').add('search-btnbox');
@@ -126,6 +165,7 @@ $(document).ready(function(){
                 break;
             }
         }
+
         switch (target) {
             // 우측아래 메신저 버튼 클릭시
             case 'messenger-btn' :
@@ -142,10 +182,12 @@ $(document).ready(function(){
                 });
                 break;
                 
-                // 메신저 리스트 클릭시
+                
+                // 메신저 회원리스트 클릭시
             case 'messenger-list' :
                 chatList.toggleClass('d-none');
                 chatWindow.toggleClass('d-none').addClass('fadeIn');
+                
                 // 전체채팅 일 경우
                 if ( $(this).attr('class').includes('messenger-public') ) {
                     messageContainer.addClass('public');
@@ -161,6 +203,7 @@ $(document).ready(function(){
                         }).catch( (error) => {
                         return false;
                     })
+                    
                     // 개인채팅 일 경우
                 } else {
                     messageContainer.addClass('private');
@@ -182,8 +225,9 @@ $(document).ready(function(){
                 if ( connectId != '' ) {
                     setTimeout(()=>{messageInput.focus();},500);
                 }
-
                 break;
+                
+                
                 // 이전 버튼 클릭시
             case 'chat-prev' :
                 // 가장 마지막 메세지를 남긴말로 설정
@@ -200,6 +244,8 @@ $(document).ready(function(){
                 sendButton.attr('data-id','');
                 appendMemberListModule();
                 break;
+                
+                
                 // 상단 알림 버튼 클릭시
             case 'top-alarm' :
                 if ( connectId == '' ){
@@ -218,6 +264,8 @@ $(document).ready(function(){
                 }
                 changeAlarmState(connectId,alarmState);
                 break;
+                
+                
             // 상단 초대 버튼 클릭시
             case 'top-invitebtn' :
                 if ( connectId == '' ){
@@ -229,6 +277,8 @@ $(document).ready(function(){
                 searchInput.focus();
                 enterPressAction('search-input','search-btnbox');
                 break;
+                
+                
                 // 검색창 검색시
             case 'search-btnbox' :
                 let nick = searchInput.val();
@@ -244,6 +294,8 @@ $(document).ready(function(){
                     messengerAlert('존재하지 않는 회원 입니다.',1500);
                 });
                 break;
+                
+                
                 // 회원 검색 닫기 클릭시
             case 'search-closebtn' :
                 searchBox.removeClass('fadeInUp').addClass('fadeOutDown');
@@ -252,6 +304,8 @@ $(document).ready(function(){
                     messageInput.focus();
                     },500);
                 break;
+                
+                
                 // 상단 닫기 버튼 클릭시
             case 'top-closebtn' :
                 if ( connectId != '') {
@@ -275,6 +329,8 @@ $(document).ready(function(){
                     chatList.addClass('d-none');
                 },500);
                 break;
+                
+                
                 // 보내기 전송 버튼 클릭시
             case 'chat-sendbox' :
                 checkLogined();
@@ -299,12 +355,14 @@ $(document).ready(function(){
                     },100);
                 }
                 break;
+                
+                // 채팅입력란 클릭시 로그인체크
             case 'chat-input' :
                 checkLogined();
                 break;
         }
-
     });
+
 
     // 메신저 멤버리스트 초기화 및 갱신
     let appendMemberListModule = () =>{
@@ -319,7 +377,6 @@ $(document).ready(function(){
             });
         }
     }
-
 
     // ESC 버튼 메신저 닫기
     $(document).keyup(function(e) {
@@ -336,16 +393,17 @@ $(document).ready(function(){
         }
     });
 
-
+    // 메신저 회원리스트 삭제
     $(document).on('click', '.messenger-delete', function(){
         let memberId = $('.messenger-delete').parents('.messenger-list').attr('data-id');
         if ( memberId == '') return false;
+        // 채팅룸 자신의 상태 비활성화
         disableMember(memberId)
             .then( (data) => {
                 $(this).parents('.messenger-list').remove();
+                $('.popover').remove();
             }).catch( (error) => {
         });
-
         return false;
     });
 
@@ -363,7 +421,9 @@ $(document).ready(function(){
         let targetId = $(this).attr('data-id');
         let targetNick = $(this).attr('data-nick');
         connectTarget(targetId,targetNick);
+        $("[data-toggle='popover']").popover('hide');
     });
+
 
     // 알림 메세지 닫기 버튼 클릭시
     $(document).on('click', '.alarm-close', function(){
@@ -374,6 +434,7 @@ $(document).ready(function(){
     
     // end ready
 });
+
 
 // 메세지 알림 추가
 let appendAlarm = (nick, profile, text) => {
@@ -387,6 +448,7 @@ let appendAlarm = (nick, profile, text) => {
                                                         </div>
                                                     `);
 }
+
 
 // 프로필에 해당하는 배경색 클래스 선택
 let selectProfileBG = (profile) =>{
@@ -405,7 +467,6 @@ let selectProfileBG = (profile) =>{
 }
 
 
-
 // 알림 세션 변경
 let changeAlarmState = (id,state) => {
     $.ajax({
@@ -418,6 +479,7 @@ let changeAlarmState = (id,state) => {
         }
     });
 }
+
 
 // 회원 비활성화
 let disableMember = (id) => {
@@ -454,6 +516,7 @@ let convertNickId = (nick) => {
     })
 }
 
+
 // 회원이 있는지 여부 조회
 let existingMember = (id) => {
     return new Promise( (resolve, reject) => {
@@ -472,7 +535,7 @@ let existingMember = (id) => {
     })
 }
 
-
+// 대상과 연결
 let connectTarget = (id,nick) => {
     let isError = false;
     existingMember(id)
@@ -519,10 +582,7 @@ let connectTarget = (id,nick) => {
                 }).catch( (error) =>{
             });
         },250);
-
     });
-
-
 }
 
 // 메세지 읽음 처리
@@ -552,6 +612,7 @@ let isIncludeTarget = (id) =>{
     return isInclude;
 }
 
+
 // 채팅목록에 해당 아이디 리스트에 내용 변경
 let updateIncludeTarget = (messageInfo) => {
     let elements = $('.messenger-list');
@@ -565,6 +626,7 @@ let updateIncludeTarget = (messageInfo) => {
         }
     }
 }
+
 
 // 유저 목록 추가 상단 업데이트
 let addIncludeTarget = (messageInfo) => {
@@ -591,6 +653,7 @@ let addIncludeTarget = (messageInfo) => {
     messengerListTitle.after(appendList);
 }
 
+
 // 유저 목록 추가 하단
 let appendMemberList = (messageInfo) => {
     let appendList = `
@@ -606,7 +669,7 @@ let appendMemberList = (messageInfo) => {
                                             <div class="messenger-comment">
                                                 ${messageInfo.msgText}
                                             </div>
-                                            <div class="messenger-delete" >
+                                            <div class="messenger-delete" data-container="body" data-placement="top" data-toggle="popover" data-trigger="hover" data-content="삭제">
                                                 <img src="/static/image/common/member-delete.png">
                                             </div>
                                             <div class="messenger-count">
@@ -617,7 +680,9 @@ let appendMemberList = (messageInfo) => {
                                 </li>
                                 `;
     messengerList.append(appendList);
+    chatList.find('.messenger-list').last().find('.messenger-delete').popover();
 }
+
 
 // 전체채팅 마지막 정보 조회
 let publicLastMessage = () =>{
@@ -637,6 +702,7 @@ let publicLastMessage = () =>{
     })
 }
 
+
 // 자신의 채팅 멤버리스트 조회
 let privateMemberList = (id) => {
     return new Promise( (resolve, reject) => {
@@ -655,6 +721,7 @@ let privateMemberList = (id) => {
     })
 }
 
+
 // 자신의 읽지 않은 채팅 카운트 조회
 let privateUnReadCount = (id) => {
     return new Promise( (resolve, reject) => {
@@ -672,6 +739,7 @@ let privateUnReadCount = (id) => {
         });
     })
 }
+
 
 // 자신이 보낸 메세지 정보 확인
 let sendMessageInfo = (id) => {
@@ -729,6 +797,7 @@ let publicMessageList = () => {
     })
 }
 
+
 // 전체채팅 메세지 추가
 let appendMessage = (messageInfo, isScroll) => {
     let msgLeft = `
@@ -776,7 +845,6 @@ let appendMessage = (messageInfo, isScroll) => {
     if ( isScroll == true ) {
         messageContainer.scrollTop(messageContainer[0].scrollHeight);
     }
-
 }
 
 
@@ -787,13 +855,13 @@ let checkIncludes = (element,className) => {
 
 
 
-
 // animate 효과 초기화
 let initClass = () =>{
     chatWindow.removeClass('flipInY').removeClass('flipOutY').removeClass('fadeIn');
     chatList.removeClass('flipInY').removeClass('flipOutY').removeClass('fadeIn');
     searchBox.removeClass('fadeInUp').removeClass('fadeOutDown');
 }
+
 
 // 로그인 체크
 let checkLogined = () =>{
@@ -810,6 +878,7 @@ let checkLogined = () =>{
     }
 }
 
+
 // 메세지 alert
 let messengerAlert= (message, delay) => {
     var alert = $('#messengerMessage').alert();
@@ -819,6 +888,7 @@ let messengerAlert= (message, delay) => {
         alert.hide()
     }, delay);
 }
+
 
 // 회원검색 alert
 let findUserAlert= (message, delay) => {

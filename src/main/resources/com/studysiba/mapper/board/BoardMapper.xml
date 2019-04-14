@@ -41,7 +41,6 @@
         SELECT COUNT(*) FROM BOARD
         WHERE BRD_TYPE = #{menu}
 --             AND BRD_AVAILABLE = 1
-
         <choose>
             <when test="type == '-1' || type == '-2' || type == null">
             </when>

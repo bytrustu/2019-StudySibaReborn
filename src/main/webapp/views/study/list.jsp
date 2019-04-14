@@ -39,7 +39,6 @@
             <ul class="st-ul">
                 <div class="st-box">
 
-
                     <div class="col-12 mt-2 mb-4 st-subject">
                         <span class="stm-divide">
                             전체

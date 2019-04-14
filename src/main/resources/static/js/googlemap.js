@@ -1,21 +1,21 @@
-function initMap() {
-
-    var lat = 37.5640253;
-    var lng = 126.97377929999993;
-
-    var origin = {lat: lat, lng: lng};
-
-    var map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 15,
-        center: origin
-    });
-    var marker = new google.maps.Marker({
-        position: origin,
-        map: map,
-        title: 'Hello World!'
-    });
-    var clickHandler = new ClickEventHandler(map, origin);
-}
+// function initMap() {
+//
+//     var lat = 37.5640253;
+//     var lng = 126.97377929999993;
+//
+//     var origin = {lat: lat, lng: lng};
+//
+//     var map = new google.maps.Map(document.getElementById('map'), {
+//         zoom: 15,
+//         center: origin
+//     });
+//     var marker = new google.maps.Marker({
+//         position: origin,
+//         map: map,
+//         title: 'Hello World!'
+//     });
+//     var clickHandler = new ClickEventHandler(map, origin);
+// }
 
 
 function initAutocomplete() {
