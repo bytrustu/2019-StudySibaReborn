@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
@@ -57,6 +58,10 @@ public class CommonController implements ErrorController {
         // 회원수, 방문수 카운트
         HashMap<String, Integer> memberCount = commonService.memberCount();
         model.addAttribute("count", memberCount);
+
+        // 회원 방문수, 게시글수, 댓글수 조회
+        HashMap<String, Integer> memberInfoCount = commonService.memberInfoCount();
+        model.addAttribute("info", memberInfoCount);
 
         model.addAttribute("requireLogin", requireLogin);
         model.addAttribute("requireAdmin", requireAdmin);
@@ -113,7 +118,7 @@ public class CommonController implements ErrorController {
      */
     @ResponseBody
     @GetMapping(value="/download", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-    public ResponseEntity<Resource> downloadFile(@RequestParam String menu, @RequestParam int no){
+    public ResponseEntity<Resource> downloadFile(@RequestParam String menu, @RequestParam int no) throws IOException {
         HashMap<String, Object> download = commonService.downloadFile(menu, no);
         Resource resource = (Resource) download.get("resource");
         HttpHeaders httpHeaders = (HttpHeaders) download.get("headers");

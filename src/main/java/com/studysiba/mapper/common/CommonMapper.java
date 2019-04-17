@@ -49,4 +49,10 @@ public interface CommonMapper {
      *  @Return 포인트 업데이트 여부 반환
      */
     int setMemberPoint(PointVO pointVO);
+
+    /*
+     *  회원 방문수, 게시글수, 댓글수 조회
+     *  @Return 회원 사이트 정보 반환
+     */
+    HashMap<String,Integer> memberInfoCount(String id);
 }

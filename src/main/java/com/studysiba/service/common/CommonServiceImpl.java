@@ -166,7 +166,8 @@ public class CommonServiceImpl implements CommonService {
         if ( multipartFile.getSize() > maxSize ) return null;
         if ( httpSession.getAttribute("id") == null ) return null;
 
-        String path = "C:\\upload\\studysiba\\" + menu;
+        String path = DataConversion.filePath() + menu;
+        log.info(DataConversion.filePath());
         File destdir = new File(path);
         String fileName = null;
         if ( !destdir.exists() ) destdir.mkdir();
@@ -176,6 +177,7 @@ public class CommonServiceImpl implements CommonService {
             File target = new File(path, fileName);
             try {
                 FileCopyUtils.copy(multipartFile.getBytes(), target);
+                Runtime.getRuntime().exec("chmod 644 "+path + fileName);
             } catch ( IOException e ) {
                 e.printStackTrace();
             }
@@ -196,7 +198,7 @@ public class CommonServiceImpl implements CommonService {
         if ( multipartFile.isEmpty() ) return stateCode;
         if ( httpSession.getAttribute("id") == null ) return stateCode;
 
-        String path = "C:\\upload\\studysiba\\" + menu;
+        String path = DataConversion.filePath() + menu;
         File destdir = new File(path);
         String fileName = null;
         if ( !destdir.exists() ) destdir.mkdir();
@@ -208,6 +210,7 @@ public class CommonServiceImpl implements CommonService {
         File target = new File(path, fileName);
         try {
             FileCopyUtils.copy(multipartFile.getBytes(), target);
+            Runtime.getRuntime().exec("chmod 644 "+path + fileName);
             UploadVO uploadVO = new UploadVO();
             uploadVO.setUldId((String) httpSession.getAttribute("id"));
             uploadVO.setUldFno(no);
@@ -237,7 +240,7 @@ public class CommonServiceImpl implements CommonService {
         if ( multipartFile.isEmpty() ) return null;
         if ( httpSession.getAttribute("id") == null ) return null;
 
-        String path = "C:\\upload\\studysiba\\" + menu;
+        String path = DataConversion.filePath() + menu;
         File destdir = new File(path);
         String fileName = null;
         if ( !destdir.exists() ) destdir.mkdir();
@@ -249,6 +252,7 @@ public class CommonServiceImpl implements CommonService {
         File target = new File(path, fileName);
         try {
             FileCopyUtils.copy(multipartFile.getBytes(), target);
+            Runtime.getRuntime().exec("chmod 644 "+path + fileName);
             UploadVO uploadVO = new UploadVO();
             uploadVO.setUldId((String) httpSession.getAttribute("id"));
             if ( httpSession.getAttribute("auth").toString().toUpperCase().equals("ADMIN") ) {
@@ -308,15 +312,15 @@ public class CommonServiceImpl implements CommonService {
     }
 
     @Override
-    public HashMap<String, Object> downloadFile(String menu, int no) {
-        String path = "C:\\upload\\studysiba\\" + menu;
+    public HashMap<String, Object> downloadFile(String menu, int no) throws IOException {
+        String path = DataConversion.filePath() + menu;
         org.springframework.core.io.Resource resource = null;
         HashMap<String, Object> downloadMap = new HashMap<>();
         switch (menu) {
             case "group" :
                 GroupBoardVO groupBoardVO = groupMapper.getGroupPost(no);
                 String fileName = groupBoardVO.getGrbUuid()+"_"+groupBoardVO.getGrbFilename();
-                resource = new FileSystemResource(path+"\\"+fileName);
+                resource = new FileSystemResource(path+"/"+fileName);
                 log.info("resource : " + resource );
                 String resourceName = groupBoardVO.getGrbFilename();
                 HttpHeaders headers = new HttpHeaders();
@@ -420,6 +424,16 @@ public class CommonServiceImpl implements CommonService {
                 stateVO.setStateCode("POINT_UPDATE_SUCCESS");
             }
             return stateVO;
+    }
+
+    /*
+     *  회원 방문수, 게시글수, 댓글수 조회
+     *  @Return 회원 사이트 정보 반환
+     */
+    @Override
+    public HashMap<String, Integer> memberInfoCount() {
+        if ( httpSession.getAttribute("id") == null ) return null;
+        return commonMapper.memberInfoCount((String)httpSession.getAttribute("id"));
     }
 
 

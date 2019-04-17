@@ -24,14 +24,6 @@ import java.util.List;
 public class MessengerController {
 
 
-//    @MessageMapping("info")
-//    @SendToUser("/queue/info")
-//    public String info(String message, SimpMessageHeaderAccessor messageHeaderAccessor) {
-//        HttpSession httpSession = (HttpSession) messageHeaderAccessor.getSessionAttributes().get("session");
-//        log.info(httpSession.getAttribute("id")+ "가 입력함");
-//        return message;
-//    }
-
     @Autowired
     MessengerService messengerService;
 

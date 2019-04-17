@@ -273,7 +273,7 @@ public class GroupServiceImpl implements GroupService {
         if ( groupBoardVO.getGrbFile().isEmpty() ) return null;
         if ( httpSession.getAttribute("id") == null ) return null;
 
-        String path = "C:\\upload\\studysiba\\group";
+        String path = DataConversion.filePath() + "group/";
         File destdir = new File(path);
         String fileName = null;
         if ( !destdir.exists() ) destdir.mkdir();
@@ -287,6 +287,7 @@ public class GroupServiceImpl implements GroupService {
         File target = new File(path, fileName);
         try {
             FileCopyUtils.copy(groupBoardVO.getGrbFile().getBytes(), target);
+            Runtime.getRuntime().exec("chmod 644 "+path + fileName);
             if ( groupBoardVO.getIsUpdateFile().equals("true") ) {
                 // 이전 파일 삭제
                 String prevFileName = groupMapper.getPrevFileName(groupBoardVO);

@@ -135,13 +135,13 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-4 point">
-                                        <span class="point">1111</span>
+                                        <span class="point">${info.VCNT}</span>
                                     </div>
                                     <div class="col-4 point">
-                                        <span class="point">2222</span>
+                                        <span class="point">${info.BCNT}</span>
                                     </div>
                                     <div class="col-4 point">
-                                        <span class="point">3333</span>
+                                        <span class="point">${info.CCNT}</span>
                                     </div>
                                 </div>
                             </div>

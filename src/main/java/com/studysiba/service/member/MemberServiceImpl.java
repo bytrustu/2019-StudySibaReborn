@@ -127,7 +127,8 @@ public class MemberServiceImpl implements MemberService {
         log.info("회원코드확인 : " + memberVO.getMbrCode());
 
         StringBuffer htmlStr = new StringBuffer();
-        String siteUrl = "localhost:8282";
+//        String siteUrl = "localhost:8282";
+        String siteUrl = "studysiba.com";
 
         // 초대장 보내질 양식
         switch (type) {
@@ -137,7 +138,7 @@ public class MemberServiceImpl implements MemberService {
                 htmlStr.append("/" + memberVO.getMbrId());
                 htmlStr.append("/" + memberVO.getMbrCode());
                 htmlStr.append("'>");
-                htmlStr.append("<img src='https://i.imgur.com/3Vt5UPz.png' style='width:80%;max-width=500px'></a>");
+                htmlStr.append("<img src='https://i.imgur.com/3Vt5UPz.png' style='width:60%;max-width=400px'></a>");
                 htmlStr.append("</div>");
                 log.info("초대장 양식 : " + htmlStr.toString());
                 // 초대장 제목
@@ -150,7 +151,7 @@ public class MemberServiceImpl implements MemberService {
                 htmlStr.append("/" + memberVO.getMbrId());
                 htmlStr.append("/" + memberVO.getMbrCode());
                 htmlStr.append("'>");
-                htmlStr.append("<img src='https://i.imgur.com/aNQ7TX3.png' style='width:80%;max-width=500px'></a>");
+                htmlStr.append("<img src='https://i.imgur.com/aNQ7TX3.png' style='width:60%;max-width=400px'></a>");
                 htmlStr.append("</div>");
                 log.info("초대장 양식 : " + htmlStr.toString());
                 // 초대장 제목
@@ -720,6 +721,7 @@ public class MemberServiceImpl implements MemberService {
      */
     @Override
     public boolean isConnectUpdate(String mbrId) {
+        if ( httpSession.getAttribute("id") == null ) return false;
         if ( !httpSession.getAttribute("id").toString().equals(mbrId) ) return false;
         int isConnectUpdate= memberMapper.isConnectUpdate(mbrId);
         if ( isConnectUpdate == 1 ) return true;

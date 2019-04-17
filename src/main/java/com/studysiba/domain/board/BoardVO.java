@@ -1,11 +1,15 @@
 package com.studysiba.domain.board;
 
 import com.studysiba.domain.member.MemberVO;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.sql.Timestamp;
 
-@Data
+@Getter
+@Setter
+@ToString
 public class BoardVO extends MemberVO {
     // 게시글 번호
     private int brdNo;

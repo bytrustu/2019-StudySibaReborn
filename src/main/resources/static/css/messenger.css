@@ -1,3 +1,47 @@
+/*
+        상단 모바일 메뉴바
+ */
+
+.mobile-menu{
+    position: fixed;
+    background-color: rgba(217, 143, 52, 0.96);
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 0;
+    transition: 0.5s ease;
+    overflow: hidden;
+    z-index: 9999;
+}
+
+.mobile-menu.show{
+    height: 250px;
+}
+
+.mobile-item{
+    float: none;
+    display: block;
+    height: 50px;
+    line-height: 50px;
+}
+
+.mobile-item:hover{
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.mobile-link{
+    display: block;
+    padding-left: 50px;
+    color: white !important;
+    cursor: pointer;
+    font-weight: 400;
+    font-family: "Calibri", "Roboto", sans-serif;
+}
+
+
+
+
+
 
 
 /*
@@ -476,14 +520,14 @@
 .chat-window, .chat-list{
     height: calc(100% - 9px);
     bottom: 1%;
-    width: calc(100% - 17px);
+    width: calc(100% - 10px);
     border-radius: 10px;
     background-color: #fff;
     box-shadow: 0 10px 100px rgba(0, 0, 0, 0.5);
     background-color: #f8f8f8;
     overflow: hidden;
     font-family: "Calibri", "Roboto", sans-serif;
-    right: 16px;
+    right: 8px;
     z-index: 9999;
     position: fixed !important;
 }
@@ -725,4 +769,14 @@
 
 .bg-four{
     background-color: #7acdc7 !important;
+}
+
+.popover{
+    display: none;
+}
+
+@media (min-width: 500px ){
+    .popover{
+        display: block;
+    }
 }

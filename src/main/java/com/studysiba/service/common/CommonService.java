@@ -10,6 +10,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
@@ -78,7 +79,7 @@ public interface CommonService {
      *  @Param menu, no
      *  @Return HashMap<String, Object>
      */
-    HashMap<String, Object> downloadFile(String menu, int no);
+    HashMap<String, Object> downloadFile(String menu, int no) throws IOException;
 
     /*
      *  관리자 권한
@@ -116,4 +117,10 @@ public interface CommonService {
      *  @Return 포인트 업데이트에 따른 상태코드 반환
      */
     StateVO setPoint(String id, int score);
+
+    /*
+     *  회원 방문수, 게시글수, 댓글수 조회
+     *  @Return 회원 사이트 정보 반환
+     */
+    HashMap<String,Integer> memberInfoCount();
 }

@@ -10,11 +10,11 @@
                 <title>스터디시바</title>
                 <meta charset="UTF-8">
                 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-                <meta property="og:url" content="http://www.studysiba.com">
+                <meta property="og:url" content="http://studysiba.com">
                 <meta property="og:type" content="website">
                 <meta property="og:title" content="스터디시바">
                 <meta property="og:description" content="온라인 스터디 커뮤니티">
-                <meta property="og:image" content="https://i.imgur.com/ltNAoPV.jpg">
+                <meta property="og:image" content="https://i.imgur.com/G614toq.png">
                 <link rel="icon" type="image/x-icon" href="/static/image/main/sibacon.ico">
 
                 <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic" rel="stylesheet">
@@ -27,6 +27,7 @@
                 <link type="text/css" rel="stylesheet" href="/static/css/animate.css">
                 <link type="text/css" rel="stylesheet" href="/static/css/main.css">
                 <link type="text/css" rel="stylesheet" href="/static/css/sub.css">
+
                 <link type="text/css" rel="stylesheet" href="/static/css/messenger.css">
                 <c:if test="${fn:contains(requestScope['javax.servlet.forward.servlet_path'] , '/study' ) || fn:contains(requestScope['javax.servlet.forward.servlet_path'] , '/group' )
                                    || fn:contains(requestScope['javax.servlet.forward.servlet_path'] , '/admin' )}">
@@ -98,3 +99,10 @@
                                 </li>
                         </ul>
                 </nav>
+                <div class="mobile-menu" id="mobile">
+                <div class="mobile-item"><a class="mobile-link" id="mobileHome" href="/">홈</a></div>
+                <div class="mobile-item"><a class="mobile-link" id="mobileNotice" href="/board/notice/list">공지사항</a></div>
+                <div class="mobile-item"><a class="mobile-link" id="mobileCommunity" href="/board/community/list">커뮤니티</a></div>
+                <div class="mobile-item"><a class="mobile-link" id="mobileStudy" href="/study/list">스터디참여</a></div>
+                <div class="mobile-item"><a class="mobile-link" id="mobileGroup" href="/group/list">스터디그룹</a></div>
+                </div>

@@ -55,19 +55,26 @@ public class DataConversion {
         return ts;
     }
 
-    // < > 문자 변경
+    // 태그 문자 변경
     public static String changeSpChar(String str) {
         str = str.replaceAll("<", "&lt;");
         str = str.replaceAll(">", "&gt;");
         return str;
     }
 
+    //  태그 문자 원래 문자로 변경
     public static String changeOriginTag(String str) {
         str = str.replaceAll("&lt;", "<");
         str = str.replaceAll("&gt;", ">");
         str = str.replaceAll("<script>","&lt;script&gt;");
         str = str.replaceAll("</script>","&lt;/script&gt;");
         return str;
+    }
+
+    // 파일 경로
+    public static String filePath() {
+//        return "C:\\upload\\studysiba\\";
+        return "/opt/tomcat/webapps/file/view/";
     }
 
 }

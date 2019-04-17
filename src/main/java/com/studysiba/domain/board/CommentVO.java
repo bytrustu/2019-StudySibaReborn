@@ -1,11 +1,14 @@
 package com.studysiba.domain.board;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.sql.Timestamp;
 
-@Data
+@Getter
+@Setter
+@ToString
 public class CommentVO extends BoardVO {
     // 댓글 번호
     private int cmtNo;

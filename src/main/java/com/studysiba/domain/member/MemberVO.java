@@ -1,11 +1,15 @@
 package com.studysiba.domain.member;
 
 import com.studysiba.domain.common.UploadVO;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.sql.Timestamp;
 
-@Data
+@Getter
+@Setter
+@ToString
 public class MemberVO extends UploadVO {
     // 유저정보 순번
     private int mbrNo;

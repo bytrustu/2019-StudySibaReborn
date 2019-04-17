@@ -66,10 +66,10 @@
                     SELECT * FROM MESSAGE
                     WHERE MSG_TYPE = #{type}
                     AND MSG_DATE > DATE_ADD(NOW(),INTERVAL -1 DAY)
-                    ORDER BY MSG_NO ASC
 			        ) MESSAGE
 		JOIN MEMBER
         ON MEMBER.MBR_ID = MESSAGE.MSG_FROM
+        ORDER BY MSG_NO ASC
     </select>
 
     <!-- 전체채팅 마지막 메세지 조회 -->
@@ -102,10 +102,10 @@
                     SELECT * FROM MESSAGE
                     WHERE MSG_TYPE = #{msgType}
                     AND ( ( MSG_FROM = #{msgFrom} AND MSG_TO = #{msgTo} ) OR ( MSG_TO = #{msgFrom} AND MSG_FROM = #{msgTo} ) )
-                    ORDER BY MSG_NO ASC
 			        ) MESSAGE
 		JOIN MEMBER
         ON MEMBER.MBR_ID = MESSAGE.MSG_FROM
+        ORDER BY MSG_NO ASC
     </select>
 
     <!-- 자신이 보낸 메세지 정보 조회 -->

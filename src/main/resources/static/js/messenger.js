@@ -57,7 +57,7 @@ $(document).ready(function(){
     });
 
     
-    // 전체채팅
+    // 전체채팅123
     let sockPublic = new SockJS("/public");
     publicClient = Stomp.over(sockPublic);
     publicClient.debug = null;
@@ -173,6 +173,9 @@ $(document).ready(function(){
                 chatList.addClass('d-none');
                 chatList.toggleClass('d-none').addClass('flipInY');
                 $('.messenger-alert').html('');
+                if ( window.innerWidth < 500 ){
+                    $('.sub-page').css('overflow-y','hidden');
+                }
                 appendMemberListModule();
                 // 전채채팅 마지막 메세지
                 publicLastMessage()
@@ -321,6 +324,9 @@ $(document).ready(function(){
                 }
                 chatWindow.addClass('flipOutY');
                 chatList.addClass('flipOutY');
+                if ( window.innerWidth < 500 ){
+                    $('.sub-page').css('overflow-y','auto');
+                }
                 if ( !searchBox.hasClass('d-none') ){
                     searchBox.toggleClass('d-none').removeClass('fadeInUp').removeClass('fadeOutDown');
                 }

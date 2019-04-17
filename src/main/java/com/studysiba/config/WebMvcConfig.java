@@ -1,5 +1,6 @@
 package com.studysiba.config;
 
+import com.studysiba.common.DataConversion;
 import com.studysiba.common.SessionListener;
 import com.studysiba.interceptor.AdminAuthInterceptor;
 import com.studysiba.interceptor.SocialUrlInterceptor;
@@ -72,7 +73,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 //        registrationBean.addUrlPatterns("/board/*","/study/*");
 //        return registrationBean;
 //    }
-
+//
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(socialUrlInterceptor()).addPathPatterns("/");
@@ -82,7 +83,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/static/**").addResourceLocations("classpath:static/");
-        registry.addResourceHandler("/file/view/**").addResourceLocations("file:C:/upload/studysiba/");
+//        registry.addResourceHandler("/file/view/**").addResourceLocations("file:C:/upload/studysiba/");
+        registry.addResourceHandler("/file/view/**").addResourceLocations(DataConversion.filePath());
     }
 
 }

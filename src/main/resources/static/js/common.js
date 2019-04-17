@@ -1,9 +1,33 @@
 $(document).ready(function () {
 
+    // 모바일메뉴바
+    $(document).on('click','#toggleBtn', function(){
+        let mobileNav = $('#mobile');
+        let target = $(this);
+        if ( !mobileNav.hasClass('show') ) {
+            let parentNavHeight = $('.navbar').css('height');
+            mobileNav.css('top',parentNavHeight);
+            target.find('i').removeClass('fa').removeClass('fa-bars');
+            target.find('i').addClass('fas').addClass('fa-times-circle');
+        } else {
+            target.find('i').removeClass('fas').removeClass('fa-times-circle');
+            target.find('i').addClass('fa').addClass('fa-bars');
+        }
+            mobileNav.toggleClass('show');
+    });
+
+
     // 관리자페이지
     $(document).on('click','.admin-btn', ()=>{
         location.href='/admin/main';
     });
+
+    if ( location.pathname == '/' ){
+        $('.modal, .swal2-modal').css('left','-8px');
+    } else {
+        $('.modal, .swal2-modal').css('left','0');
+    }
+
 
 
     // End ready

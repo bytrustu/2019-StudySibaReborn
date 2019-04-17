@@ -50,6 +50,14 @@
         WHERE PNT_ID = #{pntId}
     </update>
 
+    <!-- 회원 방문수, 게시글수, 댓글수 조회 -->
+    <select id="memberInfoCount" resultType="HashMap">
+        SELECT
+          ( SELECT COUNT(*) FROM VISIT WHERE VIS_ID = #{id}  ) VCNT,
+          ( SELECT COUNT(*) FROM BOARD WHERE BRD_ID = #{id} ) BCNT,
+          ( SELECT COUNT(*) FROM COMMENT WHERE CMT_ID = #{id} ) CCNT
+    </select>
+
 
 
 </mapper>

@@ -554,6 +554,6 @@ $('#modal-resendmail').on('click', () => {
 
 
 // KAKAO API
-Kakao.init('672b34ad5f77dd65240951209b6cbd32');
+Kakao.init('e81d959326670c5b78e4a63cbfc361f1');
 
 

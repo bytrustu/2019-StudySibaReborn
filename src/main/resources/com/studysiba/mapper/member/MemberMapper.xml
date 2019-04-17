@@ -43,7 +43,7 @@
     <!-- 회원활성화 및 코드갱신 -->
     <select id="changeStatus" parameterType="MemberVO">
         UPDATE MEMBER
-        SET MBR_TYPE = 'NORMAL', MBR_AUTH = 'NORMAL', MBR_CODE = #{mbrCode}, MBR_CONNECT = NOW(), MBR_JOIN = NOW()
+        SET MBR_TYPE = 'NORMAL', MBR_AUTH = 'NORMAL', MBR_CODE = #{mbrCode}, MBR_CONNECT = NOW()-INTERVAL 5 MINUTE, MBR_JOIN = NOW()
         WHERE MBR_ID = #{mbrId}
     </select>
 

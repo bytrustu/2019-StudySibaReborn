@@ -933,7 +933,15 @@
 }
 
 .group-notfound > p{
-    font-size: 35px;
+    font-size: 22px;
     color: #a2a5a5;
     margin-bottom: 5px;
+}
+
+@media(min-width: 992px ){
+    .group-notfound > p {
+        ont-size: 35px;
+        color: #a2a5a5;
+        margin-bottom: 5px;
+    }
 }

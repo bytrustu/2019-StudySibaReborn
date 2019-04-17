@@ -17,12 +17,14 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     public void configureMessageBroker(MessageBrokerRegistry registry) {
         registry.enableSimpleBroker("/topic");
         registry.setApplicationDestinationPrefixes("/");
+
     }
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         Arrays.stream(ChatRoomName.values()).forEach((chatRoom) ->
                 registry.addEndpoint(chatRoom.getRoomName())
+                        .setAllowedOrigins("*")
                         .addInterceptors(new HttpHandshakeInterceptor())
                         .withSockJS());
     }
