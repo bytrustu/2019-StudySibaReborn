@@ -28,6 +28,34 @@ $(document).ready(function () {
         $('.modal, .swal2-modal').css('left','0');
     }
 
+    // 모달버튼열기 [ 로그인,회원가입 / 닉네임변경 / 패스워드변경 / 프로필변경 ]
+    $('.modal-user').on('click', function () {
+        initElement('modal-input');
+        let user = $(this).attr('data-user');
+        switch (user) {
+            case 'login' :
+                $('#modalLRForm').modal('show');
+                break;
+            case 'nick' :
+                $('#modalChangeNick').modal('show');
+                break;
+            case 'password' :
+                $('#modalChangePass').modal('show');
+                break;
+            case 'profile' :
+                $('#modalChangeProfile').modal('show');
+                swing();
+                break;
+            case 'logout' :
+                let logginedId = $(this).attr('data-id');
+                let currentUrl = $(location).attr('pathname');
+                let searchUrl = $(location).attr('search');
+                let moveUrl = `/member/logout/${logginedId}?currentUrl=${currentUrl}${searchUrl}`;
+                location.href = moveUrl;
+                break;
+        }
+    });
+
 
 
     // End ready

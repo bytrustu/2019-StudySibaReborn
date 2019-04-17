@@ -105,4 +105,7 @@
                 <div class="mobile-item"><a class="mobile-link" id="mobileCommunity" href="/board/community/list">커뮤니티</a></div>
                 <div class="mobile-item"><a class="mobile-link" id="mobileStudy" href="/study/list">스터디참여</a></div>
                 <div class="mobile-item"><a class="mobile-link" id="mobileGroup" href="/group/list">스터디그룹</a></div>
+                <c:if test="${sessionScope.id ne null}">
+                        <div class="mobile-item"><a class="mobile-link" id="mobileLogout" href="/member/logout/${sessionScope.id}">로그아웃</a></div>
+                </c:if>
                 </div>

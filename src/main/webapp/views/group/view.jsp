@@ -69,7 +69,7 @@
                                     <div class="row stg-notice">
                                         <span data-no="${notice.grbNo}">${notice.grbTitle}</span>
                                         <c:if test="${notice.grbFilename ne null}">
-                                            <img src="/static/image/study/file.png" class="stg-icon">
+                                            <img src="/static/image/study/file.png" class="stg-icon" data-container="body" data-placement="top" data-toggle="popover" data-trigger="hover" data-content="파일있음">
                                         </c:if>
                                         <span class="stg-lasttime">-${notice.lastTime}</span>
                                     </div>

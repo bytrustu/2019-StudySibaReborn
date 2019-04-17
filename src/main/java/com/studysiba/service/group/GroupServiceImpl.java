@@ -80,6 +80,8 @@ public class GroupServiceImpl implements GroupService {
         // 공지사항 작성
         int writeGroup = groupMapper.writeGroupPost(groupBoardVO);
         if ( writeGroup == 1 ) {
+            groupBoardVO.setGrbTitle(DataConversion.changeSpChar(groupBoardVO.getGrbTitle()));
+            groupBoardVO.setGrbContent(DataConversion.changeSpChar(groupBoardVO.getGrbContent()));
             stateVO.setStateCode("NOTICE_WRITE_SUCCESS");
             stateVO.setNo(groupBoardVO.getGrbGno());
             // 첨부파일이 있다면 업로드
@@ -126,6 +128,8 @@ public class GroupServiceImpl implements GroupService {
         // 공지사항 업데이트
         int writeGroup = groupMapper.updateGroupPost(groupBoardVO);
         if ( writeGroup == 1 ) {
+            groupBoardVO.setGrbTitle(DataConversion.changeSpChar(groupBoardVO.getGrbTitle()));
+            groupBoardVO.setGrbContent(DataConversion.changeSpChar(groupBoardVO.getGrbContent()));
             stateVO.setStateCode("NOTICE_UPDATE_SUCCESS");
             stateVO.setNo(groupBoardVO.getGrbGno());
             // 첨부파일이 있다면 업로드
@@ -180,6 +184,8 @@ public class GroupServiceImpl implements GroupService {
         // 지나간시각 문자열 처리
         for ( int i=0; i < noticeList.size(); i++ ) {
             noticeList.get(i).setLastTime(DataConversion.DurationFromNow(noticeList.get(i).getGrbDate()));
+            noticeList.get(i).setGrbTitle(DataConversion.changeOriginTag(noticeList.get(i).getGrbTitle()));
+            noticeList.get(i).setGrbContent(DataConversion.changeOriginTag(noticeList.get(i).getGrbContent()));
         }
         return noticeList;
     }
@@ -192,6 +198,8 @@ public class GroupServiceImpl implements GroupService {
     @Override
     public GroupBoardVO getGroupPost(int no) {
         GroupBoardVO groupBoardVO = groupMapper.getGroupPost(no);
+        groupBoardVO.setGrbTitle(DataConversion.changeOriginTag(groupBoardVO.getGrbTitle()));
+        groupBoardVO.setGrbContent(DataConversion.changeOriginTag(groupBoardVO.getGrbContent()));
         return groupBoardVO;
     }
 
