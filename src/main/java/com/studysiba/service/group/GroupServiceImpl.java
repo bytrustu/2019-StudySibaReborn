@@ -94,7 +94,7 @@ public class GroupServiceImpl implements GroupService {
                 }
             }
 
-            StateVO scoreState = commonService.setPoint((String) httpSession.getAttribute("id"), 1000);
+            StateVO scoreState = commonService.setPoint((String) httpSession.getAttribute("id"), 100);
             if ( scoreState.getStateCode().contains("ERROR") ) log.info("포인트 설정에 에러가 발생했습니다.");
         }
         return stateVO;

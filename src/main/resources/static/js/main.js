@@ -35,11 +35,11 @@ $(document).ready(function () {
         let sliderWidth = studyItem.length * 300;
         slider.css('width', sliderWidth);
         slider.css('left', count * -300);
-        let maxIndex = studyItem.length - 7;
+        let maxIndex = studyItem.length - 6;
         moveSlide = setInterval(() => {
             let left;
             slideFlag ? count++ : count--;
-            if (count <= 1) {
+            if (count <= 0) {
                 slideFlag = true;
             } else if (count >= maxIndex) {
                 slideFlag = false;

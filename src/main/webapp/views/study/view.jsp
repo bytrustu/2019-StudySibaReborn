@@ -93,11 +93,10 @@
                         <div class="col-md-8">
 
                             <h6 class="st-taglist stv-taglist">
-                                <span class="st-tag stv-tag">수능</span>
-                                <span class="st-tag stv-tag">여행</span>
-                                <span class="st-tag stv-tag">공부진도체크</span>
-                                <span class="st-tag stv-tag">출석체크</span>
-                                <span class="st-tag stv-tag">창업</span>
+                                <c:set value="${fn:split(studyView.stdDivide,',')}" var="stdDivide" />
+                                <c:forEach items="${stdDivide}" var="divide"  varStatus="dix">
+                                    <span class="st-tag stv-tag">${divide}</span>
+                                </c:forEach>
                             </h6>
 
                         </div>

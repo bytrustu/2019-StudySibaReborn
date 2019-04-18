@@ -15,7 +15,7 @@
 }
 
 .mobile-menu.show{
-    height: 250px;
+    height: auto;
 }
 
 .mobile-item{
@@ -779,4 +779,19 @@
     .popover{
         display: block;
     }
+}
+
+
+
+
+/*
+        Common
+ */
+
+blockquote{
+    margin-left: 0px;
+    margin-right: 0px;
+    padding-left: 20px;
+    padding-right: 20px;
+    border-left: 10px solid #ffce58;
 }

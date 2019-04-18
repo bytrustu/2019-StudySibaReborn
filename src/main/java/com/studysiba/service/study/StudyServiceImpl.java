@@ -78,7 +78,7 @@ public class StudyServiceImpl implements StudyService {
             if (stateVO.getStateCode().equals("UPLOAD_STATE_SUCCESS")) {
                 stateVO.setStateCode("STUDY_REGISTER_SUCCESS");
                 httpSession.setAttribute("stateCode", "STUDY_REGISTER_SUCCESS");
-                StateVO scoreState = commonService.setPoint((String) httpSession.getAttribute("id"), 2000);
+                StateVO scoreState = commonService.setPoint((String) httpSession.getAttribute("id"), 1000);
                 if ( scoreState.getStateCode().contains("ERROR") ) log.info("포인트 설정에 에러가 발생했습니다.");
             }
         }
@@ -249,7 +249,7 @@ public class StudyServiceImpl implements StudyService {
         if (joinState == 1) {
             stateVO.setStateCode("STUDY_JOIN_SUCCESS");
             httpSession.setAttribute("stateCode", stateVO.getStateCode());
-            StateVO scoreState = commonService.setPoint((String) httpSession.getAttribute("id"), 500);
+            StateVO scoreState = commonService.setPoint((String) httpSession.getAttribute("id"), 300);
             if ( scoreState.getStateCode().contains("ERROR") ) log.info("포인트 설정에 에러가 발생했습니다.");
         }
         return stateVO;

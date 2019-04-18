@@ -56,7 +56,7 @@ public class BoardServiceImpl implements BoardService {
         // 태그 변환
         boardVO.setBrdTitle(DataConversion.changeSpChar(boardVO.getBrdTitle()));
         boardVO.setBrdContent(DataConversion.changeSpChar(boardVO.getBrdContent()));
-        StateVO scoreState = commonService.setPoint(boardVO.getBrdId(), 1000);
+        StateVO scoreState = commonService.setPoint(boardVO.getBrdId(), 500);
         if ( scoreState.getStateCode().contains("ERROR") ) log.info("포인트 설정에 에러가 발생했습니다.");
 
         if (boardVO.getIsReply() == null || boardVO.getIsReply().equals("false")) {
@@ -151,7 +151,7 @@ public class BoardServiceImpl implements BoardService {
             int likeState = boardMapper.addLike(likeVO);
             if (likeState == 1) stateVO.setStateCode("LIKE_STATE_SUCCESS");
 
-            StateVO scoreState = commonService.setPoint((String) httpSession.getAttribute("id"), 200);
+            StateVO scoreState = commonService.setPoint((String) httpSession.getAttribute("id"), 100);
             if ( scoreState.getStateCode().contains("ERROR") ) log.info("포인트 설정에 에러가 발생했습니다.");
 
         }
@@ -190,7 +190,7 @@ public class BoardServiceImpl implements BoardService {
             if (commentState == 1) {
                 stateVO.setStateCode("COMMENT_WRITE_SUCCESS");
                 stateVO.setNo(boardMapper.getCommentMaxNum(commentVO));
-                StateVO scoreState = commonService.setPoint((String) httpSession.getAttribute("id"), 500);
+                StateVO scoreState = commonService.setPoint((String) httpSession.getAttribute("id"), 100);
                 if ( scoreState.getStateCode().contains("ERROR") ) log.info("포인트 설정에 에러가 발생했습니다.");
             }
 
