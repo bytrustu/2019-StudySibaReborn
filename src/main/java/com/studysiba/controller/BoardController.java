@@ -46,22 +46,10 @@ public class BoardController {
         model.addAttribute("page", pageVO);
         model.addAttribute("cri", criteria);
 
-        List<?> commoonList = null;
-
         // 이동 경로
-        String location = "/";
-        switch (menu) {
-            case "notice":
-                location += "board/list";
-                commoonList = boardService.getPostList(pageVO);
-                model.addAttribute("boardList", commoonList);
-                break;
-            case "community":
-                location += "board/list";
-                commoonList = boardService.getPostList(pageVO);
-                model.addAttribute("boardList", commoonList);
-                break;
-        }
+        String location = "/board/list";
+        List<BoardVO> commoonList = boardService.getPostList(pageVO);
+        model.addAttribute("boardList", commoonList);
         return location;
     }
 
