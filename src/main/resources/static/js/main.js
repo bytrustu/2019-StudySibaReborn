@@ -325,10 +325,6 @@ $(document).ready(function () {
         });
     });
 
-    // 접속시간 갱신
-    connectUpdate();
-    setInterval(()=>{connectUpdate();},170000);
-
     // Close Ready
 });
 
