@@ -34,7 +34,6 @@ public class MessengerController {
      */
     @MessageMapping("/public")
     @SendTo("/topic/public")
-    @ResponseBody
     public ResponseEntity<MessageVO> sendPublicMessage(@RequestBody HashMap<String,String> params, SimpMessageHeaderAccessor messageHeaderAccessor) {
         HttpSession httpSession = (HttpSession) messageHeaderAccessor.getSessionAttributes().get("session");
         MessageVO messageVO = messengerService.sendPublicMessage(params.get("message"), httpSession);
@@ -49,7 +48,6 @@ public class MessengerController {
      */
     @MessageMapping("/private/{id}")
     @SendTo("/topic/private/{id}")
-    @ResponseBody
     public ResponseEntity<MessageVO> sendPrivateMessage(@DestinationVariable("id") String id, @RequestBody HashMap<String, String> params, SimpMessageHeaderAccessor messageHeaderAccessor){
         HttpSession httpSession = (HttpSession) messageHeaderAccessor.getSessionAttributes().get("session");
         MessageVO messageVO = messengerService.sendPrivateMessage(id, params.get("message"), httpSession);
