@@ -88,6 +88,7 @@
             LEFT JOIN (
                                 SELECT LIKE_FNO, COUNT(*) AS BRD_LIKECOUNT
                                 FROM LIKES
+                                GROUP BY LIKE_FNO
              ) LIKES
             ON LIKES.LIKE_FNO = BRD_NO
             LEFT JOIN (
