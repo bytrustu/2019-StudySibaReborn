@@ -34,8 +34,14 @@
 
 
             <c:if test="${sessionScope.id ne null }">
+                <c:set var="isFind" value="false"/>
+                <c:forEach items="${groupMember}" var="groupMember">
+                    <c:if test="${groupMember.grmId eq sessionScope.id}">
+                        <c:set var="isFind" value="true"/>
+                    </c:if>
+                </c:forEach>
                 <c:choose>
-                    <c:when test="${fn:contains(groupMember,sessionScope.id )}">
+                    <c:when test="${isFind eq 'true'}">
                         <button class="btn btn-danger study-joinbtn" data-join="already">참여중</button>
                     </c:when>
                     <c:when test="${fn:length(groupMember) >= studyView.stdLimit || studyView.stdAvailable == 0 || now >= studyView.stdEnd}">
