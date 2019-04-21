@@ -221,8 +221,8 @@ let formatDate = (date) => {
 }
 
 
-// scoll 값이 element 접근시 이벤트 발생 ( 증가대상, 뷰표현대상, 메뉴바없을시생략 )
-let catchElement = (element, target, increaseNum, isNav) => {
+// scroll 값이 element 접근시 이벤트 발생 ( 증가대상, 뷰표현대상, 메뉴바없을시생략 )
+const catchElement = (element, target, increaseNum, isNav) => {
     if (increaseNum === undefined) increaseNum = 33;
     // id , class 구분
     let elementType = element.substring(0, 1);
