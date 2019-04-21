@@ -102,21 +102,34 @@
 
     <!-- 그룹 리스트 조회 -->
     <select id="getGroupList" resultType="GroupMemberVO">
-       SELECT GRM_NO, GRM_GNO, GRM_ID, GRM_DATE,
-                  STD_GROUP, STD_DIVIDE, STD_ADDRESS, STD_PLACE, STD_TITLE, STD_CONTENT,
-                  STD_START, STD_END, STD_LIMIT, STD_LAT, STD_LNG, STD_AVAILABLE, STD_UPDATE, STD_REG,
-                  STD_PERSONCOUNT,
-                  MBR_NICK, MBR_PROFILE
-        FROM (
-                      SELECT * FROM GROUPMEMBER
-                      ORDER BY GRM_DATE DESC
-        ) GROUPMEMBER
+       SELECT GRM_NO
+                  , GRM_GNO
+                  , GRM_ID
+                  , GRM_DATE
+                  , STD_GROUP
+                  , STD_DIVIDE
+                  , STD_ADDRESS
+                  , STD_PLACE
+                  , STD_TITLE
+                  , STD_CONTENT
+                  , STD_START
+                  , STD_END
+                  , STD_LIMIT
+                  , STD_LAT
+                  , STD_LNG
+                  , STD_AVAILABLE
+                  , STD_UPDATE
+                  , STD_REG
+                  , STD_PERSONCOUNT
+                  , MBR_NICK
+                  , MBR_PROFILE
+        FROM GROUPMEMBER
         JOIN STUDYBOARD
         ON STUDYBOARD.STD_NO = GROUPMEMBER.GRM_GNO
-        JOIN (
-                    SELECT GRM_GNO AS GRC_GNO, COUNT(*) AS STD_PERSONCOUNT
-                    FROM GROUPMEMBER
-                    GROUP BY GRC_GNO
+        LEFT JOIN (
+                                SELECT GRM_GNO AS GRC_GNO
+                                            , COUNT(*) AS STD_PERSONCOUNT
+                                FROM GROUPMEMBER
         ) GROUPCOUNT
         ON GROUPCOUNT.GRC_GNO = GROUPMEMBER.GRM_GNO
         JOIN MEMBER
