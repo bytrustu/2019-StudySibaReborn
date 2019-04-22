@@ -161,7 +161,7 @@
                                 <tbody>
                                 <c:forEach items="${group}" var="group">
                                     <tr class="text-center">
-                                        <th scope="row">${group.grmGno}</th>
+                                        <th scope="row">${group.stdNo}</th>
                                         <td>${group.stdGroup}</td>
                                         <td>${group.mbrNick}</td>
                                         <td>${group.stdPersonCount}</td>

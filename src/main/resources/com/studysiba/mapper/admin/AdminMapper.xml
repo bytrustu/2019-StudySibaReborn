@@ -23,18 +23,25 @@
 
     <!-- 최근 1주일 방문자수/가입자수 시간별 통계 -->
     <select id="getInfoChart" resultType="HashMap">
-        SELECT VDATE, COALESCE(VCNT,0) AS VCNT ,COALESCE(MCNT,0) AS MCNT FROM
-            (
-				SELECT DATE_FORMAT(VIS_DATE, '%H') AS VDATE, COUNT(*) AS VCNT FROM VISIT
-                WHERE VIS_DATE > DATE_ADD(NOW(),INTERVAL -6 DAY)
-				GROUP BY DATE_FORMAT(VIS_DATE, '%H')
-             ) VISIT
-			LEFT JOIN (
-			                        SELECT DATE_FORMAT(MBR_JOIN, '%H') AS MBR_JOIN, COUNT(*) AS MCNT FROM MEMBER
-                                    WHERE MBR_JOIN > DATE_ADD(NOW(),INTERVAL - 6 DAY)
-                                    GROUP BY DATE_FORMAT(MBR_JOIN, '%H')
-								) MEMBER
-            ON VISIT.VDATE = MEMBER.MBR_JOIN
+        SELECT VDATE
+                    , COALESCE(VCNT,0) AS VCNT
+                    , COALESCE(MCNT,0) AS MCNT
+        FROM
+                    (
+                        SELECT DATE_FORMAT(VIS_DATE, '%H') AS VDATE
+                                    , COUNT(*) AS VCNT
+                        FROM VISIT
+                        WHERE VIS_DATE > DATE_ADD(NOW(),INTERVAL -6 DAY)
+                        GROUP BY DATE_FORMAT(VIS_DATE, '%H')
+                     ) VISIT
+        LEFT JOIN (
+                                SELECT DATE_FORMAT(MBR_JOIN, '%H') AS MBR_JOIN
+                                            , COUNT(*) AS MCNT
+                                FROM MEMBER
+                                WHERE MBR_JOIN > DATE_ADD(NOW(),INTERVAL - 6 DAY)
+                                GROUP BY DATE_FORMAT(MBR_JOIN, '%H')
+                            ) MEMBER
+                    ON VISIT.VDATE = MEMBER.MBR_JOIN
     </select>
 
     <!-- 모든 회원정보 리스트 조회 -->
@@ -65,47 +72,79 @@
 
     <!-- 유저 정보 조회 -->
     <select id="getMemberOne" parameterType="String" resultType="PointVO">
-        SELECT MBR_NO, MBR_TYPE, MBR_AUTH, MBR_CODE, MBR_ID, MBR_PASS, MBR_EMAIL, MBR_NICK, MBR_PROFILE, MBR_CONNECT, MBR_JOIN,
-                      COALESCE(PNT_NO,0) AS PNT_NO, COALESCE(PNT_SCORE,0) AS PNT_SCORE
+        SELECT MBR_NO
+                    , MBR_TYPE
+                    , MBR_AUTH
+                    , MBR_CODE
+                    , MBR_ID
+                    , MBR_PASS
+                    , MBR_EMAIL
+                    , MBR_NICK
+                    , MBR_PROFILE
+                    , MBR_CONNECT
+                    , MBR_JOIN
+                    , COALESCE(PNT_NO,0) AS PNT_NO
+                    , COALESCE(PNT_SCORE,0) AS PNT_SCORE
         FROM (
                       SELECT * FROM MEMBER
                       WHERE MBR_ID = #{id}
         ) MEMBER
-        LEFT JOIN POINT
+        JOIN POINT
         ON POINT.PNT_ID = MEMBER.MBR_ID
     </select>
 
     <!-- 게시판 리스트 조회 -->
     <select id="getBoardList" resultType="BoardVO">
-        SELECT BRD_NO, BRD_TYPE, BRD_DIVIDE, BRD_ID, BRD_TITLE, BRD_CONTENT, BRD_GNO, BRD_STEP, BRD_INDENT, BRD_COUNT, BRD_AVAILABLE, BRD_DATE,
-                          MEMBER.MBR_PROFILE, MEMBER.MBR_NICK
-        FROM (
-                      SELECT * FROM BOARD
-                      ORDER BY BRD_NO DESC
-                      ) BOARD
+        SELECT BRD_NO
+                    , BRD_TYPE
+                    , BRD_DIVIDE
+                    , BRD_ID
+                    , BRD_TITLE
+                    , BRD_CONTENT
+                    , BRD_GNO
+                    , BRD_STEP
+                    , BRD_INDENT
+                    , BRD_COUNT
+                    , BRD_AVAILABLE
+                    , BRD_DATE
+                    , MEMBER.MBR_PROFILE
+                    , MEMBER.MBR_NICK
+        FROM BOARD
         JOIN MEMBER
-        ON MEMBER.MBR_ID = BOARD.BRD_ID
+           ON MEMBER.MBR_ID = BOARD.BRD_ID
+        ORDER BY BRD_NO DESC
     </select>
 
     <!-- 스터디 리스트 조회 -->
     <select id="getStudyList" resultType="StudyVO">
-        SELECT STD_NO, STD_ID, STD_GROUP, STD_DIVIDE, STD_ADDRESS, STD_PLACE, STD_TITLE, STD_CONTENT,
-                      STD_START, STD_END, STD_LIMIT, STD_LAT, STD_LNG, STD_AVAILABLE, STD_UPDATE, STD_REG,
-                      MBR_NICK, MBR_PROFILE
-        FROM (
-                      SELECT * FROM STUDYBOARD
-                      ORDER BY STD_NO DESC
-                      ) STUDYBOARD
-          JOIN MEMBER
-          ON MEMBER.MBR_ID = STUDYBOARD.STD_ID
+        SELECT STD_NO
+                    , STD_ID
+                    , STD_GROUP
+                    , STD_DIVIDE
+                    , STD_ADDRESS
+                    , STD_PLACE
+                    , STD_TITLE
+                    , STD_CONTENT
+                    , STD_START
+                    , STD_END
+                    , STD_LIMIT
+                    , STD_LAT
+                    , STD_LNG
+                    , STD_AVAILABLE
+                    , STD_UPDATE
+                    , STD_REG
+                    , MBR_NICK
+                    , MBR_PROFILE
+        FROM STUDYBOARD
+        JOIN MEMBER
+           ON MEMBER.MBR_ID = STUDYBOARD.STD_ID
+        ORDER BY STD_NO DESC
     </select>
 
     <!-- 그룹 리스트 조회 -->
-    <select id="getGroupList" resultType="GroupMemberVO">
-       SELECT GRM_GNO
-			  , GRM_ID
-			  , GRM_DATE
-			  , STD_GROUP
+    <select id="getGroupList" resultType="StudyVO">
+       SELECT  STD_NO
+			  ,	STD_GROUP
 			  , STD_DIVIDE
 			  , STD_ADDRESS
 			  , STD_PLACE
@@ -122,28 +161,31 @@
 			  , STD_PERSONCOUNT
 			  , MBR_NICK
 			  , MBR_PROFILE
-        FROM (
-				SELECT GRM_GNO
-                            , GRM_ID
-                            , GRM_DATE
-                            , COUNT(*) AS STD_PERSONCOUNT
-                FROM GROUPMEMBER
-				GROUP BY GRM_GNO
+        FROM STUDYBOARD
+        JOIN ( SELECT GRM_GNO
+					, COUNT(*) AS STD_PERSONCOUNT
+			   FROM GROUPMEMBER
+			   GROUP BY GRM_GNO
 		) GROUPMEMBER
-        JOIN STUDYBOARD
-           ON STUDYBOARD.STD_NO = GROUPMEMBER.GRM_GNO
-        JOIN MEMBER
-           ON MEMBER.MBR_ID = GROUPMEMBER.GRM_ID
-        ORDER BY GRM_GNO DESC
+          ON STUDYBOARD.STD_NO = GRM_GNO
+		JOIN MEMBER
+          ON MEMBER.MBR_ID = STUDYBOARD.STD_ID
+		ORDER BY STD_NO DESC
     </select>
 
     <!-- 메세지 리스트 조회 -->
     <select id="getMessageList" resultType="MessageVO">
-        SELECT MSG_NO, MSG_ROOM, MSG_TYPE, MSG_FROM, MSG_TO, MSG_TEXT, MSG_RECEIVE, MSG_DELETE, MSG_DATE
-        FROM (
-                      SELECT * FROM MESSAGE
-                      ORDER BY MSG_NO DESC
-        ) MESSAGE
+        SELECT MSG_NO
+                    , MSG_ROOM
+                    , MSG_TYPE
+                    , MSG_FROM
+                    , MSG_TO
+                    , MSG_TEXT
+                    , MSG_RECEIVE
+                    , MSG_DELETE
+                    , MSG_DATE
+        FROM MESSAGE
+        ORDER BY MSG_NO DESC
     </select>
 
 
