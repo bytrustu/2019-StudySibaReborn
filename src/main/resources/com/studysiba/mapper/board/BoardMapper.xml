@@ -119,7 +119,7 @@
                   , BRD_DATE
                   , MEMBER.MBR_PROFILE
                   , MEMBER.MBR_NICK
-                  , COALESCE(BRD_LIKECOUNT,0)          AS BRD_LIKECOUNT
+                  , COALESCE(BRD_LIKECOUNT,0) AS BRD_LIKECOUNT
                   , COALESCE(BRD_COMMENTCOUNT,0) AS BRD_COMMENTCOUNT
         FROM ( SELECT *
                         FROM BOARD
@@ -140,17 +140,17 @@
 
       ORDER BY BRD_GNO DESC, BRD_STEP ASC
       LIMIT #{startRow}, #{pageSize}
-                    )                                                      AS BOARD
+                    ) AS BOARD
         JOIN MEMBER
            ON MEMBER.MBR_ID = BOARD.BRD_ID
         LEFT JOIN ( SELECT LIKE_FNO
-                                        , COUNT(*)                  AS BRD_LIKECOUNT
+                                        , COUNT(*) AS BRD_LIKECOUNT
                                FROM LIKES
                              GROUP BY LIKE_FNO
                            ) LIKES
            ON LIKES.LIKE_FNO = BRD_NO
            LEFT JOIN ( SELECT CMT_BNO
-                                           , COUNT(*)               AS BRD_COMMENTCOUNT
+                                           , COUNT(*) AS BRD_COMMENTCOUNT
                                   FROM COMMENT
                                 WHERE CMT_AVAILABLE = 1
                                 GROUP BY CMT_BNO
@@ -180,8 +180,8 @@
                   , MEMBER.MBR_PROFILE
                   , MEMBER.MBR_NICK
                   , MEMBER.MBR_ID
-                  , COALESCE( BRD_LIKECOUNT, 0 )          AS BRD_LIKECOUNT
-                  , COALESCE(BRD_COMMENTCOUNT,0)    AS BRD_COMMENTCOUNT
+                  , COALESCE( BRD_LIKECOUNT, 0 ) AS BRD_LIKECOUNT
+                  , COALESCE(BRD_COMMENTCOUNT,0) AS BRD_COMMENTCOUNT
         FROM (
                      SELECT *
                        FROM BOARD
@@ -192,14 +192,14 @@
            ON MEMBER.MBR_ID = BOARD.BRD_ID
         LEFT JOIN (
                              SELECT LIKE_FNO
-                                        , COUNT(*)                        AS BRD_LIKECOUNT
+                                        , COUNT(*) AS BRD_LIKECOUNT
                                 FROM LIKES
                              WHERE LIKE_FNO = #{brdNo}
                            ) LIKES
                     ON LIKES.LIKE_FNO = BRD_NO
         LEFT JOIN (
                              SELECT CMT_BNO
-                                        , COUNT(*)                         AS BRD_COMMENTCOUNT
+                                        , COUNT(*) AS BRD_COMMENTCOUNT
                                 FROM COMMENT
                               WHERE CMT_BNO = #{brdNo}
                                    AND CMT_AVAILABLE = 1
@@ -294,14 +294,14 @@
                   , CMT_ID
                   , CMT_CONTENT
                   , CMT_AVAILABLE
-                  , DATE_FORMAT(CMT_DATE, '%Y-%m-%d %h:%i:%s')          AS CMT_DATE
+                  , DATE_FORMAT(CMT_DATE, '%Y-%m-%d %h:%i:%s') AS CMT_DATE
                   , MBR_ID
                   , MBR_NICK
                   , MBR_PROFILE
         FROM ( SELECT *
                         FROM COMMENT
                       WHERE CMT_NO = #{no}
-                    )                                                                                           COMMENT
+                    ) COMMENT
         JOIN MEMBER
            ON MEMBER.MBR_ID = CMT_ID
     </select>

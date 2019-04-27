@@ -9,42 +9,42 @@
             SELECT
                 ( SELECT IF(COUNT(*)=0,1,COUNT(*) ) FROM BOARD
                   WHERE BRD_DATE > DATE_ADD(NOW(),INTERVAL -7 DAY)
-                )                                                                                                 BCNT,
+                ) BCNT,
                 ( SELECT IF(COUNT(*)=0,1,COUNT(*) ) FROM STUDYBOARD
                   WHERE STD_REG > DATE_ADD(NOW(),INTERVAL -7 DAY)
-                )                                                                                                 SCNT,
+                ) SCNT,
                 ( SELECT IF(COUNT(*)=0,1,COUNT(*)) FROM COMMENT
                   WHERE CMT_DATE > DATE_ADD(NOW(),INTERVAL -7 DAY)
-                )                                                                                                 CCNT,
+                ) CCNT,
                 ( SELECT IF(COUNT(*)=0,1,COUNT(*)) FROM GROUPBOARD
                   WHERE GRB_DATE > DATE_ADD(NOW(),INTERVAL -7 DAY)
-                )                                                                                                 NCNT,
+                ) NCNT,
                 ( SELECT IF(COUNT(*)=0,1,COUNT(*)) FROM GROUPMESSAGE
                   WHERE GRM_DATE > DATE_ADD(NOW(),INTERVAL -7 DAY)
-                )                                                                                                 GCNT,
+                ) GCNT,
                 ( SELECT IF(COUNT(*)=0,1,COUNT(*)) FROM MESSAGE
                   WHERE MSG_DATE > DATE_ADD(NOW(),INTERVAL -7 DAY)
-                )                                                                                                 MCNT
+                ) MCNT
     </select>
 
     <!-- 최근 1주일 방문자수/가입자수 시간별 통계 -->
     <select id="getInfoChart" resultType="HashMap">
       SELECT VDATE
-                  , COALESCE(VCNT,0)                                            AS VCNT
-                  , COALESCE(MCNT,0)                                           AS MCNT
-        FROM ( SELECT DATE_FORMAT(VIS_DATE, '%H')          AS VDATE
+                  , COALESCE(VCNT,0) AS VCNT
+                  , COALESCE(MCNT,0) AS MCNT
+        FROM ( SELECT DATE_FORMAT(VIS_DATE, '%H') AS VDATE
                                  , COUNT(*) AS VCNT
                        FROM VISIT
                      WHERE VIS_DATE > DATE_ADD(NOW(),INTERVAL -6 DAY)
                      GROUP BY DATE_FORMAT(VIS_DATE, '%H')
-                    )                                                                         VISIT
+                    ) VISIT
         LEFT JOIN (
-                             SELECT DATE_FORMAT(MBR_JOIN, '%H')   AS MBR_JOIN
-                                        , COUNT(*)                                      AS MCNT
+                             SELECT DATE_FORMAT(MBR_JOIN, '%H') AS MBR_JOIN
+                                        , COUNT(*) AS MCNT
                                 FROM MEMBER
                               WHERE MBR_JOIN > DATE_ADD(NOW(),INTERVAL - 6 DAY)
                               GROUP BY DATE_FORMAT(MBR_JOIN, '%H')
-                            )                                                                  MEMBER
+                            ) MEMBER
                     ON VISIT.VDATE = MEMBER.MBR_JOIN
     </select>
 
@@ -61,8 +61,8 @@
                   , MBR_PROFILE
                   , MBR_CONNECT
                   , MBR_JOIN
-                  , COALESCE(PNT_NO,0)          AS PNT_NO
-                  , COALESCE(PNT_SCORE,0)    AS PNT_SCORE
+                  , COALESCE(PNT_NO,0) AS PNT_NO
+                  , COALESCE(PNT_SCORE,0) AS PNT_SCORE
         FROM MEMBER
         LEFT JOIN POINT
                     ON POINT.PNT_ID = MEMBER.MBR_ID
@@ -98,12 +98,12 @@
                   , MBR_PROFILE
                   , MBR_CONNECT
                   , MBR_JOIN
-                  , COALESCE(PNT_NO,0)          AS PNT_NO
-                  , COALESCE(PNT_SCORE,0)    AS    PNT_SCORE
+                  , COALESCE(PNT_NO,0) AS PNT_NO
+                  , COALESCE(PNT_SCORE,0) AS PNT_SCORE
         FROM (
                       SELECT * FROM MEMBER
                       WHERE MBR_ID = #{id}
-                   )                                            MEMBER
+                   ) MEMBER
         JOIN POINT
            ON POINT.PNT_ID = MEMBER.MBR_ID
     </select>
@@ -178,10 +178,10 @@
                   , MBR_PROFILE
         FROM STUDYBOARD
         JOIN ( SELECT GRM_GNO
-                               , COUNT(*)          AS STD_PERSONCOUNT
+                               , COUNT(*) AS STD_PERSONCOUNT
                     FROM GROUPMEMBER
                  GROUP BY GRM_GNO
-                 )                                       GROUPMEMBER
+                 ) GROUPMEMBER
            ON STUDYBOARD.STD_NO = GRM_GNO
         JOIN MEMBER
            ON MEMBER.MBR_ID = STUDYBOARD.STD_ID

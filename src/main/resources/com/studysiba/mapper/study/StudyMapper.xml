@@ -115,7 +115,7 @@
                   , STD_AVAILABLE
                   , STD_UPDATE
                   , STD_REG
-                  , CONCAT( ULD_UUID, '_', ULD_FILENAME )          AS ULD_FILENAME
+                  , CONCAT( ULD_UUID, '_', ULD_FILENAME ) AS ULD_FILENAME
                   , STD_PERSONCOUNT
          FROM (
                       SELECT * FROM STUDYBOARD
@@ -131,15 +131,15 @@
                       </if>
                       ORDER BY STD_UPDATE DESC
                       LIMIT #{startRow}, #{pageSize}
-                    )                                                                          AS STUDYBOARD
+                    ) AS STUDYBOARD
          JOIN UPLOAD
             ON ULD_FNO = STD_NO
          JOIN (
                      SELECT GRM_GNO
-                                , COUNT(*)                                              AS STD_PERSONCOUNT
+                                , COUNT(*) AS STD_PERSONCOUNT
                         FROM GROUPMEMBER
                      GROUP BY GRM_GNO
-        )                                                                                      GROUPMEMBER
+        ) GROUPMEMBER
             ON GRM_GNO = STD_NO
       ORDER BY STD_UPDATE DESC
     </select>
@@ -292,18 +292,18 @@
                   , STD_AVAILABLE
                   , STD_UPDATE
                   , STD_REG
-                  , CONCAT( ULD_UUID, '_', ULD_FILENAME )          AS ULD_FILENAME
+                  , CONCAT( ULD_UUID, '_', ULD_FILENAME ) AS ULD_FILENAME
                   , STD_PERSONCOUNT
                   , MBR_NICK, MBR_PROFILE
          FROM ( SELECT *
                          FROM STUDYBOARD
                       ORDER BY STD_UPDATE DESC
-                    )                                                                          AS STUDYBOARD
+                    ) AS STUDYBOARD
          JOIN UPLOAD
             ON ULD_FNO = STD_NO
          JOIN (
                      SELECT GRM_GNO
-                                , COUNT(*)                                               AS STD_PERSONCOUNT
+                                , COUNT(*) AS STD_PERSONCOUNT
                      FROM GROUPMEMBER
                      GROUP BY GRM_GNO
                    ) GROUPMEMBER

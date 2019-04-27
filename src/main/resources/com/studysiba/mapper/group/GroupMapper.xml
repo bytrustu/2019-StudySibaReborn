@@ -24,21 +24,21 @@
                   , STD_AVAILABLE
                   , STD_UPDATE
                   , STD_REG
-                  , CONCAT( ULD_UUID, '_', ULD_FILENAME )          AS ULD_FILENAME
+                  , CONCAT( ULD_UUID, '_', ULD_FILENAME ) AS ULD_FILENAME
                   , STD_PERSONCOUNT
         FROM (
                      SELECT *
                         FROM GROUPMEMBER
                       WHERE GRM_ID = #{id}
                      ORDER BY GRM_DATE DESC
-                   )                                                                           GROUPMEMBER
+                   ) GROUPMEMBER
         JOIN STUDYBOARD
            ON STUDYBOARD.STD_NO = GROUPMEMBER.GRM_GNO
         JOIN UPLOAD
            ON UPLOAD.ULD_FNO = GROUPMEMBER.GRM_GNO
         JOIN (
-                    SELECT GRM_GNO                                              AS GRC_GNO
-                               , COUNT(*)                                               AS STD_PERSONCOUNT
+                    SELECT GRM_GNO AS GRC_GNO
+                               , COUNT(*) AS STD_PERSONCOUNT
                     FROM GROUPMEMBER
                     GROUP BY GRC_GNO
         ) GROUPCOUNT

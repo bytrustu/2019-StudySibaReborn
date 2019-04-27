@@ -44,8 +44,8 @@
 
     <!-- 회원수, 방문자수 카운트 -->
     <select id="memberCount" resultType="HashMap">
-      SELECT ( SELECT COUNT(*) FROM MEMBER )          MCNT
-                  , ( SELECT COUNT(*) FROM VISIT )               VCNT
+      SELECT ( SELECT COUNT(*) FROM MEMBER ) MCNT
+                  , ( SELECT COUNT(*) FROM VISIT ) VCNT
     </select>
 
     <!-- 회원 포인트 정보 조회 -->
@@ -70,9 +70,9 @@
 
     <!-- 회원 방문수, 게시글수, 댓글수 조회 -->
     <select id="memberInfoCount" resultType="HashMap">
-      SELECT ( SELECT COUNT(*) FROM VISIT WHERE VIS_ID = #{id}  )          VCNT
-                  , ( SELECT COUNT(*) FROM BOARD WHERE BRD_ID = #{id} )       BCNT
-                  , ( SELECT COUNT(*) FROM COMMENT WHERE CMT_ID = #{id} )  CCNT
+      SELECT ( SELECT COUNT(*) FROM VISIT WHERE VIS_ID = #{id}  ) VCNT
+                  , ( SELECT COUNT(*) FROM BOARD WHERE BRD_ID = #{id} ) BCNT
+                  , ( SELECT COUNT(*) FROM COMMENT WHERE CMT_ID = #{id} ) CCNT
     </select>
 
 
