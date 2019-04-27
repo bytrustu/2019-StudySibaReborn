@@ -13,7 +13,7 @@ import java.util.Arrays;
 @Log4j
 public class LogAspect {
 
-    //@Around("execution(* com.studysiba.service.*.*ServiceImpl.*(..))")
+    @Around("execution(* com.studysiba.service.*.*ServiceImpl.*(..))")
     public Object logPrint(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
 
         long start = System.currentTimeMillis();

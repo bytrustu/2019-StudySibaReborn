@@ -7,51 +7,66 @@
     <!-- 최근 1주일 게시판/스터디게시판/댓글/그룹공지/그룹메세지/개인메세지 통계 -->
     <select id="getDataChart" resultType="HashMap">
             SELECT
-                (SELECT IF(COUNT(*)=0,1,COUNT(*)) FROM BOARD
-                WHERE BRD_DATE > DATE_ADD(NOW(),INTERVAL -7 DAY) ) BCNT,
-                (SELECT IF(COUNT(*)=0,1,COUNT(*)) FROM STUDYBOARD
-                WHERE STD_REG > DATE_ADD(NOW(),INTERVAL -7 DAY) ) SCNT,
-                (SELECT IF(COUNT(*)=0,1,COUNT(*)) FROM COMMENT
-                WHERE CMT_DATE > DATE_ADD(NOW(),INTERVAL -7 DAY) ) CCNT,
-                (SELECT IF(COUNT(*)=0,1,COUNT(*)) FROM GROUPBOARD
-                WHERE GRB_DATE > DATE_ADD(NOW(),INTERVAL -7 DAY)  ) NCNT,
-                (SELECT IF(COUNT(*)=0,1,COUNT(*)) FROM GROUPMESSAGE
-                WHERE GRM_DATE > DATE_ADD(NOW(),INTERVAL -7 DAY)  ) GCNT,
-                (SELECT IF(COUNT(*)=0,1,COUNT(*)) FROM MESSAGE
-                WHERE MSG_DATE > DATE_ADD(NOW(),INTERVAL -7 DAY)  ) MCNT
+                ( SELECT IF(COUNT(*)=0,1,COUNT(*) ) FROM BOARD
+                  WHERE BRD_DATE > DATE_ADD(NOW(),INTERVAL -7 DAY)
+                )                                                                                                 BCNT,
+                ( SELECT IF(COUNT(*)=0,1,COUNT(*) ) FROM STUDYBOARD
+                  WHERE STD_REG > DATE_ADD(NOW(),INTERVAL -7 DAY)
+                )                                                                                                 SCNT,
+                ( SELECT IF(COUNT(*)=0,1,COUNT(*)) FROM COMMENT
+                  WHERE CMT_DATE > DATE_ADD(NOW(),INTERVAL -7 DAY)
+                )                                                                                                 CCNT,
+                ( SELECT IF(COUNT(*)=0,1,COUNT(*)) FROM GROUPBOARD
+                  WHERE GRB_DATE > DATE_ADD(NOW(),INTERVAL -7 DAY)
+                )                                                                                                 NCNT,
+                ( SELECT IF(COUNT(*)=0,1,COUNT(*)) FROM GROUPMESSAGE
+                  WHERE GRM_DATE > DATE_ADD(NOW(),INTERVAL -7 DAY)
+                )                                                                                                 GCNT,
+                ( SELECT IF(COUNT(*)=0,1,COUNT(*)) FROM MESSAGE
+                  WHERE MSG_DATE > DATE_ADD(NOW(),INTERVAL -7 DAY)
+                )                                                                                                 MCNT
     </select>
 
     <!-- 최근 1주일 방문자수/가입자수 시간별 통계 -->
     <select id="getInfoChart" resultType="HashMap">
-        SELECT VDATE
-                    , COALESCE(VCNT,0) AS VCNT
-                    , COALESCE(MCNT,0) AS MCNT
-        FROM
-                    (
-                        SELECT DATE_FORMAT(VIS_DATE, '%H') AS VDATE
-                                    , COUNT(*) AS VCNT
-                        FROM VISIT
-                        WHERE VIS_DATE > DATE_ADD(NOW(),INTERVAL -6 DAY)
-                        GROUP BY DATE_FORMAT(VIS_DATE, '%H')
-                     ) VISIT
+      SELECT VDATE
+                  , COALESCE(VCNT,0)                                            AS VCNT
+                  , COALESCE(MCNT,0)                                           AS MCNT
+        FROM ( SELECT DATE_FORMAT(VIS_DATE, '%H')          AS VDATE
+                                 , COUNT(*) AS VCNT
+                       FROM VISIT
+                     WHERE VIS_DATE > DATE_ADD(NOW(),INTERVAL -6 DAY)
+                     GROUP BY DATE_FORMAT(VIS_DATE, '%H')
+                    )                                                                         VISIT
         LEFT JOIN (
-                                SELECT DATE_FORMAT(MBR_JOIN, '%H') AS MBR_JOIN
-                                            , COUNT(*) AS MCNT
+                             SELECT DATE_FORMAT(MBR_JOIN, '%H')   AS MBR_JOIN
+                                        , COUNT(*)                                      AS MCNT
                                 FROM MEMBER
-                                WHERE MBR_JOIN > DATE_ADD(NOW(),INTERVAL - 6 DAY)
-                                GROUP BY DATE_FORMAT(MBR_JOIN, '%H')
-                            ) MEMBER
+                              WHERE MBR_JOIN > DATE_ADD(NOW(),INTERVAL - 6 DAY)
+                              GROUP BY DATE_FORMAT(MBR_JOIN, '%H')
+                            )                                                                  MEMBER
                     ON VISIT.VDATE = MEMBER.MBR_JOIN
     </select>
 
     <!-- 모든 회원정보 리스트 조회 -->
     <select id="getMemberList" resultType="PointVO">
-        SELECT MBR_NO, MBR_TYPE, MBR_AUTH, MBR_CODE, MBR_ID, MBR_PASS, MBR_EMAIL, MBR_NICK, MBR_PROFILE, MBR_CONNECT, MBR_JOIN,
-                      COALESCE(PNT_NO,0) AS PNT_NO, COALESCE(PNT_SCORE,0) AS PNT_SCORE
+      SELECT MBR_NO
+                  , MBR_TYPE
+                  , MBR_AUTH
+                  , MBR_CODE
+                  , MBR_ID
+                  , MBR_PASS
+                  , MBR_EMAIL
+                  , MBR_NICK
+                  , MBR_PROFILE
+                  , MBR_CONNECT
+                  , MBR_JOIN
+                  , COALESCE(PNT_NO,0)          AS PNT_NO
+                  , COALESCE(PNT_SCORE,0)    AS PNT_SCORE
         FROM MEMBER
         LEFT JOIN POINT
-        ON POINT.PNT_ID = MEMBER.MBR_ID
-        ORDER BY MBR_JOIN DESC
+                    ON POINT.PNT_ID = MEMBER.MBR_ID
+      ORDER BY MBR_JOIN DESC
     </select>
 
     <!-- 회원정보 변경 -->
@@ -72,118 +87,118 @@
 
     <!-- 유저 정보 조회 -->
     <select id="getMemberOne" parameterType="String" resultType="PointVO">
-        SELECT MBR_NO
-                    , MBR_TYPE
-                    , MBR_AUTH
-                    , MBR_CODE
-                    , MBR_ID
-                    , MBR_PASS
-                    , MBR_EMAIL
-                    , MBR_NICK
-                    , MBR_PROFILE
-                    , MBR_CONNECT
-                    , MBR_JOIN
-                    , COALESCE(PNT_NO,0) AS PNT_NO
-                    , COALESCE(PNT_SCORE,0) AS PNT_SCORE
+      SELECT MBR_NO
+                  , MBR_TYPE
+                  , MBR_AUTH
+                  , MBR_CODE
+                  , MBR_ID
+                  , MBR_PASS
+                  , MBR_EMAIL
+                  , MBR_NICK
+                  , MBR_PROFILE
+                  , MBR_CONNECT
+                  , MBR_JOIN
+                  , COALESCE(PNT_NO,0)          AS PNT_NO
+                  , COALESCE(PNT_SCORE,0)    AS    PNT_SCORE
         FROM (
                       SELECT * FROM MEMBER
                       WHERE MBR_ID = #{id}
-        ) MEMBER
+                   )                                            MEMBER
         JOIN POINT
-        ON POINT.PNT_ID = MEMBER.MBR_ID
+           ON POINT.PNT_ID = MEMBER.MBR_ID
     </select>
 
     <!-- 게시판 리스트 조회 -->
     <select id="getBoardList" resultType="BoardVO">
-        SELECT BRD_NO
-                    , BRD_TYPE
-                    , BRD_DIVIDE
-                    , BRD_ID
-                    , BRD_TITLE
-                    , BRD_CONTENT
-                    , BRD_GNO
-                    , BRD_STEP
-                    , BRD_INDENT
-                    , BRD_COUNT
-                    , BRD_AVAILABLE
-                    , BRD_DATE
-                    , MEMBER.MBR_PROFILE
-                    , MEMBER.MBR_NICK
+      SELECT BRD_NO
+                  , BRD_TYPE
+                  , BRD_DIVIDE
+                  , BRD_ID
+                  , BRD_TITLE
+                  , BRD_CONTENT
+                  , BRD_GNO
+                  , BRD_STEP
+                  , BRD_INDENT
+                  , BRD_COUNT
+                  , BRD_AVAILABLE
+                  , BRD_DATE
+                  , MEMBER.MBR_PROFILE
+                  , MEMBER.MBR_NICK
         FROM BOARD
         JOIN MEMBER
            ON MEMBER.MBR_ID = BOARD.BRD_ID
-        ORDER BY BRD_NO DESC
+      ORDER BY BRD_NO DESC
     </select>
 
     <!-- 스터디 리스트 조회 -->
     <select id="getStudyList" resultType="StudyVO">
-        SELECT STD_NO
-                    , STD_ID
-                    , STD_GROUP
-                    , STD_DIVIDE
-                    , STD_ADDRESS
-                    , STD_PLACE
-                    , STD_TITLE
-                    , STD_CONTENT
-                    , STD_START
-                    , STD_END
-                    , STD_LIMIT
-                    , STD_LAT
-                    , STD_LNG
-                    , STD_AVAILABLE
-                    , STD_UPDATE
-                    , STD_REG
-                    , MBR_NICK
-                    , MBR_PROFILE
+      SELECT STD_NO
+                  , STD_ID
+                  , STD_GROUP
+                  , STD_DIVIDE
+                  , STD_ADDRESS
+                  , STD_PLACE
+                  , STD_TITLE
+                  , STD_CONTENT
+                  , STD_START
+                  , STD_END
+                  , STD_LIMIT
+                  , STD_LAT
+                  , STD_LNG
+                  , STD_AVAILABLE
+                  , STD_UPDATE
+                  , STD_REG
+                  , MBR_NICK
+                  , MBR_PROFILE
         FROM STUDYBOARD
         JOIN MEMBER
            ON MEMBER.MBR_ID = STUDYBOARD.STD_ID
-        ORDER BY STD_NO DESC
+      ORDER BY STD_NO DESC
     </select>
 
     <!-- 그룹 리스트 조회 -->
     <select id="getGroupList" resultType="StudyVO">
-       SELECT  STD_NO
-			  ,	STD_GROUP
-			  , STD_DIVIDE
-			  , STD_ADDRESS
-			  , STD_PLACE
-			  , STD_TITLE
-			  , STD_CONTENT
-			  , STD_START
-			  , STD_END
-			  , STD_LIMIT
-			  , STD_LAT
-			  , STD_LNG
-			  , STD_AVAILABLE
-			  , STD_UPDATE
-			  , STD_REG
-			  , STD_PERSONCOUNT
-			  , MBR_NICK
-			  , MBR_PROFILE
+      SELECT STD_NO
+                  , STD_GROUP
+                  , STD_DIVIDE
+                  , STD_ADDRESS
+                  , STD_PLACE
+                  , STD_TITLE
+                  , STD_CONTENT
+                  , STD_START
+                  , STD_END
+                  , STD_LIMIT
+                  , STD_LAT
+                  , STD_LNG
+                  , STD_AVAILABLE
+                  , STD_UPDATE
+                  , STD_REG
+                  , STD_PERSONCOUNT
+                  , MBR_NICK
+                  , MBR_PROFILE
         FROM STUDYBOARD
         JOIN ( SELECT GRM_GNO
-					, COUNT(*) AS STD_PERSONCOUNT
-			   FROM GROUPMEMBER
-			   GROUP BY GRM_GNO
-		) GROUPMEMBER
-          ON STUDYBOARD.STD_NO = GRM_GNO
-		JOIN MEMBER
-          ON MEMBER.MBR_ID = STUDYBOARD.STD_ID
-		ORDER BY STD_NO DESC
+                               , COUNT(*)          AS STD_PERSONCOUNT
+                    FROM GROUPMEMBER
+                 GROUP BY GRM_GNO
+                 )                                       GROUPMEMBER
+           ON STUDYBOARD.STD_NO = GRM_GNO
+        JOIN MEMBER
+           ON MEMBER.MBR_ID = STUDYBOARD.STD_ID
+      ORDER BY STD_NO DESC
     </select>
 
     <!-- 메세지 리스트 조회 -->
     <select id="getMessageList" resultType="MessageVO">
-        SELECT MSG_NO
-                    , MSG_ROOM
-                    , MSG_TYPE
-                    , MSG_FROM
-                    , MSG_TO
-                    , MSG_TEXT
-                    , MSG_RECEIVE
-                    , MSG_DELETE
-                    , MSG_DATE
+      SELECT MSG_NO
+                  , MSG_ROOM
+                  , MSG_TYPE
+                  , MSG_FROM
+                  , MSG_TO
+                  , MSG_TEXT
+                  , MSG_RECEIVE
+                  , MSG_DELETE
+                  , MSG_DATE
         FROM MESSAGE
         ORDER BY MSG_NO DESC
     </select>

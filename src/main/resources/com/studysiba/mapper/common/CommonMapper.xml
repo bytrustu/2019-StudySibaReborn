@@ -7,55 +7,72 @@
     <!-- 공통 업로드 등록 -->
     <insert id="contentUploadFile" parameterType="UploadVO">
       <selectKey keyProperty="uldNo" order="BEFORE" resultType="int">
-          SELECT COALESCE(MAX(ULD_NO+1),1) AS ULD_NO FROM UPLOAD
+        SELECT COALESCE(MAX(ULD_NO+1),1) AS ULD_NO FROM UPLOAD
       </selectKey>
-      INSERT INTO UPLOAD ( ULD_NO, ULD_FNO, ULD_ID, ULD_TYPE, ULD_TEXT, ULD_UUID, ULD_FILENAME, ULD_DATE )
-      VALUES (#{uldNo}, #{uldFno}, #{uldId}, #{uldType}, #{uldText}, #{uldUuid}, #{uldFilename}, NOW() )
+      INSERT INTO UPLOAD ( ULD_NO
+                                           , ULD_FNO
+                                           , ULD_ID
+                                           , ULD_TYPE
+                                           , ULD_TEXT
+                                           , ULD_UUID
+                                           , ULD_FILENAME
+                                           , ULD_DATE
+                                           )
+                            VALUES ( #{uldNo}
+                                           , #{uldFno}
+                                           , #{uldId}
+                                           , #{uldType}
+                                           , #{uldText}
+                                           , #{uldUuid}
+                                           , #{uldFilename}
+                                           , NOW()
+                                           )
     </insert>
 
     <!-- 공통 업로드 업데이트 -->
     <update id="contentUpdateFile" parameterType="UploadVO">
-        UPDATE UPLOAD
-        SET ULD_UUID = #{uldUuid}, ULD_FILENAME = #{uldFilename}, ULD_DATE = NOW()
-        WHERE ULD_FNO = #{uldFno} AND ULD_ID = #{uldId}
+      UPDATE UPLOAD
+      SET ULD_UUID = #{uldUuid}, ULD_FILENAME = #{uldFilename}, ULD_DATE = NOW()
+      WHERE ULD_FNO = #{uldFno} AND ULD_ID = #{uldId}
     </update>
 
     <!-- 이전파일이름 조회 -->
     <select id="getPrevFileName" parameterType="int" resultType="String">
-        SELECT CONCAT(ULD_UUID,"_",ULD_FILENAME) AS ULD_PREVFILENAME FROM UPLOAD
-        WHERE ULD_FNO = #{uldFno}
+      SELECT CONCAT(ULD_UUID,"_",ULD_FILENAME) AS ULD_PREVFILENAME FROM UPLOAD
+       WHERE ULD_FNO = #{uldFno}
     </select>
 
     <!-- 회원수, 방문자수 카운트 -->
     <select id="memberCount" resultType="HashMap">
-        SELECT
-          ( SELECT COUNT(*) FROM MEMBER ) MCNT,
-          ( SELECT COUNT(*) FROM VISIT ) VCNT
+      SELECT ( SELECT COUNT(*) FROM MEMBER )          MCNT
+                  , ( SELECT COUNT(*) FROM VISIT )               VCNT
     </select>
 
     <!-- 회원 포인트 정보 조회 -->
     <select id="getMemberPointInfo" resultType="PointVO">
-        SELECT PNT_NO, PNT_ID, PNT_SCORE FROM POINT
-        WHERE PNT_ID = #{id}
+      SELECT PNT_NO
+                  , PNT_ID
+                  , PNT_SCORE
+         FROM POINT
+       WHERE PNT_ID = #{id}
     </select>
 
     <!-- 회원 포인트 업데이트 -->
     <update id="setMemberPoint" parameterType="PointVO">
-        UPDATE POINT
-        SET PNT_SCORE =
+      UPDATE POINT
+      SET PNT_SCORE =
         <choose>
             <when test="pntScore == -9991">0</when>
             <otherwise>PNT_SCORE + #{pntScore}</otherwise>
         </choose>
-        WHERE PNT_ID = #{pntId}
+       WHERE PNT_ID = #{pntId}
     </update>
 
     <!-- 회원 방문수, 게시글수, 댓글수 조회 -->
     <select id="memberInfoCount" resultType="HashMap">
-        SELECT
-          ( SELECT COUNT(*) FROM VISIT WHERE VIS_ID = #{id}  ) VCNT,
-          ( SELECT COUNT(*) FROM BOARD WHERE BRD_ID = #{id} ) BCNT,
-          ( SELECT COUNT(*) FROM COMMENT WHERE CMT_ID = #{id} ) CCNT
+      SELECT ( SELECT COUNT(*) FROM VISIT WHERE VIS_ID = #{id}  )          VCNT
+                  , ( SELECT COUNT(*) FROM BOARD WHERE BRD_ID = #{id} )       BCNT
+                  , ( SELECT COUNT(*) FROM COMMENT WHERE CMT_ID = #{id} )  CCNT
     </select>
 
 

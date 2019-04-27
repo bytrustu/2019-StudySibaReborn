@@ -6,239 +6,371 @@
 
     <!-- 회원가입여부확인 -->
     <select id="registrationStatus" parameterType="MemberVO" resultType="int">
-        SELECT COUNT(*) FROM MEMBER
-        WHERE MBR_ID = #{mbrId}
+      SELECT COUNT(*)
+         FROM MEMBER
+       WHERE MBR_ID = #{mbrId}
     </select>
 
     <!-- 회원타입값조회 -->
     <select id="getType" parameterType="MemberVO" resultType="String">
-        SELECT MBR_TYPE FROM MEMBER
-        WHERE MBR_ID = #{mbrId}
+      SELECT MBR_TYPE
+         FROM MEMBER
+       WHERE MBR_ID = #{mbrId}
     </select>
 
     <!-- 회원이메일조회 -->
     <select id="getEmail" parameterType="MemberVO" resultType="String">
-        SELECT MBR_EMAIL FROM MEMBER
-        WHERE MBR_ID = #{mbrId}
+      SELECT MBR_EMAIL
+         FROM MEMBER
+       WHERE MBR_ID = #{mbrId}
     </select>
 
     <!-- 회원인증코드조회 -->
     <select id="getCode" parameterType="MemberVO" resultType="String">
-        SELECT MBR_CODE FROM MEMBER
-        WHERE MBR_ID = #{mbrId}
+      SELECT MBR_CODE
+         FROM MEMBER
+       WHERE MBR_ID = #{mbrId}
     </select>
 
     <!-- 회원인증코드갱신 -->
     <select id="renewAuthenticationCode" parameterType="MemberVO">
-        UPDATE MEMBER SET MBR_CODE = #{mbrCode}
-        WHERE MBR_ID = #{mbrId}
+      UPDATE MEMBER
+      SET MBR_CODE = #{mbrCode}
+      WHERE MBR_ID = #{mbrId}
     </select>
 
     <!-- 회원인증확인 -->
     <select id="informationCheckStatus" parameterType="MemberVO" resultType="int">
-        SELECT COUNT(*) FROM MEMBER
-        WHERE MBR_ID = #{mbrId} AND MBR_CODE = #{mbrCode}
+      SELECT COUNT(*)
+         FROM MEMBER
+       WHERE MBR_ID = #{mbrId} AND MBR_CODE = #{mbrCode}
     </select>
 
     <!-- 회원활성화 및 코드갱신 -->
     <select id="changeStatus" parameterType="MemberVO">
-        UPDATE MEMBER
-        SET MBR_TYPE = 'NORMAL', MBR_AUTH = 'NORMAL', MBR_CODE = #{mbrCode}, MBR_CONNECT = NOW()-INTERVAL 5 MINUTE, MBR_JOIN = NOW()
-        WHERE MBR_ID = #{mbrId}
+      UPDATE MEMBER
+      SET MBR_TYPE = 'NORMAL'
+           , MBR_AUTH = 'NORMAL'
+           , MBR_CODE = #{mbrCode}
+           , MBR_CONNECT = NOW()-INTERVAL 5 MINUTE
+           , MBR_JOIN = NOW()
+      WHERE MBR_ID = #{mbrId}
     </select>
 
     <!-- 회원아이디중복조회 -->
     <select id="idReduplicationCheck" parameterType="MemberVO" resultType="int">
-        SELECT COUNT(*) FROM MEMBER
-        WHERE MBR_ID = #{mbrId}
+      SELECT COUNT(*)
+         FROM MEMBER
+      WHERE MBR_ID = #{mbrId}
     </select>
 
     <!-- 회원이메일인증상태조회 -->
     <select id="emailApprovalStatus" parameterType="MemberVO" resultType="String">
-        SELECT MBR_TYPE FROM MEMBER
-        WHERE MBR_ID = #{mbrId}
+      SELECT MBR_TYPE
+         FROM MEMBER
+      WHERE MBR_ID = #{mbrId}
     </select>
 
     <!-- 회원정보등록 -->
     <insert id="memberRegistration" parameterType="MemberVO">
         <selectKey keyProperty="mbrNo" order="BEFORE" resultType="int">
-            SELECT COALESCE(MAX(MBR_NO+1),1) AS MBR_NO FROM MEMBER
+          SELECT COALESCE(MAX(MBR_NO+1),1) AS MBR_NO FROM MEMBER
         </selectKey>
-            INSERT INTO MEMBER(MBR_NO, MBR_TYPE, MBR_AUTH, MBR_CODE, MBR_ID, MBR_PASS, MBR_NICK,MBR_EMAIL, MBR_PROFILE, MBR_CONNECT, MBR_JOIN)
-            VALUES(#{mbrNo}, 'NONE', 'NONE', #{mbrCode}, #{mbrId}, #{mbrPass}, #{mbrNick}, #{mbrEmail}, #{mbrProfile}, NOW()-INTERVAL 5 MINUTE, NOW())
+          INSERT INTO MEMBER( MBR_NO
+                                              , MBR_TYPE
+                                              , MBR_AUTH
+                                              , MBR_CODE
+                                              , MBR_ID
+                                              , MBR_PASS
+                                              , MBR_NICK
+                                              ,MBR_EMAIL
+                                              , MBR_PROFILE
+                                              , MBR_CONNECT
+                                              , MBR_JOIN
+                                              )
+                                 VALUES( #{mbrNo}
+                                              , 'NONE'
+                                              , 'NONE'
+                                              , #{mbrCode}
+                                              , #{mbrId}
+                                              , #{mbrPass}
+                                              , #{mbrNick}
+                                              , #{mbrEmail}
+                                              , #{mbrProfile}
+                                              , NOW()-INTERVAL 5 MINUTE
+                                              , NOW()
+                                              )
     </insert>
 
     <!-- 회원이메일중복조회 -->
     <select id="emailReduplicationCheck" parameterType="MemberVO" resultType="int">
-        SELECT COUNT(*) FROM MEMBER
-        WHERE MBR_EMAIL = #{mbrEmail}
+      SELECT COUNT(*)
+         FROM MEMBER
+       WHERE MBR_EMAIL = #{mbrEmail}
     </select>
 
     <!-- 회원닉네임중복조회 -->
     <select id ="nickReduplicationCheck" parameterType="MemberVO" resultType="int">
-        SELECT COUNT(*) FROM MEMBER
-        WHERE MBR_NICK = #{mbrNick}
+      SELECT COUNT(*)
+         FROM MEMBER
+       WHERE MBR_NICK = #{mbrNick}
     </select>
 
     <!-- 회원방문자수조회 -->
     <select id="totalVisitCountCheck" parameterType="MemberVO" resultType="int">
-        SELECT COALESCE(COUNT(*),0) AS COUNT FROM VISIT
-        WHERE VIS_ID = #{mbrId}
+      SELECT COALESCE(COUNT(*),0)          AS COUNT
+         FROM VISIT
+       WHERE VIS_ID = #{mbrId}
     </select>
 
     <!-- 회원정보조회 -->
     <select id="viewMemberInformation" parameterType="MemberVO" resultType="MemberVO">
-        SELECT
-        MBR_NO, MBR_TYPE, MBR_AUTH, MBR_CODE, MBR_ID, MBR_PASS, MBR_NICK,MBR_EMAIL, MBR_PROFILE, MBR_CONNECT, MBR_JOIN
-        FROM MEMBER
-        WHERE MBR_ID = #{mbrId}
+      SELECT MBR_NO
+                  , MBR_TYPE
+                  , MBR_AUTH
+                  , MBR_CODE
+                  , MBR_ID
+                  , MBR_PASS
+                  , MBR_NICK
+                  ,MBR_EMAIL
+                  , MBR_PROFILE
+                  , MBR_CONNECT
+                  , MBR_JOIN
+         FROM MEMBER
+       WHERE MBR_ID = #{mbrId}
     </select>
 
     <!-- 승인나지 않은 이메일로 아이디 조회 -->
     <select id="viewIdByEmail" parameterType="MemberVO" resultType="String">
-        SELECT MBR_ID FROM MEMBER WHERE MBR_EMAIL = #{mbr_Email} AND MBR_TYPE = 'NONE';
+      SELECT MBR_ID
+         FROM MEMBER
+       WHERE MBR_EMAIL = #{mbr_Email}
+            AND MBR_TYPE = 'NONE';
     </select>
 
     <!-- 승인나지 않은 이메일 변경 -->
     <update id="updateEmail" parameterType="MemberVO">
-        UPDATE MEMBER
-        SET MBR_EMAIL = #{MBR_}
-        WHERE MBR_EMAIL = 'BYTRUSTU@GMAIL.COM' AND MBR_TYPE = 'NONE';
+      UPDATE MEMBER
+      SET MBR_EMAIL = #{MBR_}
+      WHERE MBR_EMAIL = 'BYTRUSTU@GMAIL.COM'
+           AND MBR_TYPE = 'NONE';
     </update>
 
     <!-- 아이디 미승인 처리 -->
     <update id="deleteInformation" parameterType="MemberVO">
-        DELETE FROM MEMBER
-        WHERE MBR_ID = #{mbrId} AND MBR_TYPE = 'NONE'
+      DELETE FROM MEMBER
+      WHERE MBR_ID = #{mbrId}
+           AND MBR_TYPE = 'NONE'
     </update>
 
     <!-- 회원 이메일 정보 확인 -->
     <select id="checkMailState" parameterType="MemberVO" resultType="String">
-        SELECT MBR_ID FROM MEMBER
-        WHERE MBR_EMAIL = #{mbrEmail} AND ( MBR_AUTH = 'NORMAL' OR MBR_AUTH = 'ADMIN' )
+      SELECT MBR_ID
+         FROM MEMBER
+      WHERE MBR_EMAIL = #{mbrEmail}
+           AND ( MBR_AUTH = 'NORMAL'
+                     OR
+                     MBR_AUTH = 'ADMIN'
+                   )
     </select>
 
     <!-- 회원 이메일 인증을 통한 비밀번호 변경 -->
     <update id="changePasswordEmailAuth" parameterType="MemberVO" >
-        UPDATE MEMBER SET MBR_PASS = #{mbrPass}
-        WHERE MBR_ID = #{mbrId}
+      UPDATE MEMBER
+      SET MBR_PASS = #{mbrPass}
+      WHERE MBR_ID = #{mbrId}
     </update>
 
     <!-- 소셜로그인 등록된 유저인지 확인 -->
     <select id="socialSignInState" parameterType="MemberVO" resultType="int">
-      SELECT COUNT(*) FROM MEMBER
-      WHERE MBR_ID = #{mbrId} AND MBR_TYPE = #{mbrType}
+      SELECT COUNT(*)
+         FROM MEMBER
+      WHERE MBR_ID = #{mbrId}
+           AND MBR_TYPE = #{mbrType}
     </select>
 
     <!-- 소셜로그인 회원정보 조회 -->
     <select id="memberSocialInformation" parameterType="MemberVO" resultType="MemberVO">
-      SELECT
-      MBR_TYPE, MBR_AUTH, MBR_ID, MBR_NICK, MBR_PROFILE, MBR_CONNECT, MBR_JOIN
-      FROM MEMBER
-      WHERE MBR_ID = #{mbrId} AND MBR_TYPE = #{mbrType}
+      SELECT MBR_TYPE
+                  , MBR_AUTH
+                  , MBR_ID
+                  , MBR_NICK
+                  , MBR_PROFILE
+                  , MBR_CONNECT
+                  , MBR_JOIN
+         FROM MEMBER
+       WHERE MBR_ID = #{mbrId}
+            AND MBR_TYPE = #{mbrType}
     </select>
 
     <!-- 소셜 회원가입 -->
     <insert id="socialSign" parameterType="MemberVO">
         <selectKey keyProperty="mbrNo" order="BEFORE" resultType="int">
-            SELECT COALESCE(MAX(MBR_NO+1),1) AS MBR_NO FROM MEMBER
+          SELECT COALESCE(MAX(MBR_NO+1),1) AS MBR_NO FROM MEMBER
         </selectKey>
-        INSERT INTO MEMBER(MBR_NO, MBR_TYPE, MBR_AUTH, MBR_CODE, MBR_ID, MBR_PASS, MBR_NICK,MBR_EMAIL, MBR_PROFILE, MBR_CONNECT, MBR_JOIN)
-        VALUES(#{mbrNo}, #{mbrType}, 'NORMAL', #{mbrCode}, #{mbrId}, #{mbrPass}, #{mbrNick}, #{mbrEmail}, #{mbrProfile}, NOW(), NOW())
+      INSERT INTO MEMBER( MBR_NO
+                                          , MBR_TYPE
+                                          , MBR_AUTH
+                                          , MBR_CODE
+                                          , MBR_ID
+                                          , MBR_PASS
+                                          , MBR_NICK
+                                          , MBR_EMAIL
+                                          , MBR_PROFILE
+                                          , MBR_CONNECT
+                                          , MBR_JOIN
+                                          )
+                             VALUES( #{mbrNo}
+                                          , #{mbrType}
+                                          , 'NORMAL'
+                                          , #{mbrCode}
+                                          , #{mbrId}
+                                          , #{mbrPass}
+                                          , #{mbrNick}
+                                          , #{mbrEmail}
+                                          , #{mbrProfile}
+                                          , NOW()
+                                          , NOW()
+                                          )
     </insert>
 
     <!-- 포인트 등록 -->
     <insert id="createPoint" parameterType="MemberVO">
         <selectKey keyProperty="mbrNo" order="BEFORE" resultType="int">
-            SELECT COALESCE(MAX(PNT_NO+1),1) AS MBR_NO FROM POINT
+          SELECT COALESCE( MAX( PNT_NO+1 ), 1 ) AS MBR_NO FROM POINT
         </selectKey>
-        INSERT INTO POINT(PNT_NO, PNT_ID, PNT_SCORE)
-        VALUES(#{mbrNo}, #{mbrId}, 1000)
+      INSERT INTO POINT( PNT_NO
+                                       , PNT_ID
+                                       , PNT_SCORE
+                                       )
+                          VALUES( #{mbrNo}
+                                       , #{mbrId}
+                                       , 1000
+                                       )
     </insert>
 
     <!-- 포인트 증가/감소 -->
     <update id="updatePoint" parameterType="MemberVO">
-          UPDATE POINT SET PNT_SCORE = PNT_SCORE + #{mbrPoint}
-          WHERE PNT_ID = #{mbrId}
+      UPDATE POINT
+      SET PNT_SCORE = PNT_SCORE + #{mbrPoint}
+      WHERE PNT_ID = #{mbrId}
     </update>
 
     <!-- 포인트 수정 -->
     <update id="setPoint" parameterType="MemberVO">
-          UPDATE POINT SET PNT_SCORE = #{mbrPoint}
-          WHERE PNT_ID = #{mbrId}
+      UPDATE POINT
+      SET PNT_SCORE = #{mbrPoint}
+      WHERE PNT_ID = #{mbrId}
     </update>
 
     <!-- 오늘 접속기록이 있는지 확인 조회 -->
     <select id="isLoggedToday" parameterType="MemberVO" resultType="int">
-          SELECT COUNT(*) FROM MEMBER
-          WHERE MBR_ID = #{mbrId} AND DATE_FORMAT(MBR_CONNECT, '%Y-%m-%d') = CURDATE()
+      SELECT COUNT(*)
+         FROM MEMBER
+       WHERE MBR_ID = #{mbrId}
+            AND DATE_FORMAT(MBR_CONNECT, '%Y-%m-%d') = CURDATE()
     </select>
 
     <!-- 로그인시 접속기록 갱신 -->
     <update id="updateAccessTime" parameterType="MemberVO">
-          UPDATE MEMBER SET MBR_CONNECT = NOW()
-          WHERE MBR_ID = #{mbrId}
+      UPDATE MEMBER
+      SET MBR_CONNECT = NOW()
+      WHERE MBR_ID = #{mbrId}
     </update>
 
     <!-- 방문정보등록 -->
     <insert id="visitRegistration" parameterType="MemberVO">
         <selectKey keyProperty="mbrNo" order="BEFORE" resultType="int">
-            SELECT COALESCE(MAX(VIS_NO+1),1) AS MBR_NO FROM VISIT
+          SELECT COALESCE(MAX(VIS_NO+1),1) AS MBR_NO FROM VISIT
         </selectKey>
-        INSERT INTO VISIT(VIS_NO, VIS_ID, VIS_DATE)
-        VALUES(#{mbrNo}, #{mbrId}, NOW())
+      INSERT INTO VISIT( VIS_NO
+                                      , VIS_ID
+                                      , VIS_DATE
+                                      )
+                         VALUES( #{mbrNo}
+                                      , #{mbrId}
+                                      , NOW()
+                                      )
     </insert>
 
     <!-- 유저랭킹조회 -->
     <select id="viewUserRanking" parameterType="MemberVO" resultType="PointVO">
-       SELECT PNT_ID, PNT_SCORE,
-       ( SELECT COUNT(*)+1 FROM POINT WHERE PNT_SCORE > ( SELECT PNT_SCORE FROM POINT WHERE PNT_ID = #{mbrId} ) ) AS PNT_RANK
-       FROM POINT WHERE PNT_ID = #{mbrId}
+      SELECT PNT_ID
+                  , PNT_SCORE
+                  , ( SELECT COUNT(*)+1
+                         FROM POINT
+                         WHERE PNT_SCORE > ( SELECT PNT_SCORE
+                                                                  FROM POINT
+                                                                  WHERE PNT_ID = #{mbrId}
+                                                              )
+                    )          AS PNT_RANK
+        FROM POINT
+       WHERE PNT_ID = #{mbrId}
     </select>
 
     <!-- 1~3위 랭킹 유저조회 -->
     <select id="viewUserTotalRanking" resultType="PointVO">
-        SELECT PNT_ID, PNT_SCORE,
-        ( SELECT COUNT(*)+1 FROM POINT WHERE PNT_SCORE > T.PNT_SCORE ) AS PNT_RANK,
-        MBR_ID, MBR_NICK, MBR_PROFILE
-        FROM POINT AS T
+      SELECT PNT_ID
+                 , PNT_SCORE
+                 , ( SELECT COUNT(*)+1
+                        FROM POINT
+                        WHERE PNT_SCORE > T.PNT_SCORE
+                    )          AS PNT_RANK
+                  , MBR_ID
+                  , MBR_NICK
+                  , MBR_PROFILE
+        FROM POINT   AS T
         JOIN MEMBER
-        ON T.PNT_ID = MEMBER.MBR_ID
-        ORDER BY PNT_RANK LIMIT 0,3
+           ON T.PNT_ID = MEMBER.MBR_ID
+       ORDER BY PNT_RANK
+       LIMIT 0,3
     </select>
 
     <!-- 유저 비밀번호 변경 -->
     <update id="updatePassword" parameterType="MemberVO">
-        UPDATE MEMBER SET MBR_PASS = #{mbrPass} WHERE MBR_ID = #{mbrId}
+      UPDATE MEMBER
+      SET MBR_PASS = #{mbrPass}
+      WHERE MBR_ID = #{mbrId}
     </update>
 
     <!-- 유저 닉네임 변경 -->
     <update id="updateNickname" parameterType="MemberVO">
-        UPDATE MEMBER SET MBR_NICK = #{mbrNick} WHERE MBR_ID = #{mbrId}
+      UPDATE MEMBER
+      SET MBR_NICK = #{mbrNick}
+      WHERE MBR_ID = #{mbrId}
     </update>
 
     <!-- 유저 프로필사진 변경 -->
     <update id="updateProfile" parameterType="MemberVO">
-        UPDATE MEMBER SET MBR_PROFILE = #{mbrProfile} WHERE MBR_ID = #{mbrId}
+      UPDATE MEMBER
+      SET MBR_PROFILE = #{mbrProfile}
+      WHERE MBR_ID = #{mbrId}
     </update>
 
     <!-- 유저 접속로그 갱신 -->
     <update id="isConnectUpdate" parameterType="String">
-        UPDATE MEMBER SET MBR_CONNECT = NOW() WHERE MBR_ID = #{mbrId}
+      UPDATE MEMBER
+      SET MBR_CONNECT = NOW()
+      WHERE MBR_ID = #{mbrId}
     </update>
 
     <!-- 로그아웃 접속로그 갱신 -->
     <update id="changeLogoutLog" parameterType="String">
-        UPDATE MEMBER
-        SET MBR_CONNECT = DATE_ADD(NOW(),INTERVAL -5 MINUTE)
-        WHERE MBR_ID = #{mbrId}
+      UPDATE MEMBER
+      SET MBR_CONNECT = DATE_ADD( NOW(), INTERVAL -5 MINUTE )
+      WHERE MBR_ID = #{mbrId}
     </update>
 
     <!-- 접속중인 유저 리스트 조회 -->
     <select id="connectedMemberList" resultType="MemberVO">
-        SELECT MBR_NO, MBR_ID, MBR_NICK,MBR_PROFILE FROM MEMBER
-        WHERE MBR_CONNECT BETWEEN NOW()-INTERVAL 3 MINUTE AND NOW() AND NOT MBR_TYPE = 'NONE'
-        ORDER BY MBR_CONNECT DESC
+      SELECT MBR_NO
+                  , MBR_ID
+                  , MBR_NICK
+                  , MBR_PROFILE
+         FROM MEMBER
+       WHERE MBR_CONNECT BETWEEN NOW()-INTERVAL 3 MINUTE AND NOW()
+            AND NOT MBR_TYPE = 'NONE'
+      ORDER BY MBR_CONNECT DESC
     </select>
 
 

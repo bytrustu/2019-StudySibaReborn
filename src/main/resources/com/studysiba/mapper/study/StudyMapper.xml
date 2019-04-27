@@ -7,119 +7,207 @@
     <!-- 스터디 등록 -->
     <insert id="registerStudy" parameterType="StudyVO">
       <selectKey keyProperty="stdNo" order="BEFORE" resultType="int">
-          SELECT COALESCE(MAX(STD_NO+1),1) AS STD_NO FROM STUDYBOARD
+        SELECT COALESCE(MAX(STD_NO+1),1) AS STD_NO FROM STUDYBOARD
       </selectKey>
-      INSERT INTO STUDYBOARD ( STD_NO, STD_ID, STD_GROUP, STD_DIVIDE, STD_TITLE, STD_CONTENT, STD_ADDRESS, STD_PLACE, STD_START, STD_END, STD_LIMIT, STD_LAT, STD_LNG, STD_AVAILABLE, STD_UPDATE, STD_REG )
-      VALUES (#{stdNo}, #{stdId}, #{stdGroup}, #{stdDivide}, #{stdTitle}, #{stdContent}, #{stdAddress}, #{stdPlace}, #{stdStart}, #{stdEnd}, #{stdLimit}, #{stdLat}, #{stdLng}, 1, NOW(), NOW() )
+      INSERT INTO STUDYBOARD( STD_NO
+                                                  , STD_ID
+                                                  , STD_GROUP
+                                                  , STD_DIVIDE
+                                                  , STD_TITLE
+                                                  , STD_CONTENT
+                                                  , STD_ADDRESS
+                                                  , STD_PLACE
+                                                  , STD_START
+                                                  , STD_END
+                                                  , STD_LIMIT
+                                                  , STD_LAT
+                                                  , STD_LNG
+                                                  , STD_AVAILABLE
+                                                  , STD_UPDATE
+                                                  , STD_REG
+                                                  )
+                                    VALUES ( #{stdNo}
+                                                  , #{stdId}
+                                                  , #{stdGroup}
+                                                  , #{stdDivide}
+                                                  , #{stdTitle}
+                                                  , #{stdContent}
+                                                  , #{stdAddress}
+                                                  , #{stdPlace}
+                                                  , #{stdStart}
+                                                  , #{stdEnd}
+                                                  , #{stdLimit}
+                                                  , #{stdLat}
+                                                  , #{stdLng}
+                                                  , 1
+                                                  , NOW()
+                                                  , NOW()
+                                                  )
     </insert>
 
     <!-- 가장 최근에 작성된 스터디번호 -->
     <select id="getStudyMaxNum" resultType="int">
-        SELECT MAX(STD_NO) FROM STUDYBOARD
+      SELECT MAX(STD_NO)
+         FROM STUDYBOARD
     </select>
 
     <!-- 스터디그룹 등록 -->
     <insert id="registerGroup" parameterType="StudyVO">
-        INSERT INTO STUDYGROUP( STG_NO, STG_ID, STG_GROUP, STG_DATE )
-        VALUES(#{stdNo}, #{stdId}, #{stdGroup}, NOW())
+      INSERT INTO STUDYGROUP( STG_NO
+                                                  , STG_ID
+                                                  , STG_GROUP
+                                                  , STG_DATE
+                                                  )
+                                     VALUES( #{stdNo}
+                                                  , #{stdId}
+                                                  , #{stdGroup}
+                                                  , NOW()
+                                                  )
     </insert>
 
     <!-- 스터디그룹 등록 -->
     <insert id="registerGroupMember" parameterType="StudyVO">
         <selectKey keyProperty="mbrNo" order="BEFORE" resultType="int">
-            SELECT COALESCE(MAX(GRM_NO+1),1) AS MBR_NO FROM GROUPMEMBER
+          SELECT COALESCE(MAX(GRM_NO+1),1) AS MBR_NO FROM GROUPMEMBER
         </selectKey>
-        INSERT INTO GROUPMEMBER( GRM_NO, GRM_GNO, GRM_ID, GRM_DATE )
-        VALUES(#{mbrNo}, #{stdNo}, #{stdId}, NOW())
+      INSERT INTO GROUPMEMBER( GRM_NO
+                                                     , GRM_GNO
+                                                     , GRM_ID
+                                                     , GRM_DATE
+                                                     )
+                                        VALUES( #{mbrNo}
+                                                     , #{stdNo}
+                                                     , #{stdId}
+                                                     , NOW()
+                                                     )
     </insert>
 
 
     <!-- 스터디 개설수 반환 -->
     <select id="getStudyCount" parameterType="hashmap" resultType="int">
-        SELECT COUNT(*) FROM STUDYBOARD
+      SELECT COUNT(*) FROM STUDYBOARD
         <if test="keyword != null">
-            WHERE (
-                            STD_GROUP LIKE CONCAT('%', #{keyword}, '%')
-                            OR STD_DIVIDE LIKE CONCAT('%', #{keyword}, '%')
-                            OR STD_ADDRESS LIKE CONCAT('%', #{keyword}, '%')
-                            OR STD_PLACE LIKE CONCAT('%', #{keyword}, '%')
-                            OR STD_TITLE LIKE CONCAT('%', #{keyword}, '%')
-                            OR STD_CONTENT LIKE CONCAT('%', #{keyword}, '%')
-                          )
+          WHERE ( STD_GROUP LIKE CONCAT('%', #{keyword}, '%')
+                          OR STD_DIVIDE LIKE CONCAT('%', #{keyword}, '%')
+                          OR STD_ADDRESS LIKE CONCAT('%', #{keyword}, '%')
+                          OR STD_PLACE LIKE CONCAT('%', #{keyword}, '%')
+                          OR STD_TITLE LIKE CONCAT('%', #{keyword}, '%')
+                          OR STD_CONTENT LIKE CONCAT('%', #{keyword}, '%')
+                       )
         </if>
     </select>
 
     <!-- 스터디 리스트 조회 -->
     <select id="getStudyList" parameterType="PageVO" resultType="StudyVO">
-         SELECT STD_NO, STD_ID, STD_GROUP, STD_DIVIDE, STD_ADDRESS, STD_PLACE, STD_TITLE, STD_CONTENT,
-                       STD_START, STD_END, STD_LIMIT, STD_LAT, STD_LNG, STD_AVAILABLE, STD_UPDATE, STD_REG,
-                       CONCAT(ULD_UUID,'_',ULD_FILENAME) AS ULD_FILENAME,
-                        STD_PERSONCOUNT
-          FROM (
-                        SELECT * FROM STUDYBOARD
-                        <if test="criteria.keyword != null">
-                            WHERE (
-                            STD_GROUP LIKE CONCAT('%', #{criteria.keyword}, '%')
-                            OR STD_DIVIDE LIKE CONCAT('%', #{criteria.keyword}, '%')
-                            OR STD_ADDRESS LIKE CONCAT('%', #{criteria.keyword}, '%')
-                            OR STD_PLACE LIKE CONCAT('%', #{criteria.keyword}, '%')
-                            OR STD_TITLE LIKE CONCAT('%', #{criteria.keyword}, '%')
-                            OR STD_CONTENT LIKE CONCAT('%', #{criteria.keyword}, '%')
-                            )
-                        </if>
-                        ORDER BY STD_UPDATE DESC
-                        LIMIT #{startRow}, #{pageSize}
-          ) AS STUDYBOARD
-        JOIN UPLOAD
-        ON ULD_FNO = STD_NO
-        JOIN (
-                    SELECT GRM_GNO, COUNT(*) AS STD_PERSONCOUNT
-                    FROM GROUPMEMBER
-                    GROUP BY GRM_GNO
-        ) GROUPMEMBER
-        ON GRM_GNO = STD_NO
-        ORDER BY STD_UPDATE DESC
+      SELECT STD_NO
+                  , STD_ID
+                  , STD_GROUP
+                  , STD_DIVIDE
+                  , STD_ADDRESS
+                  , STD_PLACE
+                  , STD_TITLE
+                  , STD_CONTENT
+                  , STD_START
+                  , STD_END
+                  , STD_LIMIT
+                  , STD_LAT
+                  , STD_LNG
+                  , STD_AVAILABLE
+                  , STD_UPDATE
+                  , STD_REG
+                  , CONCAT( ULD_UUID, '_', ULD_FILENAME )          AS ULD_FILENAME
+                  , STD_PERSONCOUNT
+         FROM (
+                      SELECT * FROM STUDYBOARD
+                      <if test="criteria.keyword != null">
+                        WHERE (
+                                        STD_GROUP LIKE CONCAT('%', #{criteria.keyword}, '%')
+                                        OR STD_DIVIDE LIKE CONCAT('%', #{criteria.keyword}, '%')
+                                        OR STD_ADDRESS LIKE CONCAT('%', #{criteria.keyword}, '%')
+                                        OR STD_PLACE LIKE CONCAT('%', #{criteria.keyword}, '%')
+                                        OR STD_TITLE LIKE CONCAT('%', #{criteria.keyword}, '%')
+                                        OR STD_CONTENT LIKE CONCAT('%', #{criteria.keyword}, '%')
+                                      )
+                      </if>
+                      ORDER BY STD_UPDATE DESC
+                      LIMIT #{startRow}, #{pageSize}
+                    )                                                                          AS STUDYBOARD
+         JOIN UPLOAD
+            ON ULD_FNO = STD_NO
+         JOIN (
+                     SELECT GRM_GNO
+                                , COUNT(*)                                              AS STD_PERSONCOUNT
+                        FROM GROUPMEMBER
+                     GROUP BY GRM_GNO
+        )                                                                                      GROUPMEMBER
+            ON GRM_GNO = STD_NO
+      ORDER BY STD_UPDATE DESC
     </select>
 
 
     <!-- 스터디 조회 -->
     <select id="getStudyOne" parameterType="int" resultType="StudyVO">
-        SELECT STD_NO, STD_ID, STD_GROUP, STD_DIVIDE, STD_ADDRESS, STD_PLACE, STD_TITLE, STD_CONTENT,
-                      STD_START, STD_END, STD_LIMIT, STD_LAT, STD_LNG, STD_AVAILABLE, STD_UPDATE, STD_REG,
-                      CONCAT(ULD_UUID,'_',ULD_FILENAME) AS ULD_FILENAME,
+      SELECT STD_NO
+                  , STD_ID
+                  , STD_GROUP
+                  , STD_DIVIDE
+                  , STD_ADDRESS
+                  , STD_PLACE
+                  , STD_TITLE
+                  , STD_CONTENT
+                  , STD_START
+                  , STD_END
+                  , STD_LIMIT
+                  , STD_LAT
+                  , STD_LNG
+                  , STD_AVAILABLE
+                  , STD_UPDATE
+                  , STD_REG
+                  , CONCAT( ULD_UUID, '_', ULD_FILENAME ) AS ULD_FILENAME,
                       MBR_NICK, MBR_PROFILE
-        FROM (
-                      SELECT * FROM STUDYBOARD
+         FROM (
+                      SELECT *
+                         FROM STUDYBOARD
                       WHERE STD_NO = #{no}
-                      ) STUDYBOARD
+                    ) STUDYBOARD
          JOIN UPLOAD
-         ON ULD_FNO = STD_NO
+            ON ULD_FNO = STD_NO
          JOIN MEMBER
-         ON MBR_ID = STD_ID
+            ON MBR_ID = STD_ID
     </select>
 
     <!-- 스터디 업데이트 -->
     <update id="updateStudy" parameterType="StudyVO">
-        UPDATE STUDYBOARD
-        SET
-        STD_GROUP = #{stdGroup}, STD_DIVIDE = #{stdDivide}, STD_TITLE = #{stdTitle}, STD_CONTENT = #{stdContent},
-        STD_ADDRESS = #{stdAddress}, STD_PLACE = #{stdPlace}, STD_START = #{stdStart}, STD_END = #{stdEnd},
-        STD_LIMIT = #{stdLimit}, STD_LAT = #{stdLat}, STD_LNG = #{stdLng}
-        WHERE STD_NO = #{stdNo} AND STD_ID = #{stdId}
+      UPDATE STUDYBOARD
+      SET STD_GROUP = #{stdGroup}
+           , STD_DIVIDE = #{stdDivide}
+           , STD_TITLE = #{stdTitle}
+           , STD_CONTENT = #{stdContent}
+           , STD_ADDRESS = #{stdAddress}
+           , STD_PLACE = #{stdPlace}
+           , STD_START = #{stdStart}
+           , STD_END = #{stdEnd}
+           , STD_LIMIT = #{stdLimit}
+           , STD_LAT = #{stdLat}
+           , STD_LNG = #{stdLng}
+      WHERE STD_NO = #{stdNo}
+           AND STD_ID = #{stdId}
     </update>
 
     <!-- 스터디 비활성화 -->
     <update id="deleteStudy" parameterType="StudyVO">
-        UPDATE STUDYBOARD
-        SET STD_AVAILABLE = 0
-        WHERE STD_NO = #{stdNo} AND STD_ID = #{stdId}
+      UPDATE STUDYBOARD
+      SET STD_AVAILABLE = 0
+      WHERE STD_NO = #{stdNo}
+           AND STD_ID = #{stdId}
     </update>
 
     <!-- 스터디 활성화 -->
     <update id="activeStudy" parameterType="StudyVO">
-        UPDATE STUDYBOARD
-        SET STD_AVAILABLE = 1
-        WHERE STD_NO = #{stdNo} AND STD_ID = #{stdId}
+      UPDATE STUDYBOARD
+      SET STD_AVAILABLE = 1
+      WHERE STD_NO = #{stdNo}
+           AND STD_ID = #{stdId}
     </update>
 
     <!-- 스터디 참여 -->
@@ -127,69 +215,102 @@
         <selectKey keyProperty="mbrNo" order="BEFORE" resultType="int">
           SELECT COALESCE(MAX(GRM_NO+1),1) AS MBR_NO FROM GROUPMEMBER
         </selectKey>
-        INSERT INTO GROUPMEMBER(GRM_NO, GRM_GNO, GRM_ID, GRM_DATE)
-        VALUES(#{mbrNo}, #{stdNo}, #{stdId}, NOW())
+      INSERT INTO GROUPMEMBER( GRM_NO
+                                                     , GRM_GNO
+                                                     , GRM_ID
+                                                     , GRM_DATE
+                                                     )
+                                        VALUES( #{mbrNo}
+                                                     , #{stdNo}
+                                                     , #{stdId}
+                                                     , NOW()
+                                                     )
     </insert>
 
     <!-- 스터디 탈퇴-->
     <delete id="outStudy" parameterType="StudyVO">
-        DELETE FROM GROUPMEMBER
-        WHERE GRM_GNO = #{stdNo} AND GRM_ID = #{stdId}
+      DELETE FROM GROUPMEMBER
+      WHERE GRM_GNO = #{stdNo}
+           AND GRM_ID = #{stdId}
     </delete>
 
     <!-- 스터디에 참여중인지 결과 반환 -->
     <select id="alreadyStudy" parameterType="StudyVO" resultType="int">
-        SELECT COUNT(*) FROM GROUPMEMBER
-        WHERE GRM_GNO = #{stdNo} AND GRM_ID = #{stdId}
+      SELECT COUNT(*)
+         FROM GROUPMEMBER
+      WHERE GRM_GNO = #{stdNo}
+           AND GRM_ID = #{stdId}
     </select>
 
     <!-- 스터디에 참여중인 멤버 리스트 조회 -->
     <select id="getGroupMemberList" parameterType="int" resultType="GroupMemberVO">
-        SELECT GRM_NO, GRM_GNO, GRM_ID, GRM_DATE,
-                      MBR_NICK, MBR_PROFILE
-        FROM (
-                      SELECT * FROM GROUPMEMBER
+      SELECT GRM_NO
+                  , GRM_GNO
+                  , GRM_ID
+                  , GRM_DATE
+                  , MBR_NICK
+                  , MBR_PROFILE
+         FROM (
+                      SELECT *
+                         FROM GROUPMEMBER
                       WHERE GRM_GNO = #{no}
         ) GROUPMEMBER
-        JOIN MEMBER
-        ON MEMBER.MBR_ID = GROUPMEMBER.GRM_ID
+         JOIN MEMBER
+            ON MEMBER.MBR_ID = GROUPMEMBER.GRM_ID
     </select>
 
     <!-- 스터디 리더 아이디 조회 -->
     <select id="getLeaderId" parameterType="int" resultType="String">
-        SELECT STD_ID FROM STUDYBOARD
-        WHERE STD_NO = #{stdNo}
+      SELECT STD_ID
+         FROM STUDYBOARD
+       WHERE STD_NO = #{stdNo}
     </select>
 
     <!-- 스터디 최신화 업데이트 -->
     <update id="latestStudy" parameterType="StudyVO">
-        UPDATE STUDYBOARD
-        SET STD_UPDATE = NOW()
-        WHERE STD_NO = #{stdNo} AND STD_ID = #{stdId}
+      UPDATE STUDYBOARD
+      SET STD_UPDATE = NOW()
+      WHERE STD_NO = #{stdNo}
+           AND STD_ID = #{stdId}
     </update>
 
     <!-- 모든 스터디 리스트 조회 -->
     <select id="getAllStudyList" resultType="StudyVO">
-        SELECT STD_NO, STD_ID, STD_GROUP, STD_DIVIDE, STD_ADDRESS, STD_PLACE, STD_TITLE, STD_CONTENT,
-        STD_START, STD_END, STD_LIMIT, STD_LAT, STD_LNG, STD_AVAILABLE, STD_UPDATE, STD_REG,
-        CONCAT(ULD_UUID,'_',ULD_FILENAME) AS ULD_FILENAME,
-        STD_PERSONCOUNT,
-        MBR_NICK, MBR_PROFILE
-        FROM (
-                        SELECT * FROM STUDYBOARD
-                        ORDER BY STD_UPDATE DESC
-        ) AS STUDYBOARD
-        JOIN UPLOAD
-        ON ULD_FNO = STD_NO
-        JOIN (
-                    SELECT GRM_GNO, COUNT(*) AS STD_PERSONCOUNT
-                    FROM GROUPMEMBER
-                    GROUP BY GRM_GNO
-        ) GROUPMEMBER
-        ON GRM_GNO = STD_NO
-        JOIN MEMBER
-        ON MEMBER.MBR_ID = STD_ID
-        ORDER BY STD_UPDATE DESC
+      SELECT STD_NO
+                  , STD_ID
+                  , STD_GROUP
+                  , STD_DIVIDE
+                  , STD_ADDRESS
+                  , STD_PLACE
+                  , STD_TITLE
+                  , STD_CONTENT
+                  , STD_START
+                  , STD_END
+                  , STD_LIMIT
+                  , STD_LAT
+                  , STD_LNG
+                  , STD_AVAILABLE
+                  , STD_UPDATE
+                  , STD_REG
+                  , CONCAT( ULD_UUID, '_', ULD_FILENAME )          AS ULD_FILENAME
+                  , STD_PERSONCOUNT
+                  , MBR_NICK, MBR_PROFILE
+         FROM ( SELECT *
+                         FROM STUDYBOARD
+                      ORDER BY STD_UPDATE DESC
+                    )                                                                          AS STUDYBOARD
+         JOIN UPLOAD
+            ON ULD_FNO = STD_NO
+         JOIN (
+                     SELECT GRM_GNO
+                                , COUNT(*)                                               AS STD_PERSONCOUNT
+                     FROM GROUPMEMBER
+                     GROUP BY GRM_GNO
+                   ) GROUPMEMBER
+            ON GRM_GNO = STD_NO
+         JOIN MEMBER
+            ON MEMBER.MBR_ID = STD_ID
+      ORDER BY STD_UPDATE DESC
     </select>
 
 </mapper>

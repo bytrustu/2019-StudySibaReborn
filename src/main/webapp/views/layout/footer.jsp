@@ -912,8 +912,21 @@
         </c:if>
 
 
+    <script type="text/javascript">
+            let agent = navigator.userAgent.toLowerCase();
+            let msFlag = false;
+            if ( (navigator.appName == 'Netscape' && navigator.userAgent.search('Trident') != -1) || (agent.indexOf("msie") != -1) ) {
+                msFlag = true;
+            }
+            if ( agent.indexOf("edge") != -1 ) {
+                msFlag = true;
+            }
 
-
+            if ( msFlag ) {
+                $('body').html('');
+                alert('지원하지 않는 브라우저 입니다. \n크롬 또는 웨일을 이용 해주세요.');
+            }
+    </script>
 
 
     <div class="alert alert-danger" id="dangerMessage" style="display: none; z-index: 9999;"></div>

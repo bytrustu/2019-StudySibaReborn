@@ -4,126 +4,195 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.studysiba.mapper.group.GroupMapper">
 
-
     <!-- 참여중인 스터디 리스트 조회 -->
     <select id="getGroupList" parameterType="String" resultType="GroupMemberVO">
-        SELECT GRM_NO, GRM_GNO, GRM_ID, GRM_DATE,
-                      STD_GROUP, STD_DIVIDE, STD_ADDRESS, STD_PLACE, STD_TITLE, STD_CONTENT,
-                      STD_START, STD_END, STD_LIMIT, STD_LAT, STD_LNG, STD_AVAILABLE, STD_UPDATE, STD_REG,
-                      CONCAT(ULD_UUID,'_',ULD_FILENAME) AS ULD_FILENAME,
-                      STD_PERSONCOUNT
+      SELECT GRM_NO
+                  , GRM_GNO
+                  , GRM_ID
+                  , GRM_DATE
+                  , STD_GROUP
+                  , STD_DIVIDE
+                  , STD_ADDRESS
+                  , STD_PLACE
+                  , STD_TITLE
+                  , STD_CONTENT
+                  , STD_START
+                  , STD_END
+                  , STD_LIMIT
+                  , STD_LAT
+                  , STD_LNG
+                  , STD_AVAILABLE
+                  , STD_UPDATE
+                  , STD_REG
+                  , CONCAT( ULD_UUID, '_', ULD_FILENAME )          AS ULD_FILENAME
+                  , STD_PERSONCOUNT
         FROM (
-                      SELECT * FROM GROUPMEMBER
+                     SELECT *
+                        FROM GROUPMEMBER
                       WHERE GRM_ID = #{id}
-                      ORDER BY GRM_DATE DESC
-        ) GROUPMEMBER
+                     ORDER BY GRM_DATE DESC
+                   )                                                                           GROUPMEMBER
         JOIN STUDYBOARD
-        ON STUDYBOARD.STD_NO = GROUPMEMBER.GRM_GNO
+           ON STUDYBOARD.STD_NO = GROUPMEMBER.GRM_GNO
         JOIN UPLOAD
-        ON UPLOAD.ULD_FNO = GROUPMEMBER.GRM_GNO
+           ON UPLOAD.ULD_FNO = GROUPMEMBER.GRM_GNO
         JOIN (
-                    SELECT GRM_GNO AS GRC_GNO, COUNT(*) AS STD_PERSONCOUNT
+                    SELECT GRM_GNO                                              AS GRC_GNO
+                               , COUNT(*)                                               AS STD_PERSONCOUNT
                     FROM GROUPMEMBER
                     GROUP BY GRC_GNO
         ) GROUPCOUNT
-        ON GROUPCOUNT.GRC_GNO = GROUPMEMBER.GRM_GNO
-        ORDER BY GRM_DATE DESC
+           ON GROUPCOUNT.GRC_GNO = GROUPMEMBER.GRM_GNO
+      ORDER BY GRM_DATE DESC
     </select>
 
     <!-- 스터디 리더 여부 확인 -->
     <select id="checkGroupLeader" parameterType="GroupBoardVO" resultType="int">
-        SELECT COUNT(*) AS ISLEADER FROM STUDYBOARD
-        WHERE STD_NO = #{grbGno} AND STD_ID = #{grbId}
+      SELECT COUNT(*) AS ISLEADER
+         FROM STUDYBOARD
+       WHERE STD_NO = #{grbGno}
+            AND STD_ID = #{grbId}
     </select>
 
     <!-- 그룹 공지사항 등록 -->
     <insert id="writeGroupPost" parameterType="GroupBoardVO">
         <selectKey keyProperty="grbNo" order="BEFORE" resultType="int">
-            SELECT COALESCE(MAX(GRB_NO+1),1) AS GRB_NO FROM GROUPBOARD
+          SELECT COALESCE(MAX(GRB_NO+1),1) AS GRB_NO FROM GROUPBOARD
         </selectKey>
-          INSERT INTO GROUPBOARD(GRB_NO, GRB_GNO, GRB_ID, GRB_TITLE, GRB_CONTENT, GRB_AVAILABLE, GRB_DATE)
-          VALUES(#{grbNo}, #{grbGno}, #{grbId}, #{grbTitle}, #{grbContent}, 1, NOW())
+          INSERT INTO GROUPBOARD( GRB_NO
+                                                       , GRB_GNO
+                                                       , GRB_ID
+                                                       , GRB_TITLE
+                                                       , GRB_CONTENT
+                                                       , GRB_AVAILABLE
+                                                       , GRB_DATE
+                                                       )
+                                         VALUES( #{grbNo}
+                                                       , #{grbGno}
+                                                       , #{grbId}
+                                                       , #{grbTitle}
+                                                       , #{grbContent}
+                                                       , 1
+                                                       , NOW()
+                                                       )
     </insert>
 
     <!-- 그룹 공지사항 수정 -->
     <update id="updateGroupPost" parameterType="GroupBoardVO">
-        UPDATE GROUPBOARD
-        SET GRB_TITLE = #{grbTitle}, GRB_CONTENT = #{grbContent}
-        WHERE GRB_NO = #{grbNo} AND GRB_ID = #{grbId}
+      UPDATE GROUPBOARD
+      SET GRB_TITLE = #{grbTitle}
+           , GRB_CONTENT = #{grbContent}
+      WHERE GRB_NO = #{grbNo}
+           AND GRB_ID = #{grbId}
     </update>
 
     <!-- 그룹 공지사항 파일이름 조회 -->
     <select id="getPrevFileName" parameterType="GroupBoardVO" resultType="String">
-          SELECT CONCAT(GRB_UUID,'_',GRB_FILENAME) AS FILENAME FROM GROUPBOARD
-          WHERE GRB_NO = #{grbNo} AND GRB_ID = #{grbId}
+      SELECT CONCAT( GRB_UUID, '_', GRB_FILENAME ) AS FILENAME
+         FROM GROUPBOARD
+       WHERE GRB_NO = #{grbNo}
+            AND GRB_ID = #{grbId}
     </select>
 
 
     <!-- 그룹 공지사항 파일 업데이트 -->
     <update id="updateGroupFilename" parameterType="GroupBoardVO">
-          UPDATE GROUPBOARD
-          SET GRB_UUID = #{grbUuid}, GRB_FILENAME = #{grbFilename}
-          WHERE GRB_NO = #{grbNo}
+      UPDATE GROUPBOARD
+      SET GRB_UUID = #{grbUuid}
+           , GRB_FILENAME = #{grbFilename}
+      WHERE GRB_NO = #{grbNo}
     </update>
 
     <!-- 그룹 공지사항 최근 글번호 조회 -->
     <select id="getMaxNoticeNum" parameterType="GroupBoardVO" resultType="int">
-          SELECT MAX(GRB_NO) FROM GROUPBOARD
-          WHERE GRB_GNO = #{grbGno} AND GRB_ID = #{grbId}
+      SELECT MAX(GRB_NO)
+         FROM GROUPBOARD
+       WHERE GRB_GNO = #{grbGno}
+            AND GRB_ID = #{grbId}
     </select>
 
     <!-- 그룹 공지사항 리스트 조회 -->
     <select id="getNoticeList" parameterType="HashMap" resultType="GroupBoardVO">
-        SELECT GRB_NO, GRB_GNO, GRB_ID, GRB_TITLE, GRB_CONTENT, GRB_UUID, GRB_FILENAME, GRB_AVAILABLE, GRB_DATE
+      SELECT GRB_NO
+                  , GRB_GNO
+                  , GRB_ID
+                  , GRB_TITLE
+                  , GRB_CONTENT
+                  , GRB_UUID
+                  , GRB_FILENAME
+                  , GRB_AVAILABLE
+                  , GRB_DATE
         FROM (
-                      SELECT * FROM GROUPBOARD
+                     SELECT *
+                        FROM GROUPBOARD
                       WHERE GRB_GNO = #{no}
-                      ORDER BY GRB_DATE DESC
-                      LIMIT #{startRow}, #{pageSize}
-        ) AS GROUPBOARD
-        ORDER BY GRB_DATE DESC
+                     ORDER BY GRB_DATE DESC
+                     LIMIT #{startRow}, #{pageSize}
+                   ) AS GROUPBOARD
+      ORDER BY GRB_DATE DESC
 
     </select>
 
     <!-- 그룹 공지사항 카운트 조회 -->
     <select id="getNoticeCount" parameterType="int" resultType="int">
-        SELECT COUNT(*) FROM GROUPBOARD
-        WHERE GRB_GNO = #{no}
+      SELECT COUNT(*)
+         FROM GROUPBOARD
+       WHERE GRB_GNO = #{no}
     </select>
 
     <!-- 그룹 공지사항 게시글 조회 -->
     <select id="getGroupPost" parameterType="int" resultType="GroupBoardVO">
-        SELECT GRB_NO, GRB_GNO, GRB_ID, GRB_TITLE, GRB_CONTENT, GRB_UUID, GRB_FILENAME, GRB_AVAILABLE, GRB_DATE
-        FROM GROUPBOARD
-        WHERE GRB_NO = #{no}
+      SELECT GRB_NO
+                  , GRB_GNO
+                  , GRB_ID
+                  , GRB_TITLE
+                  , GRB_CONTENT
+                  , GRB_UUID
+                  , GRB_FILENAME
+                  , GRB_AVAILABLE
+                  , GRB_DATE
+         FROM GROUPBOARD
+       WHERE GRB_NO = #{no}
     </select>
 
     <!-- 그룹 탈퇴 -->
     <delete id="outGroup" parameterType="GroupMemberVO">
-        DELETE FROM GROUPMEMBER
-        WHERE GRM_GNO = #{grmGno} AND GRM_ID = #{grmId}
+      DELETE FROM GROUPMEMBER
+      WHERE GRM_GNO = #{grmGno}
+           AND GRM_ID = #{grmId}
     </delete>
 
     <!-- 그룹메세지 등록 -->
     <insert id="sendGroupMessage" parameterType="GroupMessageVO">
         <selectKey keyProperty="grmNo" order="BEFORE" resultType="int">
-            SELECT COALESCE(MAX(GRM_NO+1),1) AS GRM_NO FROM GROUPMESSAGE
+          SELECT COALESCE(MAX(GRM_NO+1),1) AS GRM_NO FROM GROUPMESSAGE
         </selectKey>
-        INSERT INTO GROUPMESSAGE(GRM_NO, GRM_GNO, GRM_ID, GRM_TEXT, GRM_DATE)
-        VALUES(#{grmNo}, #{grmGno}, #{grmId}, #{grmText}, NOW())
+      INSERT INTO GROUPMESSAGE( GRM_NO
+                                                       , GRM_GNO
+                                                       , GRM_ID
+                                                       , GRM_TEXT
+                                                       , GRM_DATE
+                                                       )
+                                          VALUES( #{grmNo}
+                                                       , #{grmGno}
+                                                       , #{grmId}
+                                                       , #{grmText}
+                                                       , NOW()
+                                                       )
     </insert>
 
     <!-- 그룹 메세지 리스트 조회 -->
     <select id="getGroupMessageList" parameterType="int" resultType="GroupMessageVO">
-        SELECT GRM_NO, GRM_GNO, GRM_ID, GRM_TEXT, GRM_DATE,
+      SELECT GRM_NO, GRM_GNO, GRM_ID, GRM_TEXT, GRM_DATE,
                       MBR_NICK, MBR_PROFILE
-        FROM (
-                      SELECT * FROM GROUPMESSAGE
-                      WHERE GRM_GNO = #{no}
+         FROM (
+                      SELECT *
+                         FROM GROUPMESSAGE
+                       WHERE GRM_GNO = #{no}
                       ORDER BY GRM_DATE ASC
         ) GROUPMESSAGE
-        JOIN MEMBER
-        ON MEMBER.MBR_ID = GROUPMESSAGE.GRM_ID
+      JOIN MEMBER
+         ON MEMBER.MBR_ID = GROUPMESSAGE.GRM_ID
     </select>
 
 

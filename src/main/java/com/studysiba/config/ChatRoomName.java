@@ -18,6 +18,8 @@ public enum ChatRoomName {
         this.roomName = name;
     }
 
+
+
     public static boolean isValidChatRoomName(String value) {
         return Arrays.stream(ChatRoomName.values())
                 .anyMatch((chatRoomName) -> chatRoomName.name()

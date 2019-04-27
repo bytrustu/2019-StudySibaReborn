@@ -32,7 +32,7 @@ public class BoardController {
 
 
     /*
-     *  게시판별이동 리스트 [ 공지사항, 커뮤니티, 스터디참여, 스터디그룹 ]
+     *  게시판별이동 리스트 [ 공지사항, 커뮤니티]
      *  @Param menu [ 메뉴이름 ]
      *  @Return 게시판별 list 경로 이동
      */
@@ -54,7 +54,7 @@ public class BoardController {
     }
 
     /*
-     *  게시판별이동 뷰 [ 공지사항, 커뮤니티, 스터디참여, 스터디그룹 ]
+     *  게시판별이동 뷰 [ 공지사항, 커뮤니티 ]
      *  @Param menu [ 메뉴이름 ]
      *  @Return 게시판별 list 경로 이동
      */
