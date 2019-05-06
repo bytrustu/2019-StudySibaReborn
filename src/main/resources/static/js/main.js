@@ -27,7 +27,7 @@ $(document).ready(function () {
     // 슬라이드 조정
     let moveSlide;
     let slideFlag = true;
-    let studySlider = (left) => {
+    const studySlider = (left) => {
         let count;
         left === undefined ? count = 1 : count = Math.floor(left / 300);
         let studyItem = $('.study-item');
@@ -50,8 +50,8 @@ $(document).ready(function () {
     }
 
     // 슬라이드 초기 랜덤 설정
-    let randomSlideCount = $('.study-item').length - 7;
-    let randomSlideWidth = rendomNumber(randomSlideCount * 300)+20;
+    const randomSlideCount = $('.study-item').length - 7;
+    const randomSlideWidth = rendomNumber(randomSlideCount * 300)+20;
     studySlider(randomSlideWidth);
 
     // 슬라이드 시작/정지 버튼
@@ -115,7 +115,7 @@ $(document).ready(function () {
 
 
     // 회원인증 비밀번호 변경
-    let changePassword = (memberJson) => {
+    const changePassword = (memberJson) => {
         return new Promise((resolve, reject) => {
             $.ajax({
                 type: 'PUT',
@@ -162,7 +162,7 @@ $(document).ready(function () {
     });
 
     // 유저정보 변경
-    let changeUserInformation = (url) => {
+    const changeUserInformation = (url) => {
         return new Promise((resolve, reject) => {
             $.ajax({
                 type: 'PUT',
@@ -200,7 +200,7 @@ $(document).ready(function () {
     });
 
     // 카카오 연동
-    let kakaoRequest = () => {
+    const kakaoRequest = () => {
         Kakao.Auth.login({
             success: (authObj) => {
                 timerAlert("정보확인", "정보를 확인중입니다.", 2000);
@@ -230,7 +230,7 @@ $(document).ready(function () {
     }
 
     // 페이스북 연동
-    var checkFacebookLoginStatus = (response) => {
+    const checkFacebookLoginStatus = (response) => {
         if (response.status === 'connected') {
             timerAlert("정보확인", "정보를 확인중입니다.", 2000);
             setTimeout(() => {
@@ -329,7 +329,7 @@ $(document).ready(function () {
 });
 
 
-function swing(){
+const swing = () =>{
     let imageTarget = $('.image-target');
     imageTarget.animate({
         top: '-70px',
@@ -342,7 +342,7 @@ function swing(){
 
 
 // 카카오 소셜 로그인
-let kakaoSigin = (memberJson) => {
+const kakaoSigin = (memberJson) => {
     return new Promise((resolve, reject) => {
         $.ajax({
             type: 'POST',
@@ -361,7 +361,7 @@ let kakaoSigin = (memberJson) => {
 
 
 // 페이스북 소셜로그인
-let facebookSignIn = (memberJson) => {
+const facebookSignIn = (memberJson) => {
     return new Promise((resolve, reject) => {
         $.ajax({
             type: 'POST',
@@ -379,7 +379,7 @@ let facebookSignIn = (memberJson) => {
 
 
 // 회원로그인 정보 입력
-let memberNormalLogin = (memberJson) => {
+const memberNormalLogin = (memberJson) => {
     return new Promise((resolve, reject) => {
         $.ajax({
             type: 'POST',
@@ -397,7 +397,7 @@ let memberNormalLogin = (memberJson) => {
 
 
 // 미인증 회원정보 삭제
-let deleteInfomation = (memberJson) => {
+const deleteInfomation = (memberJson) => {
     return new Promise((resolve, reject) => {
         $.ajax({
             type: 'POST',
@@ -416,7 +416,7 @@ let deleteInfomation = (memberJson) => {
 
 
 // 초대장 전송
-let sendMail = (memberInfo) => {
+const sendMail = (memberInfo) => {
     return new Promise((resolve, reject) => {
         $.ajax({
             type: 'GET',
@@ -434,7 +434,7 @@ let sendMail = (memberInfo) => {
 
 
 // 초대장 재전송
-let reSendmail = (email) => {
+const reSendmail = (email) => {
     return new Promise((resolve, reject) => {
         $.ajax({
             type: 'GET',
@@ -451,7 +451,7 @@ let reSendmail = (email) => {
 
 
 // 회원가입 정보 입력
-let memberJoin = (memberJson) => {
+const memberJoin = (memberJson) => {
     return new Promise(function (resolve, reject) {
         $.ajax({
             type: 'POST',

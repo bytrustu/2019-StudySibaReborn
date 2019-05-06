@@ -9,7 +9,7 @@ $(document).ready(function(){
     
     // 그룹채팅 연결
     let no = contentNo();
-    let sockGroup = new SockJS("/group");
+    const sockGroup = new SockJS("/group");
     groupClient = Stomp.over(sockGroup);
     groupClient.debug = null;
     groupClient.connect({}, function(){
@@ -33,7 +33,7 @@ $(document).ready(function(){
     });
 
     // 그룹메세지
-    let sendGroupMessage = (messageInfo, isScroll) => {
+    const    sendGroupMessage = (messageInfo, isScroll) => {
         let msg = `
                             <div class="groupmsg-box center-block animated bounce fast">
                                     <div class="row">

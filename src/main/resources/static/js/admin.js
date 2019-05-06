@@ -12,7 +12,7 @@ $(document).ready(function(){
         location.href = `/${firstPath()}${menu.get(key)}`;
     });
 
-    let menu = location.pathname;
+    const menu = location.pathname;
     switch (menu){
         case '/admin/main':
             viewDataChart();
@@ -123,7 +123,7 @@ $(document).ready(function(){
 });
 
 // 회원정보 업데이트 처리
-let executeMemberUpdate = (memberJson,memberMap,memberNo) => {
+const executeMemberUpdate = (memberJson,memberMap,memberNo) => {
     updateMember(memberJson)
         .then( (data) => {
             successAlert('회원정보가 변경 되었습니다.');
@@ -142,7 +142,7 @@ let executeMemberUpdate = (memberJson,memberMap,memberNo) => {
     });
 }
 
-let updateMember = (memberJson) =>{
+const updateMember = (memberJson) =>{
     return new Promise( (resolve, reject) => {
         $.ajax({
             type : 'PUT',
@@ -160,7 +160,7 @@ let updateMember = (memberJson) =>{
     });
 }
 
-let getMemberDate = (id) => {
+const getMemberDate = (id) => {
     return new Promise( (resolve, reject) => {
         $.ajax({
             type : 'GET',
@@ -180,7 +180,7 @@ let getMemberDate = (id) => {
 
 let prevData;
 // div => input 으로
-let visibleInput = (element) => {
+const visibleInput = (element) => {
     let data = element.html();
     prevData = data;
     let target = element.prev('input');
@@ -191,7 +191,7 @@ let visibleInput = (element) => {
 }
 
 // 커뮤니티/스터디/그룹/메세지 데이터 통계 조회
-let dataChart = () =>{
+const dataChart = () =>{
     return new Promise( (resolve, reject ) => {
         $.ajax({
             type : 'POST',
@@ -208,11 +208,11 @@ let dataChart = () =>{
 }
 
 // 데이터 통계 파이차트
-function viewDataChart(){
+const viewDataChart = () => {
     google.charts.load('current', {'packages':['corechart']});
     google.charts.setOnLoadCallback(drawChart);
     function drawChart() {
-        var data = new google.visualization.DataTable();
+        let data = new google.visualization.DataTable();
         data.addColumn('string', '분류');
         data.addColumn('number', '작성률%');
         data.addRows(6);
@@ -249,8 +249,8 @@ function viewDataChart(){
             }).catch( (error) => {
             errorAlert('데이터 차트 조회에 실패 했습니다.');
         }).finally(()=>{
-            var options = {is3D: true};
-            var chart = new google.visualization.PieChart(document.getElementById('dataChart'));
+            let options = {is3D: true};
+            let chart = new google.visualization.PieChart(document.getElementById('dataChart'));
             chart.draw(data, options);
         });
     }
@@ -258,7 +258,7 @@ function viewDataChart(){
 
 
 // 방문자수/가입수 데이터 통계 조회
-let infoChart = () =>{
+const infoChart = () => {
     return new Promise( (resolve, reject ) => {
         $.ajax({
             type : 'POST',
@@ -276,11 +276,11 @@ let infoChart = () =>{
 
 
 // 정보통계 바차트
-function viewInfoChart(){
+const viewInfoChart = () => {
     google.charts.load('current', {'packages':['bar']});
     google.charts.setOnLoadCallback(drawChart);
-    function drawChart() {
-        var data = new google.visualization.DataTable();
+    function  drawChart(){
+        let data = new google.visualization.DataTable();
         data.addColumn('string', '시간대별');
         data.addColumn('number', '가입수');
         data.addColumn('number', '방문수');
@@ -295,8 +295,8 @@ function viewInfoChart(){
         }).catch( (error) => {
             errorAlert("정보차트 조회에 실패했습니다.");
         }).finally( ()=> {
-            var options = {is3D:true};
-            var chart = new google.charts.Bar(document.getElementById('infoChart'));
+            let options = {is3D:true};
+            let chart = new google.charts.Bar(document.getElementById('infoChart'));
             chart.draw(data, google.charts.Bar.convertOptions(options));
         });
     }

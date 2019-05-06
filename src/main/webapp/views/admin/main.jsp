@@ -166,7 +166,7 @@
                                         <td>${group.mbrNick}</td>
                                         <td>${group.stdPersonCount}</td>
                                         <td>
-                                            <button type="button" class="btn btn-warning admin-custombtn btn-sm m-0 admin-movebtn" data-no="${group.grmGno}">이동</button>
+                                            <button type="button" class="btn btn-warning admin-custombtn btn-sm m-0 admin-movebtn" data-no="${group.stdNo}">이동</button>
                                         </td>
                                     </tr>
                                 </c:forEach>

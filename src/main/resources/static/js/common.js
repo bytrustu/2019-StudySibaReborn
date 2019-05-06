@@ -69,7 +69,7 @@ $(document).ready(function () {
 
 
 // 클래스 value 초기화
-let initElement = (className) => {
+const initElement = (className) => {
     let elements = document.getElementsByClassName(className);
     for (let element of elements) {
         element.value = '';
@@ -77,7 +77,7 @@ let initElement = (className) => {
 }
 
 // 엔터키 적용
-let enterPressAction = (inputName, targetName) => {
+const enterPressAction = (inputName, targetName) => {
     $(`.${inputName}`).keyup( function(e) {
         if ( e.keyCode == 13 ) {
             $(`.${targetName}`).click();
@@ -105,7 +105,7 @@ const mapToObject = (map,isCheck) => {
 
 
 // paremeter 주소줄 생성
-let makePath = (pathMap) => {
+const makePath = (pathMap) => {
     let path = '';
     let i =0;
     for ( let str of pathMap ) {
@@ -121,7 +121,7 @@ let makePath = (pathMap) => {
 
 
 // 제목 자르기
-let trimTitleLength = (className, length) => {
+const trimTitleLength = (className, length) => {
     let elements = document.getElementsByClassName(className);
     for ( let element of elements ) {
         if ( calByte.getByteLength(element.innerHTML) >= length ) {
@@ -131,21 +131,21 @@ let trimTitleLength = (className, length) => {
 }
 
 // 해당 요소 html 태그 반환
-let thisElement = (target) => {
+const thisElement = (target) => {
     return target.clone().wrapAll("<div/>").parent().html();
 }
 
 
 
 // 첫번째 루트 경로 반환
-let firstPath = () => {
+const firstPath = () => {
     let currentPath = window.location.pathname;
     currentPath = currentPath.substring(1, currentPath.lastIndexOf('/'));
     return currentPath;
 }
 
 // 첫번째 루트 경로 반환
-let secondPath = () => {
+const secondPath = () => {
     let currentPath = window.location.pathname;
     currentPath = currentPath.substring(1, currentPath.lastIndexOf('/'));
     currentPath = currentPath.substring(currentPath.indexOf('/')+1);
@@ -154,7 +154,7 @@ let secondPath = () => {
 
 
 // 페이지 글번호 값
-let contentNo = () => {
+const contentNo = () => {
     let path = location.search;
     path = path.substring(path.indexOf('=')+1);
     if ( path.includes('&') ) {
@@ -164,14 +164,14 @@ let contentNo = () => {
 }
 
 // url + parameter
-let currentUrl = () =>{
+const currentUrl = () =>{
     return `${location.pathname}${location.search}`;
 }
 
 
 
 // 글자 byte 계산, 자르기
-let calByte = {
+const calByte = {
     getByteLength : function(str) {
         if ( str == null || str.length == 0 ) return 0;
         let size = 0;
@@ -203,7 +203,7 @@ let calByte = {
 
 
 // 랜덤숫자 생성
-let rendomNumber = (n) => {
+const rendomNumber = (n) => {
     let result = Math.floor(Math.random() * n) + 1;
     return result;
 }
@@ -212,7 +212,7 @@ let rendomNumber = (n) => {
 
 
 // 날짜포맷 YYYY-MM-DD 변환
-let formatDate = (date) => {
+const formatDate = (date) => {
     let pad = (num) => {
         num = num + '';
         return num.length < 2 ? '0' + num : num;
@@ -269,7 +269,7 @@ const catchElement = (element, target, increaseNum, isNav) => {
 };
 
 // element 숫자 카운팅
-let rankPlay = (element, plus) => {
+const rankPlay = (element, plus) => {
     let point = $(element).html();
     element = $(element);
     // 초기 숫자 지정
@@ -291,7 +291,7 @@ let rankPlay = (element, plus) => {
 
 
 // 파일 업로드
-let fileUpload = (formData, menu) => {
+const fileUpload = (formData, menu) => {
     return new Promise( (resolve, reject) => {
         $.ajax({
             type: 'POST',
@@ -312,7 +312,7 @@ let fileUpload = (formData, menu) => {
 
 
 // 접속로그 갱신
-let connectUpdate = () =>{
+const connectUpdate = () =>{
     let connectId = $('#data-id').val();
     if ( connectId == '' ) return false;
     $.ajax({

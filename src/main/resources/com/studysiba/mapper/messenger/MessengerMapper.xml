@@ -121,7 +121,7 @@
          FROM (
                       SELECT * FROM MESSAGE
                        WHERE MSG_TYPE = #{type}
-                            AND MSG_DATE > DATE_ADD(NOW(),INTERVAL -1 DAY)
+                            AND MSG_DATE > DATE_ADD(NOW(),INTERVAL -30 DAY)
 			        ) MESSAGE
          JOIN MEMBER
             ON MEMBER.MBR_ID = MESSAGE.MSG_FROM

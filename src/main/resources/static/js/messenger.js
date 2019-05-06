@@ -58,7 +58,7 @@ $(document).ready(function(){
 
     
     // 전체채팅123
-    let sockPublic = new SockJS("/public");
+    const sockPublic = new SockJS("/public");
     publicClient = Stomp.over(sockPublic);
     publicClient.debug = null;
     publicClient.connect({}, function(){
@@ -86,7 +86,7 @@ $(document).ready(function(){
     
 
     // 개인채팅
-    let sockPrivate = new SockJS("/private");
+    const sockPrivate = new SockJS("/private");
     // 접속중인 경우에만 해당
     if ( connectId != '' ) {
         privateClient = Stomp.over(sockPrivate);
@@ -371,7 +371,7 @@ $(document).ready(function(){
 
 
     // 메신저 멤버리스트 초기화 및 갱신
-    let appendMemberListModule = () =>{
+    const appendMemberListModule = () =>{
         messengerListTitle.nextAll().remove();
         if ( connectId != '' ) {
             privateMemberList(connectId)
@@ -443,7 +443,7 @@ $(document).ready(function(){
 
 
 // 메세지 알림 추가
-let appendAlarm = (nick, profile, text) => {
+const appendAlarm = (nick, profile, text) => {
     let bgClass = selectProfileBG(profile);
     $('.messenger-alert').append(
                                                     `
@@ -457,7 +457,7 @@ let appendAlarm = (nick, profile, text) => {
 
 
 // 프로필에 해당하는 배경색 클래스 선택
-let selectProfileBG = (profile) =>{
+const selectProfileBG = (profile) =>{
     let no = profile.substring( profile.indexOf('-')+1, profile.indexOf('.png') );
     let className = '';
     if ( no == 1 ) {
@@ -474,7 +474,7 @@ let selectProfileBG = (profile) =>{
 
 
 // 알림 세션 변경
-let changeAlarmState = (id,state) => {
+const changeAlarmState = (id,state) => {
     $.ajax({
         type : 'PUT',
         url : `/messenger/alarm/${id}/${state}`,
@@ -488,7 +488,7 @@ let changeAlarmState = (id,state) => {
 
 
 // 회원 비활성화
-let disableMember = (id) => {
+const disableMember = (id) => {
     return new Promise( (resolve, reject) => {
         $.ajax({
             type : 'PUT',
@@ -506,7 +506,7 @@ let disableMember = (id) => {
 
 
 // 닉네임으로 아이디 조회
-let convertNickId = (nick) => {
+const convertNickId = (nick) => {
     return new Promise( (resolve, reject) => {
         $.ajax({
             type : 'GET',
@@ -524,7 +524,7 @@ let convertNickId = (nick) => {
 
 
 // 회원이 있는지 여부 조회
-let existingMember = (id) => {
+const existingMember = (id) => {
     return new Promise( (resolve, reject) => {
         $.ajax({
             type : 'GET',
@@ -542,7 +542,7 @@ let existingMember = (id) => {
 }
 
 // 대상과 연결
-let connectTarget = (id,nick) => {
+const connectTarget = (id,nick) => {
     let isError = false;
     existingMember(id)
         .then( (data) => {
@@ -592,7 +592,7 @@ let connectTarget = (id,nick) => {
 }
 
 // 메세지 읽음 처리
-let updateReadMessage = (memberInfo) => {
+const updateReadMessage = (memberInfo) => {
     $.ajax({
         type : 'PUT',
         url : '/messenger/update/read',
@@ -607,7 +607,7 @@ let updateReadMessage = (memberInfo) => {
 
 
 // 채팅목록에 해당 아이디가 포함 되어 있는지 확인
-let isIncludeTarget = (id) =>{
+const isIncludeTarget = (id) =>{
     let isInclude = false;
     let elements = $('.messenger-list');
     for ( let element of elements ) {
@@ -620,7 +620,7 @@ let isIncludeTarget = (id) =>{
 
 
 // 채팅목록에 해당 아이디 리스트에 내용 변경
-let updateIncludeTarget = (messageInfo) => {
+const updateIncludeTarget = (messageInfo) => {
     let elements = $('.messenger-list');
     for ( let element of elements ) {
         if (element.getAttribute('data-id') == messageInfo.msgFrom) {
@@ -635,7 +635,7 @@ let updateIncludeTarget = (messageInfo) => {
 
 
 // 유저 목록 추가 상단 업데이트
-let addIncludeTarget = (messageInfo) => {
+const addIncludeTarget = (messageInfo) => {
     let appendList = `
                                 <li class="messenger-common chat-content chat-left messenger-list animated pulse fast" data-id="${messageInfo.msgFrom}">
                                     <div class="chat-profile">
@@ -661,7 +661,7 @@ let addIncludeTarget = (messageInfo) => {
 
 
 // 유저 목록 추가 하단
-let appendMemberList = (messageInfo) => {
+const appendMemberList = (messageInfo) => {
     let appendList = `
                                 <li class="messenger-common chat-content chat-left messenger-list animated pulse fast" data-id="${messageInfo.msgFrom}">
                                     <div class="chat-profile">
@@ -691,7 +691,7 @@ let appendMemberList = (messageInfo) => {
 
 
 // 전체채팅 마지막 정보 조회
-let publicLastMessage = () =>{
+const publicLastMessage = () =>{
     return new Promise( (resolve, reject) => {
         $.ajax({
             type : 'GET',
@@ -710,7 +710,7 @@ let publicLastMessage = () =>{
 
 
 // 자신의 채팅 멤버리스트 조회
-let privateMemberList = (id) => {
+const privateMemberList = (id) => {
     return new Promise( (resolve, reject) => {
         $.ajax({
             type : 'GET',
@@ -729,7 +729,7 @@ let privateMemberList = (id) => {
 
 
 // 자신의 읽지 않은 채팅 카운트 조회
-let privateUnReadCount = (id) => {
+const privateUnReadCount = (id) => {
     return new Promise( (resolve, reject) => {
         $.ajax({
             type : 'GET',
@@ -748,7 +748,7 @@ let privateUnReadCount = (id) => {
 
 
 // 자신이 보낸 메세지 정보 확인
-let sendMessageInfo = (id) => {
+const sendMessageInfo = (id) => {
     return new Promise( (resolve, reject) => {
         $.ajax({
             type : 'GET',
@@ -767,7 +767,7 @@ let sendMessageInfo = (id) => {
 
 
 // 개인채팅 리스트 조회
-let privateMessageList = (id) => {
+const privateMessageList = (id) => {
     return new Promise( (resolve, reject) => {
         $.ajax({
             type : 'GET',
@@ -786,7 +786,7 @@ let privateMessageList = (id) => {
 
 
 // 전체채팅 리스트 조회
-let publicMessageList = () => {
+const publicMessageList = () => {
     return new Promise( (resolve, reject) => {
         $.ajax({
             type : 'GET',
@@ -805,7 +805,7 @@ let publicMessageList = () => {
 
 
 // 전체채팅 메세지 추가
-let appendMessage = (messageInfo, isScroll) => {
+const appendMessage = (messageInfo, isScroll) => {
     let msgLeft = `
                             <li class="chat-content chat-left animated fadeIn fast">
                                 <div class="chat-info">
@@ -855,14 +855,14 @@ let appendMessage = (messageInfo, isScroll) => {
 
 
 // 해당 element에 클래스 이름이 있는지 조회
-let checkIncludes = (element,className) => {
+const checkIncludes = (element,className) => {
     return element.attr('class').includes(className);
 }
 
 
 
 // animate 효과 초기화
-let initClass = () =>{
+const initClass = () =>{
     chatWindow.removeClass('flipInY').removeClass('flipOutY').removeClass('fadeIn');
     chatList.removeClass('flipInY').removeClass('flipOutY').removeClass('fadeIn');
     searchBox.removeClass('fadeInUp').removeClass('fadeOutDown');
@@ -870,7 +870,7 @@ let initClass = () =>{
 
 
 // 로그인 체크
-let checkLogined = () =>{
+const checkLogined = () =>{
     if( $('#data-id').val() == '' ) {
 
         if ( chatList.hasClass('d-none') && chatWindow.hasClass('d-none') ) {
@@ -886,8 +886,8 @@ let checkLogined = () =>{
 
 
 // 메세지 alert
-let messengerAlert= (message, delay) => {
-    var alert = $('#messengerMessage').alert();
+const messengerAlert= (message, delay) => {
+    let alert = $('#messengerMessage').alert();
     $('#messengerMessage').html('<strong>' + message + '</strong>');
     alert.show();
     window.setTimeout(function () {
@@ -897,8 +897,8 @@ let messengerAlert= (message, delay) => {
 
 
 // 회원검색 alert
-let findUserAlert= (message, delay) => {
-    var alert = $('#findUserMessage').alert();
+const findUserAlert= (message, delay) => {
+    let alert = $('#findUserMessage').alert();
     $('#findUserMessage').html('<strong>' + message + '</strong>');
     alert.show();
     window.setTimeout(function () {

@@ -19,21 +19,21 @@
 
 
 function initAutocomplete() {
-    var lat = 37.5640253;
-    var lng = 126.97377929999993;
-    var map = new google.maps.Map(document.getElementById('map'), {
+    let lat = 37.5640253;
+    let lng = 126.97377929999993;
+    let map = new google.maps.Map(document.getElementById('map'), {
         center: {lat: lat, lng: lng},
         zoom: 15,
     });
-    var input = document.getElementById('pac-input');
-    var searchBox = new google.maps.places.SearchBox(input);
+    let input = document.getElementById('pac-input');
+    let searchBox = new google.maps.places.SearchBox(input);
     map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
     map.addListener('bounds_changed', function() {
         searchBox.setBounds(map.getBounds());
     });
-    var markers = [];
+    let markers = [];
     searchBox.addListener('places_changed', function() {
-        var places = searchBox.getPlaces();
+        let places = searchBox.getPlaces();
 
         if (places.length == 0) {
             return;
@@ -42,7 +42,7 @@ function initAutocomplete() {
             marker.setMap(null);
         });
         markers = [];
-        var bounds = new google.maps.LatLngBounds();
+        let bounds = new google.maps.LatLngBounds();
 
         // console.log(places[0].geometry);
         // console.log(places[0].geometry.viewport);
@@ -86,12 +86,12 @@ function initAutocomplete() {
     });
 
 
-    var clickHandler = new ClickEventHandler(map, origin);
+    let clickHandler = new ClickEventHandler(map, origin);
 }
 
 
 
-var ClickEventHandler = function(map, origin) {
+const ClickEventHandler = function(map, origin) {
     this.origin = origin;
     this.map = map;
     this.directionsService = new google.maps.DirectionsService;
@@ -107,11 +107,11 @@ var ClickEventHandler = function(map, origin) {
 
 
 ClickEventHandler.prototype.handleClick = function(event) {
-    var latlngStr = event.latLng.toString();
-    var latlng = latlngStr.substring(1,latlngStr.length-1);
+    let latlngStr = event.latLng.toString();
+    let latlng = latlngStr.substring(1,latlngStr.length-1);
     latlng = latlng.split(',');
-    var lat = latlng[0];
-    var lng = latlng[1].substring(1,latlng[1].length);
+    let lat = latlng[0];
+    let lng = latlng[1].substring(1,latlng[1].length);
     if (event.placeId) {
         event.stop();
         this.calculateAndDisplayRoute(event.placeId);
@@ -120,7 +120,7 @@ ClickEventHandler.prototype.handleClick = function(event) {
 };
 
 ClickEventHandler.prototype.calculateAndDisplayRoute = function(placeId) {
-    var me = this;
+    let me = this;
     this.directionsService.route({
         origin: this.origin,
         destination: {placeId: placeId},
@@ -135,7 +135,7 @@ ClickEventHandler.prototype.calculateAndDisplayRoute = function(placeId) {
 };
 
 ClickEventHandler.prototype.getPlaceInformation = function(placeId) {
-    var me = this;
+    let me = this;
     this.placesService.getDetails({placeId: placeId}, function(place, status) {
         if (status === 'OK') {
             me.infowindow.close();

@@ -1,20 +1,20 @@
 $(document).ready(function () {
 
     // youtube fix
-    if (!window.YT) var YT = {loading: 0, loaded: 0};
-    if (!window.YTConfig) var YTConfig = {host: "https://www.youtube.com"};
+    if (!window.YT) let YT = {loading: 0, loaded: 0};
+    if (!window.YTConfig) let YTConfig = {host: "https://www.youtube.com"};
     YT.loading || (YT.loading = 1, function () {
-        var o = [];
+        let o = [];
         YT.ready = function (n) {
             YT.loaded ? n() : o.push(n)
         }, window.onYTReady = function () {
             YT.loaded = 1;
-            for (var n = 0; n < o.length; n++) try {
+            for (let n = 0; n < o.length; n++) try {
                 o[n]()
             } catch (i) {
             }
         }, YT.setConfig = function (o) {
-            for (var n in o) o.hasOwnProperty(n) && (YTConfig[n] = o[n])
+            for (let n in o) o.hasOwnProperty(n) && (YTConfig[n] = o[n])
         }
     }());
 
@@ -236,7 +236,7 @@ $(document).ready(function () {
 
 
     // 댓글 템플릿 레이아웃
-    let addComment = (commentJson) => {
+    const addComment = (commentJson) => {
         let commentLayout =
             `<div class="comment-list">
                     <input type="hidden" class="comment-no" value="${commentJson.cmtNo}">
@@ -381,7 +381,7 @@ $(document).ready(function () {
 
 
 // 게시판 게시글 등록
-let writeBoard = (boardJson,currentPath) => {
+const writeBoard = (boardJson,currentPath) => {
     return new Promise( (resolve, reject) => {
         $.ajax({
             type : 'POST',
@@ -400,7 +400,7 @@ let writeBoard = (boardJson,currentPath) => {
 }
 
 // 게시판 댓글 등록
-let writeComment = (boardJson) => {
+const writeComment = (boardJson) => {
     return new Promise( (resolve, reject) => {
         $.ajax({
             type : 'POST',
@@ -419,7 +419,7 @@ let writeComment = (boardJson) => {
 }
 
 // 게시판 게시글 삭제
-let deleteBoard = (boardJson) => {
+const deleteBoard = (boardJson) => {
     return new Promise ( (resolve, reject) => {
         $.ajax({
             type : 'DELETE',
@@ -438,7 +438,7 @@ let deleteBoard = (boardJson) => {
 }
 
 // 게시판 업데이트
-let updateBoard = (boardJson) => {
+const updateBoard = (boardJson) => {
     return new Promise( (resolve, reject) => {
         $.ajax({
             type : 'PUT',
@@ -459,7 +459,7 @@ let updateBoard = (boardJson) => {
 
 
 // 댓글,게시글 조회
-let getBoard = (type,no) => {
+const getBoard = (type,no) => {
     return new Promise( (resolve, reject) => {
         $.ajax({
             type : 'GET',
@@ -478,7 +478,7 @@ let getBoard = (type,no) => {
 
 
 // 추천 등록
-let likeRegister = (path) => {
+const likeRegister = (path) => {
     return new Promise((resolve, reject) => {
         $.ajax({
             type : 'POST',
@@ -501,7 +501,6 @@ let likeRegister = (path) => {
 /*
      게시판 검색 모듈
  */
-
 
 // select 선택시
 $('.board-select').on('change', function(){

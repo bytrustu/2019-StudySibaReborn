@@ -117,7 +117,7 @@ $(document).ready(function () {
     $("#inputs_toPer").on("change", function () {
         let currDate = new Date();
         currDate = formatDate(currDate);
-        var startDate = $(this).val();
+        let startDate = $(this).val();
         if (startDate < currDate) {
             autoClosingAlert('이전일자는 지정할수 없습니다.', 2500);
             $(this).val('');
@@ -270,7 +270,7 @@ $(document).ready(function () {
         }
     });
 
-    let registerStudy = (formData) => {
+    const registerStudy = (formData) => {
         return new Promise((resolve, reject) => {
             $.ajax({
                 type: 'POST',
@@ -289,7 +289,7 @@ $(document).ready(function () {
         });
     }
 
-    let updateStudy = (formData) => {
+    const updateStudy = (formData) => {
         return new Promise((resolve, reject) => {
             $.ajax({
                 type: 'POST',
@@ -314,7 +314,7 @@ $(document).ready(function () {
      */
 
     // 스탭별 map 값을 확인해서 값이 없을시에 이동
-    let checkStep = (stepMap, step) => {
+    const checkStep = (stepMap, step) => {
         let idx = 0;
         for (let stepStr of stepMap) {
             if (stepStr[1] == '') {
@@ -356,7 +356,7 @@ $(document).ready(function () {
     }
 
     // step3 그룹 이미지로고 확장자 확인
-    let logoImageCheck = (fileName) => {
+    const logoImageCheck = (fileName) => {
         if ( !(typeof fileName == "undefined") ) {
             let fileExtension = fileName.substring(fileName.lastIndexOf('.')+1);
             let isImage = false;
@@ -378,7 +378,7 @@ $(document).ready(function () {
     }
 
     // 파일크기 체크
-    let checkFileSize = (file, size) => {
+    const checkFileSize = (file, size) => {
         const maxSize = size * 1024 * 1024;
         if ( !(typeof file == "undefined") ) {
             if ( file.size > maxSize ) return false;
@@ -388,7 +388,7 @@ $(document).ready(function () {
 
     // 에러 Alert 출력
     function autoClosingAlert(message, delay) {
-        var alert = $('#dangerMessage').alert();
+        let alert = $('#dangerMessage').alert();
         $('#dangerMessage').html('<strong>' + message + '</strong>');
         alert.show();
         window.setTimeout(function () {
@@ -397,7 +397,7 @@ $(document).ready(function () {
     }
 
     // Map 와 Map 합치기
-    let pushMap = (originMap, addMap) => {
+    const pushMap = (originMap, addMap) => {
         for (let map of addMap) {
             originMap.set(map[0], map[1]);
         }
@@ -405,7 +405,7 @@ $(document).ready(function () {
     }
 
     // Map 을 FormData로
-    let mapToFormData = (map) => {
+    const mapToFormData = (map) => {
         let formData = new FormData();
         for (let data of map) {
             formData.append(data[0], data[1]);
@@ -418,10 +418,10 @@ $(document).ready(function () {
      *  스탭별 위쪽 버튼 및 아래쪽 이전 다음 버튼 클릭시 화면 보여지는 마진 처리
      */
 
-    var steps = ['.res-step-one', '.res-step-two', '.res-step-three', '.res-step-four'];
-    var i = 1;
+    let steps = ['.res-step-one', '.res-step-two', '.res-step-three', '.res-step-four'];
+    let i = 1;
     $(".res-step-form .res-btn-orange").click(function () {
-        var getClass = $(this).attr('data-class');
+        let getClass = $(this).attr('data-class');
         $(".res-steps").removeClass('active');
         $(steps[i]).addClass('active');
         i++;
@@ -440,7 +440,7 @@ $(document).ready(function () {
     });
 
     $(".res-step-form .res-btn-gray").click(function () {
-        var getClass = $(this).attr('data-class');
+        let getClass = $(this).attr('data-class');
         $(".res-steps").removeClass('active');
         i--;
         $(steps[i - 1]).addClass('active');
@@ -615,7 +615,7 @@ $(document).ready(function () {
 
 
 // 등록되어잇는 주제선정 입력
-    let activeSubject = (elements, array) => {
+    const activeSubject = (elements, array) => {
         let inputs = document.getElementsByClassName(elements);
         let i = 0;
         for (let element of inputs) {
@@ -649,7 +649,7 @@ $(document).ready(function () {
 
 
 // 댓글 게시글 조회
-    let getStudy = (no) => {
+    const getStudy = (no) => {
         return new Promise((resolve, reject) => {
             $.ajax({
                 type: 'GET',
@@ -705,7 +705,7 @@ $(document).ready(function () {
     });
 
 // 스터디 비활성화 처리
-    let deleteStudy = (no, deleteState) => {
+    const deleteStudy = (no, deleteState) => {
         return new Promise((resolve, reject) => {
             $.ajax({
                 type: 'DELETE',
@@ -768,7 +768,7 @@ $(document).ready(function () {
     });
 
 // 스터디 참여 처리
-    let joinStudy = (no) => {
+    const joinStudy = (no) => {
         return new Promise((resolve, reject) => {
             $.ajax({
                 type: 'POST',
@@ -786,7 +786,7 @@ $(document).ready(function () {
     }
 
 // 스터디 탈퇴 처리
-    let outStudy = (no) => {
+    const outStudy = (no) => {
         return new Promise((resolve, reject) => {
             $.ajax({
                 type: 'DELETE',
@@ -831,7 +831,7 @@ $(document).ready(function () {
     });
 
 // 스터디 최신 갱신 처리
-    let latestStudy = (no) => {
+    const latestStudy = (no) => {
         return new Promise((resolve, reject) => {
             $.ajax({
                 type: 'PUT',
@@ -851,8 +851,8 @@ $(document).ready(function () {
 
     // 대표이미지 변경시
     $('.fileInput').change(function() {
-        var numfiles = $(this)[0].files.length;
-        var parent = $(this).closest('.input-file');
+        let numfiles = $(this)[0].files.length;
+        let parent = $(this).closest('.input-file');
         parent.find('ins').remove();
         for (i = 0; i < numfiles; i++) {
             parent.append('<ins>' + $(this)[0].files[i].name + '</ins>')
@@ -931,7 +931,7 @@ $(document).ready(function () {
 
 
     // 공지사항 등록처리
-    let registerNotice = (formData) => {
+    const registerNotice = (formData) => {
         return new Promise( (resolve, reject) => {
             $.ajax({
                 type: 'POST',
@@ -951,7 +951,7 @@ $(document).ready(function () {
     }
 
     // 공지사항 업데이트
-    let updateNotice = (formData) => {
+    const updateNotice = (formData) => {
         return new Promise( (resolve, reject) => {
             $.ajax({
                 type: 'POST',
@@ -1032,7 +1032,7 @@ $(document).ready(function () {
 
 
     // 공지사항 게시글 조회 처리
-    let viewNotice = (no) => {
+    const viewNotice = (no) => {
         return new Promise( (resolve, reject) => {
             $.ajax({
                 type : 'GET',
@@ -1091,7 +1091,7 @@ $(document).ready(function () {
 
 
     // 회원 탈퇴 처리
-    let outGroup = (groupJson) => {
+    const outGroup = (groupJson) => {
         return new Promise( (resolve, reject ) => {
             $.ajax({
                 type : 'DELETE',
