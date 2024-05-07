@@ -3,6 +3,9 @@
   <h2>온라인 스터디 커뮤니티: 스터디시바</h3>
 </div>
 
+![Frame 122](https://github.com/bytrustu/2019-StudySibaReborn/assets/39726717/9cd88556-b5d2-4e8f-b32b-e0ece322e2ba)
+
+
 <br />
 
 <strong>공부가 하고 싶은데 혼자서는 잘 안되시나요?</strong> 스터디시바에서 함께 공부할 동료를 찾아보세요!
