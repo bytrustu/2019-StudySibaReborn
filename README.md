@@ -1,10 +1,13 @@
 <div align="center">
-  <img width="394" alt="image" src="https://github.com/bytrustu/2019-StudySibaReborn/assets/39726717/e75defbe-7f4b-4019-bba2-6a31716ab5e1">
   <h2>온라인 스터디 커뮤니티: 스터디시바</h3>
 </div>
 
 ![Frame 122](https://github.com/bytrustu/2019-StudySibaReborn/assets/39726717/9cd88556-b5d2-4e8f-b32b-e0ece322e2ba)
 
+
+<br />
+
+https://github.com/thepsyentist/docs/assets/39726717/6d667909-fad6-4f6f-91c2-fb9fa308fffb
 
 <br />
 
